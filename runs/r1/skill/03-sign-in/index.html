@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - Ledgerline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Ink kit */
+  --accent: #1c1f25; --accent-hover: #000000; --accent-subtle: #eceef2; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: #2754c5; --placeholder: #6b717d;
+  --frame: #f6f7f9; --brand-deep: #16181d; --on-deep: #ffffff; --on-deep-muted: #a0a6b2;
+  --on-deep-ok: #6fd6a0; --on-deep-warn: #f0b45a;
+  --font-display: "Geist", system-ui, sans-serif;
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px; --text-2xl: 28px; --lh-2xl: 34px; --text-hero: 40px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 44px;
+  --w-auth: 400px;
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #e9ebef; --accent-hover: #ffffff; --accent-subtle: #262a33; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715; --placeholder: #8b919d; --focus: #7a9cff;
+    --frame: #15171c; --brand-deep: #0b0c0f; --on-deep: #e9ebef; --on-deep-muted: #a0a6b2;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-family: var(--font-display); font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+.muted { color: var(--text-muted); }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* layout */
+.auth { display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); min-height: 100dvh; }
+.panel { background: var(--brand-deep); color: var(--on-deep); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: var(--s-10) var(--s-16); }
+.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); line-height: var(--lh-xl); letter-spacing: -0.02em; color: inherit; text-decoration: none; }
+.mark rect { fill: var(--on-deep); }
+.mark path { stroke: var(--brand-deep); }
+.panel-body { margin: auto 0; padding: var(--s-10) 0; max-width: 520px; }
+.panel h2 { font-family: var(--font-display); font-size: var(--text-hero); line-height: 46px; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+.panel .lead { margin-top: var(--s-4); color: var(--on-deep-muted); font-size: var(--text-md); max-width: 44ch; }
+
+/* product glimpse */
+.glimpse { margin-top: var(--s-10); border: 1px solid color-mix(in srgb, var(--on-deep) 16%, transparent); border-radius: var(--r-xl); background: color-mix(in srgb, var(--on-deep) 6%, transparent); padding: var(--s-5) var(--s-5) var(--s-2); }
+.g-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+.g-head b { font-weight: 600; }
+.g-head span { color: var(--on-deep-muted); font-size: var(--text-sm); }
+.g-meter { height: 6px; margin-top: var(--s-3); border-radius: var(--r-full); background: color-mix(in srgb, var(--on-deep) 16%, transparent); overflow: hidden; }
+.g-meter i { display: block; height: 100%; background: var(--on-deep); }
+.g-rows { list-style: none; margin: var(--s-4) 0 0; padding: 0; }
+.g-rows li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); padding: var(--s-3) 0; border-top: 1px solid color-mix(in srgb, var(--on-deep) 12%, transparent); }
+.g-tile { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-md); background: color-mix(in srgb, var(--on-deep) 12%, transparent); font-weight: 600; font-size: var(--text-sm); }
+.g-name { font-weight: 500; line-height: 20px; font-size: var(--text-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-sub { color: var(--on-deep-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.g-right { text-align: right; }
+.g-amt { font-weight: 500; font-size: var(--text-sm); line-height: 20px; }
+.g-st { display: inline-flex; align-items: center; gap: 4px; font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; color: var(--on-deep-ok); }
+.g-st.warn { color: var(--on-deep-warn); }
+
+.form-col { display: grid; grid-template-rows: 1fr auto; padding: var(--s-8) var(--s-12) var(--s-6); }
+.inner { width: 100%; max-width: var(--w-auth); margin: auto; padding: var(--s-8) 0; }
+.inner > .muted { margin-top: var(--s-2); }
+.legal { display: flex; gap: var(--s-6); justify-content: center; color: var(--text-muted); font-size: var(--text-sm); }
+.legal a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; color: var(--text-muted); }
+
+/* controls */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-3); width: 100%; min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover:not(:disabled) { background: var(--bg-subtle); }
+.btn:disabled { color: var(--text-muted); cursor: not-allowed; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn[aria-busy="true"] { cursor: progress; }
+.spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin 700ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.or { display: flex; align-items: center; gap: var(--s-3); margin: var(--s-6) 0; color: var(--text-muted); font-size: var(--text-sm); }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--s-4); }
+.field .row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+.field label { font-weight: 500; font-size: var(--text-sm); }
+.field .row a { font-size: var(--text-sm); display: inline-flex; align-items: center; min-height: 44px; margin: -12px 0; }
+.input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md); transition: border-color var(--t-fast) var(--ease); }
+.input:hover { border-color: var(--text-muted); }
+.input[aria-invalid="true"] { border: 2px solid var(--danger); padding: 0 calc(var(--s-3) - 1px); }
+.input[readonly] { background: var(--bg-subtle); }
+.pw { position: relative; }
+.pw .input { padding-right: 76px; }
+.pw button { position: absolute; right: 1px; top: 0; bottom: 0; min-width: 64px; min-height: 44px; padding: 0 var(--s-3); border: 0; background: none; border-radius: var(--r-sm); font-weight: 500; color: var(--text); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.pw button:hover { background: var(--bg-subtle); }
+.err { display: flex; align-items: center; gap: 6px; color: var(--danger); font-size: var(--text-sm); font-weight: 500; }
+.err[hidden] { display: none; }
+.banner { display: flex; gap: var(--s-3); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); background: var(--danger-subtle); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); border-radius: var(--r-lg); }
+.banner[hidden] { display: none; }
+.banner svg { color: var(--danger); margin-top: 2px; }
+.banner b { display: block; font-weight: 600; color: var(--danger); }
+.banner p { font-size: var(--text-sm); line-height: var(--lh-sm); margin-top: 2px; }
+.linkbtn { padding: 0; border: 0; background: none; font: inherit; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; color: var(--text); min-height: 44px; }
+.hint { font-size: var(--text-sm); line-height: var(--lh-sm); color: var(--text-muted); text-align: center; margin-top: var(--s-2); }
+.swap { margin-top: var(--s-6); text-align: center; color: var(--text-muted); }
+.swap a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text); font-weight: 500; }
+.sent[hidden], .signin[hidden] { display: none; }
+.sent .mail { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: var(--s-5); border-radius: var(--r-lg); background: var(--accent-subtle); }
+.sent p { margin-top: var(--s-3); }
+.sent p b { font-weight: 600; word-break: break-all; }
+.sent .acts { display: grid; gap: var(--s-3); margin-top: var(--s-6); }
+
+@media (max-width: 1023px) {
+  .auth { grid-template-columns: minmax(0, 1fr); }
+  .panel { padding: 0 var(--s-4); min-height: 64px; flex-direction: row; align-items: center; border-right: 0; border-bottom: 1px solid var(--border); }
+  .panel-body { display: none; }
+  .form-col { padding: var(--s-6) var(--s-6) var(--s-4); }
+  .inner { margin: 0 auto; padding: var(--s-4) 0 var(--s-8); }
+  .legal { flex-wrap: wrap; }
+}
+@media (max-width: 640px) {
+  .panel { min-height: 64px; }
+  .form-col { padding: var(--s-6) var(--s-4) var(--s-4); }
+  h1 { font-size: 24px; line-height: 30px; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to sign in</a>
+
+<div class="auth">
+  <header class="panel">
+    <a class="brand" href="#" aria-label="Ledgerline home">
+      <svg class="mark" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7"/><path d="M8 9.5h12M8 14h12M8 18.5h6" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
+      Ledgerline
+    </a>
+    <div class="panel-body">
+      <h2>Every receipt matched before month-end.</h2>
+      <p class="lead">Ledgerline reads each receipt, matches it to the card statement and tells people what is still missing.</p>
+      <div class="glimpse" id="glimpse" role="img" aria-label="Preview of a November card statement with 41 of 44 transactions matched"></div>
+    </div>
+  </header>
+
+  <div class="form-col">
+    <main id="main" class="inner">
+      <section class="signin" id="v-signin" aria-labelledby="t-signin">
+        <h1 id="t-signin">Sign in to Ledgerline</h1>
+        <p class="muted">Use your work account to submit and approve expenses.</p>
+
+        <div class="banner" id="banner" role="alert" hidden style="margin-top:24px">
+          <svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>
+          <div><b>Email or password is incorrect</b><p>Check both and try again. Or skip the password.</p><button class="linkbtn" id="banner-link" type="button">Email me a sign-in link instead</button></div>
+        </div>
+
+        <div style="margin-top:24px">
+          <button class="btn" id="sso" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            <span id="sso-label">Continue with Google</span>
+          </button>
+        </div>
+
+        <div class="or" role="separator"><span>or use your email</span></div>
+
+        <form id="form" novalidate>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" autocapitalize="off" aria-describedby="email-err">
+            <p class="err" id="email-err" hidden><svg class="i sm" aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+          </div>
+          <div class="field">
+            <div class="row"><label for="password">Password</label><a href="#">Forgot password?</a></div>
+            <div class="pw">
+              <input class="input" id="password" name="password" type="password" autocomplete="current-password" aria-describedby="password-err">
+              <button type="button" id="toggle" aria-pressed="false" aria-controls="password">Show<span class="sr-only"> password</span></button>
+            </div>
+            <p class="err" id="password-err" hidden><svg class="i sm" aria-hidden="true"><use href="#i-alert"/></svg><span></span></p>
+          </div>
+          <button class="btn primary" id="submit" type="submit" style="margin-top:24px">Sign in</button>
+        </form>
+
+        <div class="or" role="separator"><span>or</span></div>
+        <button class="btn" id="magic" type="button"><svg class="i" aria-hidden="true"><use href="#i-link"/></svg>Email me a sign-in link</button>
+        <p class="hint">No password needed. The link works once and expires in 15 minutes.</p>
+
+        <p class="swap">New to Ledgerline? <a href="#">Request a demo</a></p>
+      </section>
+
+      <section class="sent" id="v-sent" aria-labelledby="t-sent" hidden>
+        <div class="mail"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></div>
+        <h1 id="t-sent" tabindex="-1">Check your email</h1>
+        <p>We sent a sign-in link to <b id="sent-to"></b>. The link works once and expires in 15 minutes.</p>
+        <p class="muted">If it is not in your inbox, check your spam folder.</p>
+        <div class="acts">
+          <button class="btn" id="resend" type="button" disabled>Resend link in 30 seconds</button>
+          <button class="btn" id="diff" type="button">Use a different email</button>
+        </div>
+      </section>
+    </main>
+    <footer class="legal"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">System status</a></footer>
+  </div>
+</div>
+
+<script>
+/* ---------- fixtures ---------- */
+const statement = { name: 'November card statement', total: 44, matched: 41 };
+const rows = [
+  { m: 'Northline Rail', note: 'Leeds to London', d: '12 Nov', amt: 86.5, ok: true },
+  { m: 'Kiln Street Coffee', note: 'Client breakfast', d: '13 Nov', amt: 14.2, ok: true },
+  { m: 'Hartwell Hotel', note: 'Two nights', d: '13 Nov', amt: 212, ok: false },
+  { m: 'Skyline Cabs', note: 'Airport transfer', d: '14 Nov', amt: 23.75, ok: true },
+];
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const missing = statement.total - statement.matched;
+document.getElementById('glimpse').innerHTML = `
+  <div class="g-head" aria-hidden="true"><b>${statement.name}</b><span>${statement.matched} of ${statement.total} matched</span></div>
+  <div class="g-meter" aria-hidden="true"><i style="width:${statement.matched / statement.total * 100}%"></i></div>
+  <ul class="g-rows" aria-hidden="true">${rows.map(r => `
+    <li><span class="g-tile">${r.m[0]}</span>
+      <span><div class="g-name">${r.m}</div><div class="g-sub">${r.d}, ${r.note}</div></span>
+      <span class="g-right"><div class="g-amt">${gbp.format(r.amt)}</div>
+      <span class="g-st ${r.ok ? '' : 'warn'}"><svg class="i sm" style="width:14px;height:14px"><use href="#${r.ok ? 'i-check' : 'i-alert'}"/></svg>${r.ok ? 'Matched' : 'No receipt'}</span></span></li>`).join('')}
+  </ul>`;
+
+/* ---------- behaviour ---------- */
+const $ = s => document.querySelector(s);
+const email = $('#email'), pw = $('#password'), submit = $('#submit');
+const RX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function setErr(input, msg) {
+  const e = $('#' + input.id + '-err');
+  if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+  e.hidden = !msg; e.lastElementChild.textContent = msg || '';
+}
+const checkEmail = () => { const v = email.value.trim(); const m = !v ? 'Enter your work email address' : !RX.test(v) ? 'Enter an email address in the correct format, like name@company.com' : ''; setErr(email, m); return !m; };
+const checkPw = () => { const m = pw.value ? '' : 'Enter your password'; setErr(pw, m); return !m; };
+$('#banner').hidden = true;
+
+$('#toggle').onclick = e => {
+  const show = pw.type === 'password'; pw.type = show ? 'text' : 'password';
+  e.currentTarget.setAttribute('aria-pressed', show);
+  e.currentTarget.firstChild.textContent = show ? 'Hide' : 'Show';
+};
+
+$('#form').addEventListener('submit', e => {
+  e.preventDefault();
+  $('#banner').hidden = true;
+  const a = checkEmail(), b = checkPw();
+  if (!a) return email.focus();
+  if (!b) return pw.focus();
+  submit.setAttribute('aria-busy', 'true'); submit.innerHTML = '<span class="spin" aria-hidden="true"></span>Signing in…';
+  email.readOnly = pw.readOnly = true;
+  // No backend here: the demo always answers with wrong credentials.
+  setTimeout(() => {
+    submit.removeAttribute('aria-busy'); submit.textContent = 'Sign in'; email.readOnly = pw.readOnly = false;
+    pw.value = ''; $('#banner').hidden = false; pw.focus();
+  }, 1100);
+});
+email.addEventListener('input', () => email.hasAttribute('aria-invalid') && checkEmail());
+pw.addEventListener('input', () => pw.hasAttribute('aria-invalid') && checkPw());
+
+$('#sso').onclick = () => {
+  const b = $('#sso'); b.setAttribute('aria-busy', 'true'); $('#sso-label').textContent = 'Opening Google…';
+  setTimeout(() => { b.removeAttribute('aria-busy'); $('#sso-label').textContent = 'Continue with Google'; }, 1200);
+};
+
+/* magic link */
+let timer;
+function showSent() {
+  $('#sent-to').textContent = email.value.trim();
+  $('#v-signin').hidden = true; $('#v-sent').hidden = false; $('#t-sent').focus();
+  let n = 30; const r = $('#resend'); r.disabled = true; r.textContent = `Resend link in ${n} seconds`; clearInterval(timer);
+  timer = setInterval(() => { n--; if (n <= 0) { clearInterval(timer); r.disabled = false; r.textContent = 'Resend link'; } else r.textContent = `Resend link in ${n} second${n === 1 ? '' : 's'}`; }, 1000);
+}
+function magic() { $('#banner').hidden = true; checkPw && setErr(pw, ''); if (!checkEmail()) return email.focus(); showSent(); }
+$('#magic').onclick = magic; $('#banner-link').onclick = magic;
+$('#resend').onclick = () => { const r = $('#resend'); r.textContent = 'Link sent again'; r.disabled = true; setTimeout(showSent, 900); };
+$('#diff').onclick = () => { clearInterval(timer); $('#v-sent').hidden = true; $('#v-signin').hidden = false; email.select(); email.focus(); };
+
+/* ?state=error|sent */
+const state = new URLSearchParams(location.search).get('state');
+if (state === 'error') { email.value = 'amara.okafor@kestrel-analytics.com'; $('#banner').hidden = false; }
+if (state === 'sent') { email.value = 'amara.okafor@kestrel-analytics.com'; showSent(); }
+</script>
+</body>
+</html>

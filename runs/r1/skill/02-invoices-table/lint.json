@@ -1,0 +1,52 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "nav.side-nav"
+    ]
+  },
+  "fontFamilies": [
+    "source code pro",
+    "source sans 3",
+    "source serif 4"
+  ],
+  "textColors": 7,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(39, 84, 197)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(39, 84, 197)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 0,
+    "examples": []
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes - Fieldnote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Ember kit */
+  --accent: #c2410c; --accent-hover: #9a3412; --accent-subtle: #fdeee5; --on-accent: #ffffff;
+  --focus: var(--accent); --placeholder: #6b717d;
+  --frame: #fcf6f1; --brand-deep: #42190a; --on-deep: #ffffff; --on-deep-muted: #f3c3a6;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px; --text-2xl: 28px; --lh-2xl: 34px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px; --w-rail: 360px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #ff9a5c; --accent-hover: #ffb88a; --accent-subtle: #36210f; --on-accent: #0b1020;
+    --placeholder: #8b919d;
+    --frame: #1b1613; --brand-deep: #2c150a; --on-deep: #e9ebef; --on-deep-muted: #f0bc9c;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-family: var(--font-display); font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; letter-spacing: -0.02em; }
+a { color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 80; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+.muted { color: var(--text-muted); }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; text-decoration: none; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.textbtn { display: inline-flex; align-items: center; min-height: 32px; padding: 0 var(--s-2); border: 0; background: none; color: var(--text-muted); font-weight: 500; cursor: pointer; border-radius: var(--r-md); }
+.textbtn:hover { background: var(--bg-subtle); color: var(--text); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.side { background: var(--frame); border-right: 1px solid var(--border); }
+.side-nav { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); gap: var(--s-1); }
+.brand { display: flex; align-items: center; gap: 10px; padding: var(--s-1) var(--s-2) var(--s-4); font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); line-height: 28px; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+.ws { display: flex; align-items: center; gap: var(--s-3); width: 100%; min-height: 48px; padding: var(--s-2); margin-bottom: var(--s-4); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); text-align: left; cursor: pointer; }
+.ws .t { display: flex; flex-direction: column; min-width: 0; flex: 1; font-weight: 600; line-height: 18px; }
+.ws small { font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 400; color: var(--text-muted); }
+.tile { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: var(--text-xs); flex: none; }
+.nav-label { padding: var(--s-4) var(--s-2) var(--s-1); font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); font-weight: 500; margin: 0; }
+.nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.nav-list a { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text); text-decoration: none; transition: background-color var(--t-fast) var(--ease); }
+.nav-list a:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.nav-list a[aria-current="page"] { background: var(--accent-subtle); font-weight: 600; }
+.nav-list a[aria-current="page"] svg { color: var(--accent); }
+.side-empty { padding: var(--s-1) var(--s-2); color: var(--text-muted); font-size: var(--text-sm); }
+.side-empty a { display: inline-flex; align-items: center; min-height: 32px; font-weight: 500; }
+.nav-bottom { margin-top: auto; padding-top: var(--s-4); display: grid; gap: var(--s-2); }
+.me { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2); border-top: 1px solid var(--border); padding-top: var(--s-4); }
+.me .t { display: flex; flex-direction: column; line-height: 18px; font-weight: 500; }
+.me small { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); font-weight: 400; }
+.m-top { display: none; }
+.scrim { display: none; }
+
+/* page */
+.page { max-width: 1264px; margin: 0 auto; padding: var(--s-8) var(--s-8) var(--s-12); }
+.page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-6); margin-bottom: var(--s-6); }
+.page-head p { margin-top: var(--s-1); color: var(--text-muted); }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); gap: var(--s-8); align-items: start; }
+.stack { display: grid; gap: var(--s-8); }
+
+/* checklist */
+.check { border: 1px solid var(--border); border-radius: var(--r-lg); }
+.check-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); padding: var(--s-5) var(--s-5) var(--s-4); }
+.check-head h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; font-family: var(--font-display); letter-spacing: -0.01em; }
+.check-head p { color: var(--text-muted); margin-top: 2px; }
+.bar { height: 4px; margin: 0 var(--s-5); border-radius: var(--r-full); background: var(--bg-subtle); border: 0; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.tasks { list-style: none; margin: var(--s-4) 0 0; padding: 0; }
+.task { display: grid; grid-template-columns: 24px minmax(0, 1fr) 168px; align-items: center; gap: var(--s-4); padding: var(--s-4) var(--s-5); border-top: 1px solid var(--border); }
+.task .ring { width: 20px; height: 20px; border-radius: var(--r-full); border: 2px solid var(--border-strong); }
+.task.done .ring { background: var(--accent); border-color: var(--accent); }
+.task b { display: block; font-weight: 600; }
+.task span.d { display: block; color: var(--text-muted); }
+.task .btn { width: 100%; }
+
+/* empty state */
+.empty { border: 1px dashed var(--border-strong); border-radius: var(--r-lg); padding: var(--s-6); display: grid; grid-template-columns: 168px minmax(0, 1fr); column-gap: var(--s-6); align-items: center; }
+.empty .txt { grid-column: 2; }
+.art { position: relative; width: 168px; height: 110px; grid-row: 1; grid-column: 1; }
+.art .card { position: absolute; left: 0; right: 0; height: 56px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg); display: grid; gap: 6px; align-content: start; }
+.art .card i { display: block; height: 6px; border-radius: 3px; background: var(--border); }
+.art .card i:first-child { width: 55%; background: var(--accent-subtle); height: 8px; }
+.art .card i:last-child { width: 80%; }
+.art .c1 { top: 0; transform: scale(.86); opacity: .45; }
+.art .c2 { top: 20px; transform: scale(.93); opacity: .7; }
+.art .c3 { top: 42px; z-index: 1; box-shadow: var(--shadow-pop); }
+.art .c3 i:first-child { background: var(--accent); }
+.empty h2 { font-family: var(--font-display); font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; letter-spacing: -0.01em; }
+.empty .txt p { color: var(--text-muted); max-width: 48ch; margin-top: var(--s-1); }
+.tpl-label { grid-column: 1 / -1; margin-top: var(--s-6); font-weight: 500; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.tpls { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-2); }
+.tpl { display: grid; gap: 2px; align-content: start; min-height: 88px; padding: var(--s-3) var(--s-4); border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); color: var(--text); text-decoration: none; transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.tpl:hover { background: var(--bg-subtle); border-color: var(--border-strong); }
+.tpl b { font-weight: 600; display: flex; align-items: center; gap: var(--s-2); }
+.tpl b svg { color: var(--accent); }
+.tpl span { color: var(--text-muted); }
+
+/* sample note rail */
+.rail { position: sticky; top: var(--s-6); }
+.rail-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-3); font-weight: 600; }
+.badge { display: inline-flex; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+.note { border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5); background: var(--surface); }
+.note h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); line-height: var(--lh-xl); letter-spacing: -0.01em; }
+.note .meta { margin-top: var(--s-1); color: var(--text-muted); }
+.note blockquote { margin: var(--s-5) 0 0; padding: 0; font-size: var(--text-md); line-height: var(--lh-md); }
+.note mark { background: var(--accent-subtle); color: var(--text); padding: 1px 2px; border-radius: 2px; }
+.note .who { margin-top: var(--s-2); color: var(--text-muted); }
+.tags { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-5); }
+.tag { display: inline-flex; align-items: center; min-height: 24px; padding: 0 var(--s-2); border-radius: var(--r-full); border: 1px solid var(--border); color: var(--text-muted); font-size: var(--text-xs); font-weight: 500; }
+.q { display: flex; gap: var(--s-3); align-items: flex-start; margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--border); }
+.q svg { color: var(--accent); margin-top: 2px; }
+.q b { font-weight: 600; display: block; }
+.q span { color: var(--text-muted); }
+.rail-note { margin-top: var(--s-3); color: var(--text-muted); }
+
+@media (max-width: 1100px) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; }
+}
+@media (max-width: 1023px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .side { position: fixed; inset: 0 auto 0 0; z-index: 50; width: min(300px, 86vw); visibility: hidden; transform: translateX(-100%); transition: transform var(--t-slow) var(--ease), visibility 0s linear 200ms; }
+  .nav-open .side { visibility: visible; transform: none; transition-delay: 0s; }
+  .side-nav { position: static; height: 100%; }
+  .scrim { position: fixed; inset: 0; z-index: 40; background: rgb(0 0 0 / .4); border: 0; padding: 0; }
+  .nav-open .scrim { display: block; }
+  .m-top { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--s-2); height: 56px; padding: 0 var(--s-2); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .m-top .brand { padding: 0; flex: 1; min-height: 44px; }
+  .m-top .btn { width: 44px; padding: 0; border-color: transparent; background: transparent; }
+  .page { padding: var(--s-6) var(--s-4) var(--s-12); }
+}
+@media (max-width: 640px) {
+  body { font-size: var(--text-md); line-height: var(--lh-md); }
+  h1 { font-size: 24px; line-height: 30px; }
+  .page-head { flex-direction: row; align-items: center; }
+  .stack { gap: var(--s-6); }
+  .check-head { padding: var(--s-4) var(--s-4) var(--s-3); }
+  .bar { margin: 0 var(--s-4); }
+  .task { grid-template-columns: 24px minmax(0, 1fr); padding: var(--s-4); row-gap: var(--s-3); }
+  .task .btn { grid-column: 2; }
+  .empty { padding: var(--s-5) var(--s-4); grid-template-columns: minmax(0, 1fr); row-gap: var(--s-4); }
+  .empty .txt, .art { grid-column: 1; }
+  .art { grid-row: auto; width: 140px; height: 100px; }
+  .textbtn { min-height: 44px; }
+  .tpls { grid-template-columns: minmax(0, 1fr); }
+  .tpl { min-height: 64px; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+    <symbol id="i-mark" viewBox="0 0 24 24"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect width="6" height="12" x="9" y="2" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell" id="shell">
+  <aside class="side" id="side">
+    <nav class="side-nav" aria-label="Main">
+      <a class="brand" href="#" aria-label="Fieldnote home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 7.5h8.5L20 10v10.5H9z" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linejoin="round"/><path d="M12 14h5M12 17.5h3" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round"/></svg>
+        Fieldnote
+      </a>
+      <button class="ws" type="button">
+        <span class="tile" aria-hidden="true">CL</span>
+        <span class="t">Calder Lab<small>1 member</small></span>
+        <svg class="i sm" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+      <ul class="nav-list">
+        <li><a href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-note"/></svg>Notes</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg>Search</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg>Questions</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-tag"/></svg>Tags</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-mark"/></svg>Highlights</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg>People</a></li>
+      </ul>
+      <p class="nav-label">Projects</p>
+      <p class="side-empty">No projects yet. <a href="#">New project</a></p>
+      <div class="nav-bottom">
+        <ul class="nav-list">
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg>Settings</a></li>
+        </ul>
+        <div class="me"><span class="tile" aria-hidden="true" style="border-radius:999px">ML</span><span class="t">Mei Lin Tan<small>Owner</small></span></div>
+      </div>
+    </nav>
+  </aside>
+  <button class="scrim" id="scrim" type="button" aria-label="Close menu" tabindex="-1"></button>
+
+  <div class="content">
+    <header class="m-top">
+      <button class="btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="side"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <a class="brand" href="#" aria-label="Fieldnote home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 7.5h8.5L20 10v10.5H9z" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linejoin="round"/><path d="M12 14h5M12 17.5h3" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round"/></svg>
+        Fieldnote
+      </a>
+    </header>
+
+    <main id="main" class="page">
+      <header class="page-head">
+        <div>
+          <h1>Notes</h1>
+          <p id="count"></p>
+        </div>
+        <button class="btn" id="new-note" type="button"><svg class="i sm" aria-hidden="true"><use href="#i-plus"/></svg>New note</button>
+      </header>
+
+      <div class="cols">
+        <div class="stack">
+          <section class="check" id="check" aria-labelledby="h-check">
+            <div class="check-head">
+              <div>
+                <h2 id="h-check">Get started</h2>
+                <p id="check-count"></p>
+              </div>
+              <button class="textbtn" id="dismiss" type="button">Dismiss</button>
+            </div>
+            <div class="bar" id="bar" role="progressbar" aria-label="Setup progress" aria-valuemin="0"><i></i></div>
+            <ol class="tasks" id="tasks"></ol>
+          </section>
+
+          <section class="empty" aria-labelledby="h-empty">
+            <div class="art" aria-hidden="true">
+              <div class="card c1"><i></i><i></i></div>
+              <div class="card c2"><i></i><i></i></div>
+              <div class="card c3"><i></i><i></i></div>
+            </div>
+            <div class="txt"><h2 id="h-empty">No notes yet</h2>
+            <p>Notes you write or import appear here, grouped by project and tag, so you can find a quote months later.</p></div>
+            <p class="tpl-label">Start from a template</p>
+            <div class="tpls" id="tpls"></div>
+          </section>
+        </div>
+
+        <aside class="rail" aria-label="Sample note">
+          <div class="rail-label"><span>What a note looks like</span><span class="badge">Sample</span></div>
+          <article class="note">
+            <h3>Onboarding interview with Tomasz W&oacute;jcik</h3>
+            <p class="meta">12 Nov 2026, 38 minutes, led by Mei Lin Tan</p>
+            <blockquote>Nothing told me what to do next, so <mark>I stopped opening it</mark>.</blockquote>
+            <p class="who">Tomasz, operations lead at a 14-person logistics firm</p>
+            <div class="tags"><span class="tag">onboarding</span><span class="tag">churn</span><span class="tag">week 2</span></div>
+            <div class="q"><svg class="i" aria-hidden="true"><use href="#i-help"/></svg><div><b>Why do trial teams go quiet after week 2?</b><span>Linked research question</span></div></div>
+          </article>
+          <p class="rail-note">Highlight a line and tag it. Fieldnote gathers every highlight under the question it helps answer.</p>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+/* ---------- fixtures ---------- */
+const notes = [];
+const tasks = [
+  { id: 'write', title: 'Write your first note', desc: 'Capture an interview, an observation or an idea.', cta: 'Write a note', done: false },
+  { id: 'invite', title: 'Invite a teammate', desc: 'Notes get better when a second person reads them.', cta: 'Invite teammates', done: false },
+  { id: 'import', title: 'Import existing notes', desc: 'Bring in Markdown files, Google Docs or a Notion export.', cta: 'Import notes', done: false },
+  { id: 'question', title: 'Add a research question', desc: 'Highlights link to the question they help answer.', cta: 'Add a question', done: false },
+];
+const templates = [
+  { icon: 'i-mic', name: 'User interview', parts: 'Context, quotes, insights' },
+  { icon: 'i-eye', name: 'Field observation', parts: 'Setting, behaviour, surprises' },
+  { icon: 'i-cal', name: 'Meeting notes', parts: 'Decisions, owners, follow-ups' },
+];
+const $ = s => document.querySelector(s);
+const plural = (n, one, many) => `${n.toLocaleString('en-GB')} ${new Intl.PluralRules('en-GB').select(n) === 'one' ? one : many}`;
+
+/* ---------- render ---------- */
+const doneN = tasks.filter(t => t.done).length;
+const next = tasks.find(t => !t.done);
+$('#count').textContent = `${plural(notes.length, 'note', 'notes')} in Calder Lab`;
+$('#check-count').textContent = `${doneN} of ${tasks.length} done`;
+const bar = $('#bar'); bar.setAttribute('aria-valuemax', tasks.length); bar.setAttribute('aria-valuenow', doneN);
+bar.firstElementChild.style.width = (doneN / tasks.length * 100) + '%';
+$('#tasks').innerHTML = tasks.map(t => `
+  <li class="task ${t.done ? 'done' : ''}">
+    <span class="ring" aria-hidden="true"></span>
+    <div><b>${t.title}</b><span class="d">${t.desc}</span></div>
+    <button class="btn ${t === next ? 'primary' : ''}" type="button">${t.cta}</button>
+  </li>`).join('');
+$('#tpls').innerHTML = templates.map(t => `
+  <a class="tpl" href="#"><b><svg class="i" aria-hidden="true"><use href="#${t.icon}"/></svg>${t.name}</b><span>${t.parts}</span></a>`).join('');
+
+/* Dismiss remembers; with the checklist gone, New note becomes the primary action. */
+const KEY = 'fieldnote-checklist-dismissed';
+function applyDismiss(d) {
+  $('#check').hidden = d;
+  $('#new-note').classList.toggle('primary', d);
+}
+let dismissed = false;
+try { dismissed = localStorage.getItem(KEY) === '1'; } catch (e) { /* storage blocked */ }
+applyDismiss(dismissed);
+$('#dismiss').onclick = () => { try { localStorage.setItem(KEY, '1'); } catch (e) { /* ignore */ } applyDismiss(true); $('#new-note').focus(); };
+
+/* phone nav */
+const shell = $('#shell'), mb = $('#menu-btn');
+const setNav = open => { shell.classList.toggle('nav-open', open); mb.setAttribute('aria-expanded', open); mb.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+mb.onclick = () => setNav(!shell.classList.contains('nav-open'));
+$('#scrim').onclick = () => setNav(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && shell.classList.contains('nav-open')) { setNav(false); mb.focus(); } });
+</script>
+</body>
+</html>

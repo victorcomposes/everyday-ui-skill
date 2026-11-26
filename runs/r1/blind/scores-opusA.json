@@ -1,0 +1,26 @@
+{
+  "01-settings": {
+    "A": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 6, "mobile": 7, "dark": 8, "overall": 7, "worst": "desktop.png: the sticky bar says 'You have unsaved changes' on an untouched form and covers the Email/Push column headers of the notifications table" },
+    "B": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 8, "craft": 8, "realism": 9, "mobile": 7, "dark": 8, "overall": 8, "worst": "desktop-fold.png: profile inputs stop at about 480 px while the notifications and billing blocks run much wider, so the content column has no consistent right edge" },
+    "C": { "hierarchy": 7, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 8, "mobile": 7, "dark": 1, "overall": 5, "worst": "dark.png: no dark mode at all, the page renders identical to light; also the profile form has no save action anywhere" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 6, "mobile": 6, "dark": 1, "overall": 4, "worst": "desktop-fold.png: the sticky bar reads 'All changes saved.' next to an active Save changes button; dark.png ignores dark mode and mobile-fold.png clips the 'Danger zone' tab" }
+  },
+  "02-invoices-table": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 1, "overall": 7, "worst": "dark.png: no dark mode, the page renders identical to light; mobile-fold.png also drops the app nav with no menu button" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 6, "dark": 8, "overall": 5, "worst": "mobile-fold.png: the sidebar nav disappears with no menu button, leaving no way to reach Bills, Customers or Reports on a phone" },
+    "C": { "hierarchy": 7, "layout": 7, "typography": 6, "colour": 7, "craft": 6, "realism": 9, "mobile": 6, "dark": 8, "overall": 6, "worst": "desktop-fold.png: every invoice number sits in a heavy boxed monospace chip that out-shouts the customer and amount, and one chip truncates to 'INV-2026-0406-REI...'" },
+    "D": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 6, "craft": 6, "realism": 5, "mobile": 6, "dark": 1, "overall": 4, "worst": "desktop.png: the 'All invoices 11 - $34,993.65' card contradicts the footer 'Showing 12 of 12 invoices'; dark.png has no dark mode" }
+  },
+  "03-sign-in": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 8, "craft": 7, "realism": 8, "mobile": 8, "dark": 8, "overall": 7, "worst": "desktop-fold.png: the green brand panel parks its headline and two receipt cards in the upper middle and leaves the lower 40% as empty ruled stripes" },
+    "B": { "hierarchy": 8, "layout": 5, "typography": 8, "colour": 7, "craft": 7, "realism": 7, "mobile": 8, "dark": 1, "overall": 5, "worst": "desktop-fold.png: the right panel pins three receipt rows to the top and the quote to the bottom with a 450 px dead gap between them; dark.png has no dark mode" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: the email and password fields are empty with no placeholder, and the subtitle sits cramped under the heading while a large gap opens above Sign in" },
+    "D": { "hierarchy": 8, "layout": 6, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 8, "dark": 1, "overall": 6, "worst": "dark.png: no dark mode, the page renders identical to light; desktop-fold.png also jams the form against the left edge of its half" }
+  },
+  "04-empty-onboarding": {
+    "A": { "hierarchy": 7, "layout": 8, "typography": 7, "colour": 8, "craft": 7, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: the sample note highlight breaks into separate boxes with stray gaps around 'I' and 'it', and New note, Write a note and three templates compete as the first action" },
+    "B": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 1, "overall": 5, "worst": "dark.png: no dark mode at all; desktop-fold.png headline also leaves 'in it.' as a widow and mobile-fold.png has no nav or menu button" },
+    "C": { "hierarchy": 8, "layout": 7, "typography": 6, "colour": 8, "craft": 7, "realism": 7, "mobile": 6, "dark": 8, "overall": 7, "worst": "desktop-fold.png: the headline wraps so 'it.' sits alone on the second line at the largest type size on the page" },
+    "D": { "hierarchy": 9, "layout": 7, "typography": 8, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 1, "overall": 6, "worst": "dark.png: no dark mode, the page renders identical to light; mobile.png also truncates the invite placeholder to 'name@haldenresearcl'" }
+  }
+}

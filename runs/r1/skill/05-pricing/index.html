@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing - Relay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #1c1f25; --accent-hover: #000000; --accent-subtle: #eceef2; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --focus: #1c1f25;
+  --frame: #f6f7f9; --brand-deep: #16181d; --on-deep: #ffffff; --on-deep-muted: #a0a6b2;
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px; --text-2xl: 24px; --lh-2xl: 32px; --text-3xl: 30px; --lh-3xl: 36px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-touch: 44px;
+  --w-content: 1200px; --h-topbar: 56px;
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #e9ebef; --accent-hover: #ffffff; --accent-subtle: #262a33; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --focus: #e9ebef;
+    --frame: #15171c; --brand-deep: #0b0c0f; --on-deep: #e9ebef; --on-deep-muted: #a0a6b2;
+  }
+}
+@media (max-width: 640px) { :root { --control-h: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -0.02em; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 10; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* top bar */
+.topbar { background: var(--frame); border-bottom: 1px solid var(--border); }
+.topbar-in { max-width: var(--w-content); margin: 0 auto; padding: 0 var(--s-6); height: var(--h-topbar); display: flex; align-items: center; gap: var(--s-8); }
+.brand { display: inline-flex; align-items: center; gap: var(--s-2); text-decoration: none; font: 600 16px/24px var(--font-display); letter-spacing: -0.02em; min-height: 44px; }
+.nav { display: flex; align-items: center; gap: var(--s-1); flex: 1; }
+.nav a, .signin { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-md); text-decoration: none; color: var(--text-muted); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav a:hover, .signin:hover { background: var(--accent-subtle); color: var(--text); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text); }
+.signin { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+
+/* page */
+main { max-width: var(--w-content); margin: 0 auto; padding: var(--s-10) var(--s-6) var(--s-16); }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-6); flex-wrap: wrap; }
+.head h1 { font-size: 32px; line-height: 38px; font-weight: 600; }
+.head p { color: var(--text-muted); margin-top: var(--s-2); font-size: var(--text-md); line-height: var(--lh-md); max-width: 60ch; }
+.seg { display: inline-flex; gap: 4px; padding: 3px; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--r-lg); }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg span { display: inline-flex; align-items: center; gap: var(--s-2); min-height: calc(var(--control-h) - 4px); padding: 0 var(--s-4); border-radius: var(--r-md); font-weight: 500; color: var(--text-muted); transition: background-color var(--t-fast) var(--ease); }
+.seg input:checked + span { background: var(--surface); color: var(--text); box-shadow: 0 0 0 1px var(--border-strong); }
+.seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+.save { font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; color: var(--success); background: var(--success-subtle); padding: 2px 8px; border-radius: var(--r-sm); }
+
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); margin-top: var(--s-8); align-items: stretch; }
+.plan { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s-6); background: var(--surface); }
+.plan.rec { border: 2px solid var(--accent); padding: calc(var(--s-6) - 1px); }
+.plan-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 28px; }
+.plan h2 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; }
+.badge { font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; padding: 2px 8px; border-radius: var(--r-sm); background: var(--accent); color: var(--on-accent); }
+.aud { color: var(--text-muted); margin-top: var(--s-1); }
+.price { margin-top: var(--s-6); font: 600 32px/40px var(--font-display); letter-spacing: -0.02em; }
+.unit { color: var(--text-muted); min-height: 40px; margin-top: var(--s-1); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-h-touch); width: 100%; margin-top: var(--s-5); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; text-decoration: none; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--accent-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); }
+.interval { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--border); }
+.interval-row { display: flex; justify-content: space-between; gap: var(--s-3); font-weight: 500; }
+.interval-row span:last-child { color: var(--text-muted); font-weight: 400; }
+.ticks { display: flex; gap: 3.5px; margin-top: var(--s-3); height: 16px; align-items: flex-end; overflow: hidden; }
+.ticks i { display: block; width: 2px; height: 100%; flex: none; background: var(--text); border-radius: 1px; }
+.ticks i:last-child { background: var(--success); }
+.feat-title { margin-top: var(--s-5); color: var(--text-muted); }
+.feat { list-style: none; margin: var(--s-3) 0 0; padding: 0; display: grid; gap: var(--s-3); }
+.feat li { display: flex; gap: var(--s-3); align-items: flex-start; }
+.feat svg { flex: none; margin-top: 2px; }
+
+/* comparison */
+section.compare { margin-top: var(--s-16); }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+.sec-head h2 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; }
+.sec-head p { color: var(--text-muted); }
+.scroll-hint { display: none; }
+.table-wrap { margin-top: var(--s-6); position: relative; }
+table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+.cmp col.c0 { width: 34%; }
+.cmp thead th { position: sticky; top: 0; z-index: 2; background: var(--bg); text-align: center; vertical-align: bottom; padding: var(--s-3) var(--s-3); border-bottom: 1px solid var(--border-strong); font-weight: 600; font-size: var(--text-md); line-height: var(--lh-md); }
+.cmp thead th:first-child { text-align: left; color: var(--text-muted); font-weight: 500; font-size: var(--text-sm); }
+.cmp thead th small { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--text-muted); }
+.cmp tbody th[scope="colgroup"] { text-align: left; padding: var(--s-8) 0 var(--s-2); font: 600 var(--text-md)/var(--lh-md) var(--font-display); letter-spacing: -0.01em; border-bottom: 1px solid var(--border); }
+.cmp tbody th[scope="row"] { text-align: left; font-weight: 400; padding: var(--s-3) var(--s-3) var(--s-3) 0; border-bottom: 1px solid var(--border); height: 48px; }
+.cmp td { text-align: center; padding: var(--s-3); border-bottom: 1px solid var(--border); height: 48px; }
+.cmp td.rec, .cmp thead th.rec { background: var(--accent-subtle); }
+.cmp tbody tr.g th, .cmp tbody tr.g td { background: transparent; }
+.dash { color: var(--text-muted); }
+.cmp td svg { vertical-align: middle; }
+
+/* faq */
+.faq { margin-top: var(--s-16); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--s-12); }
+.faq h2 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; }
+.faq .lead { color: var(--text-muted); margin-top: var(--s-2); max-width: 36ch; }
+.faq .lead a { color: var(--text); }
+details { border-bottom: 1px solid var(--border); }
+details:first-child { border-top: 1px solid var(--border); }
+summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); min-height: 56px; padding: var(--s-3) 0; font-weight: 500; font-size: var(--text-md); line-height: var(--lh-md); }
+summary::-webkit-details-marker { display: none; }
+summary svg { flex: none; transition: transform var(--t-base) var(--ease); }
+details[open] summary svg { transform: rotate(180deg); }
+details p { padding: 0 var(--s-8) var(--s-4) 0; color: var(--text-muted); font-size: var(--text-md); line-height: var(--lh-md); max-width: 62ch; }
+footer { margin-top: var(--s-12); padding-top: var(--s-6); border-top: 1px solid var(--border); color: var(--text-muted); display: flex; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+footer a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; justify-content: center; }
+
+@media (max-width: 1023px) { .plans { gap: var(--s-4); } .plan { padding: var(--s-5); } .plan.rec { padding: calc(var(--s-5) - 1px); } }
+@media (max-width: 860px) {
+  .plans { grid-template-columns: minmax(0, 1fr); }
+  .plan.rec { order: -1; }
+  .unit { min-height: 0; }
+  .faq { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+}
+@media (max-width: 640px) {
+  .topbar-in { padding: 0 var(--s-4); gap: var(--s-2); }
+  .nav a.opt { display: none; }
+  main { padding: var(--s-6) var(--s-4) var(--s-12); }
+  .head h1 { font-size: 28px; line-height: 34px; }
+  .seg { width: 100%; }
+  .seg label { flex: 1; }
+  .seg span { justify-content: center; width: 100%; }
+  .sec-head h2, .faq h2 { font-size: 22px; line-height: 28px; }
+  .scroll-hint { display: block; color: var(--text-muted); margin-top: var(--s-2); }
+  .table-wrap { overflow-x: auto; margin-right: calc(var(--s-4) * -1); padding-right: var(--s-4); }
+  table.cmp { min-width: 600px; table-layout: fixed; }
+  .cmp col.c0 { width: 180px; }
+  .cmp thead th:first-child, .cmp tbody th[scope="row"] { position: sticky; left: 0; z-index: 3; background: var(--bg); box-shadow: 1px 0 0 var(--border); }
+  .cmp tbody th[scope="colgroup"] { position: sticky; left: 0; }
+  .cmp tbody th[scope="colgroup"] span { position: sticky; left: 0; }
+  footer { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#" aria-label="Relay home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M8.5 9l5 5-5 5M14.5 9l5 5-5 5" fill="none" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Relay
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a class="opt" href="#">Product</a>
+      <a href="#">Docs</a>
+      <a href="#" aria-current="page">Pricing</a>
+      <a class="opt" href="#">Changelog</a>
+    </nav>
+    <a class="signin" href="#">Sign in</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="head">
+    <div>
+      <h1>Pricing</h1>
+      <p>Pay for monitors, not seats. Every plan includes unlimited teammates and unlimited alert recipients.</p>
+    </div>
+    <fieldset style="border:0;margin:0;padding:0;min-width:0">
+      <legend class="sr-only">Billing period</legend>
+      <div class="seg" id="seg">
+        <label><input type="radio" name="period" value="monthly"><span>Monthly</span></label>
+        <label><input type="radio" name="period" value="yearly" checked><span>Yearly <b class="save" id="save">Save 17%</b></span></label>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="plans" id="plans" aria-live="polite"></div>
+  <p style="margin-top:var(--s-4);color:var(--text-muted)">Prices in US dollars, excluding sales tax and VAT. Cancel or change plan from Settings, Billing.</p>
+
+  <section class="compare" aria-labelledby="cmp-h">
+    <div class="sec-head">
+      <h2 id="cmp-h">Compare all features</h2>
+      <p>Limits apply per workspace.</p>
+    </div>
+    <p class="scroll-hint">Scroll sideways to compare plans.</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Plan comparison table">
+      <table class="cmp" id="cmp"></table>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-h">
+    <div>
+      <h2 id="faq-h">Questions about billing</h2>
+      <p class="lead">Still unsure which plan fits? <a href="#">Talk to the team</a> and we reply within one working day.</p>
+    </div>
+    <div id="faqlist"></div>
+  </section>
+
+  <footer>
+    <span>Relay Monitoring Ltd, 14 Wharf Road, Leeds LS1 4BR</span>
+    <span><a href="#">Status</a> &nbsp; <a href="#">Terms</a> &nbsp; <a href="#">Privacy</a></span>
+  </footer>
+</main>
+
+<script>
+/* ---------- data: one module, everything on screen derives from it ---------- */
+const PLANS = [
+  { id: 'starter', name: 'Starter', audience: 'For side projects and a first service', monthly: 0,   cta: 'Start free',          interval: 300, lead: null,
+    features: ['10 monitors', '2 check regions', 'Email alerts', '7 days of history', 'Public status page, 1 page'] },
+  { id: 'team',    name: 'Team',    audience: 'For teams running production APIs',     monthly: 48,  cta: 'Start Team trial',    interval: 60,  lead: 'Everything in Starter, plus:', rec: true,
+    features: ['100 monitors', '6 check regions', 'Slack, Teams and PagerDuty alerts', '90 days of history', 'Multi-step API checks'] },
+  { id: 'business',name: 'Business',audience: 'For regulated and high-traffic services', monthly: 192, cta: 'Contact sales',    interval: 30,  lead: 'Everything in Team, plus:',
+    features: ['500 monitors', '12 check regions', 'SAML single sign-on and audit log', '13 months of history', '99.95% uptime SLA'] },
+];
+const YEARLY_MONTHS_PAID = 10;               // yearly billing charges 10 months for 12
+const GROUPS = [
+  { name: 'Monitoring', rows: [
+    ['Monitors',                 ['10', '100', '500']],
+    ['Shortest check interval',  ['5 min', '1 min', '30 sec']],
+    ['Check regions',            ['2', '6', '12']],
+    ['Assertions per monitor',   ['3', '20', 'Unlimited']],
+    ['Multi-step API checks',    [false, true, true]],
+    ['Private location agents',  [false, false, true]],
+  ]},
+  { name: 'Alerts', rows: [
+    ['Email and webhook alerts', [true, true, true]],
+    ['Slack and Teams',[false, true, true]],
+    ['PagerDuty and Opsgenie',   [false, true, true]],
+    ['Alert escalation rules',   [false, true, true]],
+    ['Maintenance windows',      [false, true, true]],
+  ]},
+  { name: 'Data and status pages', rows: [
+    ['History retention',        ['7 days', '90 days', '13 months']],
+    ['Status pages',             ['1', '5', '25']],
+    ['Custom status domain',[false, true, true]],
+    ['CSV and API export',       [false, true, true]],
+  ]},
+  { name: 'Security and support', rows: [
+    ['Two-factor authentication',[true, true, true]],
+    ['SAML single sign-on',      [false, false, true]],
+    ['Audit log',                [false, false, true]],
+    ['Uptime SLA',               [false, false, '99.95%']],
+    ['Support',                  ['Community', 'Email', 'Priority']],
+  ]},
+];
+const FAQ = [
+  ['What counts as a monitor?', 'One URL or API endpoint checked on its own schedule. A multi-step check that calls three endpoints in order counts as one monitor.'],
+  ['What happens if I go over my monitor limit?', 'Existing monitors keep running. You cannot add new ones until you archive some or move to a larger plan. We email the workspace owner at 80% and 100%.'],
+  ['How does yearly billing work?', 'You pay for 10 months and get 12. Team costs $480 a year instead of $576, and Business costs $1,920 instead of $2,304. The yearly charge is taken once, on the day you switch.'],
+  ['Can I change plan or cancel at any time?', 'Yes. Upgrades apply at once and we credit the unused part of your current period. Downgrades start at the next renewal. Cancel from Settings, Billing.'],
+  ['Do you charge sales tax or VAT?', 'Prices exclude tax. We add VAT for customers in the UK and EU, and sales tax where US states require it. Add your tax ID at checkout to remove VAT for eligible businesses.'],
+];
+
+/* ---------- helpers ---------- */
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const check = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const chev = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const intervalText = s => s >= 60 ? `${s / 60} min` : `${s} sec`;
+const checksPer30 = s => 1800 / s;
+const yearlyMonthly = m => Math.round(m * YEARLY_MONTHS_PAID / 12 * 100) / 100;
+const savePct = Math.round((1 - YEARLY_MONTHS_PAID / 12) * 100);
+document.getElementById('save').textContent = `Save ${savePct}%`;
+
+function priceBlock(p, yearly) {
+  if (p.monthly === 0) return [usd.format(0), 'free, no card needed'];
+  if (yearly) {
+    const eq = p.monthly * YEARLY_MONTHS_PAID / 12;
+    return [usd.format(eq), `per month, billed yearly at ${usd.format(p.monthly * YEARLY_MONTHS_PAID)}`];
+  }
+  return [usd.format(p.monthly), 'per month, billed monthly'];
+}
+function renderPlans() {
+  const yearly = document.querySelector('input[name=period]:checked').value === 'yearly';
+  document.getElementById('plans').innerHTML = PLANS.map(p => {
+    const [price, unit] = priceBlock(p, yearly);
+    const n = checksPer30(p.interval);
+    return `<article class="plan${p.rec ? ' rec' : ''}" aria-labelledby="h-${p.id}">
+      <div class="plan-top"><h2 id="h-${p.id}">${p.name}</h2>${p.rec ? '<span class="badge">Recommended</span>' : ''}</div>
+      <p class="aud">${p.audience}</p>
+      <div class="price">${price}</div>
+      <p class="unit">${unit}</p>
+      <a class="btn${p.rec ? ' primary' : ''}" href="#">${p.cta}</a>
+      <div class="interval">
+        <div class="interval-row"><span>Checks every ${intervalText(p.interval)}</span><span>${n} per 30 min</span></div>
+        <div class="ticks" aria-hidden="true">${'<i></i>'.repeat(n)}</div>
+      </div>
+      ${p.lead ? `<p class="feat-title">${p.lead}</p>` : '<p class="feat-title">Includes:</p>'}
+      <ul class="feat">${p.features.map(f => `<li>${check}<span>${f}</span></li>`).join('')}</ul>
+    </article>`;
+  }).join('');
+  document.querySelectorAll('.plan .ticks').forEach(t => { /* last tick is the latest check */ });
+  renderTable(yearly);
+}
+function cell(v) {
+  if (v === true) return `${check}<span class="sr-only">Included</span>`;
+  if (v === false) return '<span class="dash" aria-hidden="true">&ndash;</span><span class="sr-only">Not included</span>';
+  return v;
+}
+function renderTable(yearly) {
+  const head = PLANS.map(p => {
+    const [price] = priceBlock(p, yearly);
+    return `<th scope="col" class="${p.rec ? 'rec' : ''}">${p.name}<small>${p.monthly === 0 ? 'Free' : price + ' a month'}</small></th>`;
+  }).join('');
+  const body = GROUPS.map(g => `<tr class="g"><th scope="colgroup" colspan="4"><span>${g.name}</span></th></tr>` +
+    g.rows.map(([label, vals]) => `<tr><th scope="row">${label}</th>${vals.map((v, i) => `<td class="${PLANS[i].rec ? 'rec' : ''}">${cell(v)}</td>`).join('')}</tr>`).join('')).join('');
+  document.getElementById('cmp').innerHTML = `<colgroup><col class="c0"><col><col><col></colgroup><thead><tr><th scope="col">Feature</th>${head}</tr></thead><tbody>${body}</tbody>`;
+}
+document.getElementById('seg').addEventListener('change', renderPlans);
+document.getElementById('faqlist').innerHTML = FAQ.map(([q, a], i) => `<details${i === 0 ? ' open' : ''}><summary>${q}${chev}</summary><p>${a}</p></details>`).join('');
+renderPlans();
+</script>
+</body>
+</html>

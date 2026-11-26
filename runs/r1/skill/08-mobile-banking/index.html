@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home - Marlow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600&family=Source+Sans+3:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #2754c5; --accent-hover: #1f45a6; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: #2754c5; --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a; --on-deep: #ffffff; --on-deep-muted: #b9c8ee;
+  --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px; --text-2xl: 28px; --lh-2xl: 34px; --text-bal: 36px; --lh-bal: 44px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-2xl: 16px; --r-full: 999px;
+  --shadow-dialog: 0 -8px 32px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #0c0e12; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --focus: #7a9cff; --placeholder: #8b919d;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef;
+    --shadow-dialog: 0 -8px 32px rgb(0 0 0 / 0.6);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg-subtle); }
+body { margin: 0; background: var(--bg-subtle); color: var(--text); font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2 { font-family: var(--font-display); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 40; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* the phone column: full width on a phone, a centred 430px column on a wide screen */
+.app { position: relative; display: flex; flex-direction: column; min-height: 100dvh; background: var(--bg); max-width: 430px; margin: 0 auto; overflow: clip; }
+@media (min-width: 560px) {
+  body { padding: var(--s-6) 0; }
+  .app { min-height: calc(100dvh - 48px); border: 1px solid var(--border); border-radius: var(--r-2xl); }
+}
+
+.topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 var(--s-2) 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); }
+.brand { display: inline-flex; align-items: center; gap: var(--s-2); font: 600 20px/28px var(--font-display); letter-spacing: -0.01em; }
+.tools { display: flex; align-items: center; gap: var(--s-1); }
+.iconbtn { position: relative; width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 0; border-radius: var(--r-full); color: var(--text); transition: background-color var(--t-fast) var(--ease); }
+.iconbtn:hover { background: var(--accent-subtle); }
+.iconbtn .dot { position: absolute; top: 2px; right: -1px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--r-full); background: var(--accent); color: var(--on-accent); font-size: var(--text-xs); line-height: 18px; font-weight: 600; text-align: center; border: 2px solid var(--frame); box-sizing: content-box; }
+.avatar { width: 36px; height: 36px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-sm); border: 1px solid var(--border); }
+
+main { flex: 1; padding: var(--s-5) var(--s-4) var(--s-8); }
+h1 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; }
+
+/* balance */
+.card { margin-top: var(--s-4); background: var(--brand-deep); color: var(--on-deep); border-radius: var(--r-xl); padding: var(--s-5); border: 1px solid color-mix(in srgb, var(--on-deep) 12%, transparent); }
+.card .row { display: flex; justify-content: space-between; gap: var(--s-3); color: var(--on-deep-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.card .bal { font: 600 var(--text-bal)/var(--lh-bal) var(--font); letter-spacing: -0.02em; margin-top: var(--s-2); }
+.card .avail { color: var(--on-deep-muted); font-size: var(--text-sm); line-height: var(--lh-sm); margin-top: 2px; }
+.card .avail b { color: var(--on-deep); font-weight: 500; }
+.budget { margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid color-mix(in srgb, var(--on-deep) 16%, transparent); }
+.budget .bh { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.budget .bh span:first-child { color: var(--on-deep-muted); }
+.bar { height: 8px; border-radius: var(--r-full); background: color-mix(in srgb, var(--on-deep) 20%, transparent); margin-top: var(--s-2); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--on-deep); border-radius: var(--r-full); }
+.budget .bf { color: var(--on-deep-muted); font-size: var(--text-sm); line-height: var(--lh-sm); margin-top: var(--s-2); }
+
+/* quick actions */
+.quick { margin-top: var(--s-5); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
+.qa { display: flex; flex-direction: column; align-items: center; gap: var(--s-2); min-height: 84px; padding: var(--s-2) 0; background: none; border: 0; border-radius: var(--r-lg); font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; text-align: center; transition: background-color var(--t-fast) var(--ease); }
+.qa:hover { background: var(--bg-subtle); }
+.qa .ic { width: 48px; height: 48px; border-radius: var(--r-full); display: grid; place-items: center; background: var(--accent-subtle); color: var(--accent); }
+.qa.primary .ic { background: var(--accent); color: var(--on-accent); }
+
+/* sections */
+section.sec { margin-top: var(--s-8); }
+.sh { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 44px; }
+.sh h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; }
+.link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-1); color: var(--accent); font-weight: 500; text-decoration: none; }
+.link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.accts { list-style: none; margin: 0; padding: 0; }
+.accts li { border-top: 1px solid var(--border); }
+.accts li:last-child { border-bottom: 1px solid var(--border); }
+.rowbtn { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; width: 100%; min-height: 64px; padding: var(--s-2) 0; background: none; border: 0; text-align: left; text-decoration: none; color: inherit; transition: background-color var(--t-fast) var(--ease); }
+.rowbtn:hover { background: var(--bg-subtle); }
+.tile { width: 40px; height: 40px; border-radius: var(--r-lg); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-md); border: 1px solid var(--border); }
+.tile.in { background: var(--success-subtle); color: var(--success); }
+.rt { min-width: 0; }
+.rt .t { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rt .m { display: block; color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.amt { text-align: right; font-weight: 500; white-space: nowrap; }
+.amt.in { color: var(--success); }
+.amt small { display: block; font-weight: 400; color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.mini { display: block; height: 6px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); margin-top: 6px; overflow: hidden; }
+.mini > i { display: block; height: 100%; background: var(--accent); }
+
+.day { color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; padding: var(--s-4) 0 var(--s-2); }
+.txs { list-style: none; margin: 0; padding: 0; }
+.txs li { border-top: 1px solid var(--border); }
+.badge { display: inline-flex; font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; padding: 0 6px; border-radius: var(--r-sm); background: var(--warning-subtle); color: var(--warning); margin-right: var(--s-1); }
+
+/* empty */
+.empty { text-align: center; padding: var(--s-8) var(--s-4); border-top: 1px solid var(--border); }
+.empty svg { display: block; margin: 0 auto var(--s-4); }
+.empty h3 { font: 600 20px/28px var(--font-display); margin: 0; }
+.empty p { color: var(--text-muted); margin: var(--s-1) auto var(--s-4); max-width: 30ch; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--s-5); border-radius: var(--r-lg); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; text-decoration: none; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); width: 100%; }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+/* tab bar */
+.tabs { position: sticky; bottom: 0; z-index: 10; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--frame); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
+.tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; text-decoration: none; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; }
+.tab[aria-current="page"] { color: var(--accent); }
+.tab:hover { color: var(--text); }
+.tab[aria-current="page"]:hover { color: var(--accent); }
+
+/* sheet */
+dialog.sheet { margin: auto auto 0; width: 100%; max-width: 430px; max-height: 88dvh; padding: 0; border: 0; border-radius: var(--r-2xl) var(--r-2xl) 0 0; background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); overflow: auto; }
+dialog.sheet::backdrop { background: rgb(8 12 24 / 0.5); }
+.sheet-in { padding: var(--s-2) var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom)); }
+.grab { width: 40px; height: 4px; border-radius: var(--r-full); background: var(--border-strong); margin: var(--s-1) auto var(--s-2); opacity: 0.6; }
+.sheet-h { display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
+.sheet-h h2:focus { outline: none; }
+.sheet-h h2 { font-size: var(--text-xl); line-height: var(--lh-xl); }
+.textbtn { background: none; border: 0; min-height: 44px; padding: 0 var(--s-2); color: var(--accent); font-weight: 500; }
+.sheet .lbl { display: block; font-weight: 500; margin: var(--s-3) 0 var(--s-1); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.sheet input[type=search] { width: 100%; min-height: 48px; padding: 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-lg); background: var(--surface); }
+.people { list-style: none; margin: var(--s-3) 0 var(--s-4); padding: 0; }
+.people li { border-top: 1px solid var(--border); }
+.people label { display: grid; grid-template-columns: 40px minmax(0, 1fr) 24px; gap: var(--s-3); align-items: center; min-height: 64px; cursor: pointer; }
+.people input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); }
+.people label:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: -2px; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app" id="app">
+  <header class="topbar">
+    <span class="brand">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M7 20V9l7 7 7-7v11" fill="none" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Marlow
+    </span>
+    <div class="tools">
+      <button class="iconbtn" type="button" id="bell" aria-label="Notifications, 2 unread">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="dot" aria-hidden="true">2</span>
+      </button>
+      <button class="iconbtn" type="button" aria-label="AO, profile and settings"><span class="avatar" aria-hidden="true">AO</span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>Home</h1>
+
+    <section class="card" aria-labelledby="bal-l">
+      <div class="row"><span id="bal-l">Everyday account</span><span>Ending 4417</span></div>
+      <p class="bal" id="bal"></p>
+      <p class="avail" id="avail"></p>
+      <div class="budget">
+        <div class="bh"><span>Spent in November</span><span id="spent"></span></div>
+        <div class="bar" id="bar" role="progressbar" aria-label="Spent against monthly budget" aria-valuemin="0" aria-valuemax="100"><i id="barfill"></i></div>
+        <p class="bf" id="left"></p>
+      </div>
+    </section>
+
+    <section class="quick" aria-label="Quick actions" id="quick"></section>
+
+    <section class="sec" aria-labelledby="h-save">
+      <div class="sh"><h2 id="h-save">Savings</h2><a class="link" href="#">See all</a></div>
+      <ul class="accts" id="accts"></ul>
+    </section>
+
+    <section class="sec" aria-labelledby="h-tx">
+      <div class="sh"><h2 id="h-tx">Recent transactions</h2><a class="link" href="#">See all</a></div>
+      <div id="txs"></div>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="Main">
+    <a class="tab" href="#" aria-current="page"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg>Home</a>
+    <a class="tab" href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4"/></svg>Payments</a>
+    <a class="tab" href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h3"/></svg>Cards</a>
+    <a class="tab" href="#"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/></svg>More</a>
+  </nav>
+</div>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheet-t">
+  <div class="sheet-in">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="sheet-h"><button class="textbtn" type="button" id="cancel">Cancel</button><h2 id="sheet-t" tabindex="-1" autofocus>Send money</h2><span style="width:64px" aria-hidden="true"></span></div>
+    <label class="lbl" for="find">Pay someone new</label>
+    <input id="find" type="search" placeholder="Name, sort code or phone number" autocomplete="off" enterkeyhint="search">
+    <p class="lbl" id="rec-l">Recent</p>
+    <ul class="people" id="people" role="radiogroup" aria-labelledby="rec-l"></ul>
+    <button class="btn primary" type="button" id="go"></button>
+  </div>
+</dialog>
+
+<script>
+/* ---------- fixtures ---------- */
+const TODAY = new Date('2026-11-26T14:30:00');                 // Thursday
+const empty = new URLSearchParams(location.search).get('state') === 'empty';
+const ACCOUNT = { balance: empty ? 0 : 4218.36, budget: 2000, spent: empty ? 0 : 1284.50 };
+const SAVINGS = empty ? [] : [
+  { name: 'Instant saver', meta: '4.10% AER, ending 9082', balance: 12904.18, tile: 'IS' },
+  { name: 'Holiday pot', meta: 'Goal £2,400.00 by 20 Jun', balance: 1350.00, goal: 2400, tile: 'HP' },
+];
+const TX = empty ? [] : [
+  { id: 1, who: 'Calder Valley Co-op',          cat: 'Groceries',      amount: -23.87,  at: '2026-11-26T08:15', pending: true },
+  { id: 2, who: 'Kestrel Coffee Roasters',      cat: 'Eating out',     amount: -4.20,   at: '2026-11-26T09:41', pending: true },
+  { id: 3, who: 'Harbour & Finch Ltd',          cat: 'Salary',         amount: 2640.00, at: '2026-11-25T06:00' },
+  { id: 4, who: 'Oduya Textiles',               cat: 'Refund',         amount: 34.00,   at: '2026-11-25T11:22' },
+  { id: 5, who: 'Leeds Metro Day Ticket',       cat: 'Transport',      amount: -6.80,   at: '2026-11-25T07:48' },
+  { id: 6, who: 'Hohenberg & Sons Garden Supplies Ltd, Kirkstall branch', cat: 'Home', amount: -112.35, at: '2026-11-24T16:03' },
+  { id: 7, who: 'Bramwell Dental Group',        cat: 'Health',         amount: -58.00,  at: '2026-11-24T12:40' },
+  { id: 8, who: 'Streamly',                     cat: 'Subscriptions',  amount: -10.99,  at: '2026-11-24T00:05' },
+  { id: 9, who: 'Daniel Reyes',                 cat: 'Sent',           amount: -45.00,  at: '2026-11-23T19:12' },
+  { id: 10, who: 'Wharf Road Market',           cat: 'Groceries',      amount: -31.64,  at: '2026-11-23T17:30' },
+];
+const PEOPLE = ['Daniel Reyes', 'Mei Lin Tan', 'Siobhán Ní Bhriain', 'Teodora'];
+
+/* ---------- helpers ---------- */
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const money = n => (n < 0 ? '−' : n > 0 ? '+' : '') + gbp.format(Math.abs(n));
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const initial = s => s.trim()[0].toUpperCase();
+const dayKey = iso => iso.slice(0, 10);
+const todayKey = dayKey('2026-11-26');
+const dayLabel = iso => { const d = new Date(iso), diff = Math.round((new Date(todayKey) - new Date(dayKey(iso))) / 864e5); return diff === 0 ? 'Today' : diff === 1 ? 'Yesterday' : new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(d); };
+const time = iso => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date(iso));
+const pl = (n, a, b) => `${n} ${n === 1 ? a : b}`;
+const ico = {
+  send: '<path d="M4 12l16-8-6 16-3-7z"/>', add: '<path d="M12 5v14M5 12h14"/>',
+  bill: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/>', card: '<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h3"/>',
+};
+const svg = k => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ico[k]}</svg>`;
+
+/* ---------- balance card (all derived) ---------- */
+const pending = TX.filter(t => t.pending).reduce((s, t) => s + t.amount, 0);          // negative
+const available = ACCOUNT.balance + pending;
+const daysLeft = new Date(2026, 10, 30).getDate() - TODAY.getDate();                   // month ends 30 Nov
+const pct = Math.min(100, Math.round(ACCOUNT.spent / ACCOUNT.budget * 100));
+$('bal').textContent = gbp.format(ACCOUNT.balance);
+$('avail').innerHTML = `<b>${gbp.format(available)}</b> available to spend${pending ? `, ${gbp.format(Math.abs(pending))} pending` : ''}`;
+$('spent').textContent = `${gbp.format(ACCOUNT.spent)} of ${gbp.format(ACCOUNT.budget).replace('.00', '')}`;
+$('barfill').style.width = pct + '%'; $('bar').setAttribute('aria-valuenow', pct);
+$('left').textContent = `${gbp.format(ACCOUNT.budget - ACCOUNT.spent)} left, ${pl(daysLeft, 'day', 'days')} to month end`;
+
+/* ---------- quick actions ---------- */
+$('quick').innerHTML = [['send', 'Send', true], ['add', 'Add money'], ['bill', 'Pay a bill'], ['card', 'Cards']]
+  .map(([k, l, p]) => `<button type="button" class="qa${p ? ' primary' : ''}" data-act="${k}"><span class="ic">${svg(k)}</span><span>${l}</span></button>`).join('');
+$('quick').addEventListener('click', e => { if (e.target.closest('[data-act="send"]')) openSheet(); });
+
+/* ---------- savings ---------- */
+$('accts').innerHTML = SAVINGS.length ? SAVINGS.map(a => `<li><a class="rowbtn" href="#"><span class="tile">${a.tile}</span><span class="rt"><span class="t">${esc(a.name)}</span><span class="m">${esc(a.meta)}</span>${a.goal ? `<span class="mini" role="progressbar" aria-label="Progress to goal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(a.balance / a.goal * 100)}"><i style="display:block;width:${Math.round(a.balance / a.goal * 100)}%"></i></span>` : ''}</span><span class="amt">${gbp.format(a.balance)}${a.goal ? `<small>${Math.round(a.balance / a.goal * 100)}% of goal</small>` : ''}</span></a></li>`).join('')
+  : '<li style="padding:16px 0;color:var(--text-muted)">You have no savings accounts yet.</li>';
+
+/* ---------- transactions grouped by day ---------- */
+function renderTx() {
+  if (!TX.length) {
+    $('txs').innerHTML = `<div class="empty"><svg width="140" height="96" viewBox="0 0 140 96" aria-hidden="true"><rect x="10" y="8" width="120" height="24" rx="8" fill="var(--accent-subtle)" stroke="var(--border)"/><rect x="10" y="38" width="120" height="24" rx="8" fill="var(--bg-subtle)" stroke="var(--border)"/><rect x="10" y="68" width="120" height="24" rx="8" fill="var(--bg-subtle)" stroke="var(--border)"/><circle cx="26" cy="20" r="7" fill="var(--accent)"/><rect x="40" y="16" width="46" height="8" rx="4" fill="var(--border)"/><rect x="100" y="16" width="20" height="8" rx="4" fill="var(--border)"/></svg><h3>No transactions yet</h3><p>Payments in and out of your account show here as soon as they happen.</p><button class="btn primary" type="button">Add money</button></div>`;
+    return;
+  }
+  const sorted = [...TX].sort((a, b) => b.at.localeCompare(a.at)), groups = [];
+  sorted.forEach(t => { const k = dayKey(t.at); let g = groups.find(x => x.k === k); if (!g) groups.push(g = { k, items: [] }); g.items.push(t); });
+  $('txs').innerHTML = groups.map(g => {
+    const net = g.items.reduce((s, t) => s + t.amount, 0);
+    return `<h3 class="day" style="margin:0;font-family:var(--font)">${dayLabel(g.items[0].at)}</h3><ul class="txs">${g.items.map(t => `<li><a class="rowbtn" href="#"><span class="tile${t.amount > 0 ? ' in' : ''}" aria-hidden="true">${initial(t.who)}</span><span class="rt"><span class="t" title="${esc(t.who)}">${esc(t.who)}</span><span class="m">${t.pending ? '<span class="badge">Pending</span>' : ''}${esc(t.cat)}, ${time(t.at)}</span></span><span class="amt${t.amount > 0 ? ' in' : ''}">${money(t.amount)}</span></a></li>`).join('')}</ul>`;
+  }).join('');
+}
+renderTx();
+
+/* ---------- send sheet ---------- */
+const sheet = $('sheet');
+let who = PEOPLE[0];
+$('people').innerHTML = PEOPLE.map((p, i) => `<li><label><span class="tile" aria-hidden="true">${initial(p)}</span><span class="rt"><span class="t">${esc(p)}</span><span class="m">${['Last paid 23 Nov', 'Last paid 9 Nov', 'Last paid 2 Nov', 'Last paid 14 Oct'][i]}</span></span><input type="radio" name="p" value="${esc(p)}"${i === 0 ? ' checked' : ''}></label></li>`).join('');
+const setGo = () => { $('go').textContent = `Send to ${who}`; };
+$('people').addEventListener('change', e => { who = e.target.value; setGo(); });
+function openSheet() { if (!sheet.open) sheet.showModal(); }
+$('cancel').addEventListener('click', () => sheet.close());
+$('go').addEventListener('click', () => sheet.close());
+sheet.addEventListener('click', e => { if (e.target === sheet) sheet.close(); });   // tap the backdrop
+setGo();
+if (new URLSearchParams(location.search).get('state') === 'sheet') openSheet();
+</script>
+</body>
+</html>

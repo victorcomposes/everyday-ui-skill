@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoices - Plumline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Harbour kit */
+  --accent: #2754c5; --accent-hover: #1f45a6; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent); --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a; --on-deep: #ffffff; --on-deep-muted: #b9c8ee;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "Source Code Pro", ui-monospace, Consolas, monospace;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px; --text-2xl: 28px; --lh-2xl: 34px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715; --placeholder: #8b919d;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1, h2, h3, p { margin: 0; }
+h1 { font-family: var(--font-display); font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; letter-spacing: -0.02em; }
+a { color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 80; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+.muted { color: var(--text-muted); }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; text-decoration: none; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.ghost { border-color: transparent; background: transparent; }
+.btn.ghost:hover { background: var(--bg-subtle); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn.icon { width: var(--control-h-sm); padding: 0; }
+.btn:disabled { color: var(--text-muted); cursor: not-allowed; }
+.textbtn { display: inline-flex; align-items: center; min-height: 32px; padding: 0 var(--s-2); border: 0; background: none; color: var(--accent); font-weight: 600; cursor: pointer; border-radius: var(--r-md); }
+.textbtn:hover { background: var(--accent-subtle); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.side { background: var(--frame); border-right: 1px solid var(--border); }
+.side-nav { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); gap: var(--s-1); }
+.brand { display: flex; align-items: center; gap: 10px; padding: var(--s-1) var(--s-2) var(--s-4); font-family: var(--font-display); font-weight: 600; font-size: 20px; line-height: 28px; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+.biz { display: flex; align-items: center; gap: var(--s-3); width: 100%; min-height: 48px; padding: var(--s-2); margin-bottom: var(--s-4); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); text-align: left; cursor: pointer; }
+.biz .t { display: flex; flex-direction: column; min-width: 0; flex: 1; font-weight: 600; line-height: 18px; }
+.biz small { font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 400; color: var(--text-muted); }
+.tile { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: var(--text-xs); flex: none; }
+.nav-label { padding: var(--s-3) var(--s-2) var(--s-1); font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); font-weight: 500; margin: 0; }
+.nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.nav-list a { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text); text-decoration: none; transition: background-color var(--t-fast) var(--ease); }
+.nav-list a:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.nav-list a[aria-current="page"] { background: var(--accent-subtle); font-weight: 600; }
+.nav-list a[aria-current="page"] svg { color: var(--accent); }
+.nav-list .count { margin-left: auto; font-size: var(--text-xs); color: var(--text-muted); font-weight: 500; }
+.nav-bottom { margin-top: auto; padding-top: var(--s-4); }
+.m-top { display: none; }
+.scrim { display: none; }
+
+/* page */
+.page { max-width: 1264px; margin: 0 auto; padding: var(--s-8) var(--s-8) var(--s-12); }
+.page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-6); margin-bottom: var(--s-5); }
+.page-head p { margin-top: var(--s-1); color: var(--text-muted); }
+.page-head p b { color: var(--text); font-weight: 600; }
+.page-head .acts { display: flex; gap: var(--s-2); flex: none; }
+.tabs { display: flex; gap: var(--s-1); border-bottom: 1px solid var(--border); margin-bottom: var(--s-4); }
+.tab { position: relative; display: inline-flex; align-items: center; gap: var(--s-2); min-height: 40px; padding: 0 var(--s-3); border: 0; background: none; color: var(--text-muted); font-weight: 500; cursor: pointer; white-space: nowrap; border-radius: var(--r-md) var(--r-md) 0 0; transition: color var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease); }
+.tab:hover { background: var(--bg-subtle); color: var(--text); }
+.tab[aria-pressed="true"] { color: var(--text); font-weight: 600; }
+.tab:first-child { padding-left: 0; }
+.tab:first-child[aria-pressed="true"]::after { left: 0; }
+.tab[aria-pressed="true"]::after { content: ""; position: absolute; left: var(--s-3); right: var(--s-3); bottom: -1px; height: 2px; background: var(--accent); }
+.tab .n { font-size: var(--text-xs); line-height: var(--lh-xs); padding: 0 6px; border-radius: var(--r-full); background: var(--bg-subtle); color: var(--text-muted); font-weight: 500; }
+.tab[aria-pressed="true"] .n { background: var(--accent-subtle); color: var(--accent); }
+
+.toolbar { display: flex; align-items: center; gap: var(--s-2); min-height: 40px; margin-bottom: var(--s-4); }
+.search { position: relative; flex: 0 1 300px; }
+.search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.input, .select { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md); transition: border-color var(--t-fast) var(--ease); }
+.search .input { padding-left: 34px; }
+.select { appearance: none; padding-right: 32px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23838995' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+.input:hover, .select:hover { border-color: var(--text-muted); }
+.filters { display: flex; align-items: center; gap: var(--s-2); }
+.filters .select { width: auto; min-width: 170px; max-width: 220px; }
+.sheet-head, .sheet-foot, .filters .sortwrap, .filters-btn { display: none; }
+.bulk { display: none; align-items: center; gap: var(--s-2); width: 100%; min-height: 40px; padding: 0 var(--s-2) 0 var(--s-4); background: var(--accent-subtle); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius: var(--r-lg); }
+.bulk b { font-weight: 600; margin-right: auto; }
+.has-sel .bulk { display: flex; }
+.has-sel .search, .has-sel .filters, .has-sel .clear { display: none; }
+.clear[hidden] { display: none; }
+
+/* table */
+.tablewrap { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: clip; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th { position: sticky; top: 0; z-index: 2; background: var(--bg-subtle); text-align: left; font-weight: 500; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); padding: 0 var(--s-3); height: 40px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+th .sortbtn { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 0 4px; margin: 0 -4px; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; border-radius: var(--r-sm); }
+th .sortbtn:hover { color: var(--text); }
+th[aria-sort] .sortbtn { color: var(--text); font-weight: 600; }
+th.num, td.num { text-align: right; }
+th.num .sortbtn { flex-direction: row-reverse; }
+td { height: var(--h-row, 48px); padding: 0 var(--s-3); border-bottom: 1px solid var(--border); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr { transition: background-color var(--t-fast) var(--ease); }
+tbody tr:hover { background: var(--bg-subtle); }
+tbody tr.sel { background: var(--accent-subtle); }
+td.c-sel, th.c-sel { padding-right: 0; padding-left: var(--s-4); }
+.chk { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; vertical-align: middle; }
+.chk-wrap { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; min-height: 32px; margin: -8px; cursor: pointer; }
+.idchip { display: inline-block; line-height: 26px; padding: 0 8px; vertical-align: middle; border-radius: var(--r-sm); background: var(--bg-subtle); border: 1px solid var(--border); font-family: var(--font-mono); font-weight: 500; font-size: var(--text-sm); color: var(--text); text-decoration: none; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+a.idchip:hover { border-color: var(--accent); color: var(--accent); }
+.cust { display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
+.cust .tile { width: 24px; height: 24px; border-radius: var(--r-sm); }
+.cust span.nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.due { display: flex; align-items: baseline; gap: var(--s-2); white-space: nowrap; }
+.late { color: var(--danger); font-size: var(--text-sm); font-weight: 500; }
+.soon { color: var(--text-muted); }
+.none { color: var(--text-muted); }
+.badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; background: var(--bg-subtle); color: var(--text-muted); white-space: nowrap; border: 1px solid var(--border); }
+.badge.paid { background: var(--success-subtle); color: var(--success); border-color: transparent; }
+.badge.overdue { background: var(--danger-subtle); color: var(--danger); border-color: transparent; }
+.badge.open { background: var(--accent-subtle); color: var(--accent); border-color: transparent; }
+.badge.draft { background: var(--bg-subtle); color: var(--text-muted); }
+.badge.credit { background: var(--warning-subtle); color: var(--warning); border-color: transparent; }
+td.c-act { text-align: right; padding-right: var(--s-2); }
+.kebab { width: 32px; min-height: 32px; padding: 0; border: 0; background: none; border-radius: var(--r-md); cursor: pointer; display: inline-grid; place-items: center; color: var(--text-muted); }
+.kebab:hover, .kebab[aria-expanded="true"] { background: var(--bg-subtle); color: var(--text); }
+tr:hover .kebab:hover { background: var(--border); }
+
+.foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-4); color: var(--text-muted); flex-wrap: wrap; }
+.foot .right { display: flex; align-items: center; gap: var(--s-4); }
+.foot .select { min-width: 0; width: 72px; min-height: var(--control-h-sm); }
+.pager { display: flex; align-items: center; gap: var(--s-1); }
+.pager .btn { min-width: var(--control-h-sm); min-height: var(--control-h-sm); padding: 0 var(--s-2); border-color: transparent; background: none; }
+.pager .btn:hover:not(:disabled) { background: var(--bg-subtle); }
+.pager .btn[aria-current="page"] { background: var(--accent-subtle); color: var(--accent); }
+
+/* states */
+.state { display: grid; justify-items: center; text-align: center; padding: var(--s-12) var(--s-4) var(--s-16); }
+.state h2 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; font-family: var(--font-display); }
+.state p { color: var(--text-muted); max-width: 48ch; margin-top: var(--s-1); }
+.state .row { display: flex; gap: var(--s-3); margin-top: var(--s-5); align-items: center; flex-wrap: wrap; justify-content: center; }
+.art { width: 320px; max-width: 100%; margin-bottom: var(--s-5); display: grid; gap: var(--s-2); }
+.art i { display: grid; grid-template-columns: 24px 1fr 56px; gap: var(--s-3); align-items: center; padding: var(--s-2) var(--s-3); border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg); }
+.art i::before { content: ""; height: 14px; border-radius: 3px; background: var(--accent-subtle); }
+.art i::after { content: ""; grid-column: 3; height: 14px; border-radius: 3px; background: var(--border); }
+.art i span { height: 8px; border-radius: 4px; background: var(--border); grid-column: 2; grid-row: 1; width: 70%; }
+.art i:nth-child(1) { opacity: 1; } .art i:nth-child(2) { opacity: .6; } .art i:nth-child(3) { opacity: .3; }
+.art i:first-child::before { background: var(--accent); }
+.ways { display: flex; gap: var(--s-6); margin-top: var(--s-4); flex-wrap: wrap; justify-content: center; }
+.ways a, .state .row a { display: inline-flex; align-items: center; min-height: 32px; }
+.skel td > span { display: block; height: 12px; border-radius: 4px; background: var(--bg-subtle); }
+
+/* menu + toast + sheet */
+.menu { position: absolute; z-index: 30; min-width: 200px; padding: var(--s-1); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.menu[hidden] { display: none; }
+.menu button { display: flex; align-items: center; gap: var(--s-2); width: 100%; min-height: 36px; padding: 0 var(--s-3); border: 0; background: none; border-radius: var(--r-md); text-align: left; cursor: pointer; }
+.menu button:hover, .menu button:focus-visible { background: var(--bg-subtle); }
+.toasts { position: fixed; left: var(--s-4); bottom: var(--s-4); z-index: 70; display: grid; gap: var(--s-2); }
+.toast { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-4); background: var(--text); color: var(--bg); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.toast button { border: 0; background: none; color: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; min-height: 32px; }
+
+@media (max-width: 1023px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .side { position: fixed; inset: 0 auto 0 0; z-index: 50; width: min(300px, 86vw); visibility: hidden; transform: translateX(-100%); transition: transform var(--t-slow) var(--ease), visibility 0s linear 200ms; }
+  .nav-open .side { visibility: visible; transform: none; transition-delay: 0s; }
+  .side-nav { position: static; height: 100%; }
+  .scrim { position: fixed; inset: 0; z-index: 40; background: rgb(0 0 0 / .4); border: 0; padding: 0; }
+  .nav-open .scrim { display: block; }
+  .m-top { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: var(--s-2); height: 56px; padding: 0 var(--s-2); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .m-top .brand { padding: 0; flex: 1; min-height: 44px; }
+  .m-top .btn { width: 44px; padding: 0; border-color: transparent; background: transparent; }
+  .page { padding: var(--s-5) var(--s-4) var(--s-12); }
+}
+@media (max-width: 900px) {
+  .toolbar { flex-wrap: wrap; }
+  .search { flex: 1 1 200px; }
+}
+@media (max-width: 640px) {
+  body { font-size: var(--text-md); line-height: var(--lh-md); }
+  h1 { font-size: 24px; line-height: 30px; }
+  .page-head { flex-direction: column; gap: var(--s-4); }
+  .page-head .acts { width: 100%; }
+  .page-head .acts .btn { flex: 1; }
+  .tabs { overflow-x: auto; margin-right: calc(var(--s-4) * -1); padding-right: var(--s-4); scrollbar-width: none; mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+  .tab { min-height: 44px; }
+  .input, .select { font-size: var(--text-md); }
+  .search { flex: 1 1 0; min-width: 0; }
+  .filters-btn { display: inline-flex; flex: none; }
+  .filters { position: fixed; inset: auto 0 0 0; z-index: 60; flex-direction: column; align-items: stretch; gap: var(--s-4); padding: var(--s-5) var(--s-4) calc(var(--s-5) + env(safe-area-inset-bottom)); background: var(--surface); border-radius: var(--r-xl) var(--r-xl) 0 0; box-shadow: var(--shadow-pop); visibility: hidden; transform: translateY(100%); transition: transform var(--t-slow) var(--ease), visibility 0s linear 200ms; }
+  .filters.open { visibility: visible; transform: none; transition-delay: 0s; }
+  .filters .select { width: 100%; max-width: none; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; }
+  .sheet-head h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; font-family: var(--font-display); }
+  .filters .sortwrap { display: block; }
+  .sheet-foot { display: block; }
+  .sheet-foot .btn { width: 100%; }
+  .flabel { display: block; font-weight: 500; margin-bottom: 6px; }
+  .tablewrap { border: 0; border-radius: 0; overflow: visible; }
+  .bulk { flex-wrap: wrap; padding: var(--s-2) var(--s-3); }
+  table, tbody, tr, td { display: block; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; visibility: hidden; }
+  .ways a, .state .row a { min-height: 44px; }
+  tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 2px var(--s-2); padding: var(--s-2) 0 var(--s-3); border-bottom: 1px solid var(--border); min-height: 96px; }
+  tbody tr:last-child { border-bottom: 0; }
+  td { border: 0; padding: 0; height: auto; }
+  td.c-sel, td.c-issued { display: none; }
+  td.c-id { grid-area: 1 / 1; }
+  td.c-id .idchip { line-height: 42px; border-radius: var(--r-md); }
+  td.c-amt { grid-area: 1 / 2; font-weight: 600; font-size: var(--text-md); }
+  td.c-act { grid-area: 1 / 3; padding: 0; }
+  .kebab { width: 44px; min-height: 44px; }
+  td.c-cust { grid-area: 2 / 1; }
+  td.c-status { grid-area: 2 / 2 / 3 / 4; justify-self: end; }
+  td.c-due { grid-area: 3 / 1 / 4 / 4; color: var(--text-muted); }
+  .foot { flex-direction: column; align-items: stretch; }
+  .foot .right { justify-content: space-between; }
+  .toasts { left: var(--s-4); right: var(--s-4); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M4 4h16v13H8l-4 4z"/><path d="M8 9h8M8 13h5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l3-2 2.5 2 2.5-2 2.5 2 2.5-2 3 2V2l-3 2-2.5-2-2.5 2-2.5-2L7 4z"/><path d="M8 9h8M8 13h8"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+    <symbol id="i-pct" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path d="M21 4h-7M10 4H3M21 12h-9M8 12H3M21 20h-5M12 20H3M14 2v4M8 10v4M16 18v4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 6h18M7 12h10M10 18h4"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell" id="shell">
+  <aside class="side" id="side">
+    <nav class="side-nav" aria-label="Main">
+      <a class="brand" href="#" aria-label="Plumline home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M8 8v12M14 8v12M20 8v12" stroke="var(--on-accent)" stroke-width="2.5" stroke-linecap="round"/><circle cx="14" cy="20" r="3" fill="var(--on-accent)"/></svg>
+        Plumline
+      </a>
+      <button class="biz" type="button">
+        <span class="tile" aria-hidden="true">RC</span>
+        <span class="t">Reed &amp; Calloway<small>Year end 31 Mar</small></span>
+        <svg class="i sm" aria-hidden="true"><use href="#i-chev"/></svg>
+      </button>
+      <ul class="nav-list">
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Home</a></li>
+      </ul>
+      <p class="nav-label">Money in</p>
+      <ul class="nav-list">
+        <li><a href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg>Invoices</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-quote"/></svg>Quotes</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg>Customers</a></li>
+      </ul>
+      <p class="nav-label">Money out</p>
+      <ul class="nav-list">
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-receipt"/></svg>Bills</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-card"/></svg>Expenses</a></li>
+      </ul>
+      <p class="nav-label">Review</p>
+      <ul class="nav-list">
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Reports</a></li>
+        <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-pct"/></svg>VAT</a></li>
+      </ul>
+      <div class="nav-bottom">
+        <ul class="nav-list">
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg>Settings</a></li>
+        </ul>
+      </div>
+    </nav>
+  </aside>
+  <button class="scrim" id="scrim" type="button" aria-label="Close menu" tabindex="-1"></button>
+
+  <div class="content">
+    <header class="m-top">
+      <button class="btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="side"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <a class="brand" href="#" aria-label="Plumline home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M8 8v12M14 8v12M20 8v12" stroke="var(--on-accent)" stroke-width="2.5" stroke-linecap="round"/><circle cx="14" cy="20" r="3" fill="var(--on-accent)"/></svg>
+        Plumline
+      </a>
+    </header>
+
+    <main id="main" class="page">
+      <header class="page-head">
+        <div>
+          <h1>Invoices</h1>
+          <p id="summary"></p>
+        </div>
+        <div class="acts">
+          <button class="btn" id="export" type="button"><svg class="i sm" aria-hidden="true"><use href="#i-down"/></svg>Export CSV</button>
+          <button class="btn primary" id="new-btn" type="button"><svg class="i sm" aria-hidden="true"><use href="#i-plus"/></svg>New invoice</button>
+        </div>
+      </header>
+
+      <div class="tabs" id="tabs" role="group" aria-label="Invoice views"></div>
+
+      <div class="toolbar" id="toolbar">
+        <div class="search">
+          <svg class="i sm" aria-hidden="true"><use href="#i-search"/></svg>
+          <label class="sr-only" for="q">Search invoices</label>
+          <input class="input" id="q" type="search" placeholder="Search by number or customer" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btn filters-btn" id="filters-btn" type="button" aria-expanded="false" aria-controls="filters"><svg class="i sm" aria-hidden="true"><use href="#i-filter"/></svg><span id="filters-label">Filters</span></button>
+        <div class="filters" id="filters">
+          <div class="sheet-head"><h2>Filters</h2><button class="btn ghost icon" id="sheet-close" type="button" aria-label="Close filters"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <div><label class="flabel sr-only" for="f-cust">Customer</label><select class="select" id="f-cust"></select></div>
+          <div><label class="flabel sr-only" for="f-range">Issued</label>
+            <select class="select" id="f-range">
+              <option value="all">Issued any time</option>
+              <option value="30">Issued in the last 30 days</option>
+              <option value="90">Issued in the last 90 days</option>
+            </select></div>
+          <div class="sortwrap"><label class="flabel" for="f-sort">Sort by</label>
+            <select class="select" id="f-sort">
+              <option value="issued:-1">Issue date, newest first</option>
+              <option value="issued:1">Issue date, oldest first</option>
+              <option value="due:1">Due date, soonest first</option>
+              <option value="amount:-1">Amount, highest first</option>
+            </select></div>
+          <div class="sheet-foot"><button class="btn primary" id="sheet-done" type="button">Show invoices</button></div>
+        </div>
+        <button class="textbtn clear" id="clear" type="button" hidden>Clear filters</button>
+        <div class="bulk" id="bulk" role="region" aria-label="Bulk actions">
+          <b id="bulk-count"></b>
+          <button class="btn sm" id="b-remind" type="button"><svg class="i sm" aria-hidden="true"><use href="#i-send"/></svg>Send reminders</button>
+          <button class="btn sm" id="b-pdf" type="button"><svg class="i sm" aria-hidden="true"><use href="#i-down"/></svg>Download PDFs</button>
+          <button class="btn sm" id="b-paid" type="button"><svg class="i sm" aria-hidden="true"><use href="#i-check"/></svg>Mark as paid</button>
+          <button class="textbtn" id="b-clear" type="button">Clear selection</button>
+        </div>
+      </div>
+
+      <div class="tablewrap" id="tablewrap" aria-live="polite"></div>
+      <div class="foot" id="foot"></div>
+    </main>
+  </div>
+</div>
+
+<div class="menu" id="menu" role="menu" hidden></div>
+<div class="toasts" id="toasts" role="status"></div>
+
+<script>
+/* ---------- fixtures ---------- */
+const TODAY = '2026-11-26';
+const DAY = 86400000;
+const t = s => Date.parse(s + 'T00:00:00Z');
+const addDays = (s, n) => new Date(t(s) + n * DAY).toISOString().slice(0, 10);
+const daysBetween = (a, b) => Math.round((t(b) - t(a)) / DAY);
+
+const customers = [
+  'Harbour & Finch Ltd', 'Bramwell Dental Group', 'Oduya Textiles', 'Kestrel Analytics', 'Wren & Alder Joinery',
+  'Wójcik Electrical', 'Siobhán Ní Bhriain Design', 'Fernley Bakehouse', 'Q', 'Société Générale des Transports Maritimes et Fluviaux S.A.',
+  'Northgate Veterinary Clinic', 'Lowther Print & Packaging', 'Teodora', 'Marlowe & Sons Roofing',
+];
+const terms = [30, 30, 30, 30, 14, 30, 30, 14, 30, 30, 30, 30, 14, 30];
+const base = [1240, 86.5, 420, 2150, 310, 975, 3680, 128.75, 540, 1890, 265.4, 720, 4120, 95, 1460, 610, 2380, 355.9, 1125, 780];
+const overdueIdx = new Set([6, 9, 13, 18, 27, 31]);
+const draftIdx = new Set([0, 1, 2]);
+let seed = 7; const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+let offset = 1;
+let invoices = Array.from({ length: 47 }, (_, i) => {
+  offset += 2 + Math.round(rnd() * 5);
+  const cust = (i * 5 + Math.floor(rnd() * 3)) % customers.length;
+  const issued = addDays(TODAY, -offset);
+  const draft = draftIdx.has(i);
+  const issuedD = draft ? addDays(TODAY, -i) : issued;
+  const credit = i === 22;
+  const due = draft && i === 0 ? null : addDays(issuedD, terms[cust]);
+  const inv = {
+    id: `INV-2026-${String(417 - i).padStart(4, '0')}`, cust, issued: issuedD, due,
+    amount: credit ? -312.4 : base[(i * 7 + 3) % base.length], draft, paidOn: null, credit,
+  };
+  if (i === 8) inv.cust = 9;
+  if (i === 8) { inv.amount = 84900.5; inv.due = addDays(inv.issued, 30); }
+  if (i === 16) inv.cust = 8;
+  if (i === 11) inv.id += '-REISSUE-02';
+  if (credit) inv.id = 'INV-2026-0395-CR';
+  if (!draft && !credit && !overdueIdx.has(i) && !(inv.due >= TODAY && i % 3 !== 2)) {
+    const p = addDays(inv.due, -2 - (i % 5)); inv.paidOn = p < TODAY ? p : TODAY;
+  }
+  if (i === 8) inv.paidOn = null;
+  return inv;
+});
+const mode = new URLSearchParams(location.search).get('state');
+if (mode === 'empty') invoices = [];
+
+const statusOf = v => v.draft ? 'Draft' : v.credit ? 'Credit note' : v.paidOn ? 'Paid' : v.due < TODAY ? 'Overdue' : 'Open';
+const gbp = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const money = n => (n < 0 ? '−' : '') + gbp.format(Math.abs(n));
+const gbpSym = n => '£' + gbp.format(n);
+const dfmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const fmtDate = s => dfmt.format(new Date(t(s)));
+const plural = (n, one, many) => `${n.toLocaleString('en-GB')} ${new Intl.PluralRules('en-GB').select(n) === 'one' ? one : many}`;
+const relIssued = s => { const d = daysBetween(s, TODAY); return d === 0 ? 'Today' : d === 1 ? 'Yesterday' : d <= 7 ? `${d} days ago` : fmtDate(s); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const initial = s => s.trim()[0].toUpperCase();
+
+/* ---------- state ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const st = { tab: 'All', q: '', cust: '', range: 'all', key: 'issued', dir: -1, page: 1, size: 25, sel: new Set() };
+const TABS = ['All', 'Draft', 'Open', 'Overdue', 'Paid'];
+
+function visible() {
+  const q = st.q.trim().toLowerCase();
+  let rows = invoices.filter(v => {
+    if (st.tab !== 'All' && statusOf(v) !== st.tab) return false;
+    if (st.cust !== '' && String(v.cust) !== st.cust) return false;
+    if (st.range !== 'all' && daysBetween(v.issued, TODAY) > +st.range) return false;
+    if (q && !(v.id.toLowerCase().includes(q) || customers[v.cust].toLowerCase().includes(q))) return false;
+    return true;
+  });
+  const k = st.key;
+  const val = v => k === 'id' ? v.id : k === 'cust' ? customers[v.cust] : v[k];
+  rows.sort((a, b) => {
+    const x = val(a), y = val(b);
+    if (x == null) return 1; if (y == null) return -1;
+    return (typeof x === 'number' ? x - y : String(x).localeCompare(String(y))) * st.dir;
+  });
+  return rows;
+}
+const filtersOn = () => st.q || st.cust !== '' || st.range !== 'all' || st.tab !== 'All';
+
+/* ---------- render ---------- */
+function renderHead() {
+  const open = invoices.filter(v => statusOf(v) === 'Open' || statusOf(v) === 'Overdue');
+  const late = invoices.filter(v => statusOf(v) === 'Overdue');
+  const sum = a => a.reduce((n, v) => n + v.amount, 0);
+  $('#summary').innerHTML = invoices.length
+    ? `<b>${plural(invoices.length, 'invoice', 'invoices')}</b>. ${gbpSym(sum(open))} outstanding, ${gbpSym(sum(late))} of it overdue.`
+    : 'Create or import invoices and Plumline tracks who has paid.';
+  $('#tabs').innerHTML = TABS.map(n => {
+    const c = n === 'All' ? invoices.length : invoices.filter(v => statusOf(v) === n).length;
+    return `<button class="tab" type="button" data-tab="${n}" aria-pressed="${st.tab === n}">${n}<span class="n">${c}</span></button>`;
+  }).join('');
+  const sel = $('#f-cust');
+  if (!sel.options.length) {
+    sel.innerHTML = '<option value="">All customers</option>' + customers.map((c, i) => `<option value="${i}">${esc(c.length > 34 ? c.slice(0, 33) + '…' : c)}</option>`).join('');
+  }
+}
+
+function dueCell(v) {
+  if (!v.due) return '<span class="none" aria-label="No due date">–</span>';
+  const s = statusOf(v), d = daysBetween(TODAY, v.due);
+  const extra = s === 'Overdue' ? `<span class="late">${plural(-d, 'day', 'days')} late</span>` : s === 'Open' ? `<span class="soon">${d === 0 ? 'today' : d === 1 ? 'tomorrow' : 'in ' + plural(d, 'day', 'days')}</span>` : '';
+  return `<span class="due"><time datetime="${v.due}">${fmtDate(v.due)}</time>${extra}</span>`;
+}
+
+function skeleton() {
+  const row = `<tr class="skel"><td class="c-sel"><span style="width:18px"></span></td><td><span style="width:120px"></span></td><td><span style="width:70%"></span></td><td><span style="width:70px"></span></td><td><span style="width:110px"></span></td><td><span style="width:56px"></span></td><td><span style="width:70px;margin-left:auto"></span></td><td></td></tr>`;
+  return Array(10).fill(row).join('');
+}
+
+const COLS = [
+  ['sel', '', 44], ['id', 'Invoice', 196, 'id'], ['cust', 'Customer', 0, 'cust'], ['issued', 'Issued', 120, 'issued'],
+  ['due', 'Due', 220, 'due'], ['status', 'Status', 116], ['amt', 'Amount (GBP)', 140, 'amount', true], ['act', '', 56],
+];
+function head(all) {
+  return '<thead><tr>' + COLS.map(([c, label, w, key, num]) => {
+    if (c === 'sel') return `<th class="c-sel" scope="col"><label class="chk-wrap"><input class="chk" id="chk-all" type="checkbox" aria-label="Select all ${all} invoices on this page"></label></th>`;
+    if (!key) return `<th scope="col" class="${c === 'act' ? 'c-act' : ''}">${c === 'act' ? '<span class="sr-only">Actions</span>' : label}</th>`;
+    const on = st.key === key;
+    return `<th scope="col" class="${num ? 'num' : ''}" ${on ? `aria-sort="${st.dir === 1 ? 'ascending' : 'descending'}"` : ''}><button class="sortbtn" type="button" data-sort="${key}">${label}${on ? `<svg class="i sm" aria-hidden="true" style="${st.dir === 1 ? 'transform:rotate(180deg)' : ''}"><use href="#i-arrow"/></svg>` : ''}</button></th>`;
+  }).join('') + '</tr></thead>';
+}
+const colgroup = '<colgroup>' + COLS.map(c => `<col style="${c[2] ? `width:${c[2]}px` : ''}">`).join('') + '</colgroup>';
+
+function render() {
+  renderHead();
+  const wrap = $('#tablewrap'), foot = $('#foot');
+  $('#toolbar').classList.toggle('has-sel', st.sel.size > 0);
+  const n = [st.q, st.cust !== '', st.range !== 'all'].filter(Boolean).length;
+  $('#filters-label').textContent = n ? `Filters (${n})` : 'Filters';
+  $('#clear').hidden = !filtersOn();
+
+  if (mode === 'loading') {
+    wrap.innerHTML = `<div class="sr-only" role="status">Loading invoices</div><table aria-busy="true">${colgroup}${head(0)}<tbody>${skeleton()}</tbody></table>`;
+    foot.innerHTML = ''; return;
+  }
+  if (mode === 'error') {
+    wrap.innerHTML = `<table>${colgroup}${head(0)}</table><div class="state"><h2>Could not load invoices</h2><p>The server did not respond. Your invoices are safe and nothing was changed.</p><div class="row"><button class="btn" type="button" onclick="location.href=location.pathname">Try again</button><a href="#">Check status</a></div></div>`;
+    foot.innerHTML = ''; return;
+  }
+  if (!invoices.length) {
+    wrap.innerHTML = `<div class="state"><div class="art" aria-hidden="true"><i><span></span></i><i><span style="width:55%"></span></i><i><span style="width:40%"></span></i></div>
+      <h2>No invoices yet</h2><p>Invoices you create or import appear here, with who owes what and how late it is.</p>
+      <div class="row"><button class="btn" type="button">Create your first invoice</button></div>
+      <div class="ways"><a href="#">Import from CSV</a><a href="#">Connect Xero</a><a href="#">Read the invoicing guide</a></div></div>`;
+    foot.innerHTML = ''; return;
+  }
+  const rows = visible();
+  const pages = Math.max(1, Math.ceil(rows.length / st.size));
+  st.page = Math.min(st.page, pages);
+  const from = (st.page - 1) * st.size, slice = rows.slice(from, from + st.size);
+  if (!rows.length) {
+    wrap.innerHTML = `<table>${colgroup}${head(0)}</table><div class="state"><h2>No invoices match these filters</h2><p>${st.q ? `Nothing matches “${esc(st.q)}”. ` : ''}Check the spelling or remove a filter.</p><div class="row"><button class="btn" type="button" id="clear2">Clear filters</button></div></div>`;
+    foot.innerHTML = `<span>0 of ${invoices.length} invoices</span>`; return;
+  }
+  wrap.innerHTML = `<table>${colgroup}${head(slice.length)}<tbody>${slice.map(v => {
+    const s = statusOf(v), cls = { Paid: 'paid', Overdue: 'overdue', Open: 'open', Draft: 'draft', 'Credit note': 'credit' }[s];
+    const name = customers[v.cust];
+    return `<tr data-id="${v.id}" class="${st.sel.has(v.id) ? 'sel' : ''}">
+      <td class="c-sel"><label class="chk-wrap"><input class="chk row-chk" type="checkbox" aria-label="Select ${esc(v.id)}" ${st.sel.has(v.id) ? 'checked' : ''}></label></td>
+      <td class="c-id"><a class="idchip" href="#" title="${esc(v.id)}">${esc(v.id)}</a></td>
+      <td class="c-cust"><span class="cust"><span class="tile" aria-hidden="true">${esc(initial(name))}</span><span class="nm" title="${esc(name)}">${esc(name)}</span></span></td>
+      <td class="c-issued"><time datetime="${v.issued}" title="${fmtDate(v.issued)}">${relIssued(v.issued)}</time></td>
+      <td class="c-due">${dueCell(v)}</td>
+      <td class="c-status"><span class="badge ${cls}">${s}</span></td>
+      <td class="c-amt num">${money(v.amount)}</td>
+      <td class="c-act"><button class="kebab" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Actions for ${esc(v.id)}" data-menu="${v.id}"><svg class="i" aria-hidden="true"><use href="#i-more"/></svg></button></td>
+    </tr>`;
+  }).join('')}</tbody></table>`;
+  const all = $('#chk-all'), onPage = slice.filter(v => st.sel.has(v.id)).length;
+  all.checked = onPage === slice.length; all.indeterminate = onPage > 0 && onPage < slice.length;
+  $('#bulk-count').textContent = `${st.sel.size} selected`;
+
+  const nums = []; for (let p = 1; p <= pages; p++) nums.push(p);
+  foot.innerHTML = `<span>Showing ${from + 1}–${from + slice.length} of ${rows.length.toLocaleString('en-GB')}${rows.length !== invoices.length ? ` (${invoices.length} in total)` : ''}</span>
+    <div class="right"><label class="muted">Rows <select class="select" id="size" aria-label="Rows per page">${[25, 50, 100].map(x => `<option ${x === st.size ? 'selected' : ''}>${x}</option>`).join('')}</select></label>
+    <div class="pager" role="navigation" aria-label="Pagination"><button class="btn" type="button" data-page="${st.page - 1}" aria-label="Previous page" ${st.page === 1 ? 'disabled' : ''}><svg class="i sm" aria-hidden="true"><use href="#i-left"/></svg></button>
+    ${nums.map(p => `<button class="btn" type="button" data-page="${p}" ${p === st.page ? 'aria-current="page"' : ''} aria-label="Page ${p}">${p}</button>`).join('')}
+    <button class="btn" type="button" data-page="${st.page + 1}" aria-label="Next page" ${st.page === pages ? 'disabled' : ''}><svg class="i sm" aria-hidden="true"><use href="#i-right"/></svg></button></div></div>`;
+}
+
+/* ---------- events ---------- */
+const reset = () => { st.page = 1; };
+$('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) { st.tab = b.dataset.tab; reset(); st.sel.clear(); render(); } });
+$('#q').addEventListener('input', e => { st.q = e.target.value; reset(); render(); });
+$('#f-cust').addEventListener('change', e => { st.cust = e.target.value; reset(); render(); });
+$('#f-range').addEventListener('change', e => { st.range = e.target.value; reset(); render(); });
+$('#f-sort').addEventListener('change', e => { const [k, d] = e.target.value.split(':'); st.key = k; st.dir = +d; reset(); render(); });
+function clearAll() { st.tab = 'All'; st.q = ''; st.cust = ''; st.range = 'all'; $('#q').value = ''; $('#f-cust').value = ''; $('#f-range').value = 'all'; reset(); render(); }
+$('#clear').addEventListener('click', clearAll);
+$('#tablewrap').addEventListener('click', e => {
+  if (e.target.id === 'clear2') return clearAll();
+  const s = e.target.closest('[data-sort]');
+  if (s) { const k = s.dataset.sort; if (st.key === k) st.dir *= -1; else { st.key = k; st.dir = k === 'amount' || k === 'issued' ? -1 : 1; } reset(); render(); return; }
+  const m = e.target.closest('[data-menu]'); if (m) openMenu(m);
+});
+$('#tablewrap').addEventListener('change', e => {
+  if (e.target.id === 'chk-all') { const slice = visible().slice((st.page - 1) * st.size, st.page * st.size); slice.forEach(v => e.target.checked ? st.sel.add(v.id) : st.sel.delete(v.id)); render(); }
+  else if (e.target.classList.contains('row-chk')) { const id = e.target.closest('tr').dataset.id; e.target.checked ? st.sel.add(id) : st.sel.delete(id); render(); }
+});
+$('#foot').addEventListener('click', e => { const b = e.target.closest('[data-page]'); if (b && !b.disabled) { st.page = +b.dataset.page; render(); } });
+$('#foot').addEventListener('change', e => { if (e.target.id === 'size') { st.size = +e.target.value; st.page = 1; render(); } });
+
+/* toasts */
+function toast(msg, undo) {
+  const el = document.createElement('div'); el.className = 'toast';
+  el.innerHTML = `<span>${esc(msg)}</span>${undo ? '<button type="button">Undo</button>' : ''}`;
+  if (undo) el.querySelector('button').onclick = () => { undo(); el.remove(); };
+  $('#toasts').append(el); setTimeout(() => el.remove(), 5000);
+}
+const byId = id => invoices.find(v => v.id === id);
+function markPaid(ids) {
+  const prev = ids.map(id => [id, byId(id).paidOn]);
+  const targets = ids.map(byId).filter(v => ['Open', 'Overdue'].includes(statusOf(v)));
+  targets.forEach(v => { v.paidOn = TODAY; });
+  toast(`${plural(targets.length, 'invoice', 'invoices')} marked as paid.`, () => { prev.forEach(([id, p]) => { byId(id).paidOn = p; }); render(); });
+  render();
+}
+const remind = ids => { const n = ids.map(byId).filter(v => statusOf(v) === 'Overdue' || statusOf(v) === 'Open').length; toast(n ? `Reminder queued for ${plural(n, 'invoice', 'invoices')}.` : 'No open invoices in this selection.'); };
+
+/* bulk */
+$('#b-clear').onclick = () => { st.sel.clear(); render(); };
+$('#b-remind').onclick = () => remind([...st.sel]);
+$('#b-pdf').onclick = () => toast(`Preparing ${plural(st.sel.size, 'PDF', 'PDFs')}.`);
+$('#b-paid').onclick = () => { markPaid([...st.sel]); st.sel.clear(); render(); };
+$('#export').onclick = () => toast(`Exporting ${plural(visible().length, 'invoice', 'invoices')} to CSV.`);
+$('#new-btn').onclick = () => toast('New invoice would open here.');
+
+/* row menu */
+const menu = $('#menu'); let menuFor = null;
+function openMenu(btn) {
+  if (menuFor === btn) return closeMenu();
+  closeMenu();
+  const v = byId(btn.dataset.menu), s = statusOf(v);
+  const items = [['View invoice', 'i-eye', () => toast(`Opening ${v.id}.`)]];
+  if (s === 'Overdue' || s === 'Open') { items.push(['Send reminder', 'i-send', () => remind([v.id])], ['Mark as paid', 'i-check', () => markPaid([v.id])]); }
+  items.push(['Download PDF', 'i-down', () => toast(`Preparing ${v.id}.pdf.`)], ['Duplicate', 'i-copy', () => toast(`Draft copy of ${v.id} created.`)]);
+  menu.innerHTML = items.map((it, i) => `<button type="button" role="menuitem" data-i="${i}"><svg class="i sm" aria-hidden="true"><use href="#${it[1]}"/></svg>${it[0]}</button>`).join('');
+  menu.hidden = false; menuFor = btn; btn.setAttribute('aria-expanded', 'true');
+  const r = btn.getBoundingClientRect(), mw = menu.offsetWidth, mh = menu.offsetHeight;
+  const left = Math.min(Math.max(8, r.right + scrollX - mw), scrollX + innerWidth - mw - 8);
+  const top = r.bottom + mh + 8 > innerHeight ? r.top + scrollY - mh - 4 : r.bottom + scrollY + 4;
+  menu.style.left = left + 'px'; menu.style.top = top + 'px';
+  menu.querySelector('button').focus();
+  menu._items = items;
+}
+function closeMenu(refocus) { menu.hidden = true; if (menuFor) { menuFor.setAttribute('aria-expanded', 'false'); if (refocus) menuFor.focus(); } menuFor = null; }
+menu.addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) { const fn = menu._items[+b.dataset.i][2]; closeMenu(true); fn(); } });
+menu.addEventListener('keydown', e => {
+  const bs = [...menu.querySelectorAll('button')], i = bs.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { bs[(i + 1) % bs.length].focus(); e.preventDefault(); }
+  if (e.key === 'ArrowUp') { bs[(i - 1 + bs.length) % bs.length].focus(); e.preventDefault(); }
+});
+document.addEventListener('click', e => { if (!menu.hidden && !e.target.closest('#menu, [data-menu]')) closeMenu(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (!menu.hidden) closeMenu(true); closeSheet(); if (shell.classList.contains('nav-open')) { setNav(false); } } });
+
+/* phone: filter sheet + nav */
+const sheet = $('#filters'), fb = $('#filters-btn');
+const openSheet = () => { sheet.classList.add('open'); fb.setAttribute('aria-expanded', 'true'); $('#f-cust').focus(); };
+function closeSheet() { if (sheet.classList.contains('open')) { sheet.classList.remove('open'); fb.setAttribute('aria-expanded', 'false'); fb.focus(); } }
+fb.onclick = openSheet; $('#sheet-close').onclick = closeSheet; $('#sheet-done').onclick = closeSheet;
+const shell = $('#shell'), mb = $('#menu-btn');
+const setNav = open => { shell.classList.toggle('nav-open', open); mb.setAttribute('aria-expanded', open); mb.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+mb.onclick = () => setNav(!shell.classList.contains('nav-open'));
+$('#scrim').onclick = () => setNav(false);
+
+render();
+</script>
+</body>
+</html>

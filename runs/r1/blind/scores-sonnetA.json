@@ -1,0 +1,26 @@
+{
+  "01-settings": {
+    "A": { "hierarchy": 7, "layout": 7, "typography": 6, "colour": 7, "craft": 6, "realism": 6, "mobile": 6, "dark": 8, "overall": 6, "worst": "desktop-fold.png: generic page with one long scroll and no nav, inputs are flat grey fills with weak contrast, and the unsaved-changes bar sits over the Notifications heading in the full-page shot" },
+    "B": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 7, "dark": 8, "overall": 8, "worst": "desktop-fold.png: wide empty gap in the sidebar between Team and Settings, and the form column is narrow and left-heavy beside the unused right margin" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 8, "mobile": 8, "dark": 2, "overall": 7, "worst": "dark.png: identical to the light page, so there is no dark mode at all (the left sidebar also stops at 780px in the full-page shot)" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 6, "colour": 7, "craft": 7, "realism": 7, "mobile": 6, "dark": 2, "overall": 5, "worst": "dark.png: identical to the light page, so there is no dark mode; mobile-fold.png also has a Danger tab cut off and a sticky Save bar covering the Job title field" }
+  },
+  "02-invoices-table": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 6, "dark": 2, "overall": 7, "worst": "dark.png: identical to the light page, so there is no dark mode; mobile-fold.png also spends the whole first screen on summary cards before any invoice appears" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 7, "overall": 8, "worst": "dark.png: the sidebar background ends at 900px while the page continues, leaving a bare strip in the full-page shot" },
+    "C": { "hierarchy": 7, "layout": 7, "typography": 8, "colour": 7, "craft": 6, "realism": 4, "mobile": 5, "dark": 8, "overall": 6, "worst": "desktop-fold.png: customers named just Q on INV-0413 and INV-0407, and a truncated INV-2026-0406-REI id, read as bugs; mobile-fold.png truncates the search placeholder to 'custon'" },
+    "D": { "hierarchy": 6, "layout": 7, "typography": 6, "colour": 6, "craft": 6, "realism": 6, "mobile": 7, "dark": 2, "overall": 5, "worst": "desktop-fold.png: the active summary tile reads '11 - $34,993.65' with a hyphen that wraps onto two lines on mobile, and dark.png has no dark mode" }
+  },
+  "03-sign-in": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: the green panel's content floats mid-panel with large empty bands above and below, and the stacked offset cards look arbitrary" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 8, "craft": 7, "realism": 8, "mobile": 8, "dark": 2, "overall": 6, "worst": "dark.png: identical to the light page, so there is no dark mode; desktop-fold.png also leaves a big void in the middle of the right panel between the cards and the quote" },
+    "C": { "hierarchy": 7, "layout": 6, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 7, "overall": 7, "worst": "desktop-fold.png: the heading and its subtitle sit tight together with no gap, and the Email me a sign-in link is a second full-width button below Sign in, which splits the primary job" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 2, "overall": 6, "worst": "dark.png: identical to the light page, so there is no dark mode; desktop-fold.png also has the tagline sitting on top of ruled notebook lines" }
+  },
+  "04-empty-onboarding": {
+    "A": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 8, "overall": 6, "worst": "desktop-fold.png: the checklist, the sample note and the empty-state card all compete, and the empty-state card sits below the fold of the primary job, so focus is diluted" },
+    "B": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 7, "realism": 8, "mobile": 7, "dark": 2, "overall": 7, "worst": "dark.png: identical to the light page, so there is no dark mode; the headline also leaves a one-word orphan 'in it.' on the second line" },
+    "C": { "hierarchy": 9, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: the headline wraps to leave the single word 'it.' alone on the second line" },
+    "D": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 9, "mobile": 7, "dark": 2, "overall": 7, "worst": "dark.png: identical to the light page, so there is no dark mode; the three-line display headline is also very heavy against the nearby template cards" }
+  }
+}

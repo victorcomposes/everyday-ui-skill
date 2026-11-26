@@ -1,0 +1,26 @@
+{
+  "05-pricing": {
+    "A": { "hierarchy": 6, "layout": 7, "typography": 8, "colour": 7, "craft": 8, "realism": 8, "mobile": 7, "dark": 2, "overall": 6, "worst": "dark.png: no dark theme at all, the page renders identical to light mode" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 6, "dark": 7, "overall": 7, "worst": "mobile.png: the compare table shows only the Hobby column with no visible control to see Team or Scale" },
+    "C": { "hierarchy": 7, "layout": 6, "typography": 7, "colour": 6, "craft": 6, "realism": 6, "mobile": 4, "dark": 6, "overall": 5, "worst": "mobile.png: compare table section labels are clipped at the right edge ('MON', 'SECURIT')" },
+    "D": { "hierarchy": 9, "layout": 8, "typography": 7, "colour": 7, "craft": 8, "realism": 8, "mobile": 7, "dark": 8, "overall": 8, "worst": "mobile-fold.png: the 'Save 17%' badge wraps onto two lines inside the billing toggle" }
+  },
+  "06-checkout": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 9, "mobile": 9, "dark": 8, "overall": 8, "worst": "desktop.png: Apple Pay and Google Pay buttons are plain outlined text with no brand marks, so they read as generic buttons" },
+    "B": { "hierarchy": 6, "layout": 6, "typography": 5, "colour": 7, "craft": 4, "realism": 6, "mobile": 5, "dark": 6, "overall": 5, "worst": "desktop-fold.png: the quantity stepper is jammed into the variant text so 'bean' and 'ground for filter' wrap beside it" },
+    "C": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 7, "craft": 6, "realism": 6, "mobile": 7, "dark": 2, "overall": 6, "worst": "dark.png: no dark theme at all, the page renders identical to light mode" },
+    "D": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 6, "craft": 6, "realism": 6, "mobile": 4, "dark": 2, "overall": 4, "worst": "mobile-fold.png: the whole first screen is the order summary and the breadcrumb sits below it, so the form starts off screen" }
+  },
+  "07-dashboard": {
+    "A": { "hierarchy": 9, "layout": 7, "typography": 8, "colour": 7, "craft": 8, "realism": 9, "mobile": 6, "dark": 2, "overall": 7, "worst": "dark.png: no dark theme at all, the page renders identical to light mode" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 5, "dark": 2, "overall": 6, "worst": "mobile.png: the revenue chart scales down so its axis labels become unreadably tiny" },
+    "C": { "hierarchy": 7, "layout": 4, "typography": 6, "colour": 7, "craft": 4, "realism": 5, "mobile": 5, "dark": 7, "overall": 5, "worst": "desktop.png: the sidebar background ends at 900 px and leaves a bare strip below it" },
+    "D": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 7, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: the legend says last Thursday totalled 1,050.00 but the dashed line ends near 870" }
+  },
+  "08-mobile-banking": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 8, "dark": 2, "overall": 6, "worst": "mobile-fold.png: the balance sparkline runs off the right edge of the header" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 7, "craft": 7, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "worst": "mobile-fold.png: the notification count badge covers the bell icon so the bell reads as a broken shape" },
+    "C": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 6, "mobile": 8, "dark": 5, "overall": 7, "worst": "dark.png: merchant tiles stay pale pastel and glare against the dark rows" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 6, "craft": 6, "realism": 5, "mobile": 7, "dark": 2, "overall": 5, "worst": "dark.png: no dark theme at all, the page renders identical to light mode" }
+  }
+}

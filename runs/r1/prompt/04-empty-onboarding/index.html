@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome - Fieldnote</title>
+<style>
+:root{
+  --bg:#fbf9f4; --surface:#fff; --ink:#201d18; --muted:#5e584e; --line:#e6e0d3; --accent:#b4441c; --accent-ink:#fff; --accent-soft:#fbe9df; --sage:#e6efe4; --sage-ink:#2f5a34; --focus:#1d4ed8;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:8px}
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+aside{border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:20px;background:#f6f3ea}
+.ws{display:flex;gap:10px;align-items:center;padding:6px 8px}
+.ws i{width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;font-style:normal;font-weight:700;display:grid;place-items:center;font-family:var(--serif)}
+.ws b{display:block;line-height:1.2}.ws span{font-size:12px;color:var(--muted)}
+aside nav{display:grid;gap:2px}
+aside a{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:500}
+aside a[aria-current=page]{background:#fff;color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+aside .grp{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:6px 10px 0}
+aside .mute{padding:8px 10px;color:var(--muted);font-size:14px}
+main{padding:56px clamp(20px,5vw,72px) 72px;max-width:1040px;width:100%}
+.eyebrow{font-size:13px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4vw,42px);line-height:1.12;letter-spacing:-.015em;margin:8px 0 12px}
+.lede{font-size:17px;color:var(--muted);max-width:56ch;margin:0 0 36px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.opt{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.opt.main{grid-column:1/-1;flex-direction:row;gap:28px;align-items:center;padding:28px;border-color:#dccfbc;background:linear-gradient(110deg,#fff 55%,#fdf1e8)}
+.opt h2{font-size:17px;margin:0;letter-spacing:-.005em}
+.opt p{margin:0;color:var(--muted);font-size:14px}
+.opt.main h2{font-size:22px;font-family:var(--serif)}
+.opt.main .txt{flex:1}
+.ico{width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
+.btn{font:inherit;font-weight:600;border-radius:10px;padding:10px 16px;min-height:42px;border:1px solid #8c8577;background:#fff;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:auto}
+.btn:hover{background:#f6f3ea}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:#963717}
+.opt.main .btn{margin-top:14px}
+.mock{width:260px;flex:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 10px 24px -14px rgba(60,40,10,.35);transform:rotate(1.5deg)}
+.mock .l{height:8px;border-radius:4px;background:#e9e3d6;margin:8px 0}
+.mock .t{font-family:var(--serif);font-weight:600;font-size:14px}
+.mock .hl{background:#fdeaa6;padding:0 3px;border-radius:3px;font-size:12px}
+.mock .tags{display:flex;gap:6px;margin-top:10px}.mock .tags span{font-size:11px;background:var(--sage);color:var(--sage-ink);padding:1px 7px;border-radius:99px;font-weight:600}
+.checklist{margin-top:36px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+.checklist h2{font-size:15px;margin:0 0 2px}
+.prog{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px;margin-bottom:10px}
+.bar{flex:1;max-width:160px;height:6px;border-radius:9px;background:#eee8da;overflow:hidden}.bar b{display:block;height:100%;background:var(--sage-ink);width:20%}
+.checklist ul{list-style:none;margin:0;padding:0}
+.checklist li{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.checklist li label{flex:1;display:flex;gap:12px;align-items:center;cursor:pointer}
+.checklist input{width:20px;height:20px;accent-color:var(--sage-ink);flex:none}
+.checklist input:checked+span{color:var(--muted);text-decoration:line-through}
+.checklist a{font-size:14px;color:var(--accent);font-weight:600}
+.invite{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.invite .f{flex:1 1 260px}
+.invite label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.invite input{width:100%;font:inherit;min-height:42px;padding:8px 12px;border:1px solid #8c8577;border-radius:10px;background:#fff}
+.invite .btn{margin:0;align-self:auto}
+.msg{font-size:14px;color:var(--sage-ink);flex-basis:100%;margin:0}
+.skip{margin-top:28px;font-size:14px;color:var(--muted)}
+.skip a{color:var(--muted)}
+.mtop{display:none}
+@media (max-width:860px){
+  .shell{display:block}
+  aside{display:none}
+  .mtop{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:#f6f3ea;font-weight:700}
+  .mtop i{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;font-style:normal;display:grid;place-items:center;font-family:var(--serif)}
+  main{padding:32px 16px 56px}
+  .grid{grid-template-columns:1fr}
+  .opt.main{flex-direction:column;align-items:stretch;gap:20px;padding:22px;background:#fff}
+  .mock{width:auto;transform:none;order:-1}
+  .opt.main .btn{width:100%;justify-content:center}
+  .invite .btn{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside aria-label="Workspace">
+  <div class="ws"><i aria-hidden="true">B</i><div><b>Birchwood Research</b><span>Workspace - 1 member</span></div></div>
+  <nav aria-label="Primary">
+    <a href="#" aria-current="page">Home</a>
+    <a href="#">All notes <span style="margin-left:auto;font-size:12px">0</span></a>
+    <a href="#">Interviews</a>
+    <a href="#">Insights</a>
+    <a href="#">Tags</a>
+  </nav>
+  <div><div class="grp">Projects</div><p class="mute">No projects yet.</p></div>
+</aside>
+<div>
+<div class="mtop"><i aria-hidden="true">B</i>Birchwood Research</div>
+<main>
+  <p class="eyebrow">Welcome to Fieldnote</p>
+  <h1>Your workspace is ready. Let's put the first note in it.</h1>
+  <p class="lede">Fieldnote keeps interviews, observations and quotes in one place, so your team can find what customers said months later. Start with whichever you have on hand.</p>
+
+  <div class="grid">
+    <section class="opt main" aria-labelledby="o1">
+      <div class="txt">
+        <div class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 3h9l5 5v11H4z M13 3v5h5 M8 12h6 M8 15.500h6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+        <h2 id="o1" style="margin-top:12px">Write your first research note</h2>
+        <p>Jot down what you heard in a call or a visit. Highlight a line to turn it into a quote, and tag it so it surfaces in search later.</p>
+        <a class="btn primary" href="#">Create a note <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="t">Interview - Dana, ops manager</div>
+        <div class="l" style="width:90%"></div>
+        <div class="l" style="width:70%"></div>
+        <div style="font-size:12px;margin:6px 0"><span class="hl">"I rebuild the same spreadsheet every Monday."</span></div>
+        <div class="l" style="width:80%"></div>
+        <div class="tags"><span>pain point</span><span>reporting</span></div>
+      </div>
+    </section>
+
+    <section class="opt" aria-labelledby="o2">
+      <div class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 15V4m0 0L7 8m4-4l4 4M4 15v3h14v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2 id="o2">Import what you already have</h2>
+      <p>Bring in Markdown, Notion exports or Google Docs. Folders become projects.</p>
+      <a class="btn" href="#">Import notes</a>
+    </section>
+    <section class="opt" aria-labelledby="o3">
+      <div class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 4v14M3 9h5" stroke="currentColor" stroke-width="1.6"/></svg></div>
+      <h2 id="o3">Start from a template</h2>
+      <p>Customer interview, usability test, field visit and synthesis board, ready to fill in.</p>
+      <a class="btn" href="#">Browse templates</a>
+    </section>
+    <section class="opt" aria-labelledby="o4">
+      <div class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="6" y="2.500" width="10" height="11" rx="5" stroke="currentColor" stroke-width="1.6"/><path d="M3.500 11a7.500 7.500 0 0015 0M11 18.500V21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h2 id="o4">Record and transcribe</h2>
+      <p>Upload a call recording. We transcribe it and pull out candidate quotes.</p>
+      <a class="btn" href="#">Upload a recording</a>
+    </section>
+  </div>
+
+  <section class="checklist" aria-labelledby="cl">
+    <h2 id="cl">Getting set up</h2>
+    <div class="prog"><div class="bar" aria-hidden="true"><b id="pb"></b></div><span id="pt" role="status">1 of 5 done</span></div>
+    <ul>
+      <li><label><input type="checkbox" checked disabled><span>Create your workspace</span></label></li>
+      <li><label><input type="checkbox"><span>Add your first note</span></label><a href="#">Start</a></li>
+      <li><label><input type="checkbox"><span>Create a project for your study</span></label><a href="#">Start</a></li>
+      <li><label><input type="checkbox"><span>Tag a quote</span></label></li>
+      <li><label><input type="checkbox"><span>Invite a teammate</span></label></li>
+    </ul>
+  </section>
+
+  <form class="invite" id="inv" aria-label="Invite a teammate">
+    <div class="f"><label for="em">Research is better with company. Invite a teammate.</label><input id="em" type="email" placeholder="colleague@birchwood.co" required></div>
+    <button class="btn" type="submit">Send invite</button>
+    <p class="msg" id="msg" role="status" hidden></p>
+  </form>
+  <p class="skip">Prefer to look around first? <a href="#">Open a sample workspace</a></p>
+</main>
+</div>
+</div>
+<script>
+const boxes=[...document.querySelectorAll('.checklist input')];
+function upd(){const n=boxes.filter(b=>b.checked).length;document.getElementById('pb').style.width=n/boxes.length*100+'%';document.getElementById('pt').textContent=n+' of '+boxes.length+' done';}
+boxes.forEach(b=>b.addEventListener('change',upd));upd();
+document.getElementById('inv').addEventListener('submit',e=>{e.preventDefault();const m=document.getElementById('msg');m.hidden=false;m.textContent='Invite sent to '+document.getElementById('em').value+'.';boxes[4].checked=true;upd();e.target.reset();});
+</script>
+</body>
+</html>

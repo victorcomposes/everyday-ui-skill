@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout - Cinder &amp; Bloom Coffee</title>
+<style>
+:root{
+  --bg:#f6f1e9; --surface:#fffdf9; --ink:#2a1f17; --muted:#6a5b4e; --line:#dccfbd; --brand:#3b2417; --accent:#b4531d; --ok:#2f6b3a; --err:#a4262c; --focus:#1d4ed8;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+header{background:var(--surface);border-bottom:1px solid var(--line)}
+.hin{max-width:1120px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:-.01em;color:var(--brand);text-decoration:none;display:flex;gap:10px;align-items:center}
+.secure{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 24px 72px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:48px;align-items:start}
+ol.steps{display:flex;gap:8px;list-style:none;margin:0 0 24px;padding:0;font-size:14px;color:var(--muted)}
+ol.steps li+li::before{content:"/";margin-right:8px}
+ol.steps [aria-current]{color:var(--ink);font-weight:600}
+h1{font-family:var(--serif);font-size:32px;letter-spacing:-.015em;margin:0 0 24px}
+fieldset{border:0;padding:0;margin:0 0 32px}
+legend{font-family:var(--serif);font-size:21px;font-weight:600;padding:0;margin-bottom:14px;display:flex;gap:10px;align-items:center}
+legend span{width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-family:system-ui,sans-serif;font-size:13px;display:grid;place-items:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f.full{grid-column:1/-1}
+label{font-weight:600;font-size:14px}
+input[type=text],input[type=email],input[type=tel],select{font:inherit;min-height:46px;padding:10px 12px;border:1px solid #8b7a69;border-radius:8px;background:#fff;color:var(--ink);width:100%}
+input[aria-invalid=true]{border-color:var(--err);box-shadow:0 0 0 1px var(--err)}
+.err{color:var(--err);font-size:13px;margin:0}
+.err[hidden]{display:none}
+.opts{display:grid;gap:10px}
+.opt{position:relative;display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}
+.opt:hover{border-color:#a8977f}
+.opt input{width:20px;height:20px;accent-color:var(--brand);flex:none;margin:0}
+.opt:has(input:checked){border-color:var(--brand);box-shadow:0 0 0 1px var(--brand);background:#fbf5ec}
+.opt:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:2px}
+.opt .t{flex:1}
+.opt .t b{display:block;font-weight:600}
+.opt .t span{color:var(--muted);font-size:13px}
+.opt .p{font-weight:600;font-variant-numeric:tabular-nums}
+.cardbox{border:1px solid var(--line);border-radius:10px;background:#fff;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cardbox .full{grid-column:1/-1}
+.pm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.pm .opt{padding:12px 14px}
+.check{display:flex;gap:10px;align-items:center;margin-top:12px}
+.check input{width:18px;height:18px;accent-color:var(--brand)}
+.check label{font-weight:400}
+.pay{width:100%;font:inherit;font-weight:700;font-size:16px;min-height:54px;border:0;border-radius:10px;background:var(--brand);color:#fff;cursor:pointer;display:flex;justify-content:center;gap:10px;align-items:center}
+.pay:hover{background:#26150c}
+.fine{color:var(--muted);font-size:13px;text-align:center;margin:12px 0 0}
+aside.sum{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;position:sticky;top:24px}
+aside h2{font-family:var(--serif);font-size:21px;margin:0 0 16px}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.bag{width:64px;height:76px;border-radius:8px;display:grid;place-items:center}
+.item b{font-weight:600;display:block}
+.item small{color:var(--muted);font-size:13px}
+.qty{display:inline-flex;align-items:center;border:1px solid #8b7a69;border-radius:8px;margin-top:6px;background:#fff}
+.qty button{all:unset;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;font-size:18px;border-radius:7px}
+.qty button:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.qty output{min-width:24px;text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
+.promo{display:flex;gap:8px;margin:14px 0;padding-top:14px;border-top:1px solid var(--line)}
+.promo input{flex:1;min-width:0}
+.promo button{font:inherit;font-weight:600;padding:0 16px;border-radius:8px;border:1px solid #8b7a69;background:#fff;color:var(--ink);cursor:pointer;min-height:46px}
+.row{display:flex;justify-content:space-between;padding:5px 0;font-variant-numeric:tabular-nums}
+.row.disc{color:var(--ok)}
+.row.total{border-top:1px solid var(--line);margin-top:8px;padding-top:14px;font-size:19px;font-weight:700}
+.row.total small{font-size:12px;font-weight:400;color:var(--muted);display:block}
+.eta{margin-top:14px;font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr;gap:24px;padding:20px 16px 56px}
+  aside.sum{position:static;order:-1;padding:18px}
+  .hin{padding:14px 16px}
+  h1{font-size:27px}
+  .grid,.cardbox{grid-template-columns:1fr}
+  .pm{grid-template-columns:1fr}
+  .secure span{display:none}
+  .promo{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<header><div class="hin">
+  <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><ellipse cx="13" cy="13" rx="8" ry="11" transform="rotate(30 13 13)" fill="#b4531d"/><path d="M8 20c4-3 6-8 10-14" stroke="#fffdf9" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>Cinder &amp; Bloom</a>
+  <p class="secure" style="margin:0"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.500" stroke="currentColor" stroke-width="1.500"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.500"/></svg><span>Secure checkout</span></p>
+</div></header>
+
+<div class="wrap">
+<main>
+  <nav aria-label="Checkout progress"><ol class="steps"><li>Bag</li><li aria-current="step">Checkout</li><li>Confirmation</li></ol></nav>
+  <h1>Checkout</h1>
+  <form id="co" novalidate>
+    <fieldset>
+      <legend><span aria-hidden="true">1</span>Shipping address</legend>
+      <div class="grid">
+        <div class="f full"><label for="em">Email</label><input id="em" type="email" autocomplete="email" value="sam.ortega@mailbox.org" required><p class="err" hidden></p></div>
+        <div class="f"><label for="fn">First name</label><input id="fn" type="text" autocomplete="given-name" value="Sam" required><p class="err" hidden></p></div>
+        <div class="f"><label for="ln">Last name</label><input id="ln" type="text" autocomplete="family-name" value="Ortega" required><p class="err" hidden></p></div>
+        <div class="f full"><label for="ad">Address</label><input id="ad" type="text" autocomplete="address-line1" placeholder="Street and number" required><p class="err" hidden></p></div>
+        <div class="f full"><label for="ad2">Apartment, suite (optional)</label><input id="ad2" type="text" autocomplete="address-line2"></div>
+        <div class="f"><label for="ci">City</label><input id="ci" type="text" autocomplete="address-level2" required><p class="err" hidden></p></div>
+        <div class="f"><label for="zp">ZIP code</label><input id="zp" type="text" inputmode="numeric" autocomplete="postal-code" required><p class="err" hidden></p></div>
+        <div class="f"><label for="st">State</label><select id="st" autocomplete="address-level1"><option>Oregon</option><option>California</option><option>Washington</option><option>New York</option></select></div>
+        <div class="f"><label for="ph">Phone (for the courier)</label><input id="ph" type="tel" autocomplete="tel"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span aria-hidden="true">2</span>Delivery</legend>
+      <div class="opts" id="ship">
+        <label class="opt"><input type="radio" name="ship" value="0" data-eta="Thu 3 Dec - Mon 7 Dec"><span class="t"><b>Standard</b><span>4 to 6 business days</span></span><span class="p">Free</span></label>
+        <label class="opt"><input type="radio" name="ship" value="7.5" data-eta="Mon 30 Nov - Wed 2 Dec" checked><span class="t"><b>Express</b><span>2 to 3 business days</span></span><span class="p">$7.50</span></label>
+        <label class="opt"><input type="radio" name="ship" value="14" data-eta="Fri 27 Nov"><span class="t"><b>Next day</b><span>Order before 2 pm Pacific</span></span><span class="p">$14.00</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span aria-hidden="true">3</span>Payment</legend>
+      <div class="pm">
+        <label class="opt"><input type="radio" name="pm" value="card" checked><span class="t"><b>Credit or debit card</b></span></label>
+        <label class="opt"><input type="radio" name="pm" value="paypal"><span class="t"><b>PayPal</b></span></label>
+      </div>
+      <div class="cardbox" id="cardbox">
+        <div class="f full"><label for="cn">Card number</label><input id="cn" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" maxlength="19"><p class="err" hidden></p></div>
+        <div class="f"><label for="ex">Expiry (MM/YY)</label><input id="ex" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="08/28" maxlength="5"></div>
+        <div class="f"><label for="cv">Security code</label><input id="cv" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="4"></div>
+        <div class="f full"><label for="nm">Name on card</label><input id="nm" type="text" autocomplete="cc-name"></div>
+      </div>
+      <div class="check"><input id="bill" type="checkbox" checked><label for="bill">Billing address is the same as shipping</label></div>
+    </fieldset>
+
+    <button class="pay" type="submit" id="pay"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.500" stroke="currentColor" stroke-width="1.500"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.500"/></svg>Pay <span id="payamt">$0.00</span></button>
+    <p class="fine">By placing your order you agree to our <a href="#" style="color:inherit">terms</a> and <a href="#" style="color:inherit">returns policy</a>.</p>
+    <p class="fine" id="done" role="status" style="color:var(--ok);font-weight:600" hidden>Thank you, Sam. Order #CB-20817 is confirmed.</p>
+  </form>
+</main>
+
+<aside class="sum" aria-labelledby="sh">
+  <h2 id="sh">Order summary</h2>
+  <div class="item">
+    <div class="bag" style="background:#e7d3b7" aria-hidden="true"><svg width="34" height="44" viewBox="0 0 34 44"><path d="M5 8h24l2 32H3z" fill="#b4531d"/><rect x="5" y="3" width="24" height="6" rx="2" fill="#3b2417"/><circle cx="17" cy="25" r="6" fill="#fffdf9" opacity=".9"/></svg></div>
+    <div><b>Huehuetenango, Guatemala</b><small>Medium roast - 340 g - whole bean</small>
+      <div class="qty" role="group" aria-label="Quantity, Huehuetenango"><button type="button" data-i="0" data-d="-1" aria-label="Decrease quantity">&minus;</button><output id="q0" aria-live="polite">2</output><button type="button" data-i="0" data-d="1" aria-label="Increase quantity">+</button></div></div>
+    <b id="l0">$37.00</b>
+  </div>
+  <div class="item">
+    <div class="bag" style="background:#d9dfcf" aria-hidden="true"><svg width="34" height="44" viewBox="0 0 34 44"><path d="M5 8h24l2 32H3z" fill="#4d6b3a"/><rect x="5" y="3" width="24" height="6" rx="2" fill="#3b2417"/><circle cx="17" cy="25" r="6" fill="#fffdf9" opacity=".9"/></svg></div>
+    <div><b>Sidama Natural, Ethiopia</b><small>Light roast - 340 g - ground for filter</small>
+      <div class="qty" role="group" aria-label="Quantity, Sidama Natural"><button type="button" data-i="1" data-d="-1" aria-label="Decrease quantity">&minus;</button><output id="q1" aria-live="polite">1</output><button type="button" data-i="1" data-d="1" aria-label="Increase quantity">+</button></div></div>
+    <b id="l1">$21.00</b>
+  </div>
+  <form class="promo" id="promo"><label class="sr" for="pc">Discount code</label><input id="pc" type="text" placeholder="Discount code" style="min-height:46px;padding:10px 12px;border:1px solid #8b7a69;border-radius:8px;font:inherit"><button type="submit">Apply</button><p class="err" id="pe" role="status" style="flex-basis:100%;color:var(--ok)" hidden></p></form>
+  <div class="row"><span>Subtotal</span><span id="sub">$0.00</span></div>
+  <div class="row disc" id="dr" hidden><span>Welcome10 (10%)</span><span id="dv">-$0.00</span></div>
+  <div class="row"><span>Shipping</span><span id="shp">$7.50</span></div>
+  <div class="row"><span>Estimated tax</span><span id="tax">$0.00</span></div>
+  <div class="row total"><span>Total <small>USD</small></span><span id="tot">$0.00</span></div>
+  <p class="eta"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="flex:none;margin-top:2px"><rect x="1.500" y="4" width="8" height="7" stroke="currentColor" stroke-width="1.400"/><path d="M9.500 6h3l2 2v3h-5" stroke="currentColor" stroke-width="1.400"/><circle cx="4.500" cy="12" r="1.200" fill="currentColor"/><circle cx="11.500" cy="12" r="1.200" fill="currentColor"/></svg><span>Roasted Monday and Thursday. Arrives <b id="eta">Mon 30 Nov - Wed 2 Dec</b>.</span></p>
+</aside>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const items=[{p:18.5,q:2},{p:21,q:1}];
+let disc=0;
+const m=n=>n.toLocaleString("en-US",{style:"currency",currency:"USD"});
+function calc(){
+  const ship=+document.querySelector("[name=ship]:checked").value;
+  items.forEach((it,i)=>{$("#q"+i).textContent=it.q;$("#l"+i).textContent=m(it.p*it.q);});
+  const sub=items.reduce((a,i)=>a+i.p*i.q,0),d=sub*disc,tax=(sub-d)*0.0825;
+  $("#sub").textContent=m(sub);$("#dr").hidden=!disc;$("#dv").textContent="-"+m(d);
+  $("#shp").textContent=ship?m(ship):"Free";$("#tax").textContent=m(tax);
+  const t=sub-d+ship+tax;$("#tot").textContent=m(t);$("#payamt").textContent=m(t);
+  $("#eta").textContent=document.querySelector("[name=ship]:checked").dataset.eta;
+}
+document.addEventListener("click",e=>{const b=e.target.closest(".qty button");if(b){const it=items[b.dataset.i];it.q=Math.max(1,Math.min(9,it.q+ +b.dataset.d));calc();}});
+document.querySelectorAll("[name=ship]").forEach(r=>r.addEventListener("change",calc));
+document.querySelectorAll("[name=pm]").forEach(r=>r.addEventListener("change",()=>{$("#cardbox").hidden=r.value!=="card"&&r.checked;}));
+$("#promo").addEventListener("submit",e=>{e.preventDefault();const ok=$("#pc").value.trim().toUpperCase()==="WELCOME10",p=$("#pe");p.hidden=false;
+  disc=ok?0.1:0;p.style.color=ok?"var(--ok)":"var(--err)";p.textContent=ok?"Code applied.":"That code is not valid.";calc();});
+$("#cn").addEventListener("input",e=>{e.target.value=e.target.value.replace(/\D/g,"").slice(0,16).replace(/(.{4})/g,"$1 ").trim();});
+$("#ex").addEventListener("input",e=>{let v=e.target.value.replace(/\D/g,"").slice(0,4);e.target.value=v.length>2?v.slice(0,2)+"/"+v.slice(2):v;});
+const req=["em","fn","ln","ad","ci","zp"];
+$("#co").addEventListener("submit",e=>{
+  e.preventDefault();let first=null;
+  req.forEach(id=>{const i=$("#"+id),err=i.parentNode.querySelector(".err"),v=i.value.trim();
+    let msg="";if(!v)msg="This field is required.";else if(id==="em"&&!/^\S+@\S+\.\S+$/.test(v))msg="Enter a valid email address.";else if(id==="zp"&&!/^\d{5}$/.test(v))msg="Enter a 5-digit ZIP code.";
+    if(msg)i.setAttribute("aria-invalid","true");else i.removeAttribute("aria-invalid");
+    err.hidden=!msg;err.textContent=msg;if(msg&&!first)first=i;});
+  if(first){first.focus();return;}
+  $("#done").hidden=false;
+});
+calc();
+</script>
+</body>
+</html>

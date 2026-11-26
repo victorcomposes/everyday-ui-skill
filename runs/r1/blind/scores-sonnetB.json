@@ -1,0 +1,26 @@
+{
+  "05-pricing": {
+    "A": { "hierarchy": 6, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 8, "mobile": 8, "dark": 1, "overall": 5, "worst": "dark.png: identical to the light page, no dark mode at all" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 7, "realism": 7, "mobile": 5, "dark": 8, "overall": 6, "worst": "mobile.png: compare table shows only the Hobby column, clipped, with no scroll cue" },
+    "C": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 8, "realism": 7, "mobile": 6, "dark": 8, "overall": 7, "worst": "mobile.png: compare table header cut off ('MON' clipped) and only the Starter column visible" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 7, "craft": 9, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "worst": "mobile.png: compare table clipped to Starter plus a sliver of Team, only a text hint says to scroll" }
+  },
+  "06-checkout": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 9, "dark": 8, "overall": 8, "worst": "mobile-fold.png: sticky Pay bar plus footnote takes about a fifth of the first screen" },
+    "B": { "hierarchy": 6, "layout": 7, "typography": 6, "colour": 6, "craft": 4, "realism": 6, "mobile": 5, "dark": 8, "overall": 5, "worst": "desktop-fold.png: item description 'whole bean' collides with the qty stepper and the Country select text is clipped" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 2, "overall": 7, "worst": "dark.png: identical to the light page, no dark mode" },
+    "D": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 5, "dark": 2, "overall": 6, "worst": "mobile-fold.png: full order summary fills the first screen with 'bean' and 'filter' orphaned beside the stepper, form pushed below the fold" }
+  },
+  "07-dashboard": {
+    "A": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 6, "dark": 1, "overall": 7, "worst": "dark.png: identical to the light page, and mobile-fold.png has no navigation at all" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 6, "dark": 1, "overall": 5, "worst": "dark.png: identical to the light page, no dark mode; chart axis labels tiny on mobile.png" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 8, "mobile": 7, "dark": 9, "overall": 8, "worst": "mobile.png: '6 more than last week' wraps with the triangle orphaned in its own column" },
+    "D": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 9, "craft": 9, "realism": 9, "mobile": 7, "dark": 8, "overall": 9, "worst": "mobile-fold.png: Refresh button sits alone on its own row and pushes the key alert down" }
+  },
+  "08-mobile-banking": {
+    "A": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 9, "craft": 8, "realism": 8, "mobile": 9, "dark": 1, "overall": 7, "worst": "dark.png: identical to the light page, no dark mode" },
+    "B": { "hierarchy": 7, "layout": 8, "typography": 7, "colour": 8, "craft": 6, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "worst": "mobile-fold.png: the '2' notification badge covers and cuts off the bell icon" },
+    "C": { "hierarchy": 7, "layout": 8, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 8, "dark": 7, "overall": 6, "worst": "dark.png: transaction icon tiles for TfL and Tesco stay light and glare on the dark page" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 7, "mobile": 8, "dark": 1, "overall": 5, "worst": "dark.png: identical to the light page, no dark mode" }
+  }
+}

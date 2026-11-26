@@ -1,0 +1,402 @@
+{
+  "01-settings": {
+    "baseline": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 6,
+      "realism": 6,
+      "mobile": 6.5,
+      "dark": 8,
+      "overall": 6.5,
+      "notes": "opusA: desktop.png: the sticky bar says 'You have unsaved changes' on an untouched form and covers the Email/Push column headers of the notifications table | sonnetA: desktop-fold.png: generic page with one long scroll and no nav, inputs are flat grey fills with weak contrast, and the unsaved-changes bar sits over the Notifications heading in the full-page shot"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 6.5,
+      "realism": 6.5,
+      "mobile": 6,
+      "dark": 1.5,
+      "overall": 4.5,
+      "notes": "opusA: desktop-fold.png: the sticky bar reads 'All changes saved.' next to an active Save changes button; dark.png ignores dark mode and mobile-fold.png clips the 'Danger zone' tab | sonnetA: dark.png: identical to the light page, so there is no dark mode; mobile-fold.png also has a Danger tab cut off and a sticky Save bar covering the Job title field"
+    },
+    "anthropic": {
+      "hierarchy": 7.5,
+      "layout": 8,
+      "typography": 8,
+      "colour": 7,
+      "craft": 8,
+      "realism": 8,
+      "mobile": 7.5,
+      "dark": 1.5,
+      "overall": 6,
+      "notes": "opusA: dark.png: no dark mode at all, the page renders identical to light; also the profile form has no save action anywhere | sonnetA: dark.png: identical to the light page, so there is no dark mode at all (the left sidebar also stops at 780px in the full-page shot)"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 7,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 7,
+      "dark": 8,
+      "overall": 8,
+      "notes": "opusA: desktop-fold.png: profile inputs stop at about 480 px while the notifications and billing blocks run much wider, so the content column has no consistent right edge | sonnetA: desktop-fold.png: wide empty gap in the sidebar between Team and Settings, and the form column is narrow and left-heavy beside the unused right margin"
+    }
+  },
+  "02-invoices-table": {
+    "baseline": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 7,
+      "dark": 7.5,
+      "overall": 6.5,
+      "notes": "opusA: mobile-fold.png: the sidebar nav disappears with no menu button, leaving no way to reach Bills, Customers or Reports on a phone | sonnetA: dark.png: the sidebar background ends at 900px while the page continues, leaving a bare strip in the full-page shot"
+    },
+    "prompt": {
+      "hierarchy": 6,
+      "layout": 7,
+      "typography": 6.5,
+      "colour": 6,
+      "craft": 6,
+      "realism": 5.5,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 4.5,
+      "notes": "opusA: desktop.png: the 'All invoices 11 - $34,993.65' card contradicts the footer 'Showing 12 of 12 invoices'; dark.png has no dark mode | sonnetA: desktop-fold.png: the active summary tile reads '11 - $34,993.65' with a hyphen that wraps onto two lines on mobile, and dark.png has no dark mode"
+    },
+    "anthropic": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 8,
+      "realism": 8.5,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 7,
+      "notes": "opusA: dark.png: no dark mode, the page renders identical to light; mobile-fold.png also drops the app nav with no menu button | sonnetA: dark.png: identical to the light page, so there is no dark mode; mobile-fold.png also spends the whole first screen on summary cards before any invoice appears"
+    },
+    "skill": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6,
+      "realism": 6.5,
+      "mobile": 5.5,
+      "dark": 8,
+      "overall": 6,
+      "notes": "opusA: desktop-fold.png: every invoice number sits in a heavy boxed monospace chip that out-shouts the customer and amount, and one chip truncates to 'INV-2026-0406-REI...' | sonnetA: desktop-fold.png: customers named just Q on INV-0413 and INV-0407, and a truncated INV-2026-0406-REI id, read as bugs; mobile-fold.png truncates the search placeholder to 'custon'"
+    }
+  },
+  "03-sign-in": {
+    "baseline": {
+      "hierarchy": 8,
+      "layout": 7,
+      "typography": 7,
+      "colour": 8,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 8,
+      "dark": 8,
+      "overall": 7.5,
+      "notes": "opusA: desktop-fold.png: the green brand panel parks its headline and two receipt cards in the upper middle and leaves the lower 40% as empty ruled stripes | sonnetA: desktop-fold.png: the green panel's content floats mid-panel with large empty bands above and below, and the stacked offset cards look arbitrary"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 6,
+      "typography": 7.5,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 8,
+      "dark": 1.5,
+      "overall": 5.5,
+      "notes": "opusA: desktop-fold.png: the right panel pins three receipt rows to the top and the quote to the bottom with a 450 px dead gap between them; dark.png has no dark mode | sonnetA: dark.png: identical to the light page, so there is no dark mode; desktop-fold.png also leaves a big void in the middle of the right panel between the cards and the quote"
+    },
+    "anthropic": {
+      "hierarchy": 7.5,
+      "layout": 6.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 7.5,
+      "dark": 1.5,
+      "overall": 6,
+      "notes": "opusA: dark.png: no dark mode, the page renders identical to light; desktop-fold.png also jams the form against the left edge of its half | sonnetA: dark.png: identical to the light page, so there is no dark mode; desktop-fold.png also has the tagline sitting on top of ruled notebook lines"
+    },
+    "skill": {
+      "hierarchy": 7.5,
+      "layout": 7,
+      "typography": 7.5,
+      "colour": 7.5,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 7.5,
+      "dark": 7.5,
+      "overall": 7.5,
+      "notes": "opusA: desktop-fold.png: the email and password fields are empty with no placeholder, and the subtitle sits cramped under the heading while a large gap opens above Sign in | sonnetA: desktop-fold.png: the heading and its subtitle sit tight together with no gap, and the Email me a sign-in link is a second full-width button below Sign in, which splits the primary job"
+    }
+  },
+  "04-empty-onboarding": {
+    "baseline": {
+      "hierarchy": 8.5,
+      "layout": 7.5,
+      "typography": 6.5,
+      "colour": 8,
+      "craft": 7.5,
+      "realism": 7.5,
+      "mobile": 7,
+      "dark": 8,
+      "overall": 7.5,
+      "notes": "opusA: desktop-fold.png: the headline wraps so 'it.' sits alone on the second line at the largest type size on the page | sonnetA: desktop-fold.png: the headline wraps to leave the single word 'it.' alone on the second line"
+    },
+    "prompt": {
+      "hierarchy": 8,
+      "layout": 7,
+      "typography": 7.5,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 8,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6,
+      "notes": "opusA: dark.png: no dark mode at all; desktop-fold.png headline also leaves 'in it.' as a widow and mobile-fold.png has no nav or menu button | sonnetA: dark.png: identical to the light page, so there is no dark mode; the headline also leaves a one-word orphan 'in it.' on the second line"
+    },
+    "anthropic": {
+      "hierarchy": 8.5,
+      "layout": 7,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 7,
+      "realism": 8.5,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusA: dark.png: no dark mode, the page renders identical to light; mobile.png also truncates the invite placeholder to 'name@haldenresearcl' | sonnetA: dark.png: identical to the light page, so there is no dark mode; the three-line display headline is also very heavy against the nearby template cards"
+    },
+    "skill": {
+      "hierarchy": 6.5,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 8,
+      "mobile": 7.5,
+      "dark": 8,
+      "overall": 7,
+      "notes": "opusA: desktop-fold.png: the sample note highlight breaks into separate boxes with stray gaps around 'I' and 'it', and New note, Write a note and three templates compete as the first action | sonnetA: desktop-fold.png: the checklist, the sample note and the empty-state card all compete, and the empty-state card sits below the fold of the primary job, so focus is diluted"
+    }
+  },
+  "05-pricing": {
+    "baseline": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 5.5,
+      "dark": 7.5,
+      "overall": 6.5,
+      "notes": "opusB: mobile.png: the compare table shows only the Hobby column with no visible control to see Team or Scale | sonnetB: mobile.png: compare table shows only the Hobby column, clipped, with no scroll cue"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 6.5,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 7,
+      "realism": 6.5,
+      "mobile": 5,
+      "dark": 7,
+      "overall": 6,
+      "notes": "opusB: mobile.png: compare table section labels are clipped at the right edge ('MON', 'SECURIT') | sonnetB: mobile.png: compare table header cut off ('MON' clipped) and only the Starter column visible"
+    },
+    "anthropic": {
+      "hierarchy": 6,
+      "layout": 7.5,
+      "typography": 8,
+      "colour": 7,
+      "craft": 8,
+      "realism": 8,
+      "mobile": 7.5,
+      "dark": 1.5,
+      "overall": 5.5,
+      "notes": "opusB: dark.png: no dark theme at all, the page renders identical to light mode | sonnetB: dark.png: identical to the light page, no dark mode at all"
+    },
+    "skill": {
+      "hierarchy": 8.5,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 8.5,
+      "realism": 8.5,
+      "mobile": 7.5,
+      "dark": 8,
+      "overall": 8,
+      "notes": "opusB: mobile-fold.png: the 'Save 17%' badge wraps onto two lines inside the billing toggle | sonnetB: mobile.png: compare table clipped to Starter plus a sliver of Team, only a text hint says to scroll"
+    }
+  },
+  "06-checkout": {
+    "baseline": {
+      "hierarchy": 6,
+      "layout": 6.5,
+      "typography": 5.5,
+      "colour": 6.5,
+      "craft": 4,
+      "realism": 6,
+      "mobile": 5,
+      "dark": 7,
+      "overall": 5,
+      "notes": "opusB: desktop-fold.png: the quantity stepper is jammed into the variant text so 'bean' and 'ground for filter' wrap beside it | sonnetB: desktop-fold.png: item description 'whole bean' collides with the qty stepper and the Country select text is clipped"
+    },
+    "prompt": {
+      "hierarchy": 6,
+      "layout": 7,
+      "typography": 7,
+      "colour": 6.5,
+      "craft": 6,
+      "realism": 6.5,
+      "mobile": 4.5,
+      "dark": 2,
+      "overall": 5,
+      "notes": "opusB: mobile-fold.png: the whole first screen is the order summary and the breadcrumb sits below it, so the form starts off screen | sonnetB: mobile-fold.png: full order summary fills the first screen with 'bean' and 'filter' orphaned beside the stepper, form pushed below the fold"
+    },
+    "anthropic": {
+      "hierarchy": 8,
+      "layout": 7.5,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 7.5,
+      "dark": 2,
+      "overall": 6.5,
+      "notes": "opusB: dark.png: no dark theme at all, the page renders identical to light mode | sonnetB: dark.png: identical to the light page, no dark mode"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 9,
+      "dark": 8,
+      "overall": 8,
+      "notes": "opusB: desktop.png: Apple Pay and Google Pay buttons are plain outlined text with no brand marks, so they read as generic buttons | sonnetB: mobile-fold.png: sticky Pay bar plus footnote takes about a fifth of the first screen"
+    }
+  },
+  "07-dashboard": {
+    "baseline": {
+      "hierarchy": 7.5,
+      "layout": 6,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6,
+      "realism": 6.5,
+      "mobile": 6,
+      "dark": 8,
+      "overall": 6.5,
+      "notes": "opusB: desktop.png: the sidebar background ends at 900 px and leaves a bare strip below it | sonnetB: mobile.png: '6 more than last week' wraps with the triangle orphaned in its own column"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6,
+      "realism": 7,
+      "mobile": 5.5,
+      "dark": 1.5,
+      "overall": 5.5,
+      "notes": "opusB: mobile.png: the revenue chart scales down so its axis labels become unreadably tiny | sonnetB: dark.png: identical to the light page, no dark mode; chart axis labels tiny on mobile.png"
+    },
+    "anthropic": {
+      "hierarchy": 9,
+      "layout": 7.5,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 6,
+      "dark": 1.5,
+      "overall": 7,
+      "notes": "opusB: dark.png: no dark theme at all, the page renders identical to light mode | sonnetB: dark.png: identical to the light page, and mobile-fold.png has no navigation at all"
+    },
+    "skill": {
+      "hierarchy": 9,
+      "layout": 8,
+      "typography": 8,
+      "colour": 8,
+      "craft": 8.5,
+      "realism": 8,
+      "mobile": 7.5,
+      "dark": 8,
+      "overall": 8.5,
+      "notes": "opusB: desktop-fold.png: the legend says last Thursday totalled 1,050.00 but the dashed line ends near 870 | sonnetB: mobile-fold.png: Refresh button sits alone on its own row and pushes the key alert down"
+    }
+  },
+  "08-mobile-banking": {
+    "baseline": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6,
+      "realism": 6.5,
+      "mobile": 8,
+      "dark": 6,
+      "overall": 6.5,
+      "notes": "opusB: dark.png: merchant tiles stay pale pastel and glare against the dark rows | sonnetB: dark.png: transaction icon tiles for TfL and Tesco stay light and glare on the dark page"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 7,
+      "realism": 6,
+      "mobile": 7.5,
+      "dark": 1.5,
+      "overall": 5,
+      "notes": "opusB: dark.png: no dark theme at all, the page renders identical to light mode | sonnetB: dark.png: identical to the light page, no dark mode"
+    },
+    "anthropic": {
+      "hierarchy": 8.5,
+      "layout": 7.5,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 8.5,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusB: mobile-fold.png: the balance sparkline runs off the right edge of the header | sonnetB: dark.png: identical to the light page, no dark mode"
+    },
+    "skill": {
+      "hierarchy": 7.5,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 7.5,
+      "craft": 6.5,
+      "realism": 9,
+      "mobile": 8,
+      "dark": 8,
+      "overall": 8,
+      "notes": "opusB: mobile-fold.png: the notification count badge covers the bell icon so the bell reads as a broken shape | sonnetB: mobile-fold.png: the '2' notification badge covers and cuts off the bell icon"
+    }
+  }
+}

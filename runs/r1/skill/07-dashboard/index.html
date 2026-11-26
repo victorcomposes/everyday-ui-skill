@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today - Bramble &amp; Fern shop admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: #0b7671; --placeholder: #6b717d;
+  --frame: #f1f8f7; --brand-deep: #0b3a37; --on-deep: #ffffff; --on-deep-muted: #a6d8d2;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px; --text-2xl: 28px; --lh-2xl: 34px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px;
+  --w-sidebar: 248px; --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #06201e;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --focus: #4fc7bd; --placeholder: #8b919d;
+    --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px) { :root { --control-h: 44px; } }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -0.02em; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 30; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.shell > aside > .snav { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); }
+.brand { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-1) var(--s-2) var(--s-4); text-decoration: none; }
+.brand b { display: block; font: 600 16px/20px var(--font-display); letter-spacing: -0.02em; }
+.brand small { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.navgrp { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.navlabel { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; padding: var(--s-5) var(--s-3) var(--s-2); }
+.navlink { display: flex; align-items: center; gap: var(--s-3); min-height: 40px; padding: 0 var(--s-3); border-radius: var(--r-md); text-decoration: none; color: var(--text); transition: background-color var(--t-fast) var(--ease); }
+.navlink:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.navlink svg { flex: none; color: var(--text-muted); }
+.navlink[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.navlink[aria-current="page"] svg { color: var(--accent); }
+.navlink .cnt { margin-left: auto; font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; background: var(--warning-subtle); color: var(--warning); border-radius: var(--r-full); padding: 0 8px; min-width: 22px; text-align: center; }
+.who { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-2) 0; border-top: 1px solid var(--border); }
+.av { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-xs); flex: none; border: 1px solid var(--border); }
+.who b { display: block; font-weight: 500; }
+.who small { color: var(--text-muted); font-size: var(--text-xs); }
+
+.topbar-m { display: none; }
+.content { min-width: 0; }
+main { max-width: 1240px; padding: var(--s-8) var(--s-8) var(--s-12); }
+
+/* header */
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+.head h1 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; }
+.head .sub { color: var(--text-muted); margin-top: 2px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; text-decoration: none; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.link { display: inline-flex; align-items: center; min-height: 36px; color: var(--accent); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+
+.strip { margin-top: var(--s-5); display: flex; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-4); border-radius: var(--r-lg); border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent); background: var(--warning-subtle); }
+.strip svg { flex: none; color: var(--warning); }
+.strip .txt { flex: 1; min-width: 0; }
+.strip b { font-weight: 600; }
+.strip .d { color: var(--text-muted); }
+
+/* KPIs */
+.kpis { margin: var(--s-8) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.kpi { padding: 0 var(--s-6); border-left: 1px solid var(--border); margin: 0; }
+.kpi:first-child { border-left: 0; padding-left: 0; }
+.kpi dt { color: var(--text-muted); }
+.kpi dd { margin: 0; }
+.kpi .v { font: 600 28px/34px var(--font); letter-spacing: -0.02em; margin-top: var(--s-1); }
+.kpi .c { color: var(--text-muted); margin-top: 2px; }
+.kpi .c b { color: var(--text); font-weight: 500; }
+
+/* panels */
+.cols { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--s-10); margin-top: var(--s-10); }
+.panel h2 { font: 600 16px/24px var(--font); letter-spacing: 0; }
+.ph { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 36px; }
+.ph .meta { color: var(--text-muted); }
+.legend { display: flex; gap: var(--s-5); margin-top: var(--s-1); flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-muted); }
+.legend i { display: inline-block; width: 16px; height: 0; border-top: 2px solid var(--accent); }
+.legend i.prev { border-top: 2px dashed var(--text-muted); }
+.legend b { color: var(--text); font-weight: 500; }
+#chart { margin-top: var(--s-3); position: relative; }
+#chart svg { display: block; width: 100%; touch-action: pan-y; }
+#readout { min-height: 20px; color: var(--text-muted); margin-top: var(--s-2); }
+#readout b { color: var(--text); font-weight: 500; }
+
+.attn { list-style: none; margin: var(--s-3) 0 0; padding: 0; }
+.attn li { border-top: 1px solid var(--border); }
+.attn li:last-child { border-bottom: 1px solid var(--border); }
+.attn a { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; min-height: 56px; padding: var(--s-2) var(--s-1); text-decoration: none; transition: background-color var(--t-fast) var(--ease); }
+.attn a:hover { background: var(--bg-subtle); }
+.attn .t { font-weight: 500; }
+.attn .m { color: var(--text-muted); font-size: var(--text-sm); }
+.tile { width: 32px; height: 32px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font: 600 12px/1 var(--font-display); letter-spacing: 0; border: 1px solid var(--border); }
+.badge { display: inline-flex; align-items: center; font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; padding: 2px 8px; border-radius: var(--r-sm); white-space: nowrap; }
+.badge.warn { background: var(--warning-subtle); color: var(--warning); }
+.badge.ok { background: var(--success-subtle); color: var(--success); }
+.badge.neutral { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+.badge.danger { background: var(--danger-subtle); color: var(--danger); }
+
+/* table */
+.tbl { width: 100%; border-collapse: collapse; margin-top: var(--s-3); table-layout: fixed; }
+.tbl th { text-align: left; font-weight: 500; color: var(--text-muted); padding: 0 var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.tbl td { padding: 0 var(--s-3) 0 0; height: 48px; border-bottom: 1px solid var(--border); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tbl .num { text-align: right; padding-right: 0; }
+.tbl td.id { font-weight: 500; }
+.tbl td.id a { text-decoration: none; }
+.tbl td.id a:hover { text-decoration: underline; }
+.tbl .muted { color: var(--text-muted); }
+.tbl tbody tr:hover td { background: var(--bg-subtle); }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-2); color: var(--text-muted); }
+
+.best { list-style: none; margin: var(--s-3) 0 0; padding: 0; }
+.best li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; min-height: 56px; border-top: 1px solid var(--border); }
+.best li:last-child { border-bottom: 1px solid var(--border); }
+.best .n { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.best .m { color: var(--text-muted); }
+.best .r { text-align: right; font-weight: 500; }
+.stale { color: var(--text-muted); margin-top: var(--s-10); display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); border-top: 1px solid var(--border); padding-top: var(--s-4); flex-wrap: wrap; }
+
+@media (max-width: 1100px) {
+  .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
+  .col-items { display: none; }
+  .tbl col.c-items { width: 0 !important; }
+}
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .shell > aside.open { display: block; position: fixed; inset: 56px 0 0 0; z-index: 20; border-right: 0; overflow-y: auto; }
+  .shell > aside.open > .snav { position: static; height: auto; min-height: 100%; }
+  .shell > aside.open .brand { display: none; }
+  .topbar-m { display: flex; align-items: center; justify-content: space-between; height: var(--h-topbar); padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 25; }
+  .topbar-m .brand { padding: 0; min-height: 44px; }
+  .menu { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); background: none; border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: 0 var(--s-3); font-weight: 500; cursor: pointer; }
+  main { padding: var(--s-6) var(--s-4) var(--s-12); }
+}
+@media (max-width: 640px) {
+  .head h1 { font-size: 24px; line-height: 30px; }
+  .head .btn { min-height: 44px; }
+  .strip { flex-direction: column; align-items: stretch; gap: var(--s-3); }
+  .strip .row1 { display: flex; gap: var(--s-3); }
+  .strip .btn { width: 100%; min-height: 44px; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5) var(--s-6); }
+  .kpi, .kpi:first-child { padding: 0; border-left: 0; }
+  .kpi:nth-child(n+3) { border-top: 1px solid var(--border); padding-top: var(--s-5); }
+  .kpi .v { font-size: 24px; line-height: 30px; }
+  .attn a { min-height: 64px; }
+  .link { min-height: 44px; }
+  .col-time, .col-cust2 { display: none; }
+  table.reflow thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  table.reflow, table.reflow tbody, table.reflow tr, table.reflow td { display: block; }
+  table.reflow tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+  table.reflow td { border: 0; padding: 0; height: auto; white-space: normal; }
+  table.reflow td.num { grid-column: 2; grid-row: 1; text-align: right; font-weight: 500; }
+  table.reflow td.cust { grid-column: 1; grid-row: 1; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  table.reflow td.id { grid-column: 1; grid-row: 2; color: var(--text-muted); font-weight: 400; }
+  table.reflow td.st { grid-column: 2; grid-row: 2; text-align: right; }
+  table.reflow tbody tr:hover td { background: none; }
+  .tbl { table-layout: auto; }
+  .tbl .items-c, .tbl .time-c { display: none; }
+  .foot { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="shell">
+  <header class="topbar-m">
+    <a class="brand" href="#">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 19c0-6 4-9.5 10-9.5 0 6-3.5 10-9.6 10" fill="none" stroke="var(--on-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 19c2-3 4-5 7-6.5" fill="none" stroke="var(--on-accent)" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span><b>Bramble &amp; Fern</b></span>
+    </a>
+    <button class="menu" id="menubtn" aria-expanded="false" aria-controls="side">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Menu
+    </button>
+  </header>
+
+  <aside id="side" aria-label="Shop navigation">
+    <div class="snav">
+      <a class="brand" href="#">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 19c0-6 4-9.5 10-9.5 0 6-3.5 10-9.6 10" fill="none" stroke="var(--on-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 19c2-3 4-5 7-6.5" fill="none" stroke="var(--on-accent)" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span><b>Bramble &amp; Fern</b><small>Shop admin</small></span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="navgrp" id="nav1"></ul>
+        <div class="navlabel" id="grow-l">Grow</div>
+        <ul class="navgrp" id="nav2" aria-labelledby="grow-l"></ul>
+      </nav>
+      <div class="who">
+        <span class="av" aria-hidden="true">RB</span>
+        <span><b>Rosalind Bramwell</b><small>Owner</small></span>
+      </div>
+    </div>
+  </aside>
+
+  <div class="content">
+    <main id="main">
+      <div class="head">
+        <div>
+          <h1>Today</h1>
+          <p class="sub" id="datesub"></p>
+        </div>
+        <button class="btn" type="button" id="refresh">Refresh</button>
+      </div>
+
+      <div class="strip" id="strip" role="status"></div>
+      <dl class="kpis" id="kpis"></dl>
+
+      <div class="cols">
+        <section class="panel" aria-labelledby="h-sales">
+          <div class="ph"><h2 id="h-sales">Sales so far today</h2><span class="meta" id="chart-meta"></span></div>
+          <div class="legend" id="legend"></div>
+          <div id="chart"></div>
+          <p id="readout" aria-live="off"></p>
+        </section>
+        <section class="panel" aria-labelledby="h-attn">
+          <div class="ph"><h2 id="h-attn">Needs attention</h2></div>
+          <ul class="attn" id="attn"></ul>
+        </section>
+      </div>
+
+      <div class="cols">
+        <section class="panel" aria-labelledby="h-orders">
+          <div class="ph"><h2 id="h-orders">Recent orders</h2><a class="link" href="#" id="all-orders"></a></div>
+          <table class="tbl reflow" id="otbl">
+            <colgroup><col style="width:96px"><col style="width:24%"><col class="c-items"><col style="width:128px" class="col-time"><col style="width:96px"><col style="width:88px"></colgroup>
+            <thead><tr><th scope="col">Order</th><th scope="col">Customer</th><th scope="col" class="items-c">Items</th><th scope="col" class="time-c">Placed</th><th scope="col">Status</th><th scope="col" class="num">Total</th></tr></thead>
+            <tbody id="orders"></tbody>
+          </table>
+          <div class="foot"><span id="orders-count"></span></div>
+        </section>
+        <section class="panel" aria-labelledby="h-best">
+          <div class="ph"><h2 id="h-best">Best sellers today</h2></div>
+          <ol class="best" id="best"></ol>
+        </section>
+      </div>
+
+      <p class="stale"><span id="stale"></span></p>
+    </main>
+  </div>
+</div>
+
+<script>
+/* ---------- fixtures: one module, everything on screen derives from it ---------- */
+const NOW = new Date('2026-11-26T14:30:00');            // Thursday
+const PICKUP = '16:00';
+const CATALOG = [
+  { id: 'monstera', name: 'Monstera deliciosa, 12cm pot',   price: 18.00, left: 2,  tile: 'MD' },
+  { id: 'pilea',    name: 'Pilea peperomioides, 10cm pot',  price: 12.50, left: 14, tile: 'PP' },
+  { id: 'calathea', name: 'Calathea orbifolia, 14cm pot',   price: 26.00, left: 1,  tile: 'CO' },
+  { id: 'sansev',   name: 'Sansevieria zeylanica, 13cm',    price: 16.00, left: 9,  tile: 'SZ' },
+  { id: 'ficus',    name: 'Ficus lyrata, 17cm pot',         price: 48.00, left: 6,  tile: 'FL' },
+  { id: 'pothos',   name: 'Pothos Marble Queen, hanging',   price: 14.00, left: 11, tile: 'PM' },
+  { id: 'aloe',     name: 'Aloe vera, 10cm pot',            price: 9.50,  left: 22, tile: 'AV' },
+  { id: 'terra',    name: 'Terracotta pot, 15cm',           price: 7.50,  left: 40, tile: 'TP' },
+  { id: 'ceramic',  name: 'Speckled ceramic pot, 18cm',     price: 19.00, left: 3,  tile: 'CP' },
+  { id: 'food',     name: 'Liquid plant food, 250ml',       price: 6.50,  left: 31, tile: 'PF' },
+];
+const LOW_STOCK_AT = 3;
+const CUSTOMERS = ['Imogen Hartley','Kwame Mensah','Sofia Marchetti','Tomasz Wójcik','Aisha Rahman','Callum Brodie','Ngozi Eze','Hannah Lindqvist','Rhys Pritchard','Mei Lin Tan','Oluwaseun Adeyemi','Freya Sørensen','Dev Malhotra','Clara Dubois','Siobhán Ní Bhriain','Joaquín Salcedo','Beatrice Okonkwo','Yusuf Demir','Annika Voss','Marcus Reid','Lucía Ferrer','Ewan MacLeod','Priya Venkataraman','Teodora','Daniel Reyes','Amara Okafor','Greta Holm','Samir Haddad','Niamh Gallagher','Joanna Kowalczyk','Elliot Brandt','Zainab Yusuf'];
+const HOSTILE = 'Maximilian Alexander von Hohenberg-Schwarzenau';
+
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
+const weights = [4, 3, 1.4, 2.4, 1.6, 2.6, 2.4, 3, 1.2, 1.6];       // what sells
+function pick(r) { const sum = weights.reduce((a, b) => a + b, 0); let x = r() * sum; for (let i = 0; i < weights.length; i++) { x -= weights[i]; if (x <= 0) return CATALOG[i]; } return CATALOG[0]; }
+function makeOrders(seed, count, startMin, endMin, firstId, names) {
+  const r = rng(seed);
+  const mins = Array.from({ length: count }, () => Math.round(startMin + (endMin - startMin) * Math.pow(r(), 0.85))).sort((a, b) => a - b);
+  return mins.map((m, i) => {
+    const n = r() < 0.5 ? 1 : r() < 0.7 ? 2 : 3, items = [];
+    for (let k = 0; k < n; k++) { const p = pick(r); const ex = items.find(x => x.p === p); if (ex) ex.qty++; else items.push({ p, qty: 1 }); }
+    return { id: 'BF-' + (firstId + i), min: m, customer: names[i % names.length], items, total: items.reduce((s, x) => s + x.p.price * x.qty, 0) };
+  });
+}
+const T = (h, m = 0) => h * 60 + m;
+const today = makeOrders(4117, 23, T(7, 12), T(14, 21), 10460, CUSTOMERS.slice(0, 23));
+today[today.length - 3].customer = HOSTILE;                              // one hostile name in the recent rows
+const lastThu = makeOrders(167, 36, T(7, 20), T(21, 40), 10381, CUSTOMERS.slice(8));
+const SESSIONS = { today: 1412, lastThu: 1296 };                          // sessions up to 14:30 on each day
+const PACK_BEFORE = T(12, 30);                                            // orders placed before this are packed
+today.forEach(o => { o.status = o.min <= PACK_BEFORE ? 'Packed' : 'To pack'; });
+
+/* ---------- helpers ---------- */
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const int = new Intl.NumberFormat('en-GB');
+const pct1 = new Intl.NumberFormat('en-GB', { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+const nowMin = NOW.getHours() * 60 + NOW.getMinutes();
+const hhmm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+const sum = (a, f) => a.reduce((s, x) => s + f(x), 0);
+const pl = (n, one, many) => `${int.format(n)} ${n === 1 ? one : many}`;
+const ago = m => { const d = nowMin - m; if (d < 1) return 'Just now'; if (d < 60) return `${d} min ago`; const h = Math.floor(d / 60); return `${h} h ${d % 60 ? (d % 60) + ' min ' : ''}ago`; };
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const sign = (n, fmt) => (n > 0 ? '+' : n < 0 ? '−' : '') + fmt(Math.abs(n));
+
+/* ---------- derived numbers ---------- */
+const lastThuSoFar = lastThu.filter(o => o.min <= nowMin);
+const D = {
+  sales: sum(today, o => o.total), orders: today.length,
+  salesPrev: sum(lastThuSoFar, o => o.total), ordersPrev: lastThuSoFar.length,
+};
+D.aov = D.sales / D.orders; D.aovPrev = D.salesPrev / D.ordersPrev;
+D.conv = D.orders / SESSIONS.today * 100; D.convPrev = D.ordersPrev / SESSIONS.lastThu * 100;
+const delta = (a, b) => (a - b) / b * 100;
+const toPack = today.filter(o => o.status === 'To pack');
+const lowStock = CATALOG.filter(p => p.left <= LOW_STOCK_AT).sort((a, b) => a.left - b.left);
+const pickupMin = T(16, 0), minsLeft = pickupMin - nowMin;
+
+/* ---------- shell ---------- */
+const ico = {
+  home: '<path d="M3 9.5L10 3l7 6.5V16a1 1 0 0 1-1 1h-3.5v-5h-5v5H4a1 1 0 0 1-1-1z"/>',
+  box: '<path d="M3 6.5L10 3l7 3.5v7L10 17l-7-3.5zM3 6.5L10 10l7-3.5M10 10v7"/>',
+  leaf: '<path d="M4 16c0-7 4-11 12-11 0 7-4 11-11.5 11M4 16c2-3.5 4.5-6 8-8"/>',
+  layers: '<path d="M10 3l7 4-7 4-7-4zM3 11l7 4 7-4"/>',
+  users: '<circle cx="8" cy="7" r="3"/><path d="M2.5 16.5c.6-3 2.7-4.5 5.5-4.5s4.9 1.5 5.5 4.5M14 4.5a3 3 0 0 1 0 5.5M15.5 12.3c1.3.6 2.1 2 2.5 4.2"/>',
+  tag: '<path d="M3 3h6.5l7.5 7.5-6.5 6.5L3 9.5z"/><circle cx="7" cy="7" r="1"/>',
+  chart: '<path d="M3 17V3M3 17h14M7 13v-3M11 13V7M15 13V9"/>',
+  store: '<path d="M3 8l1.5-4h11L17 8M3 8h14M3 8v9h14V8M8 17v-5h4v5"/>',
+  gear: '<circle cx="10" cy="10" r="2.5"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4"/>',
+};
+const svgI = k => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ico[k]}</svg>`;
+const nav = (items) => items.map(([label, icon, cur, cnt]) => `<li><a class="navlink" href="#"${cur ? ' aria-current="page"' : ''}>${svgI(icon)}<span>${label}</span>${cnt ? `<span class="cnt" aria-label="${cnt} to pack">${cnt}</span>` : ''}</a></li>`).join('');
+$('nav1').innerHTML = nav([['Today', 'home', true], ['Orders', 'box', false, toPack.length], ['Products', 'leaf'], ['Stock levels', 'layers'], ['Customers', 'users']]);
+$('nav2').innerHTML = nav([['Discounts', 'tag'], ['Reports', 'chart'], ['Online store', 'store'], ['Settings', 'gear']]);
+$('menubtn').addEventListener('click', () => {
+  const open = $('side').classList.toggle('open'); $('menubtn').setAttribute('aria-expanded', open);
+});
+
+/* ---------- header, strip ---------- */
+const dateFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+$('datesub').textContent = `${dateFmt.format(NOW)}. Compared with last Thursday up to ${hhmm(nowMin)}.`;
+const oldest = toPack[0];
+$('strip').innerHTML = toPack.length ? `
+  <div class="row1" style="display:flex;gap:12px;flex:1;min-width:0"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3l8 14H2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 8v4M10 14.5v.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+  <div class="txt"><b>${pl(toPack.length, 'order', 'orders')} to pack before the ${PICKUP} courier pickup.</b> <span class="d">${Math.floor(minsLeft / 60)} h ${minsLeft % 60} min left. The oldest was placed ${ago(oldest.min)}.</span></div></div>
+  <a class="btn primary" href="#">Pack ${toPack.length} ${toPack.length === 1 ? 'order' : 'orders'}</a>` :
+  `<div class="txt d">Nothing to pack. Every order today is ready for the ${PICKUP} pickup.</div>`;
+if (!toPack.length) $('strip').style.background = 'none';
+
+/* ---------- KPIs ---------- */
+const kpi = (label, value, cmpText, prevText) => `<div class="kpi"><dt>${label}</dt><dd class="v">${value}</dd><dd class="c"><b>${cmpText}</b> vs last Thu<br>${prevText}</dd></div>`;
+$('kpis').innerHTML =
+  kpi('Sales', gbp.format(D.sales), sign(delta(D.sales, D.salesPrev), v => pct1.format(v) + '%'), `${gbp.format(D.salesPrev)} by ${hhmm(nowMin)}`) +
+  kpi('Orders', int.format(D.orders), sign(D.orders - D.ordersPrev, v => int.format(v)), `${int.format(D.ordersPrev)} by ${hhmm(nowMin)}`) +
+  kpi('Average order', gbp.format(D.aov), sign(delta(D.aov, D.aovPrev), v => pct1.format(v) + '%'), `${gbp.format(D.aovPrev)} last Thursday`) +
+  kpi('Conversion', pct1.format(D.conv) + '%', sign(D.conv - D.convPrev, v => pct1.format(v) + ' pts'), `${pct1.format(D.convPrev)}% on ${int.format(SESSIONS.lastThu)} visits`);
+
+/* ---------- needs attention ---------- */
+const attn = [];
+if (toPack.length) attn.push(['OP', `${pl(toPack.length, 'order', 'orders')} to pack`, `Pickup at ${PICKUP}, ${Math.floor(minsLeft / 60)} h ${minsLeft % 60} min left`, 'Pack', 'warn']);
+lowStock.forEach(p => attn.push([p.tile, p.name, p.left === 0 ? 'Out of stock' : `${pl(p.left, 'plant', 'plants')} left`, 'Restock', p.left <= 1 ? 'danger' : 'warn']));
+$('attn').innerHTML = attn.length ? attn.map(([t, name, meta, act, kind]) => `<li><a href="#"><span class="tile" aria-hidden="true">${t}</span><span style="min-width:0"><span class="t" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(name)}</span><span class="m">${meta}</span></span><span class="badge ${kind}">${act}</span></a></li>`).join('') : '<li style="padding:16px 0;color:var(--text-muted)">Nothing needs you right now.</li>';
+
+/* ---------- orders table ---------- */
+const recent = [...today].sort((a, b) => b.min - a.min).slice(0, 8);
+$('orders').innerHTML = recent.map(o => {
+  const first = o.items[0], more = o.items.length - 1;
+  const itemsTxt = `${first.qty > 1 ? first.qty + ' x ' : ''}${first.p.name.split(',')[0]}${more ? ` +${more} more` : ''}`;
+  return `<tr><td class="id"><a href="#">${o.id}</a></td><td class="cust" title="${esc(o.customer)}">${esc(o.customer)}</td><td class="muted items-c" title="${esc(o.items.map(x => x.qty + ' x ' + x.p.name).join(', '))}">${esc(itemsTxt)}</td><td class="muted time-c">${ago(o.min)}</td><td class="st"><span class="badge ${o.status === 'To pack' ? 'warn' : 'neutral'}">${o.status}</span></td><td class="num">${gbp.format(o.total)}</td></tr>`;
+}).join('');
+$('all-orders').textContent = `View all ${int.format(today.length)} orders`;
+$('orders-count').textContent = `Showing ${recent.length} of ${int.format(today.length)} orders today, newest first. Amounts in GBP.`;
+
+/* ---------- best sellers ---------- */
+const units = CATALOG.map(p => ({ p, qty: sum(today.flatMap(o => o.items.filter(i => i.p === p)), i => i.qty) })).filter(x => x.qty).sort((a, b) => b.qty - a.qty || b.p.price - a.p.price).slice(0, 5);
+$('best').innerHTML = units.map(({ p, qty }) => `<li><span class="tile" aria-hidden="true">${p.tile}</span><span style="min-width:0"><span class="n" style="display:block">${esc(p.name)}</span><span class="m">${int.format(qty)} sold</span></span><span class="r">${gbp.format(qty * p.price)}</span></li>`).join('').replace(/(\d[\d,]*) sold/g, '$1 sold');
+$('stale').textContent = `Updated at ${hhmm(nowMin)}. Figures cover orders paid today, before delivery charges.`;
+
+/* ---------- chart: cumulative sales, today vs last Thursday ---------- */
+const X0 = T(8), X1 = T(20);
+const cum = (orders, upto) => { let t = 0; const pts = [[X0, 0]]; orders.filter(o => o.min <= upto && o.min >= X0).forEach(o => { pts.push([o.min, t]); t += o.total; pts.push([o.min, t]); }); pts.push([upto, t]); return pts; };
+const earlyToday = sum(today.filter(o => o.min < X0), o => o.total), earlyPrev = sum(lastThu.filter(o => o.min < X0), o => o.total);
+const sTod = cum(today, nowMin).map(([x, y]) => [x, y + earlyToday]);
+const sPrev = cum(lastThu, X1).map(([x, y]) => [x, y + earlyPrev]);
+const valAt = (s, m) => { let v = 0; for (const [x, y] of s) { if (x <= m) v = y; else break; } return v; };
+const niceStep = max => { const raw = max / 4, mag = Math.pow(10, Math.floor(Math.log10(raw))), n = raw / mag; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * mag; };
+$('chart-meta').textContent = `Hourly, 08:00 to 20:00`;
+$('legend').innerHTML = `<span><i></i>Today <b>${gbp.format(D.sales)}</b></span><span><i class="prev"></i>Last Thursday <b>${gbp.format(sum(lastThu, o => o.total))}</b> in total</span>`;
+
+function drawChart() {
+  const host = $('chart'), W = Math.max(280, Math.round(host.clientWidth)), H = W < 520 ? 200 : 260;
+  const m = { l: 52, r: 26, t: 22, b: 28 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const maxV = Math.max(sTod.at(-1)[1], sPrev.at(-1)[1]), step = niceStep(maxV), yMax = Math.ceil(maxV / step) * step;
+  const x = v => m.l + (v - X0) / (X1 - X0) * iw, y = v => m.t + ih - v / yMax * ih;
+  const path = s => s.map(([a, b], i) => (i ? 'L' : 'M') + x(a).toFixed(1) + ' ' + y(b).toFixed(1)).join(' ');
+  let g = '';
+  for (let v = 0; v <= yMax + 1; v += step) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--border)"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end" font-size="12" fill="var(--text-muted)">${gbp.format(v).replace('.00', '')}</text>`;
+  const every = W < 520 ? 4 : 2;
+  for (let h = 8; h <= 20; h += every) g += `<text x="${x(T(h))}" y="${H - 8}" text-anchor="middle" font-size="12" fill="var(--text-muted)">${String(h).padStart(2, '0')}:00</text>`;
+  const px = x(pickupMin), end = sTod.at(-1);
+  g += `<line x1="${px}" x2="${px}" y1="${m.t - 4}" y2="${m.t + ih}" stroke="var(--border-strong)" stroke-dasharray="3 3"/><text x="${px + 6}" y="${m.t + 6}" font-size="12" fill="var(--text-muted)">Pickup ${PICKUP}</text>`;
+  g += `<path d="${path(sPrev)}" fill="none" stroke="var(--text-muted)" stroke-width="1.75" stroke-dasharray="5 4"/>`;
+  g += `<path d="${path(sTod)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  g += `<circle cx="${x(end[0])}" cy="${y(end[1])}" r="5" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>`;
+  g += `<line id="hv" y1="${m.t}" y2="${m.t + ih}" stroke="var(--text)" stroke-width="1" visibility="hidden"/>`;
+  host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Cumulative sales by time of day. Today reaches ${gbp.format(D.sales)} at ${hhmm(nowMin)}. Last Thursday had ${gbp.format(D.salesPrev)} by the same time.">${g}</svg>`;
+  const svg = host.querySelector('svg'), hv = svg.querySelector('#hv');
+  const show = e => {
+    const r = svg.getBoundingClientRect(), px_ = (e.clientX - r.left) / r.width * W;
+    const t = Math.min(X1, Math.max(X0, Math.round((X0 + (px_ - m.l) / iw * (X1 - X0)) / 30) * 30));
+    hv.setAttribute('x1', x(t)); hv.setAttribute('x2', x(t)); hv.setAttribute('visibility', 'visible');
+    $('readout').innerHTML = `<b>${hhmm(t)}</b>: ${t <= nowMin ? `<b>${gbp.format(valAt(sTod, t))}</b> today` : 'no sales yet today'}, ${gbp.format(valAt(sPrev, t))} last Thursday`;
+  };
+  svg.addEventListener('pointermove', show); svg.addEventListener('pointerdown', show);
+  svg.addEventListener('pointerleave', () => { hv.setAttribute('visibility', 'hidden'); setReadout(); });
+}
+const setReadout = () => { $('readout').innerHTML = `At ${hhmm(nowMin)}: <b>${gbp.format(D.sales)}</b> today, ${gbp.format(D.salesPrev)} last Thursday. Point at the chart for other times.`; };
+setReadout(); drawChart();
+let rt; new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(drawChart, 60); }).observe($('chart'));
+$('refresh').addEventListener('click', e => { e.currentTarget.textContent = 'Refreshed'; setTimeout(() => { $('refresh').textContent = 'Refresh'; }, 1500); });
+</script>
+</body>
+</html>
