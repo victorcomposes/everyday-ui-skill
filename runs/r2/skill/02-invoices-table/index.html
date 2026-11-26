@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoices - Marlow Books</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<style>
+/* Brief: data-table.md + search.md + app-shell.md. Harbour kit, crisp shape, Source Serif 4 + Source Sans 3.
+   Job: find an overdue invoice and send a reminder. Primary action: New invoice. Key number: overdue total.
+   States: ?state=empty | loading | error | stress. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #2754c5; --accent-hover: #1f45a6; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent); --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a; --on-deep: #ffffff; --on-deep-muted: #b9c8ee; --accent-on-deep: #7a9cff;
+  --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-tight: 4px; --rhythm-near: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 2px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --h-row: 44px;
+  --w-sidebar: 248px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef; --accent-on-deep: #7a9cff;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 15px/22px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 600 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-xl, 20px)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } body { font-size: 16px; line-height: 24px; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; font-size: 12px; line-height: 16px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-sm); }
+.badge.paid { background: var(--success-subtle); color: var(--success); }
+.badge.overdue { background: var(--danger-subtle); color: var(--danger); }
+.badge.part { background: var(--warning-subtle); color: var(--warning); }
+.badge.open { background: var(--accent-subtle); color: var(--accent); }
+.badge.draft { background: var(--bg-subtle); color: var(--text-muted); box-shadow: inset 0 0 0 1px var(--border); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.i.sm { width: 16px; height: 16px; }
+.muted { color: var(--text-muted); }
+.num { font-variant-numeric: tabular-nums; }
+.tn { font-variant-numeric: tabular-nums; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); }
+.logo { display: flex; align-items: center; gap: 10px; padding: var(--s-1) var(--s-2) var(--s-4); font: 600 20px/28px var(--font-display); letter-spacing: -0.01em; }
+.nav-group { display: grid; gap: 2px; }
+.nav-group + .nav-group { margin-top: var(--s-5); }
+.nav-label { padding: 0 var(--s-3) var(--s-1); font-size: 12px; line-height: 16px; color: var(--text-muted); font-weight: 600; }
+.nav-item { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav-item:hover { background: color-mix(in srgb, var(--accent-subtle) 60%, transparent); }
+.nav-item[aria-current="page"] { background: var(--accent-subtle); }
+.nav-item[aria-current="page"] .i { color: var(--accent); }
+.nav-item .count { margin-left: auto; font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); border-top: 1px solid var(--border); }
+.account .meta { min-width: 0; line-height: 18px; }
+.account .meta b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.account .meta span { color: var(--text-muted); font-size: 12px; }
+.tile { display: grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: 12px; letter-spacing: 0.02em; }
+.tile.org { width: 32px; height: 32px; font-size: 12px; background: var(--bg); border: 1px solid var(--border); }
+.topbar { display: none; }
+.main { min-width: 0; }
+.page { padding: var(--s-8) var(--s-8) var(--s-12); max-width: 1264px; }
+
+/* header */
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-4); }
+.page-head .sub { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); }
+.head-actions { display: flex; gap: var(--s-2); align-items: center; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn.text { border-color: transparent; background: none; color: var(--accent); padding: 0 var(--s-2); }
+.btn.text:hover { background: var(--accent-subtle); }
+.icon-btn { display: inline-grid; place-items: center; width: var(--control-h-sm); height: var(--control-h-sm); border: 0; background: none; border-radius: var(--r-md); cursor: pointer; color: var(--text-muted); transition: background-color var(--t-fast) var(--ease); }
+.icon-btn:hover, .icon-btn[aria-expanded="true"] { background: var(--bg-subtle); color: var(--text); }
+.only-phone { display: none; }
+
+/* key numbers */
+.stats { display: flex; align-items: flex-start; gap: var(--s-10); margin: var(--rhythm-content) 0 var(--rhythm-content); }
+.stat .k { color: var(--text-muted); font-weight: 500; font-size: 14px; }
+.stat .v { font: 600 28px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: var(--s-1); }
+.stat.sm .v { font-size: 20px; }
+.stat .d { color: var(--text-muted); font-size: 14px; margin-top: var(--s-1); }
+.stat + .stat { padding-left: var(--s-10); border-left: 1px solid var(--border); }
+
+/* views + toolbar */
+.views { display: flex; gap: var(--s-1); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+.view { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 var(--s-3); border: 0; background: none; cursor: pointer; font-weight: 500; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+.view:hover { color: var(--text); }
+.view[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.view .n { font-size: 14px; font-variant-numeric: tabular-nums; color: var(--text-muted); }
+.toolbar { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-4) 0; min-height: 68px; }
+.search { position: relative; width: 300px; }
+.search .i { position: absolute; left: 10px; top: 50%; margin-top: -8px; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; }
+.search input { width: 100%; height: var(--control-h); padding: 0 var(--s-3) 0 34px; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+select.sel { height: var(--control-h); padding: 0 32px 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23838995' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; appearance: none; max-width: 220px; }
+.filters { display: flex; align-items: center; gap: var(--s-2); }
+.filters .sheet-head, .filters .sheet-foot { display: none; }
+.bulk { display: flex; align-items: center; gap: var(--s-3); width: 100%; height: var(--control-h); }
+.bulk b { font-weight: 600; font-variant-numeric: tabular-nums; margin-right: var(--s-2); }
+
+/* table */
+.table-wrap { border: 1px solid var(--border); border-radius: var(--r-lg); }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+thead th { position: sticky; top: 0; background: var(--bg-subtle); text-align: left; font-weight: 500; font-size: 14px; color: var(--text-muted); height: 40px; padding: 0 var(--s-3); border-bottom: 1px solid var(--border); white-space: nowrap; }
+thead th:first-child { border-top-left-radius: var(--r-lg); } thead th:last-child { border-top-right-radius: var(--r-lg); }
+th.num, td.num { text-align: right; }
+td { height: var(--h-row); padding: 0 var(--s-3); border-bottom: 1px solid var(--border); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: var(--bg-subtle); }
+tbody tr.sel td { background: var(--accent-subtle); }
+.c-check { width: 44px; padding-right: 0; } th.c-check { padding-right: 0; }
+.c-inv { width: 132px; } .c-issued { width: 104px; } .c-due { width: 214px; } .c-status { width: 104px; } .c-amt { width: 124px; } .c-act { width: 150px; padding-left: 0; padding-right: var(--s-2); text-align: right; }
+.sort { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; padding: 0; font-weight: 500; color: inherit; cursor: pointer; height: 40px; }
+.sort:hover { color: var(--text); }
+th.num .sort { flex-direction: row-reverse; }
+th[aria-sort] .sort { color: var(--text); }
+.chk { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.chk-hit { display: inline-grid; place-items: center; width: 32px; height: 32px; cursor: pointer; margin-left: -8px; }
+.cust { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; font-weight: 600; }
+.cust:hover .nm { text-decoration: underline; text-underline-offset: 2px; }
+.cust .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.od { color: var(--danger); margin-left: var(--s-2); font-size: 14px; }
+.amt { display: inline-flex; flex-direction: column; align-items: flex-end; justify-content: center; line-height: 1; }
+.amt .pb { width: 56px; height: 3px; margin-top: 4px; border-radius: 2px; background: var(--border); overflow: hidden; }
+.amt .pb > i { display: block; height: 100%; background: var(--accent); }
+.act { display: inline-flex; align-items: center; justify-content: flex-end; gap: var(--s-1); width: 100%; }
+.act .reminded { color: var(--text-muted); font-size: 14px; padding-right: var(--s-2); }
+.blank { color: var(--text-muted); }
+.skel i { display: block; height: 12px; border-radius: 3px; background: var(--bg-subtle); border: 1px solid var(--border); }
+.state { padding: 56px var(--s-4); text-align: center; }
+.state h2 { font-size: 18px; }
+.state p { margin: var(--s-2) auto var(--s-4); max-width: 48ch; color: var(--text-muted); }
+.state .row-btns { display: flex; gap: var(--s-2); justify-content: center; flex-wrap: wrap; }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); padding: var(--s-4) 0 0; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.pager { display: flex; align-items: center; gap: 2px; }
+.pg { min-width: var(--control-h-sm); height: var(--control-h-sm); padding: 0 var(--s-2); border: 1px solid transparent; background: none; border-radius: var(--r-md); cursor: pointer; font-variant-numeric: tabular-nums; color: var(--text); }
+.pg:hover { background: var(--bg-subtle); }
+.pg[aria-current="page"] { background: var(--accent-subtle); color: var(--accent); font-weight: 600; }
+.pg:disabled { color: var(--text-muted); cursor: default; opacity: 0.6; }
+.pg-gap { padding: 0 4px; color: var(--text-muted); }
+
+/* menu + toast */
+.menu { position: absolute; z-index: 30; min-width: 190px; padding: var(--s-1); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.menu button { display: flex; align-items: center; width: 100%; min-height: 36px; padding: 0 var(--s-3); border: 0; background: none; text-align: left; border-radius: var(--r-md); cursor: pointer; }
+.menu button:hover, .menu button:focus-visible { background: var(--bg-subtle); outline-offset: -2px; }
+.toasts { position: fixed; left: var(--s-6); bottom: var(--s-6); z-index: 50; display: grid; gap: var(--s-2); }
+.toast { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-4); background: var(--text); color: var(--bg); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.toast button { border: 0; background: none; color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; min-height: 32px; }
+
+/* phone sheet nav */
+.sheet { position: fixed; inset: 0; z-index: 40; background: var(--frame); display: flex; flex-direction: column; padding: var(--s-4); overflow-y: auto; }
+.sheet .head { display: flex; align-items: center; justify-content: space-between; padding-bottom: var(--s-3); }
+.sheet .nav-item { min-height: 48px; }
+.mbtn { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; border-radius: var(--r-md); cursor: pointer; }
+
+@media (max-width: 1280px) { .c-due { width: 200px; } }
+@media (max-width: 1100px) { .stats { flex-wrap: wrap; } }
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 var(--s-2) 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .topbar .logo { padding: 0; min-height: 44px; }
+  .page { padding: var(--s-6) var(--s-4) var(--s-12); }
+}
+@media (max-width: 760px) {
+  .c-issued, thead th.c-issued { display: none; }
+}
+@media (max-width: 640px) {
+  .only-phone { display: inline-flex; }
+  .only-desktop { display: none !important; }
+  .page-head { align-items: center; }
+  .page-head > div:first-child { min-width: 0; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+  .stat + .stat { padding-left: var(--s-4); }
+  .stat .v { font-size: 28px; }
+  .stat.sm .v { font-size: 24px; }
+  .view { height: 44px; }
+  .toolbar { flex-wrap: wrap; padding: var(--s-3) 0; }
+  .search { flex: 1; width: auto; min-width: 0; }
+  .search input { font-size: 16px; }
+  .filters { display: none; }
+  .filters.open { display: flex; flex-direction: column; align-items: stretch; position: fixed; z-index: 45; left: 0; right: 0; bottom: 0; background: var(--surface); padding: var(--s-4); padding-bottom: calc(var(--s-4) + env(safe-area-inset-bottom)); border-top-left-radius: var(--r-xl); border-top-right-radius: var(--r-xl); box-shadow: var(--shadow-pop); gap: var(--s-3); }
+  .filters.open select.sel { max-width: none; font-size: 16px; width: 100%; }
+  .filters.open .sheet-head { display: flex; align-items: center; justify-content: space-between; font: 600 18px/28px var(--font-display); }
+  .filters.open .sheet-foot { display: flex; gap: var(--s-2); }
+  .filters.open .sheet-foot .btn { flex: 1; }
+  .scrim { position: fixed; inset: 0; z-index: 44; background: rgb(16 24 40 / 0.5); }
+  .bulk { flex-wrap: wrap; height: auto; }
+  .table-wrap { border: 0; border-radius: 0; border-top: 1px solid var(--border); }
+  table, tbody { display: block; }
+  thead { display: none; }
+  tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto 44px; align-items: center; gap: 0 var(--s-2); padding: var(--s-2) 0; border-bottom: 1px solid var(--border); min-height: 72px; }
+  tbody tr:last-child { border-bottom: 0; }
+  td { display: block; height: auto; border: 0; padding: 0; background: none !important; }
+  tbody tr:hover td { background: none; }
+  .c-check { display: none; }
+  .c-cust { grid-area: 1 / 1; min-height: 44px; display: flex !important; align-items: center; }
+  .c-cust .cust { min-height: 44px; }
+  .c-amt { grid-area: 1 / 2; width: auto; }
+  .c-act { display: contents; overflow: visible; }
+  .act { display: contents; }
+  .c-act .menu-btn { grid-area: 1 / 3; width: 44px; height: 44px; }
+  .c-act .remind { grid-area: 3 / 2 / 4 / -1; justify-self: end; min-height: 44px; }
+  .c-act .reminded { grid-area: 3 / 2 / 4 / -1; justify-self: end; padding: 0; }
+  .c-inv { grid-area: 2 / 1; width: auto; font-size: 14px; }
+  .c-status { grid-area: 2 / 2 / 3 / 4; width: auto; justify-self: end; }
+  .c-due { display: none; }
+  .c-due.has-od { display: block; grid-area: 3 / 1; align-self: center; }
+  .c-due .dd { display: none; }
+  .c-due .od { margin: 0; }
+  .foot { flex-direction: column; align-items: flex-start; }
+  .pg { min-width: 44px; height: 44px; }
+  .pager { gap: var(--s-2); flex-wrap: wrap; }
+  .toasts { left: var(--s-4); right: var(--s-4); bottom: var(--s-4); }
+  .state { padding: 40px 0; }
+  .head-actions .btn.primary { height: 44px; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M5 4h14v16l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 9h6M9 13h4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18 14.4c2.2.6 3.5 2.6 3.5 5.6"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 3h16v18l-3-2-2.5 2L12 19l-2.5 2L7 19l-3 2z"/><path d="M8 8h8M8 12h8"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9l9-5 9 5zM5 9v9M9.5 9v9M14.5 9v9M19 9v9M3 21h18"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M3 6h9M16 6h5M3 12h3M10 12h11M3 18h11M18 18h3"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></symbol>
+  </defs>
+</svg>
+<a class="skip-link" href="#main">Skip to invoices</a>
+
+<div class="shell">
+  <aside>
+    <div class="side">
+      <a class="logo" href="#" aria-label="Marlow Books home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M8 20V15M14 20V10M20 20V6" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+        <span>Marlow Books</span>
+      </a>
+      <nav aria-label="Main" id="mainnav">
+        <div class="nav-group">
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg>Dashboard</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Sales</div>
+          <a class="nav-item" href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg>Invoices <span class="count" id="nav-count"></span></a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-quote"/></svg>Quotes</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg>Customers</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Money</div>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-receipt"/></svg>Bills</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-card"/></svg>Expenses</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-bank"/></svg>Bank accounts</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Reports</a>
+        </div>
+        <div class="nav-group">
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-sliders"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="account">
+        <span class="tile org" aria-hidden="true">PS</span>
+        <div class="meta"><b>Pennywhistle Studio Ltd</b><span>Daniel Reyes</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <a class="logo" href="#" aria-label="Marlow Books home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M8 20V15M14 20V10M20 20V6" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+        <span>Marlow Books</span>
+      </a>
+      <button class="mbtn" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </header>
+
+    <main id="main" class="page" aria-busy="false">
+      <div class="page-head">
+        <div>
+          <h1>Invoices</h1>
+          <p class="sub" id="sub"></p>
+        </div>
+        <div class="head-actions" id="head-actions">
+          <button type="button" class="btn only-desktop"><svg class="i sm" aria-hidden="true"><use href="#i-download"/></svg>Export</button>
+          <button type="button" class="icon-btn only-phone" id="more-btn" aria-label="More actions" aria-haspopup="menu" style="width:44px;height:44px"><svg class="i" aria-hidden="true"><use href="#i-more"/></svg></button>
+          <button type="button" class="btn primary" id="new-inv"><svg class="i sm" aria-hidden="true"><use href="#i-plus"/></svg>New invoice</button>
+        </div>
+      </div>
+
+      <div id="body"></div>
+    </main>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="head">
+    <a class="logo" href="#" style="padding:0" aria-label="Marlow Books home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M8 20V15M14 20V10M20 20V6" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+      <span>Marlow Books</span>
+    </a>
+    <button class="mbtn" id="menu-close" aria-label="Close menu"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <nav aria-label="Main" id="sheetnav"></nav>
+</div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------- data module ---------- */
+const Q = new URLSearchParams(location.search).get('state') || '';
+const TODAY = Date.UTC(2026, 10, 26);
+const DAY = 86400000;
+const CUST = ['Harbour & Finch Ltd','Bramwell Dental Group','Northgate Veterinary Partners LLP','Oduya Textiles','Kestrel Analytics','Lindqvist Joinery','Penhallow Bakery','Redfern Cycles','Sable & Rye Catering','Tidewater Physio','Ashgrove Dental','Corvid Print Works','Wren Architects','Mossop Plumbing'];
+// [number, customer index, issued, terms (days), amount, paid so far, draft]
+const RAW = [
+  [414,9,'2026-11-25',14,420.00,0,1],[413,1,'2026-11-24',14,86.50,0,1],[412,0,'2026-11-23',14,1240.00,0],[411,4,'2026-11-21',30,4800.00,0],
+  [410,6,'2026-11-20',14,312.00,312.00],[409,12,'2026-11-18',30,6250.00,0],[408,7,'2026-11-17',14,468.40,468.40],[407,5,'2026-11-14',14,2185.00,1000.00],
+  [406,3,'2026-11-12',30,3920.00,0],[405,9,'2026-11-11',14,540.00,540.00],[404,2,'2026-11-10',30,18204.50,0],[403,13,'2026-11-07',14,735.00,0],
+  [402,8,'2026-11-06',14,1126.30,1126.30],[401,11,'2026-11-04',14,289.00,289.00],[400,10,'2026-11-03',30,2760.00,2760.00],[399,0,'2026-10-30',14,1240.00,1240.00],
+  [398,1,'2026-10-28',14,86.50,86.50],[397,4,'2026-10-27',30,4800.00,4800.00],[396,7,'2026-10-24',14,912.80,0],[395,5,'2026-10-22',14,1640.00,1640.00],
+  [394,6,'2026-10-20',14,312.00,312.00],[393,12,'2026-10-17',30,6250.00,6250.00],[392,3,'2026-10-15',14,1478.25,600.00],[391,9,'2026-10-13',14,540.00,540.00],
+  [390,2,'2026-10-10',30,18204.50,18204.50],[389,8,'2026-10-08',14,1126.30,1126.30],[388,13,'2026-10-06',14,735.00,735.00],[387,11,'2026-10-03',14,1850.00,0],
+  [386,10,'2026-10-01',30,2760.00,2760.00],[385,0,'2026-09-29',14,1240.00,1240.00],[384,1,'2026-09-26',14,86.50,86.50],[383,4,'2026-09-24',30,4800.00,4800.00],
+  [382,7,'2026-09-22',14,468.40,468.40],[381,5,'2026-09-19',14,2185.00,2185.00],[380,6,'2026-09-17',14,312.00,312.00],[379,12,'2026-09-15',30,6250.00,6250.00],
+];
+const t = (s) => Date.parse(s + 'T00:00:00Z');
+let INV = RAW.map(([no, c, issued, terms, amount, paid, draft]) => ({
+  id: 'INV-2026-0' + no, cust: CUST[c], issued: t(issued), due: draft ? null : t(issued) + terms * DAY, amount, paid, draft: !!draft,
+}));
+if (Q === 'stress') {
+  INV[2].cust = 'Société Générale des Transports Maritimes et Fluviaux S.A.'; INV[2].amount = 1284900.50;
+  INV[3].amount = 0.40; INV[4].due = null; INV[5].id = 'INV-2026-0409-REISSUE-02';
+  for (let k = 0; k < 1250; k++) { const b = INV[7 + (k % 20)]; INV.push({ ...b, id: 'INV-2025-' + String(3000 - k).padStart(4, '0'), issued: b.issued - (60 + k) * DAY, due: b.issued - (46 + k) * DAY, paid: b.amount, draft: false }); }
+}
+if (Q === 'empty') INV = [];
+const bal = (v) => Math.round((v.amount - v.paid) * 100) / 100;
+const statusOf = (v) => v.draft ? 'Draft' : bal(v) <= 0 ? 'Paid' : v.due < TODAY ? 'Overdue' : v.paid > 0 ? 'Part paid' : 'Open';
+const daysOver = (v) => Math.round((TODAY - v.due) / DAY);
+INV.forEach((v) => (v.status = statusOf(v)));
+
+/* ---------- formatting ---------- */
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const plain = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const int = new Intl.NumberFormat('en-GB');
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const abs = (ms) => { const d = new Date(ms); return `${d.getUTCDate()} ${MON[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
+const rel = (ms) => { const d = Math.round((TODAY - ms) / DAY); return d === 0 ? 'Today' : d === 1 ? 'Yesterday' : d < 7 ? `${d} days ago` : abs(ms); };
+const plural = (n, one, many) => `${int.format(n)} ${new Intl.PluralRules('en-GB').select(n) === 'one' ? one : many}`;
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const initials = (n) => n.split(/\s+/).filter((w) => /^[A-Za-z]/.test(w)).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+
+/* ---------- state ---------- */
+const S = { tab: 'all', q: '', cust: '', range: '', sort: { key: 'issued', dir: -1 }, page: 1, sel: new Set(), reminded: new Set() };
+const PER = 25;
+const $ = (s, r = document) => r.querySelector(s);
+const TABS = [['all', 'All', () => true], ['open', 'Open', (v) => v.status === 'Open'], ['overdue', 'Overdue', (v) => v.status === 'Overdue'], ['part', 'Part paid', (v) => v.status === 'Part paid'], ['paid', 'Paid', (v) => v.status === 'Paid'], ['draft', 'Draft', (v) => v.status === 'Draft']];
+function filtered() {
+  const tab = TABS.find((x) => x[0] === S.tab)[2];
+  const q = S.q.trim().toLowerCase();
+  const min = S.range ? TODAY - Number(S.range) * DAY : 0;
+  const key = S.sort.key;
+  const val = (v) => key === 'cust' ? v.cust.toLowerCase() : key === 'amount' ? v.amount : key === 'due' ? (v.due ?? Infinity) : v.issued;
+  return INV.filter((v) => tab(v) && (!q || v.cust.toLowerCase().includes(q) || v.id.toLowerCase().includes(q)) && (!S.cust || v.cust === S.cust) && v.issued >= min)
+    .sort((a, b) => (val(a) < val(b) ? -1 : val(a) > val(b) ? 1 : 0) * S.sort.dir);
+}
+const activeFilters = () => (S.q ? 1 : 0) + (S.cust ? 1 : 0) + (S.range ? 1 : 0);
+
+/* ---------- render ---------- */
+const body = $('#body');
+function header() {
+  const unpaid = INV.filter((v) => !v.draft && bal(v) > 0), over = INV.filter((v) => v.status === 'Overdue');
+  const owed = (a) => a.reduce((s, v) => s + bal(v), 0);
+  $('#sub').textContent = INV.length ? `${int.format(INV.length)} invoices in total` : 'Nothing issued yet';
+  $('#nav-count').textContent = over.length ? over.length : '';
+  $('#nav-count').title = over.length ? `${plural(over.length, 'invoice', 'invoices')} overdue` : '';
+  return { unpaid, over, owed };
+}
+function statsHtml(h) {
+  const oldest = h.over.length ? Math.max(...h.over.map(daysOver)) : 0;
+  return `<div class="stats">
+    <div class="stat"><div class="k">Overdue</div><div class="v">${gbp.format(h.owed(h.over))}</div><div class="d">${plural(h.over.length, 'invoice', 'invoices')}${h.over.length ? `, oldest ${plural(oldest, 'day', 'days')}` : ''}</div></div>
+    <div class="stat sm"><div class="k">Outstanding</div><div class="v">${gbp.format(h.owed(h.unpaid))}</div><div class="d">${plural(h.unpaid.length, 'invoice', 'invoices')} unpaid</div></div>
+  </div>`;
+}
+function rowHtml(v) {
+  const od = v.status === 'Overdue', st = v.status;
+  const cls = { Paid: 'paid', Open: 'open', Overdue: 'overdue', 'Part paid': 'part', Draft: 'draft' }[st];
+  const dueTxt = v.due == null ? '<span class="blank" aria-label="None">–</span>' : `<span class="dd">${abs(v.due)}</span>${od ? `<span class="od">${plural(daysOver(v), 'day', 'days')} overdue</span>` : ''}`;
+  const part = v.paid > 0 && bal(v) > 0 ? `<span class="pb" role="img" aria-label="${gbp.format(v.paid)} of ${gbp.format(v.amount)} paid" title="${gbp.format(v.paid)} of ${gbp.format(v.amount)} paid"><i style="width:${(v.paid / v.amount) * 100}%"></i></span>` : '';
+  const reminded = S.reminded.has(v.id);
+  const remind = od ? (reminded ? '<span class="reminded">Reminder sent</span>' : `<button type="button" class="btn sm text remind" data-act="remind" data-id="${v.id}">Send reminder<span class="sr-only"> to ${esc(v.cust)}</span></button>`) : '';
+  return `<tr data-id="${v.id}" class="${S.sel.has(v.id) ? 'sel' : ''}">
+    <td class="c-check"><label class="chk-hit"><input class="chk" type="checkbox" data-sel="${v.id}" ${S.sel.has(v.id) ? 'checked' : ''} aria-label="Select ${v.id}"></label></td>
+    <td class="c-cust"><a class="cust" href="#" title="${esc(v.cust)}"><span class="tile" aria-hidden="true">${initials(v.cust)}</span><span class="nm">${esc(v.cust)}</span></a></td>
+    <td class="c-inv muted tn">${v.id}</td>
+    <td class="c-issued muted" title="${abs(v.issued)}">${rel(v.issued)}</td>
+    <td class="c-due tn ${od ? 'has-od' : ''}">${dueTxt}</td>
+    <td class="c-status"><span class="badge ${cls}">${st}</span></td>
+    <td class="num c-amt"><span class="amt"><span>${plain.format(v.amount)}</span>${part}</span></td>
+    <td class="c-act"><span class="act">${remind}<button type="button" class="icon-btn menu-btn" data-menu="${v.id}" aria-haspopup="menu" aria-expanded="false" aria-label="More actions for ${v.id}"><svg class="i" aria-hidden="true"><use href="#i-more"/></svg></button></span></td>
+  </tr>`;
+}
+function thHtml() {
+  const th = (key, label, cls = '') => {
+    const on = S.sort.key === key, dir = S.sort.dir === 1 ? 'ascending' : 'descending';
+    return `<th scope="col" class="${cls}" ${on ? `aria-sort="${dir}"` : ''}><button type="button" class="sort" data-sort="${key}">${label}${on ? `<svg class="i sm" aria-hidden="true" style="${S.sort.dir === 1 ? 'transform:rotate(180deg)' : ''}"><use href="#i-down"/></svg>` : ''}</button></th>`;
+  };
+  const all = S._rows || [];
+  const pageIds = all.slice((S.page - 1) * PER, S.page * PER).map((v) => v.id);
+  const n = pageIds.filter((id) => S.sel.has(id)).length;
+  return `<tr>
+    <th scope="col" class="c-check"><label class="chk-hit"><input class="chk" type="checkbox" id="chk-all" aria-label="Select all invoices on this page" ${n && n === pageIds.length ? 'checked' : ''}></label></th>
+    ${th('cust', 'Customer')}<th scope="col" class="c-inv">Invoice</th>${th('issued', 'Issued', 'c-issued')}${th('due', 'Due', 'c-due')}<th scope="col" class="c-status">Status</th>${th('amount', 'Amount (GBP)', 'num c-amt')}<th scope="col" class="c-act"><span class="sr-only">Actions</span></th>
+  </tr>`;
+}
+function pagerHtml(pages) {
+  const set = new Set([1, pages, S.page - 1, S.page, S.page + 1].filter((p) => p >= 1 && p <= pages));
+  const list = [...set].sort((a, b) => a - b); let out = '', prev = 0;
+  list.forEach((p) => { if (p - prev > 1) out += '<span class="pg-gap" aria-hidden="true">…</span>'; out += `<button type="button" class="pg" data-page="${p}" ${p === S.page ? 'aria-current="page"' : ''} aria-label="Page ${p}">${p}</button>`; prev = p; });
+  return `<nav class="pager" aria-label="Pagination"><button type="button" class="pg" data-page="${S.page - 1}" ${S.page === 1 ? 'disabled' : ''}>Previous</button>${out}<button type="button" class="pg" data-page="${S.page + 1}" ${S.page === pages ? 'disabled' : ''}>Next</button></nav>`;
+}
+function render() {
+  const h = header();
+  const main = $('#main');
+  if (Q === 'empty') {
+    $('#new-inv').hidden = true;
+    body.innerHTML = `<div class="table-wrap" style="margin-top:24px"><div class="state">
+      <svg width="148" height="112" viewBox="0 0 148 112" aria-hidden="true"><rect x="8" y="8" width="132" height="22" rx="4" fill="var(--bg-subtle)" stroke="var(--border)"/><rect x="18" y="16" width="44" height="6" rx="2" fill="var(--border)"/><rect x="104" y="16" width="26" height="6" rx="2" fill="var(--border)"/><rect x="8" y="38" width="132" height="22" rx="4" fill="var(--bg)" stroke="var(--border)"/><rect x="18" y="46" width="56" height="6" rx="2" fill="var(--accent-subtle)"/><rect x="104" y="46" width="26" height="6" rx="2" fill="var(--accent)"/><rect x="8" y="68" width="132" height="22" rx="4" fill="var(--bg)" stroke="var(--border)" opacity=".5"/><rect x="18" y="76" width="38" height="6" rx="2" fill="var(--border)" opacity=".7"/></svg>
+      <h2>No invoices yet</h2><p>Invoices you create or import appear here, with their status and what each customer owes.</p>
+      <div class="row-btns"><button type="button" class="btn primary">Create your first invoice</button><button type="button" class="btn">Import from CSV</button></div></div></div>`;
+    return;
+  }
+  if (Q === 'loading' || Q === 'error') {
+    const toolbar = `<div class="toolbar"><div class="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input type="search" aria-label="Search invoices" placeholder="Search invoices or customers" disabled></div></div>`;
+    if (Q === 'loading') {
+      main.setAttribute('aria-busy', 'true');
+      body.innerHTML = `<div class="stats"><div class="stat skel"><div class="k">Overdue</div><i style="width:140px;height:28px;margin-top:6px"></i></div></div><div class="views"></div>${toolbar}<div class="table-wrap"><table><thead>${'<tr><th>Customer</th><th>Invoice</th><th>Due</th><th>Status</th><th class="num">Amount (GBP)</th></tr>'}</thead><tbody>${Array.from({ length: 10 }, (_, i) => `<tr class="skel"><td class="c-check"></td><td><i style="width:${60 - (i % 3) * 12}%"></i></td><td><i style="width:80px"></i></td><td><i style="width:90px"></i></td><td><i style="width:70px"></i></td><td><i style="width:80px;margin-left:auto"></i></td></tr>`).join('')}</tbody></table><span class="sr-only" role="status">Loading invoices</span></div>`;
+    } else {
+      body.innerHTML = `${toolbar}<div class="table-wrap"><div class="state"><h2>Couldn’t load invoices</h2><p>The server didn’t respond. Your invoices are safe and nothing was changed.</p><div class="row-btns"><button type="button" class="btn" onclick="location.search=''">Try again</button><a class="btn" href="#">Check status</a></div></div></div>`;
+    }
+    return;
+  }
+  const rows = (S._rows = filtered());
+  const pages = Math.max(1, Math.ceil(rows.length / PER));
+  if (S.page > pages) S.page = pages;
+  const slice = rows.slice((S.page - 1) * PER, S.page * PER);
+  const nSel = S.sel.size, nAf = activeFilters();
+  const custOpts = [...new Set(INV.map((v) => v.cust))].sort().map((c) => `<option ${S.cust === c ? 'selected' : ''}>${esc(c)}</option>`).join('');
+  const tabsHtml = TABS.map(([k, label, fn]) => `<button type="button" class="view" data-tab="${k}" aria-pressed="${S.tab === k}">${label}<span class="n">${INV.filter(fn).length}</span></button>`).join('');
+  const toolbar = nSel
+    ? `<div class="toolbar"><div class="bulk"><b>${nSel} selected</b><button type="button" class="btn sm" data-act="bulk-remind">Send reminders</button><button type="button" class="btn sm" data-act="bulk-dl"><svg class="i sm" aria-hidden="true"><use href="#i-download"/></svg>Download PDFs</button><button type="button" class="btn sm text" data-act="clear-sel">Clear selection</button></div></div>`
+    : `<div class="toolbar">
+        <div class="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="q" type="search" aria-label="Search invoices" placeholder="Search invoices or customers" value="${esc(S.q)}" autocomplete="off"></div>
+        <button type="button" class="btn only-phone" id="filters-open" aria-expanded="false" aria-controls="filters"><svg class="i sm" aria-hidden="true"><use href="#i-filter"/></svg>Filters${S.cust || S.range ? ` (${(S.cust ? 1 : 0) + (S.range ? 1 : 0)})` : ''}</button>
+        <div class="filters" id="filters" role="group" aria-label="Filters">
+          <div class="sheet-head"><span>Filters</span><button type="button" class="mbtn" id="filters-close" aria-label="Close filters"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <select class="sel" id="f-cust" aria-label="Customer"><option value="">All customers</option>${custOpts}</select>
+          <select class="sel" id="f-range" aria-label="Issued"><option value="">Issued any time</option><option value="30" ${S.range === '30' ? 'selected' : ''}>Issued in the last 30 days</option><option value="60" ${S.range === '60' ? 'selected' : ''}>Issued in the last 60 days</option></select>
+          <div class="sheet-foot"><button type="button" class="btn primary" id="filters-apply">Show ${plural(rows.length, 'invoice', 'invoices')}</button></div>
+        </div>
+        ${nAf ? '<button type="button" class="btn sm text" data-act="clear">Clear filters</button>' : ''}
+      </div>`;
+  const tbody = slice.length ? slice.map(rowHtml).join('') : `<tr><td colspan="8" style="height:auto;white-space:normal"><div class="state"><h2>No invoices match these filters</h2><p>${S.q ? `Nothing matches “${esc(S.q)}”. Check the spelling or remove a filter.` : 'Remove a filter to see more invoices.'}</p><button type="button" class="btn" data-act="clear">Clear filters</button></div></td></tr>`;
+  const from = rows.length ? (S.page - 1) * PER + 1 : 0, to = Math.min(S.page * PER, rows.length);
+  body.innerHTML = `${statsHtml(h)}
+    <div class="views" role="group" aria-label="Invoice views">${tabsHtml}</div>
+    ${toolbar}
+    <div class="table-wrap"><table><thead>${thHtml()}</thead><tbody>${tbody}</tbody></table></div>
+    <div class="foot"><span>${rows.length ? `${int.format(from)}–${int.format(to)} of ${int.format(rows.length)}` : '0 invoices'}</span>${rows.length > PER ? pagerHtml(pages) : ''}</div>`;
+  const all = $('#chk-all'); if (all) { const ids = slice.map((v) => v.id), n = ids.filter((id) => S.sel.has(id)).length; all.indeterminate = n > 0 && n < ids.length; }
+}
+
+/* ---------- events ---------- */
+function toast(msg, undo) {
+  const el = document.createElement('div'); el.className = 'toast';
+  el.innerHTML = `<span>${msg}</span>${undo ? '<button type="button">Undo</button>' : ''}`;
+  $('#toasts').append(el);
+  const done = setTimeout(() => el.remove(), 6000);
+  if (undo) el.querySelector('button').onclick = () => { clearTimeout(done); el.remove(); undo(); };
+}
+function remind(ids) {
+  const fresh = ids.filter((id) => !S.reminded.has(id)); fresh.forEach((id) => S.reminded.add(id));
+  const names = fresh.map((id) => INV.find((v) => v.id === id).cust);
+  toast(fresh.length === 1 ? `Reminder sent to ${esc(names[0])}` : `${plural(fresh.length, 'reminder', 'reminders')} sent`, () => { fresh.forEach((id) => S.reminded.delete(id)); render(); });
+  render();
+}
+let menuEl = null, menuBtn = null;
+function closeMenu() { if (menuEl) { menuEl.remove(); menuEl = null; } if (menuBtn) { menuBtn.setAttribute('aria-expanded', 'false'); menuBtn = null; } }
+function openMenu(btn, items) {
+  closeMenu(); menuBtn = btn; btn.setAttribute('aria-expanded', 'true');
+  menuEl = document.createElement('div'); menuEl.className = 'menu'; menuEl.setAttribute('role', 'menu');
+  menuEl.innerHTML = items.map(([label, fn], i) => `<button type="button" role="menuitem" data-i="${i}">${label}</button>`).join('');
+  document.body.append(menuEl);
+  const r = btn.getBoundingClientRect(), w = menuEl.offsetWidth;
+  menuEl.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.right - w + scrollX)) + 'px'; menuEl.style.top = r.bottom + scrollY + 4 + 'px';
+  menuEl.onclick = (e) => { const b = e.target.closest('button'); if (!b) return; const f = items[b.dataset.i][1]; closeMenu(); f(); };
+  menuEl.querySelector('button').focus();
+}
+document.addEventListener('click', (e) => { if (menuEl && !menuEl.contains(e.target) && !e.target.closest('[data-menu],#more-btn')) closeMenu(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const b = menuBtn; closeMenu(); b?.focus(); closeFilters(); if (!$('#sheet').hidden) toggleSheet(false); } });
+
+body.addEventListener('click', (e) => {
+  const t_ = e.target.closest('button, a, input'); if (!t_) return;
+  if (t_.dataset.tab) { S.tab = t_.dataset.tab; S.page = 1; render(); $(`[data-tab="${S.tab}"]`).focus(); }
+  else if (t_.dataset.sort) { const k = t_.dataset.sort; S.sort = S.sort.key === k ? { key: k, dir: -S.sort.dir } : { key: k, dir: k === 'cust' ? 1 : -1 }; render(); $(`[data-sort="${k}"]`).focus(); }
+  else if (t_.dataset.page) { S.page = Number(t_.dataset.page); render(); $('.table-wrap').scrollIntoView({ block: 'start' }); }
+  else if (t_.dataset.act === 'remind') remind([t_.dataset.id]);
+  else if (t_.dataset.act === 'clear') { S.q = ''; S.cust = ''; S.range = ''; S.page = 1; render(); }
+  else if (t_.dataset.act === 'clear-sel') { S.sel.clear(); render(); }
+  else if (t_.dataset.act === 'bulk-remind') { const ids = [...S.sel].filter((id) => INV.find((v) => v.id === id).status === 'Overdue'); if (!ids.length) toast('None of the selected invoices are overdue'); else remind(ids); S.sel.clear(); render(); }
+  else if (t_.dataset.act === 'bulk-dl') { toast(`${plural(S.sel.size, 'PDF', 'PDFs')} downloading`); S.sel.clear(); render(); }
+  else if (t_.dataset.menu) {
+    const v = INV.find((x) => x.id === t_.dataset.menu);
+    const items = [['View invoice', () => {}], ...(v.status === 'Overdue' || v.status === 'Open' || v.status === 'Part paid' ? [['Send reminder', () => remind([v.id])], ['Record payment', () => toast(`Recording payment for ${esc(v.id)}`)]] : []), ['Download PDF', () => toast(`${esc(v.id)} downloading`)], ['Duplicate', () => toast(`${esc(v.id)} duplicated as a draft`)]];
+    openMenu(t_, items);
+  }
+  else if (t_.id === 'filters-open') { $('#filters').classList.add('open'); t_.setAttribute('aria-expanded', 'true'); const s = document.createElement('div'); s.className = 'scrim'; s.id = 'scrim'; s.onclick = closeFilters; document.body.append(s); $('#f-cust').focus(); }
+  else if (t_.id === 'filters-close' || t_.id === 'filters-apply') closeFilters();
+});
+function closeFilters() { const f = $('#filters'); if (f?.classList.contains('open')) { f.classList.remove('open'); $('#filters-open')?.setAttribute('aria-expanded', 'false'); $('#filters-open')?.focus(); } $('#scrim')?.remove(); }
+body.addEventListener('change', (e) => {
+  const t_ = e.target;
+  if (t_.dataset.sel) { t_.checked ? S.sel.add(t_.dataset.sel) : S.sel.delete(t_.dataset.sel); render(); }
+  else if (t_.id === 'chk-all') { const ids = S._rows.slice((S.page - 1) * PER, S.page * PER).map((v) => v.id); ids.forEach((id) => (t_.checked ? S.sel.add(id) : S.sel.delete(id))); render(); }
+  else if (t_.id === 'f-cust') { S.cust = t_.value; S.page = 1; keepFilters(); }
+  else if (t_.id === 'f-range') { S.range = t_.value; S.page = 1; keepFilters(); }
+});
+function keepFilters() { const open = $('#filters').classList.contains('open'); const id = document.activeElement?.id; render(); if (open) { $('#filters').classList.add('open'); if (!$('#scrim')) { const s = document.createElement('div'); s.className = 'scrim'; s.id = 'scrim'; s.onclick = closeFilters; document.body.append(s); } } if (id) $('#' + id)?.focus(); }
+let qt;
+body.addEventListener('input', (e) => {
+  if (e.target.id !== 'q') return;
+  clearTimeout(qt); const v = e.target.value;
+  qt = setTimeout(() => { S.q = v; S.page = 1; const pos = v.length; render(); const q = $('#q'); q.focus(); q.setSelectionRange(pos, pos); }, 150);
+});
+$('#more-btn').addEventListener('click', (e) => openMenu(e.currentTarget, [['Export invoices', () => toast('Export started')], ['Import from CSV', () => {}]]));
+$('#new-inv').addEventListener('click', () => toast('New invoice started'));
+
+/* phone nav sheet */
+const sheet = $('#sheet');
+$('#sheetnav').innerHTML = $('#mainnav').innerHTML;
+const toggleSheet = (open) => { sheet.hidden = !open; $('#menu-open').setAttribute('aria-expanded', open); (open ? $('#menu-close') : $('#menu-open')).focus(); };
+$('#menu-open').addEventListener('click', () => toggleSheet(true));
+$('#menu-close').addEventListener('click', () => toggleSheet(false));
+
+render();
+</script>
+</body>
+</html>

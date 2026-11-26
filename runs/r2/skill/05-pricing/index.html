@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plans and pricing - Relay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #1c1f25; --accent-hover: #000000; --accent-subtle: #eceef2; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: #2754c5;
+  --placeholder: #6b717d;
+  --frame: #f6f7f9; --brand-deep: #16181d; --on-deep: #ffffff; --on-deep-muted: #a0a6b2; --accent-on-deep: #e9ebef;
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-tight: 4px; --rhythm-near: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-touch: 44px;
+  --w-content: 1200px; --h-topbar: 56px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #e9ebef; --accent-hover: #ffffff; --accent-subtle: #262a33; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --focus: #7a9cff;
+    --placeholder: #8b919d;
+    --frame: #15171c; --brand-deep: #0b0c0f; --on-deep: #e9ebef; --on-deep-muted: #a0a6b2; --accent-on-deep: #e9ebef;
+  }
+}
+@media (max-width: 640px) { :root { --control-h: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 var(--text-sm)/20px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link, p a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 600 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+h3 { font: 600 var(--text-sm)/20px var(--font); margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 10; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.num { font-variant-numeric: tabular-nums; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: 16px; font-weight: 500; background: var(--accent-subtle); color: var(--text); }
+.ic { width: 16px; height: 16px; flex-shrink: 0; }
+
+.wrap { max-width: var(--w-content); margin-inline: auto; padding-inline: var(--s-8); }
+@media (max-width: 640px) { .wrap { padding-inline: var(--s-4); } }
+
+/* top bar */
+.topbar { background: var(--frame); border-bottom: 1px solid var(--border); }
+.topbar .wrap { height: var(--h-topbar); display: flex; align-items: center; gap: var(--s-8); }
+.logo { display: inline-flex; align-items: center; gap: var(--s-2); font: 600 18px/1 var(--font-display); letter-spacing: -0.02em; min-height: 44px; }
+.nav { display: flex; gap: var(--s-1); }
+.nav a, .topbar .right a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-md); color: var(--text-muted); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav a:hover, .topbar .right a:hover { background: var(--accent-subtle); }
+.nav a[aria-current="page"] { color: var(--text); background: var(--accent-subtle); }
+.topbar .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-1); }
+.sysstatus { display: inline-flex; align-items: center; gap: var(--s-2); }
+.dot { width: 8px; height: 8px; border-radius: var(--r-full); background: var(--success); flex-shrink: 0; }
+@media (max-width: 760px) { .nav, .sysstatus { display: none !important; } .topbar .wrap { gap: var(--s-4); } }
+
+/* page header */
+.page-head { padding-top: var(--s-12); display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-6); flex-wrap: wrap; }
+.page-head p { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); font-size: var(--text-md); line-height: 24px; max-width: 64ch; }
+.seg { display: inline-flex; padding: 3px; gap: 8px; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--r-lg); }
+.seg label, .seg button { position: relative; display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid transparent; background: transparent; font-weight: 500; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.seg label:hover, .seg button:hover { color: var(--text); }
+.seg label:has(input:checked), .seg button[aria-selected="true"] { background: var(--surface); border-color: var(--border); color: var(--text); }
+.seg label:has(input:focus-visible), .seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.seg .badge { background: var(--success-subtle); color: var(--success); }
+@media (max-width: 640px) {
+  .page-head { padding-top: var(--s-8); }
+  .page-head .seg { display: flex; width: 100%; }
+  .page-head .seg label { flex: 1; justify-content: center; min-height: 44px; }
+}
+
+/* plans */
+.plans { margin-top: var(--rhythm-content); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto auto auto auto auto 1fr; gap: 0 var(--s-6); }
+.plan { grid-row: span 7; display: grid; grid-template-rows: subgrid; row-gap: 0; padding: var(--s-6); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--bg); min-width: 0; }
+.plan.rec { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.plan-name { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
+.plan-name h2 { font-size: var(--text-xl); }
+.plan-who { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); min-height: 40px; }
+.price { margin-top: var(--s-5); font: 600 36px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.unit { margin-top: var(--s-1); color: var(--text-muted); min-height: 40px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: var(--control-h-touch); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font-weight: 600; cursor: pointer; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--accent-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); }
+.plan .btn { margin-top: var(--s-2); align-self: start; }
+.specs { margin: var(--s-6) 0 0; padding: 0; border-top: 1px solid var(--border); }
+.specs div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+.specs dt { color: var(--text-muted); }
+.specs dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.feat-lead { margin: var(--s-5) 0 var(--s-3); color: var(--text-muted); }
+.feats { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); align-content: start; }
+.feats li { display: flex; gap: var(--s-3); align-items: flex-start; }
+.feats .ic { margin-top: 2px; color: var(--text); }
+.feat-wrap { display: block; }
+.note { margin: var(--s-4) 0 0; color: var(--text-muted); }
+@media (max-width: 900px) {
+  .plans { grid-template-columns: 1fr; grid-template-rows: none; gap: var(--s-4); }
+  .plan { grid-row: auto; display: block; }
+  .plan.rec { order: -1; }
+  .plan-who, .unit { min-height: 0; }
+}
+
+/* comparison */
+section.block { margin-top: var(--rhythm-group); }
+section.block > h2 { margin-bottom: var(--rhythm-near); }
+.cmp-intro { margin: 0 0 var(--rhythm-content); color: var(--text-muted); }
+.cmp { width: 100%; border-collapse: separate; border-spacing: 0; }
+.cmp caption { text-align: left; }
+.cmp thead th { position: sticky; top: 0; z-index: 2; background: var(--bg); padding: var(--s-4) var(--s-3) var(--s-3); border-bottom: 1px solid var(--border-strong); text-align: center; font-weight: 600; vertical-align: bottom; }
+.cmp thead th:first-child { text-align: left; }
+.cmp thead th .p { display: block; font-weight: 400; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.cmp thead th.rec .n { box-shadow: inset 0 -2px 0 var(--accent); padding-bottom: 2px; }
+.cmp tbody th[scope="row"] { text-align: left; font-weight: 400; padding: var(--s-3); border-bottom: 1px solid var(--border); width: 40%; }
+.cmp tbody td { text-align: center; padding: var(--s-3); border-bottom: 1px solid var(--border); position: relative; font-variant-numeric: tabular-nums; }
+.cmp tbody tr.group th { text-align: left; padding: var(--s-8) var(--s-3) var(--s-2); border-bottom: 1px solid var(--border); font-weight: 600; font-size: var(--text-md); background: transparent; }
+.cmp .yes { display: inline-flex; vertical-align: middle; }
+.cmp .no { color: var(--text-muted); }
+.cmp-col-rec { background: var(--bg-subtle); }
+.cmp-phone { display: none; }
+@media (max-width: 760px) {
+  .cmp-desktop { display: none; }
+  .cmp-phone { display: block; }
+  .cmp-phone .seg { display: flex; width: 100%; }
+  .cmp-phone .seg button { flex: 1; justify-content: center; min-height: 44px; }
+  .cmp-phone h3 { margin: var(--s-8) 0 var(--s-1); font-size: var(--text-md); line-height: 24px; }
+  .cmp-phone dl { margin: 0; }
+  .cmp-phone dl div { display: flex; justify-content: space-between; gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--border); min-height: 44px; align-items: center; }
+  .cmp-phone dt { color: var(--text-muted); }
+  .cmp-phone dd { margin: 0; text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .cmp-phone .price-line { margin: var(--s-4) 0 0; color: var(--text-muted); }
+}
+
+/* faq */
+.faq { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: var(--s-12); }
+.faq > div > p { margin: var(--rhythm-near) 0 0; color: var(--text-muted); max-width: 36ch; }
+.faq details { border-bottom: 1px solid var(--border); }
+.faq details:first-child { border-top: 1px solid var(--border); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); min-height: 56px; cursor: pointer; font-size: var(--text-md); font-weight: 500; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; width: 10px; height: 10px; border-right: 2px solid var(--text-muted); border-bottom: 2px solid var(--text-muted); transform: rotate(45deg) translate(-2px, -2px); flex-shrink: 0; transition: transform var(--t-base) var(--ease); }
+.faq details[open] summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+.faq details p { margin: 0 0 var(--s-5); color: var(--text-muted); max-width: 65ch; font-size: var(--text-md); line-height: 24px; }
+@media (max-width: 900px) { .faq { grid-template-columns: 1fr; gap: var(--s-6); } }
+
+/* brand band */
+.band { margin-top: var(--rhythm-group); background: var(--brand-deep); color: var(--on-deep); border-radius: var(--r-xl); padding: var(--s-12); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-12); align-items: center; }
+.band h2 { font: 600 36px/1.1 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
+.band p { margin: var(--s-4) 0 var(--s-6); color: var(--on-deep-muted); font-size: var(--text-md); line-height: 24px; max-width: 46ch; }
+.band a.link { color: var(--on-deep); display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+.glimpse { background: var(--surface); color: var(--text); border-radius: var(--r-lg); border: 1px solid var(--border); }
+.glimpse h3 { padding: var(--s-4) var(--s-5) var(--s-2); color: var(--text-muted); font-weight: 500; }
+.mon { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border); }
+.mon:first-of-type { border-top: 0; }
+.mon .nm { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mon .sub { color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; }
+.mon .vals { text-align: right; font-variant-numeric: tabular-nums; }
+.mon .vals .sub { display: block; }
+.dot.warn { background: var(--warning); }
+@media (max-width: 900px) { .band { grid-template-columns: 1fr; padding: var(--s-6); gap: var(--s-8); } .band h2 { font-size: 28px; } }
+
+footer { margin-top: var(--rhythm-group); border-top: 1px solid var(--border); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-2) var(--s-6); padding-block: var(--s-4); color: var(--text-muted); }
+footer nav { display: flex; flex-wrap: wrap; gap: 0 var(--s-2); }
+footer nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); }
+footer nav a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 20 20"><path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Relay home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M5 15h5l2.5-6 3 11 2.5-5H23" fill="none" stroke="var(--on-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Relay
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Product</a>
+      <a href="#" aria-current="page">Pricing</a>
+      <a href="#">Docs</a>
+      <a href="#">Changelog</a>
+    </nav>
+    <div class="right">
+      <a href="#" class="sysstatus"><span class="dot" aria-hidden="true"></span>All systems operational</a>
+      <a href="#">Docs</a>
+      <a href="#">Sign in</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <div class="page-head">
+      <div>
+        <h1>Plans and pricing</h1>
+        <p>Every plan checks your endpoints and alerts the right person. Pick the number of monitors and how often they run.</p>
+      </div>
+      <fieldset class="seg" style="border:1px solid var(--border);margin:0;min-width:0" aria-label="Billing period" id="period">
+        <legend class="sr-only">Billing period</legend>
+        <label><input class="sr-only" type="radio" name="period" value="monthly">Monthly</label>
+        <label><input class="sr-only" type="radio" name="period" value="yearly" checked>Yearly <span class="badge" id="save-badge">Save 17%</span></label>
+      </fieldset>
+    </div>
+
+    <div class="plans" id="plans"></div>
+    <p class="note" id="tax-note">Prices in GBP, excluding VAT. Cancel any time.</p>
+
+    <section class="block" aria-labelledby="cmp-h">
+      <h2 id="cmp-h">Compare all features</h2>
+      <p class="cmp-intro">Limits and features for each plan, side by side.</p>
+
+      <div class="cmp-desktop">
+        <table class="cmp" data-matrix id="cmp"></table>
+      </div>
+
+      <div class="cmp-phone" id="cmp-phone">
+        <div class="seg" role="tablist" aria-label="Plan to compare" id="cmp-tabs"></div>
+        <p class="price-line" id="cmp-price"></p>
+        <div id="cmp-list"></div>
+      </div>
+    </section>
+
+    <section class="block faq" aria-labelledby="faq-h">
+      <div>
+        <h2 id="faq-h">Questions about billing</h2>
+        <p>Something not covered here? Email <a class="link" href="#">billing@relay-monitoring.example</a> and a person replies within one business day.</p>
+      </div>
+      <div>
+        <details><summary>How does Relay count monitors?</summary><p>One monitor is one URL, host or port that Relay checks on a schedule. A monitor checked from five regions is still one monitor.</p></details>
+        <details><summary>What happens if I reach my monitor limit?</summary><p>Existing monitors keep running. Relay blocks new monitors until you pause one or move to the next plan, and it emails the account owner when you reach 90% of the limit.</p></details>
+        <details><summary>Can I change plan or cancel at any time?</summary><p>Yes. Upgrades apply at once and you pay the difference for the rest of the period. Downgrades and cancellations apply at the end of the period you have paid for.</p></details>
+        <details><summary>Do prices include VAT?</summary><p>No. Prices are in pounds sterling and exclude VAT. Relay adds VAT at your local rate at checkout and shows it on every invoice.</p></details>
+        <details><summary>Is there a trial for paid plans?</summary><p>Team and Business start with a 14-day trial. You do not need a card to start, and Relay does not charge you until you choose to continue.</p></details>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="band-h">
+      <div>
+        <h2 id="band-h">Know before your customers do</h2>
+        <p>Every plan runs the same checks on the same network. Higher plans check more often and from more regions, so an outage shows up in seconds.</p>
+        <a class="link" href="#">Read how checks run</a>
+      </div>
+      <div class="glimpse" aria-label="Example monitors">
+        <h3>Production monitors</h3>
+        <div id="mons"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Relay Monitoring Ltd</span>
+    <nav aria-label="Footer"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Security</a><a href="#">Status</a></nav>
+  </div>
+</footer>
+
+<script>
+// One data module: plan cards, comparison table and phone list all render from it.
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
+const PLANS = [
+  { id: 'starter', name: 'Starter', who: 'For side projects and one-person teams', monthly: 0, yearly: 0, cta: 'Start free',
+    specs: { Monitors: 5, 'Checks every': '5 min', Regions: 1 },
+    lead: 'Includes:',
+    feats: ['Email and webhook alerts', '7 days of check history', 'HTTP and TCP checks', 'API access'] },
+  { id: 'team', name: 'Team', who: 'For product teams running a live API', monthly: 36, yearly: 360, cta: 'Start 14-day trial', rec: true,
+    specs: { Monitors: 50, 'Checks every': '1 min', Regions: 5 },
+    lead: 'Everything in Starter, plus:',
+    feats: ['Slack, PagerDuty and Opsgenie alerts', '90 days of check history', 'Multi-step API checks', 'A status page on your domain', '10 seats'] },
+  { id: 'business', name: 'Business', who: 'For platform teams with strict uptime targets', monthly: 120, yearly: 1200, cta: 'Contact sales',
+    specs: { Monitors: 250, 'Checks every': '15 s', Regions: 12 },
+    lead: 'Everything in Team, plus:',
+    feats: ['SAML single sign-on and SCIM', 'Audit log', 'Escalation policies', '13 months of check history', '99.99% uptime SLA'] },
+];
+const NO = null, YES = true;
+// rows: label, then one value per plan (Starter, Team, Business)
+const GROUPS = [
+  { name: 'Monitoring', rows: [
+    ['Monitors', 5, 50, 250], ['Check interval', '5 min', '1 min', '15 s'], ['Check regions', 1, 5, 12],
+    ['HTTP and TCP checks', YES, YES, YES], ['Multi-step API checks', NO, YES, YES], ['Browser checks', NO, NO, YES] ] },
+  { name: 'Alerts', rows: [
+    ['Email and webhook alerts', YES, YES, YES], ['Slack, PagerDuty and Opsgenie', NO, YES, YES],
+    ['Maintenance windows', NO, YES, YES], ['Escalation policies', NO, 'Basic', 'Advanced'] ] },
+  { name: 'Data and reporting', rows: [
+    ['Check history', '7 days', '90 days', '13 months'], ['Status pages', NO, '1 page', '5 pages'],
+    ['API and Terraform provider', YES, YES, YES], ['CSV export', NO, YES, YES] ] },
+  { name: 'Access and support', rows: [
+    ['Seats', 1, 10, 'Unlimited'], ['SAML single sign-on', NO, NO, YES], ['Audit log', NO, NO, YES],
+    ['Uptime SLA', NO, NO, '99.99%'], ['Support', 'Community', 'Email, 1 business day', 'Priority, 1 hour'] ] },
+];
+const MONS = [
+  { name: 'api.harbourpay.example/v2/health', where: 'eu-west, us-east', ms: 142, up: 99.98, warn: false },
+  { name: 'checkout.harbourpay.example', where: 'eu-west, us-east', ms: 318, up: 99.91, warn: false },
+  { name: 'webhooks.harbourpay.example:443', where: 'ap-south', ms: 1204, up: 99.12, warn: true },
+];
+
+let period = 'yearly', phonePlan = 'team';
+const saving = Math.round((1 - PLANS[1].yearly / (PLANS[1].monthly * 12)) * 100);
+const $ = (s) => document.querySelector(s);
+const check = '<svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>';
+const icon = (v) => v === YES ? `<span class="yes">${check}<span class="sr-only">Included</span></span>` : v === NO ? '<span class="no" aria-hidden="true">&ndash;</span><span class="sr-only">Not included</span>' : String(v);
+const priceOf = (p) => period === 'yearly' ? p.yearly / 12 : p.monthly;
+const unitOf = (p) => p.monthly === 0 ? 'free, no card needed' : period === 'yearly' ? `per month, billed ${gbp.format(p.yearly)} a year` : 'per month, billed monthly';
+const saveOf = (p) => p.monthly && period === 'yearly' ? `Save ${gbp.format(p.monthly * 12 - p.yearly)} a year` : '';
+
+function renderPlans() {
+  $('#plans').innerHTML = PLANS.map((p) => `
+    <article class="plan${p.rec ? ' rec' : ''}" aria-labelledby="plan-${p.id}">
+      <div class="plan-name"><h2 id="plan-${p.id}">${p.name}</h2>${p.rec ? '<span class="badge">Recommended</span>' : ''}</div>
+      <p class="plan-who">${p.who}</p>
+      <div class="price">${gbp.format(priceOf(p))}</div>
+      <div class="unit">${unitOf(p)}${saveOf(p) ? `<br>${saveOf(p)}` : ''}</div>
+      <a class="btn${p.rec ? ' primary' : ''}" href="#">${p.cta}</a>
+      <dl class="specs">${Object.entries(p.specs).map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+      <div class="feat-wrap"><p class="feat-lead">${p.lead}</p><ul class="feats">${p.feats.map((f) => `<li>${check}<span>${f}</span></li>`).join('')}</ul></div>
+    </article>`).join('');
+}
+
+function renderTable() {
+  const head = `<thead><tr><th scope="col"><span class="sr-only">Feature</span></th>${PLANS.map((p) =>
+    `<th scope="col" class="${p.rec ? 'rec' : ''}"><span class="n">${p.name}</span><span class="p">${gbp.format(priceOf(p))} per month</span></th>`).join('')}</tr></thead>`;
+  const body = GROUPS.map((g) => `<tr class="group"><th colspan="4" scope="colgroup">${g.name}</th></tr>` +
+    g.rows.map((r) => `<tr><th scope="row">${r[0]}</th>${r.slice(1).map((v, i) => `<td class="${PLANS[i].rec ? 'cmp-col-rec' : ''}">${icon(v)}</td>`).join('')}</tr>`).join('')).join('');
+  $('#cmp').innerHTML = `<caption class="sr-only">Plan features compared</caption>${head}<tbody>${body}</tbody>`;
+}
+
+function renderPhone() {
+  const idx = PLANS.findIndex((p) => p.id === phonePlan), plan = PLANS[idx];
+  $('#cmp-tabs').innerHTML = PLANS.map((p) => `<button type="button" role="tab" aria-selected="${p.id === phonePlan}" data-plan="${p.id}">${p.name}</button>`).join('');
+  $('#cmp-price').textContent = `${plan.name}: ${gbp.format(priceOf(plan))} per month, ${unitOf(plan).replace('per month, ', '')}`;
+  $('#cmp-list').innerHTML = GROUPS.map((g) => `<h3>${g.name}</h3><dl>${g.rows.map((r) => `<div><dt>${r[0]}</dt><dd>${icon(r[idx + 1])}</dd></div>`).join('')}</dl>`).join('');
+}
+
+function renderMons() {
+  $('#mons').innerHTML = MONS.map((m) => `<div class="mon"><span class="dot${m.warn ? ' warn' : ''}" aria-hidden="true"></span>
+    <div style="min-width:0"><div class="nm">${m.name}</div><div class="sub">${m.warn ? 'Slow response' : 'Operational'}, ${m.where}</div></div>
+    <div class="vals">${m.ms} ms<span class="sub">${m.up.toFixed(2)}% last 30 days</span></div></div>`).join('');
+}
+
+function render() {
+  $('#save-badge').textContent = `Save ${saving}%`;
+  renderPlans(); renderTable(); renderPhone();
+}
+document.querySelectorAll('input[name=period]').forEach((r) => r.addEventListener('change', (e) => { period = e.target.value; render(); }));
+$('#cmp-tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-plan]'); if (b) { phonePlan = b.dataset.plan; renderPhone(); $('#cmp-tabs [aria-selected=true]').focus(); } });
+render(); renderMons();
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today - Fernhill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f1f8f7; --brand-deep: #0b3a37; --on-deep: #ffffff; --on-deep-muted: #a6d8d2; --accent-on-deep: #4fc7bd;
+  --font: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-tight: 4px; --rhythm-near: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 2px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px; --r-full: 999px;
+  --control-h: 36px; --control-h-touch: 44px;
+  --w-sidebar: 248px; --w-content: 1200px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd; --accent-on-deep: #4fc7bd;
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 var(--text-sm)/20px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; font-weight: 500; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 700 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 30; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.num { font-variant-numeric: tabular-nums; }
+.ic { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: 16px; font-weight: 600; }
+.b-warn { background: var(--warning-subtle); color: var(--warning); }
+.b-info { background: var(--accent-subtle); color: var(--accent); }
+.b-ok { background: var(--success-subtle); color: var(--success); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.side-in { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-5) var(--s-3) var(--s-4); }
+.logo { display: inline-flex; align-items: center; gap: var(--s-2); font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; padding: 0 var(--s-2); min-height: 44px; }
+.nav { margin-top: var(--s-5); }
+.nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.nav .grp { margin-top: var(--s-5); padding: 0 var(--s-3); color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; font-weight: 600; margin-bottom: var(--s-2); }
+.nav a { display: flex; align-items: center; gap: var(--s-3); min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-md); color: var(--text); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav a:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); }
+.nav a[aria-current="page"] .ic { color: var(--accent); }
+.nav a .ic { color: var(--text-muted); }
+.nav .count { margin-left: auto; color: var(--text-muted); font-variant-numeric: tabular-nums; font-size: var(--text-sm); }
+.acct { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); border-top: 1px solid var(--border); }
+.avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: var(--text-xs); flex-shrink: 0; border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); }
+.acct b { display: block; font-weight: 600; }
+.acct span { color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; }
+
+main { padding: var(--s-8) var(--s-8) var(--s-12); min-width: 0; }
+.page { max-width: var(--w-content); margin-inline: auto; }
+.mobilebar, .tabbar { display: none; }
+
+.head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-6); }
+.head p { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); font-size: var(--text-md); line-height: 24px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent); font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.secondary { background: var(--bg); color: var(--text); border-color: var(--border-strong); }
+.btn.secondary:hover { background: var(--bg-subtle); }
+
+/* KPI row */
+.kpis { margin-top: var(--rhythm-content); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.kpi { padding: var(--s-5) var(--s-6); }
+.kpi:first-child { padding-left: 0; }
+.kpi + .kpi { border-left: 1px solid var(--border); }
+.kpi dt { color: var(--text-muted); font-weight: 500; }
+.kpi dd { margin: 0; }
+.kpi .v { margin-top: var(--s-1); font: 700 32px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.kpi .d { margin-top: var(--s-1); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+/* panels */
+.cols { margin-top: var(--rhythm-group); display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--s-12); align-items: start; }
+.cols + .cols { margin-top: var(--rhythm-group); }
+.phead { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); min-height: 44px; margin-bottom: var(--s-2); }
+.psub { margin: 0 0 var(--s-4); color: var(--text-muted); }
+.phead .link { display: inline-flex; align-items: center; min-height: 44px; }
+
+.legend { display: flex; gap: var(--s-5); margin-bottom: var(--s-2); color: var(--text-muted); font-size: var(--text-sm); }
+.legend span { display: inline-flex; align-items: center; gap: var(--s-2); }
+.chart { position: relative; height: 260px; }
+.chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.chart text { font: 500 12px var(--font); fill: var(--text-muted); }
+.chart text.lbl { fill: var(--text); font-weight: 600; }
+.chart text.lbl-m { fill: var(--text-muted); font-weight: 600; }
+
+.todo { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.todo li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-1) var(--s-4); align-items: center; padding: var(--s-3) 0; border-bottom: 1px solid var(--border); min-height: 64px; }
+.todo .t { font-weight: 600; }
+.todo .m { color: var(--text-muted); grid-column: 1; }
+.todo a.link { grid-row: 1 / span 2; grid-column: 2; display: inline-flex; align-items: center; min-height: 44px; }
+.todo .grp-h { display: block; padding: var(--s-5) 0 var(--s-1); border-bottom: 0; min-height: 0; color: var(--text-muted); font-weight: 600; }
+.todo li.grp-li { display: block; min-height: 0; padding: 0; }
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-weight: 500; color: var(--text-muted); padding: 0 var(--s-3) var(--s-2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+th:first-child, td:first-child { padding-left: 0; }
+th:last-child, td:last-child { padding-right: 0; }
+td { height: 48px; padding: 0 var(--s-3); border-bottom: 1px solid var(--border); vertical-align: middle; }
+.r { text-align: right; font-variant-numeric: tabular-nums; }
+.c-cust { font-weight: 600; white-space: nowrap; }
+.c-id, .c-time { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.c-items { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); }
+.c-total { font-variant-numeric: tabular-nums; font-weight: 500; }
+
+.rank { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.rank li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+.tile { width: 32px; height: 32px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; }
+.tile .ic { width: 18px; height: 18px; }
+.rank .n { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank .u { color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; display: block; }
+.rank .amt { font-variant-numeric: tabular-nums; font-weight: 500; }
+
+.empty { padding: var(--s-6) 0; color: var(--text-muted); border-top: 1px solid var(--border); }
+.empty b { display: block; color: var(--text); font-weight: 600; margin-bottom: var(--s-1); }
+.empty .btn { margin-top: var(--s-4); }
+.errbox { border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); border-radius: var(--r-lg); padding: var(--s-4); display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); flex-wrap: wrap; }
+.errbox b { display: block; font-weight: 600; }
+
+/* phone and tablet */
+@media (max-width: 1024px) {
+  .shell { display: block; }
+  .shell > aside { display: none; }
+  .mobilebar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .tabbar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding-inline: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--surface); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; font-weight: 500; }
+  .tabbar a[aria-current="page"] { color: var(--accent); }
+  .tabbar .ic { width: 22px; height: 22px; }
+  main { padding: var(--s-6) var(--s-4) calc(56px + var(--s-8) + env(safe-area-inset-bottom)); }
+  .cols { grid-template-columns: minmax(0, 1fr); gap: var(--rhythm-group); margin-top: var(--rhythm-group); }
+  .cols + .cols { margin-top: var(--rhythm-group); }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 8px; }
+  .kpi { padding: var(--s-4) var(--s-4); }
+  .kpi:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .kpi:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .kpi .v { font-size: 28px; }
+  .head { align-items: flex-start; }
+  .chart { height: 220px; }
+}
+@media (max-width: 640px) {
+  .head { flex-wrap: wrap; gap: var(--s-4); }
+  .head .btn { min-height: 44px; }
+  .head p { font-size: var(--text-sm); line-height: 20px; }
+  table.reflow thead { display: none; }
+  table.reflow, table.reflow tbody, table.reflow tr, table.reflow td { display: block; }
+  table.reflow tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "cust total" "items status"; gap: 2px var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--border); align-items: center; }
+  table.reflow td { border: 0; padding: 0; height: auto; }
+  table.reflow .c-cust { grid-area: cust; }
+  table.reflow .c-total { grid-area: total; text-align: right; }
+  table.reflow .c-items { grid-area: items; max-width: none; }
+  table.reflow .c-status { grid-area: status; text-align: right; }
+  table.reflow .c-id, table.reflow .c-time { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-today" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></symbol>
+  <symbol id="i-orders" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.800 6.100C15.500 5 17 4.500 19 2c1 2 2 4.200 2 8 0 5.500-4.800 10-10 10z"/><path d="M2 21c0-3 1.850-5.360 5.080-6C9.500 14.520 12 13 13 12"/></symbol>
+  <symbol id="i-pot" viewBox="0 0 24 24"><path d="M4 8h16v3H4zM6 11l1.500 9h9L18 11"/><path d="M12 8V4M12 5c-2-2-4-1-4 0M12 5c2-2 4-1 4 0"/></symbol>
+  <symbol id="i-stock" viewBox="0 0 24 24"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1"/><path d="M16 3.100a4 4 0 0 1 0 7.800M22 21v-1a6 6 0 0 0-4-5.700"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M1 6h13v10H1zM14 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.600 13.400l-7.200 7.200a2 2 0 0 1-2.800 0L2 12V2h10l8.600 8.600a2 2 0 0 1 0 2.800z"/><circle cx="7" cy="7" r="1"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M8 17V9M13 17V5M18 17v-6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside aria-label="Sidebar">
+    <div class="side-in">
+      <a class="logo" href="#" aria-label="Fernhill home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M14 22V12M14 14c-4 0-6-2-6-6 4 0 6 2 6 6zM14 17c3 0 5-1.500 5-5-3 0-5 1.500-5 5z" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Fernhill
+      </a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-today"/></svg>Today</a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-orders"/></svg>Orders<span class="count" id="nav-orders"></span></a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-leaf"/></svg>Products</a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-stock"/></svg>Stock<span class="count" id="nav-stock"></span></a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Customers</a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-truck"/></svg>Deliveries</a></li>
+        </ul>
+        <div class="grp" id="grow-h">Grow</div>
+        <ul aria-labelledby="grow-h">
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-tag"/></svg>Promotions</a></li>
+          <li><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>Reports</a></li>
+        </ul>
+      </nav>
+      <div class="acct"><span class="avatar" aria-hidden="true">IH</span><div><b>Imogen Hale</b><span>Owner, Fernhill Plants</span></div></div>
+    </div>
+  </aside>
+
+  <div>
+    <div class="mobilebar">
+      <a class="logo" href="#" aria-label="Fernhill home" style="padding:0">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M14 22V12M14 14c-4 0-6-2-6-6 4 0 6 2 6 6zM14 17c3 0 5-1.500 5-5-3 0-5 1.500-5 5z" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Fernhill
+      </a>
+      <span class="avatar" aria-label="Imogen Hale, owner">IH</span>
+    </div>
+
+    <main id="main">
+      <div class="page">
+        <div class="head">
+          <div>
+            <h1>Today</h1>
+            <p id="sub"></p>
+          </div>
+          <a class="btn" id="primary" href="#"></a>
+        </div>
+        <dl class="kpis" id="kpis"></dl>
+
+        <div class="cols">
+          <section aria-labelledby="chart-h">
+            <div class="phead"><h2 id="chart-h">Sales since 08:00</h2></div>
+            <div id="chart-wrap"></div>
+          </section>
+          <section aria-labelledby="todo-h">
+            <div class="phead"><h2 id="todo-h">Needs attention</h2></div>
+            <div id="todo"></div>
+          </section>
+        </div>
+
+        <div class="cols">
+          <section aria-labelledby="ord-h">
+            <div class="phead"><h2 id="ord-h">Recent orders</h2><a class="link" href="#" id="ord-all">View all orders</a></div>
+            <div id="orders"></div>
+          </section>
+          <section aria-labelledby="best-h">
+            <div class="phead"><h2 id="best-h">Best sellers today</h2></div>
+            <div id="best"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+  <a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-today"/></svg>Today</a>
+  <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-orders"/></svg>Orders</a>
+  <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-leaf"/></svg>Products</a>
+  <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Customers</a>
+  <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg>More</a>
+</nav>
+
+<script>
+// ---- one data module; every number below derives from it ----
+const NOW = { h: 15, m: 20 };                       // fixed "today": Thu 26 Nov 2026, 15:20
+const NOW_T = NOW.h + NOW.m / 60, COLLECT = 17;
+const qs = new URLSearchParams(location.search), MODE = qs.get('state');
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const gbp0 = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
+const CAT = {
+  monstera: { name: 'Monstera deliciosa', price: 34, kind: 'plant', stock: 14, reorder: 6 },
+  snake: { name: 'Snake plant', price: 18, kind: 'plant', stock: 31, reorder: 10 },
+  pilea: { name: 'Pilea peperomioides', price: 14.5, kind: 'plant', stock: 5, reorder: 8 },
+  fiddle: { name: 'Fiddle-leaf fig, 90 cm', price: 49, kind: 'plant', stock: 3, reorder: 4 },
+  zz: { name: 'ZZ plant', price: 26, kind: 'plant', stock: 11, reorder: 6 },
+  cala: { name: 'Calathea orbifolia', price: 22, kind: 'plant', stock: 4, reorder: 6 },
+  pothos: { name: 'Golden pothos', price: 11, kind: 'plant', stock: 22, reorder: 8 },
+  pot: { name: 'Terracotta pot, 18 cm', price: 12, kind: 'pot', stock: 40, reorder: 12 },
+  mist: { name: 'Brass mister', price: 16, kind: 'pot', stock: 12, reorder: 5 },
+  soil: { name: 'Aroid mix, 5 L', price: 9.5, kind: 'pot', stock: 27, reorder: 10 },
+};
+const DELIVERY_FEE = 4.95, FREE_OVER = 40;
+// [id, "HH:MM", customer, items, status]
+const RAW = [
+  [2841, '08:12', 'Priya Raghunathan', 'monstera', 'Dispatched'], [2842, '08:47', 'Daniel Reyes', 'snake,pot', 'Dispatched'],
+  [2843, '09:05', 'Mei Lin Tan', 'pilea:2', 'Dispatched'], [2844, '09:31', 'Tomasz Wójcik', 'fiddle', 'Dispatched'],
+  [2845, '09:58', 'Amara Okafor', 'pothos:2,soil', 'Dispatched'], [2846, '10:14', 'Hannah Whitcombe', 'zz,pot', 'Dispatched'],
+  [2847, '10:26', 'Oliver Banks', 'cala', 'Dispatched'], [2848, '10:52', 'Siobhán Ní Bhriain', 'monstera,pot:2', 'Dispatched'],
+  [2849, '11:09', 'Rahul Mehta', 'snake:2', 'Dispatched'], [2850, '11:37', 'Grace Adeyemi', 'pilea,mist', 'Packed'],
+  [2851, '11:58', 'Luca Ferrante', 'zz:2', 'Packed'], [2852, '12:20', 'Beth Marlow', 'pothos', 'Packed'],
+  [2853, '12:41', 'Kwame Mensah', 'fiddle,pot,soil:2', 'Packed'], [2854, '13:05', 'Eleanor Voss', 'monstera', 'Packed'],
+  [2855, '13:22', 'Yusuf Hassan', 'snake,zz', 'To pack'], [2856, '13:48', 'Chloe Brennan', 'cala,pilea', 'To pack'],
+  [2857, '14:10', 'Ivana Kovač', 'monstera,snake,soil', 'To pack'], [2858, '14:36', 'Nia Thomas', 'pothos:3', 'To pack'],
+  [2859, '14:51', 'Sam Pritchard', 'fiddle', 'To pack'], [2860, '15:08', 'Joanna Lis', 'pot:3,soil', 'To pack'],
+  [2861, '15:17', 'Marcus Webb', 'mist,pothos', 'To pack'],
+];
+const ORDERS = RAW.map(([id, time, customer, items, status]) => {
+  const lines = items.split(',').map((s) => { const [k, q = 1] = s.split(':'); return { k, qty: +q }; });
+  const sub = lines.reduce((s, l) => s + CAT[l.k].price * l.qty, 0);
+  const total = Math.round((sub + (sub < FREE_OVER ? DELIVERY_FEE : 0)) * 100) / 100;
+  const [h, m] = time.split(':').map(Number);
+  return { id, time, t: h + m / 60, customer, lines, total, status };
+});
+// yesterday, sales and order count per hour 08..19
+const YH = [[92, 2], [118, 3], [64, 2], [188, 4], [95, 2], [142, 3], [71, 2], [163, 4], [138, 3], [96, 2], [84, 2], [58, 1]];
+const VISITORS = { today: 1184, yesterdayAtNow: 1021 };
+
+const orders = MODE === 'empty' ? [] : ORDERS;
+const sum = (a) => a.reduce((s, x) => s + x, 0);
+const ysCum = (t) => { const i = Math.floor(t) - 8, f = t - Math.floor(t); const h = YH.slice(0, i); return { s: sum(h.map((x) => x[0])) + (YH[i] ? f * YH[i][0] : 0), n: Math.round(sum(h.map((x) => x[1])) + (YH[i] ? f * YH[i][1] : 0)) }; };
+const yNow = ysCum(NOW_T);
+const salesToday = sum(orders.map((o) => o.total));
+const countToday = orders.length;
+const avgToday = countToday ? salesToday / countToday : 0, avgY = yNow.s / yNow.n;
+const visitors = MODE === 'empty' ? 0 : VISITORS.today;
+const convToday = visitors ? countToday / visitors * 100 : 0, convY = yNow.n / VISITORS.yesterdayAtNow * 100;
+const toPack = orders.filter((o) => o.status === 'To pack');
+const lowStock = MODE === 'empty' ? [] : Object.values(CAT).filter((p) => p.stock <= p.reorder).sort((a, b) => a.stock / a.reorder - b.stock / b.reorder);
+const $ = (s) => document.querySelector(s);
+const pct = (a, b) => { const p = (a / b - 1) * 100; return `${p >= 0 ? '+' : '−'}${Math.abs(p).toFixed(1)}%`; };
+const sgn = (n) => `${n >= 0 ? '+' : '−'}${Math.abs(n)}`;
+const plural = (n, one, many) => `${n} ${new Intl.PluralRules('en-GB').select(n) === 'one' ? one : many}`;
+const hhmm = (t) => `${String(Math.floor(t)).padStart(2, '0')}:${String(Math.round((t % 1) * 60)).padStart(2, '0')}`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ic = (id) => `<svg class="ic" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+// ---- header and KPIs ----
+const left = Math.round((COLLECT - NOW_T) * 60), leftTxt = `${Math.floor(left / 60)} h ${left % 60} min`;
+$('#sub').textContent = MODE === 'empty' ? 'Thursday 26 November. No orders yet.' : `Thursday 26 November, updated ${hhmm(NOW_T)}`;
+const primary = $('#primary');
+if (MODE === 'empty') primary.textContent = 'Add your first product';
+else primary.textContent = toPack.length ? `Pack ${toPack.length} orders` : 'View orders';
+$('#nav-orders').textContent = toPack.length || '';
+$('#nav-stock').textContent = lowStock.length || '';
+const delta = (txt) => `<div class="d">${txt}</div>`;
+const K = [
+  ['Sales', gbp.format(salesToday), countToday ? `${pct(salesToday, yNow.s)} vs yesterday at ${hhmm(NOW_T)}` : 'No sales yet'],
+  ['Orders', String(countToday), countToday ? `${sgn(countToday - yNow.n)} vs yesterday at ${hhmm(NOW_T)}` : 'No orders yet'],
+  ['Average order', gbp.format(avgToday), countToday ? `${pct(avgToday, avgY)} vs yesterday` : 'Needs a first order'],
+  ['Conversion', `${convToday.toFixed(1)}%`, visitors ? `${new Intl.NumberFormat('en-GB').format(visitors)} visits, ${convY.toFixed(1)}% yesterday` : 'No visits yet'],
+];
+$('#kpis').innerHTML = K.map(([l, v, d]) => `<div class="kpi"><dt>${l}</dt><dd><div class="v">${v}</div>${delta(d)}</dd></div>`).join('');
+
+// ---- chart: cumulative sales, today vs yesterday ----
+function chartHTML() {
+  return `<div class="legend"><span><svg width="24" height="8" aria-hidden="true"><line x1="0" y1="4" x2="24" y2="4" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>Today</span><span><svg width="24" height="8" aria-hidden="true"><line x1="0" y1="4" x2="24" y2="4" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4 4"/></svg>Yesterday</span></div>
+  <div class="chart" id="chart" role="img" aria-label="Cumulative sales from 08:00. Today ${gbp.format(salesToday)} at ${hhmm(NOW_T)}, yesterday ${gbp.format(yNow.s)} at the same time and ${gbp0.format(ysCum(20).s)} for the whole day."></div>`;
+}
+function drawChart() {
+  const el = $('#chart'); if (!el) return;
+  const W = el.clientWidth, H = el.clientHeight, m = { l: 48, r: W < 500 ? 56 : 92, t: 12, b: 28 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const X = (t) => m.l + (t - 8) / 12 * iw, YMAX = 1400, Y = (v) => m.t + ih - v / YMAX * ih;
+  const ticks = [0, 400, 800, 1200];
+  let g = ticks.map((v) => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--border)"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${v ? gbp0.format(v) : '£0'}</text>`).join('');
+  const hrs = W < 500 ? [8, 12, 16, 20] : [8, 10, 12, 14, 16, 18, 20];
+  g += hrs.map((h) => `<text x="${X(h)}" y="${H - 6}" text-anchor="middle">${String(h).padStart(2, '0')}:00</text>`).join('');
+  // yesterday: hourly points
+  const yp = [[8, 0]].concat(YH.map((_, i) => [9 + i, ysCum(9 + i).s]));
+  g += `<polyline fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4 4" points="${yp.map(([t, v]) => `${X(t)},${Y(v)}`).join(' ')}"/>`;
+  g += `<text class="lbl-m" x="${X(20) + 8}" y="${Y(yp[yp.length - 1][1]) + 4}">${gbp0.format(yp[yp.length - 1][1])}</text>`;
+  // today: one point per order
+  if (orders.length) {
+    let c = 0; const tp = [[8, 0]].concat(orders.map((o) => [o.t, (c += o.total)])); tp.push([NOW_T, c]);
+    g += `<line x1="${X(NOW_T)}" x2="${X(NOW_T)}" y1="${m.t}" y2="${m.t + ih}" stroke="var(--border-strong)" stroke-dasharray="2 3"/>`;
+    g += `<polyline fill="none" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" points="${tp.map(([t, v]) => `${X(t)},${Y(v)}`).join(' ')}"/>`;
+    g += `<circle cx="${X(NOW_T)}" cy="${Y(yNow.s)}" r="4" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="2"/>`;
+    g += `<circle cx="${X(NOW_T)}" cy="${Y(c)}" r="5" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"/>`;
+    g += `<text class="lbl" x="${X(NOW_T) - 10}" y="${Y(c) - 12}" text-anchor="end">${gbp.format(c)} at ${hhmm(NOW_T)}</text>`;
+  }
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true">${g}</svg>`;
+}
+$('#chart-wrap').innerHTML = chartHTML();
+if (!orders.length) { $('#chart').insertAdjacentHTML('beforeend', ''); }
+drawChart();
+new ResizeObserver(drawChart).observe($('#chart'));
+if (!orders.length) $('#chart-wrap').insertAdjacentHTML('beforeend', '<p class="psub" style="margin-top:12px">Sales appear here as orders come in. Yesterday’s line shows the pace to beat.</p>');
+
+// ---- needs attention ----
+function todoHTML() {
+  if (!toPack.length && !lowStock.length) return `<div class="empty"><b>Nothing needs you right now</b>Orders to pack and low stock show up here.</div>`;
+  let h = '<ul class="todo">';
+  if (toPack.length) h += `<li><span class="t">${plural(toPack.length, 'order', 'orders')} to pack</span><span class="m">Courier collects at ${COLLECT}:00, in ${leftTxt}</span><a class="link" href="#">Open pack list</a></li>`;
+  if (lowStock.length) {
+    h += `<li class="grp-li"><span class="grp-h">${plural(lowStock.length, 'plant', 'plants')} below reorder level</span></li>`;
+    h += lowStock.map((p) => `<li><span class="t">${esc(p.name)}</span><span class="m num">${p.stock} left, reorder at ${p.reorder}</span><a class="link" href="#" aria-label="Reorder ${esc(p.name)}">Reorder</a></li>`).join('');
+  }
+  return h + '</ul>';
+}
+$('#todo').innerHTML = todoHTML();
+
+// ---- recent orders ----
+const itemsText = (o) => { const f = CAT[o.lines[0].k].name.replace(/, .*/, ''); return o.lines.length > 1 ? `${f} +${o.lines.length - 1} more` : f; };
+const BADGE = { 'To pack': 'b-warn', Packed: 'b-info', Dispatched: 'b-ok' };
+function ordersHTML() {
+  if (MODE === 'error') return `<div class="errbox" role="alert"><div><b>Couldn’t load recent orders</b>Your orders are safe. Check your connection and try again.</div><button class="btn secondary" type="button" id="retry">Try again</button></div>`;
+  if (!orders.length) return `<div class="empty"><b>No orders yet</b>Orders appear here as soon as a customer checks out. Share your shop link to get the first one.<br><button class="btn secondary" type="button">Copy shop link</button></div>`;
+  const rows = orders.slice(-8).reverse();
+  return `<table class="reflow"><thead><tr><th scope="col">Customer</th><th scope="col">Items</th><th scope="col">Order</th><th scope="col">Time</th><th scope="col">Status</th><th scope="col" class="r">Total</th></tr></thead><tbody>${rows.map((o) =>
+    `<tr><td class="c-cust"><a href="#">${esc(o.customer)}</a></td><td class="c-items" title="${esc(o.lines.map((l) => `${l.qty} x ${CAT[l.k].name}`).join(', '))}">${esc(itemsText(o))}</td><td class="c-id">#${o.id}</td><td class="c-time">${o.time}</td><td class="c-status"><span class="badge ${BADGE[o.status]}">${o.status}</span></td><td class="r c-total">${gbp.format(o.total)}</td></tr>`).join('')}</tbody></table>`;
+}
+function renderOrders() { $('#orders').innerHTML = ordersHTML(); $('#retry')?.addEventListener('click', () => { history.replaceState(null, '', location.pathname); location.reload(); }); }
+renderOrders();
+if (MODE === 'empty' || MODE === 'error') $('#ord-all').hidden = MODE === 'empty';
+
+// ---- best sellers by revenue ----
+const agg = {};
+orders.forEach((o) => o.lines.forEach((l) => { agg[l.k] = agg[l.k] || { k: l.k, units: 0, rev: 0 }; agg[l.k].units += l.qty; agg[l.k].rev += l.qty * CAT[l.k].price; }));
+const best = Object.values(agg).sort((a, b) => b.rev - a.rev).slice(0, 5);
+$('#best').innerHTML = best.length ? `<ol class="rank">${best.map((b) => `<li><span class="tile" aria-hidden="true">${ic(CAT[b.k].kind === 'plant' ? 'i-leaf' : 'i-pot')}</span><div style="min-width:0"><div class="n">${esc(CAT[b.k].name)}</div><span class="u">${b.units} sold</span></div><span class="amt">${gbp0.format(b.rev)}</span></li>`).join('')}</ol>` : `<div class="empty"><b>Best sellers appear after your first sale</b>Products rank by sales for the day.</div>`;
+</script>
+</body>
+</html>

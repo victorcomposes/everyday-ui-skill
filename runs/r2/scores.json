@@ -1,0 +1,402 @@
+{
+  "01-settings": {
+    "baseline": {
+      "hierarchy": 6,
+      "layout": 6,
+      "typography": 6.5,
+      "colour": 6.5,
+      "craft": 5.5,
+      "realism": 6.5,
+      "mobile": 6.5,
+      "dark": 7,
+      "overall": 5.5,
+      "notes": "opusA: desktop.png: notification row dividers stop short of the toggle column and leave orphan line stubs above the '-' cells | sonnetA: desktop.png: Notifications column headers hide behind the save bar and the generic indigo-on-grey look has no character"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 7,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 6,
+      "dark": 2,
+      "overall": 6.5,
+      "notes": "opusA: dark.png: no dark mode at all, the page renders identical to light mode | sonnetA: dark.png: identical to the light page, no dark theme exists"
+    },
+    "anthropic": {
+      "hierarchy": 6.5,
+      "layout": 6.5,
+      "typography": 8,
+      "colour": 7,
+      "craft": 7,
+      "realism": 8,
+      "mobile": 7,
+      "dark": 2,
+      "overall": 6,
+      "notes": "opusA: desktop.png: the navy sidebar background ends at 900px and leaves a blank white column below it | sonnetA: desktop.png: the navy sidebar ends at 780px and leaves a blank column, and dark.png ignores dark mode"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 8,
+      "colour": 8,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 7,
+      "dark": 8,
+      "overall": 8,
+      "notes": "opusA: mobile-fold.png: the section tab row clips a stray fragment of the 'Danger zone' tab at the right edge with no scroll cue | sonnetA: mobile-fold.png: the fourth tab is cut off at the right edge and the first screen shows only two fields"
+    }
+  },
+  "02-invoices-table": {
+    "baseline": {
+      "hierarchy": 6.5,
+      "layout": 6.5,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 6.5,
+      "realism": 7.5,
+      "mobile": 7,
+      "dark": 7.5,
+      "overall": 6,
+      "notes": "opusA: desktop.png: the sidebar background stops at 900px and the page below it turns grey | sonnetA: desktop.png: the sidebar background ends at 900px and plain text-link actions look unfinished"
+    },
+    "prompt": {
+      "hierarchy": 6.5,
+      "layout": 6,
+      "typography": 6.5,
+      "colour": 6.5,
+      "craft": 6,
+      "realism": 5,
+      "mobile": 6.5,
+      "dark": 2,
+      "overall": 5,
+      "notes": "opusA: desktop.png: the 'All invoices' card says 11 while the table footer says 12 of 12, and the sidebar background ends at 900px | sonnetA: desktop-fold.png: the 'All invoices' tile reads '11 - $34,993.65' while the footer says 12 invoices, and the sidebar stops at 900px in desktop.png"
+    },
+    "anthropic": {
+      "hierarchy": 7.5,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 8.5,
+      "mobile": 6.5,
+      "dark": 2,
+      "overall": 7,
+      "notes": "opusA: mobile-fold.png: the app navigation (Invoices, Quotes, Customers...) disappears on phone with no menu button to reach it | sonnetA: mobile.png: a filled Send or Mark as paid button on every card makes the list heavy and tall"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 8,
+      "realism": 8.5,
+      "mobile": 7.5,
+      "dark": 8,
+      "overall": 8,
+      "notes": "opusA: desktop.png: the inline 'Send reminder' links push into the amount column and make the right edge of the table ragged | sonnetA: mobile-fold.png: a stray '...' button floats beside the title away from the New invoice button"
+    }
+  },
+  "03-sign-in": {
+    "baseline": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 6.5,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 8,
+      "dark": 7.5,
+      "overall": 6.5,
+      "notes": "opusA: desktop-fold.png: the logo sits at x=48 while the form starts at x=153, so the left panel has two unrelated left edges | sonnetA: desktop-fold.png: the right panel is a plain striped green field with two floating cards and a small quote, weaker than the form side"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 6,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 6.5,
+      "realism": 7,
+      "mobile": 7.5,
+      "dark": 2,
+      "overall": 5,
+      "notes": "opusA: desktop-fold.png: the right panel stacks three small cards at the top and leaves a large dead green void in the middle | sonnetA: desktop-fold.png: the green panel pins three small cards at the top and a quote at the bottom with about 450px of empty void between"
+    },
+    "anthropic": {
+      "hierarchy": 8,
+      "layout": 7.5,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 7.5,
+      "dark": 2,
+      "overall": 7.5,
+      "notes": "opusA: dark.png: no dark mode, identical to light; also desktop-fold.png shows a space before each comma in the receipt lines ('Mon 16 Nov , receipt') | sonnetA: dark.png: identical to the light page, no dark theme exists"
+    },
+    "skill": {
+      "hierarchy": 7.5,
+      "layout": 6.5,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 7.5,
+      "realism": 8.5,
+      "mobile": 7,
+      "dark": 7.5,
+      "overall": 7,
+      "notes": "opusA: desktop-fold.png: the subtitle sits almost on the 'Sign in to Ledgerline' heading with no breathing room | sonnetA: desktop-fold.png: the form sits high in the right half instead of centred, and the heading and subtitle are cramped"
+    }
+  },
+  "04-empty-onboarding": {
+    "baseline": {
+      "hierarchy": 7.5,
+      "layout": 6.5,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 7.5,
+      "dark": 7.5,
+      "overall": 5.5,
+      "notes": "opusA: desktop-fold.png: the headline breaks so 'it.' sits alone on the second line | sonnetA: desktop-fold.png: the headline wraps and leaves 'it.' alone on the second line"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 7.5,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 8,
+      "realism": 8,
+      "mobile": 7,
+      "dark": 2,
+      "overall": 7.5,
+      "notes": "opusA: dark.png: no dark mode, identical to light mode | sonnetA: desktop.png: the hero, three cards, checklist and invite form all compete, too much for an empty state, and dark.png ignores dark mode"
+    },
+    "anthropic": {
+      "hierarchy": 7,
+      "layout": 6,
+      "typography": 7,
+      "colour": 6,
+      "craft": 6.5,
+      "realism": 7.5,
+      "mobile": 6.5,
+      "dark": 2,
+      "overall": 5.5,
+      "notes": "opusA: desktop.png: the white sidebar ends at 900px and a grey strip shows beneath it | sonnetA: desktop.png: a very heavy headline, dotted background, tilted card and five competing blocks, plus a stray 30px strip below the fold, and dark.png ignores dark mode"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 7.5,
+      "typography": 7.5,
+      "colour": 7.5,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 8,
+      "dark": 8,
+      "overall": 7.5,
+      "notes": "opusA: desktop-fold.png: the example-note panel is half empty below its caption, and the highlighted quote leaves a gap before the closing quote mark | sonnetA: mobile.png: the example note drops below the fold under the actions and loses its link to the empty state"
+    }
+  },
+  "05-pricing": {
+    "baseline": {
+      "hierarchy": 7,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 5,
+      "dark": 8,
+      "overall": 6,
+      "notes": "opusB: mobile.png: the compare table shows only the Hobby column with no plan switcher, so Team and Scale cannot be compared on a phone | sonnetB: mobile.png: the compare table shows only the Hobby column with no way to see Team or Scale"
+    },
+    "prompt": {
+      "hierarchy": 6.5,
+      "layout": 6.5,
+      "typography": 6.5,
+      "colour": 6,
+      "craft": 5.5,
+      "realism": 7,
+      "mobile": 4.5,
+      "dark": 7.5,
+      "overall": 5,
+      "notes": "opusB: mobile.png: the compare table overflows sideways and its centred section labels are clipped to MON, AL and SECURIT | sonnetB: mobile.png: the compare table clips the Team and Scale columns and the category labels are cut off"
+    },
+    "anthropic": {
+      "hierarchy": 6.5,
+      "layout": 7,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 7,
+      "dark": 1.5,
+      "overall": 7,
+      "notes": "opusB: desktop-fold.png: the hero and uptime strip push every price below the fold, the prices are cut off mid-digit at the bottom edge | sonnetB: desktop-fold.png: the large hero and uptime bar push the plan prices below the first screen"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 8,
+      "realism": 8,
+      "mobile": 8,
+      "dark": 7.5,
+      "overall": 8,
+      "notes": "opusB: desktop-fold.png: the top nav lists Docs twice (left group and right group) and has no primary sign-up button | sonnetB: desktop.png: the monochrome palette gives the page little brand character and the compare table repeats the card limits"
+    }
+  },
+  "06-checkout": {
+    "baseline": {
+      "hierarchy": 6.5,
+      "layout": 6.5,
+      "typography": 5.5,
+      "colour": 6.5,
+      "craft": 5,
+      "realism": 6.5,
+      "mobile": 5.5,
+      "dark": 6.5,
+      "overall": 5,
+      "notes": "opusB: desktop-fold.png: the quantity steppers wrap inline into the item description (bean [- 2 +]) and the country select is clipped to United Kingdon | sonnetB: desktop-fold.png: the quantity stepper collides with the product description text and the country select truncates United Kingdom"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 5.5,
+      "dark": 1.5,
+      "overall": 6,
+      "notes": "opusB: mobile-fold.png: the full order summary fills the first screen and the Checkout title and breadcrumb only appear below it | sonnetB: mobile-fold.png: the order summary fills the whole first screen so the form starts below the fold"
+    },
+    "anthropic": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 7,
+      "dark": 1.5,
+      "overall": 7.5,
+      "notes": "opusB: desktop.png: the card fields sit below the PayPal option, detached from the selected Credit or debit card row | sonnetB: dark.png: identical to the light page, so there is no dark theme"
+    },
+    "skill": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 8.5,
+      "dark": 8,
+      "overall": 7.5,
+      "notes": "opusB: desktop.png: the only Pay button is in the sidebar at the top, so after entering card details at the bottom of the form there is no button to submit | sonnetB: mobile-fold.png: the sticky pay bar covers the Full name field label at the fold"
+    }
+  },
+  "07-dashboard": {
+    "baseline": {
+      "hierarchy": 7.5,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 6,
+      "realism": 8,
+      "mobile": 6,
+      "dark": 7,
+      "overall": 5.5,
+      "notes": "opusB: desktop-fold.png: the chart y-axis is not linear, £0 to £500 spans twice the height of £500 to £1k and one gridline has no label | sonnetB: mobile-fold.png: the orders delta wraps into a stacked two-line badge with an orphaned arrow"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusB: mobile-fold.png: Orders, Products and Customers vanish from the nav with no menu or tab bar, and the chart axis labels shrink to unreadable size | sonnetB: dark.png: identical to the light page, so there is no dark theme"
+    },
+    "anthropic": {
+      "hierarchy": 8.5,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 8,
+      "realism": 8.5,
+      "mobile": 7,
+      "dark": 1.5,
+      "overall": 7.5,
+      "notes": "opusB: mobile.png: the main navigation disappears entirely on a phone with no menu or tab bar to reach Orders, Plants or Reports | sonnetB: desktop.png: the headline tracking is so tight that the letters nearly touch"
+    },
+    "skill": {
+      "hierarchy": 7,
+      "layout": 7.5,
+      "typography": 7.5,
+      "colour": 6,
+      "craft": 7,
+      "realism": 8,
+      "mobile": 7.5,
+      "dark": 8,
+      "overall": 6.5,
+      "notes": "opusB: mobile-fold.png: KPI comparison lines wrap and leave orphaned 15:20 and yesterday lines, and deltas are all grey so up and down read the same | sonnetB: desktop.png: a large empty gap under the chart and the Needs attention list, and the lower half reads as unstyled lists"
+    }
+  },
+  "08-mobile-banking": {
+    "baseline": {
+      "hierarchy": 6,
+      "layout": 7,
+      "typography": 6.5,
+      "colour": 6.5,
+      "craft": 6,
+      "realism": 7,
+      "mobile": 7,
+      "dark": 6,
+      "overall": 6,
+      "notes": "opusB: mobile-fold.png: the salary row uses an up arrow for incoming money and Send and Request use unrelated icon metaphors (paper plane, download) | sonnetB: desktop.png: the column is bounded by faint hairlines with no frame and the generic gradient card carries the page"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 6,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusB: mobile.png: the page does not scroll past the first screen, so only two transactions are ever reachable | sonnetB: dark.png: identical to the light page, so there is no dark theme"
+    },
+    "anthropic": {
+      "hierarchy": 8,
+      "layout": 7.5,
+      "typography": 7.5,
+      "colour": 7.5,
+      "craft": 7,
+      "realism": 6.5,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusB: mobile-fold.png: header says £116.25 pending but the two pending rows total £17.25, and the page does not scroll past three transactions | sonnetB: dark.png: identical to the light page, so there is no dark theme"
+    },
+    "skill": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 8,
+      "mobile": 7,
+      "dark": 7,
+      "overall": 7,
+      "notes": "opusB: mobile-fold.png: the home screen gives no spending or month-to-date context, only a balance and a transaction list | sonnetB: desktop.png: the flat column floats on a white page with no frame, and serif titles clash with the sans body"
+    }
+  }
+}

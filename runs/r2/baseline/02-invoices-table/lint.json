@@ -1,0 +1,99 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside"
+    ]
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 8,
+  "minFontPx": 11.6667,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(103, 112, 132)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(15, 118, 110)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 46,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Export CSV",
+        "w": 101,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "+ New invoice",
+        "w": 121,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 332,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "All time\nLast 30 days\nLast 90 ",
+        "w": 332,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "All",
+        "w": 43,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Due 4",
+        "w": 64,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Overdue 3",
+        "w": 92,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Paid 7",
+        "w": 65,
+        "h": 32
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

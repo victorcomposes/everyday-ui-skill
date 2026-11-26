@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home - Halden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600&family=Source+Sans+3:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #1f5f9e; --accent-hover: #174b7d; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a; --on-deep: #ffffff; --on-deep-muted: #b9c8ee; --accent-on-deep: #7a9cff;
+  --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-lg: 18px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+  --rhythm-tight: 4px; --rhythm-near: 8px; --rhythm-content: 24px; --rhythm-group: 32px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #0c0e12; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef; --accent-on-deep: #7fb0e6;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg-subtle); color: var(--text); font: 400 var(--text-md)/24px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); font-weight: 600; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 600 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+#sheet-h:focus { outline: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 30; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.num { font-variant-numeric: tabular-nums; }
+.ic { width: 24px; height: 24px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: 16px; font-weight: 600; background: var(--warning-subtle); color: var(--warning); }
+
+/* phone-only screen: one centred column on desktop */
+.col { position: relative; max-width: 430px; margin: 0 auto; background: var(--bg); min-height: 100dvh; display: flex; flex-direction: column; }
+@media (min-width: 431px) {
+  .col { margin-block: 24px; min-height: calc(100dvh - 48px); border: 1px solid var(--border); border-radius: var(--r-xl); }
+  .tabbar { border-radius: 0 0 var(--r-xl) var(--r-xl); }
+}
+
+/* top bar */
+.topbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-3); height: 56px; padding: 0 var(--s-4); background: var(--bg); border-bottom: 1px solid transparent; border-radius: var(--r-xl) var(--r-xl) 0 0; transition: border-color var(--t-fast) var(--ease); }
+.topbar.scrolled { border-bottom-color: var(--border); }
+.topbar h1 { margin-right: auto; }
+.iconbtn { position: relative; display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-full); border: 0; background: transparent; color: var(--text); cursor: pointer; transition: background-color var(--t-fast) var(--ease); }
+.iconbtn:hover { background: var(--bg-subtle); }
+.iconbtn .cnt { position: absolute; top: 3px; right: 1px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--r-full); background: var(--accent); color: var(--on-accent); font-size: var(--text-xs); font-weight: 600; line-height: 18px; text-align: center; box-shadow: 0 0 0 2px var(--bg); font-variant-numeric: tabular-nums; }
+.avatarlink { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-full); }
+.avatar { width: 36px; height: 36px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-sm); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); }
+
+main { flex: 1; padding: var(--s-2) var(--s-4) var(--s-6); }
+
+/* balance */
+.balance { background: var(--brand-deep); color: var(--on-deep); border-radius: var(--r-xl); padding: var(--s-5) var(--s-5) var(--s-5); }
+.balance .row { display: flex; justify-content: space-between; align-items: baseline; color: var(--on-deep-muted); }
+.balance .amt { margin: var(--s-2) 0 var(--s-1); font: 600 40px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.balance .pend { color: var(--on-deep-muted); }
+.balance .pend b { color: var(--on-deep); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* quick actions */
+.actions { margin-top: var(--rhythm-content); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3); }
+.act { display: flex; flex-direction: column; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0; border: 0; background: none; font-weight: 500; font-size: var(--text-sm); line-height: 20px; cursor: pointer; }
+.act .tile { width: 56px; height: 56px; border-radius: var(--r-lg); display: grid; place-items: center; background: var(--accent-subtle); color: var(--accent); transition: background-color var(--t-fast) var(--ease); }
+.act:hover .tile { background: color-mix(in srgb, var(--accent) 16%, var(--accent-subtle)); }
+.act.primary .tile { background: var(--accent); color: var(--on-accent); }
+.act.primary:hover .tile { background: var(--accent-hover); }
+
+/* transactions */
+.tx { margin-top: var(--rhythm-group); }
+.txhead { display: flex; justify-content: space-between; align-items: center; min-height: 44px; }
+.txhead .link { display: inline-flex; align-items: center; min-height: 44px; }
+.day { margin: var(--s-3) 0 0; padding: var(--s-2) 0; color: var(--text-muted); font-size: var(--text-sm); font-weight: 600; line-height: 20px; }
+.rows { list-style: none; margin: 0; padding: 0; }
+.rows li + li { border-top: 1px solid var(--border); }
+.rowl { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; min-height: 64px; padding: var(--s-2) 0; }
+.mk { width: 40px; height: 40px; background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-sm); }
+.mk.sq { border-radius: var(--r-md); }
+.mk.p { border-radius: var(--r-full); }
+.rowl .n { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rowl .m { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); font-size: var(--text-sm); line-height: 20px; }
+.rowl .a { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rowl .a.in { color: var(--success); }
+.empty { margin-top: var(--s-3); padding: var(--s-8) var(--s-4); border: 1px dashed var(--border-strong); border-radius: var(--r-lg); text-align: center; color: var(--text-muted); }
+.empty b { display: block; color: var(--text); font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--s-1); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--s-5); border-radius: var(--r-md); border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent); font-weight: 600; cursor: pointer; }
+.btn.secondary { background: var(--bg); color: var(--text); border-color: var(--border-strong); }
+.btn.secondary:hover { background: var(--bg-subtle); }
+.empty .btn { margin-top: var(--s-4); }
+
+/* tab bar */
+.tabbar { position: sticky; bottom: 0; z-index: 5; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-2); padding: 0 var(--s-2) env(safe-area-inset-bottom); background: var(--surface); border-top: 1px solid var(--border); }
+.tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; font-weight: 600; }
+.tabbar a[aria-current="page"] { color: var(--accent); }
+
+/* sheet */
+dialog { border: 0; padding: 0; width: min(430px, 100%); max-width: 100%; margin: auto auto 0; background: var(--surface); color: var(--text); border-radius: var(--r-xl) var(--r-xl) 0 0; max-height: 88dvh; overflow: auto; box-shadow: 0 -8px 32px rgb(16 24 40 / 0.2); }
+dialog::backdrop { background: rgb(16 24 40 / 0.45); }
+dialog[open] { animation: sheet var(--t-slow) var(--ease); }
+@keyframes sheet { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.grab { width: 36px; height: 4px; border-radius: var(--r-full); background: var(--border-strong); margin: var(--s-2) auto 0; }
+.sheet-in { padding: 0 var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom)); }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; min-height: 56px; }
+.sheet-head button:focus-visible, .rec:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; }
+.sheet-head button { min-height: 44px; padding: 0 var(--s-2); border: 0; background: none; color: var(--accent); font-weight: 600; cursor: pointer; }
+.sheet-in .day { margin-top: 0; }
+.rec { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s-3); align-items: center; width: 100%; min-height: 64px; padding: var(--s-2) 0; border: 0; background: none; text-align: left; cursor: pointer; }
+.rec .n { font-weight: 600; }
+.rec .s { color: var(--text-muted); font-size: var(--text-sm); line-height: 20px; display: block; }
+.sheet-in .btn { width: 100%; margin-top: var(--s-4); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-req" viewBox="0 0 24 24"><path d="M17 7 7 17M16 17H7V8"/></symbol>
+  <symbol id="i-add" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 9.500V21h14V9.500"/></symbol>
+  <symbol id="i-pay" viewBox="0 0 24 24"><path d="M7 7h13l-3-3M17 17H4l3 3"/></symbol>
+  <symbol id="i-insights" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.200"/><circle cx="12" cy="12" r="1.200"/><circle cx="19" cy="12" r="1.200"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0"/></symbol>
+</svg>
+
+<div class="col">
+  <header class="topbar" id="topbar">
+    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><rect x="6.500" y="14" width="3.500" height="7.500" rx="1" fill="var(--on-accent)"/><rect x="12.250" y="9.500" width="3.500" height="12" rx="1" fill="var(--on-accent)"/><rect x="18" y="6" width="3.500" height="15.500" rx="1" fill="var(--on-accent)"/></svg>
+    <h1>Home</h1>
+    <button class="iconbtn" type="button" aria-label="Notifications, 2 unread"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span class="cnt" aria-hidden="true">2</span></button>
+    <a class="avatarlink" href="#"><span class="avatar" aria-hidden="true">AO</span><span class="sr-only">Your profile</span></a>
+  </header>
+
+  <main id="main">
+    <section class="balance" aria-label="Everyday account balance">
+      <div class="row"><span>Everyday account</span><span class="num">&bull;&bull; 4821</span></div>
+      <div class="amt" id="bal"></div>
+      <div class="pend" id="pend"></div>
+    </section>
+
+    <div class="actions" role="group" aria-label="Quick actions" id="actions"></div>
+
+    <section class="tx" aria-labelledby="tx-h">
+      <div class="txhead"><h2 id="tx-h">Recent transactions</h2><a class="link" href="#" id="seeall">See all</a></div>
+      <div id="txlist"></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="Main">
+    <a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
+    <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-pay"/></svg>Payments</a>
+    <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-card"/></svg>Cards</a>
+    <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-insights"/></svg>Insights</a>
+    <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg>More</a>
+  </nav>
+</div>
+
+<dialog id="sheet" aria-labelledby="sheet-h">
+  <div class="grab" aria-hidden="true"></div>
+  <div class="sheet-in">
+    <div class="sheet-head"><h2 id="sheet-h" tabindex="-1" autofocus>Send money</h2><button type="button" id="sheet-close">Cancel</button></div>
+    <p class="day">Recent recipients</p>
+    <ul class="rows" id="recs"></ul>
+    <button class="btn secondary" type="button" id="newrec">Add a new recipient</button>
+  </div>
+</dialog>
+
+<script>
+// ---- one data module; balance, pending, groups and signs derive from it ----
+const TODAY = new Date('2026-11-26T10:30:00');
+const MODE = new URLSearchParams(location.search);
+const EMPTY = MODE.get('state') === 'empty';
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const BALANCE = EMPTY ? 0 : 4286.52;
+// date offset in days from TODAY, merchant, category, amount (negative = money out), pending, person?
+const TX = EMPTY ? [] : [
+  [0, 'Northline Rail', 'Travel', -18.40, true], [0, 'Tolland Coffee', 'Eating out', -4.20, true],
+  [-1, 'Kestrel Analytics Ltd', 'Salary', 2480.00], [-1, 'Greenfield Grocers', 'Groceries', -42.18], [-1, 'Streamly', 'Subscriptions', -10.99],
+  [-3, 'Daniel Reyes', 'Transfer', 30.00, false, true], [-3, 'Fernhill Plants', 'Shopping', -38.95], [-3, 'Bramwell Dental Group', 'Health', -65.00],
+  [-4, 'Wharf Road Lettings', 'Rent', -950.00], [-4, 'Citywide Energy', 'Bills', -86.40], [-4, 'Tolland Coffee', 'Eating out', -3.80],
+];
+const RECIPIENTS = [['Daniel Reyes', 'Paid 23 Nov'], ['Mei Lin Tan', 'Paid 18 Nov'], ['Priya Raghunathan', 'Paid 9 Nov'], ['Oliver Banks', 'Paid 2 Nov']];
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const ic = (id) => `<svg class="ic" aria-hidden="true"><use href="#${id}"/></svg>`;
+const money = (n) => (n < 0 ? '−' : '+') + gbp.format(Math.abs(n));
+const dayLabel = (off) => { if (off === 0) return 'Today'; if (off === -1) return 'Yesterday'; const d = new Date(TODAY); d.setDate(d.getDate() + off); return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; };
+const initials = (n) => n.replace(/[^A-Za-z ]/g, '').split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+
+// ---- balance ----
+const pending = TX.filter((t) => t[4]).reduce((s, t) => s + Math.abs(t[3]), 0);
+$('#bal').textContent = gbp.format(BALANCE);
+$('#pend').innerHTML = pending ? `<b>${gbp.format(pending)}</b> pending, ${TX.filter((t) => t[4]).length} card payments` : 'Nothing pending';
+
+// ---- quick actions: one filled action. A new account starts with Add money ----
+const ACTS = [['send', 'Send', 'i-send', 'Send money'], ['req', 'Request', 'i-req', 'Request money'], ['add', 'Add money', 'i-add', 'Add money'], ['cards', 'Cards', 'i-card', 'Cards']];
+const PRIMARY = EMPTY ? 'add' : 'send';
+$('#actions').innerHTML = ACTS.map(([id, label, icon, aria]) => `<button type="button" class="act${id === PRIMARY ? ' primary' : ''}" data-act="${id}" aria-label="${aria}"><span class="tile">${ic(icon)}</span><span>${label}</span></button>`).join('');
+
+// ---- transactions grouped by day ----
+function renderTx() {
+  if (!TX.length) {
+    $('#seeall').hidden = true;
+    $('#txlist').innerHTML = `<div class="empty"><b>No transactions yet</b>Card payments, transfers and your salary show up here once you add money.<br><button class="btn" type="button" data-act="add">Add money</button></div>`;
+    return;
+  }
+  const groups = [...new Set(TX.map((t) => t[0]))];
+  $('#txlist').innerHTML = groups.map((off) => `<p class="day">${dayLabel(off)}</p><ul class="rows">${TX.filter((t) => t[0] === off).map(([, name, cat, amt, pend, person]) =>
+    `<li><a class="rowl" href="#"><span class="mk ${person ? 'p' : 'sq'}" aria-hidden="true">${initials(name)}</span>
+      <span style="min-width:0"><span class="n" style="display:block">${esc(name)}</span><span class="m">${esc(cat)}${pend ? '<span class="badge">Pending</span>' : ''}</span></span>
+      <span class="a${amt > 0 ? ' in' : ''}">${money(amt)}</span></a></li>`).join('')}</ul>`).join('');
+}
+renderTx();
+
+// ---- sheet ----
+const sheet = $('#sheet');
+$('#recs').innerHTML = RECIPIENTS.map(([n, s]) => `<li><button class="rec" type="button"><span class="mk p" aria-hidden="true">${initials(n)}</span><span><span class="n">${esc(n)}</span><span class="s">${s}</span></span></button></li>`).join('');
+const openSheet = (title) => { $('#sheet-h').textContent = title; sheet.showModal(); };
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-act]'); if (a && (a.dataset.act === 'send' || a.dataset.act === 'req')) openSheet(a.dataset.act === 'send' ? 'Send money' : 'Request money');
+  if (e.target === sheet || e.target.closest('#sheet-close') || e.target.closest('.rec')) sheet.close();
+});
+if (MODE.get('sheet') === 'open') openSheet('Send money');
+
+// top bar gets a bottom border once the page scrolls
+const bar = $('#topbar');
+const onScroll = () => bar.classList.toggle('scrolled', window.scrollY > 4);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+</script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes - Fieldnote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Brief: empty-states.md (first use) + onboarding.md (first run) + app-shell.md.
+   Crimson kit, Berry variant, standard shape, Bricolage Grotesque + Inter.
+   Job: write the first note. Primary action: Write your first note (the only filled button).
+   Domain detail: a note with a highlighted quote and tags. States: ?state=loading | error. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #a3285f; --accent-hover: #84204c; --accent-subtle: #fcebef; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent); --placeholder: #6b717d;
+  --frame: #fcf5f7; --brand-deep: #40101e; --on-deep: #ffffff; --on-deep-muted: #f1b8c7; --accent-on-deep: #f08ab5;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", var(--font);
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-tight: 4px; --rhythm-near: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #f08ab5; --accent-hover: #f5aacb; --accent-subtle: #37141e; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #1c1417; --brand-deep: #2c0e17; --on-deep: #e9ebef; --on-deep-muted: #eeb1c0; --accent-on-deep: #f08ab5;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 400 14px/20px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 600 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 20px/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } body { font-size: 16px; line-height: 24px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.i.sm { width: 16px; height: 16px; }
+.muted { color: var(--text-muted); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); }
+.logo { display: flex; align-items: center; gap: 10px; padding: var(--s-1) var(--s-2) var(--s-4); font: 600 20px/28px var(--font-display); letter-spacing: -0.02em; }
+.search-btn { display: flex; align-items: center; gap: var(--s-2); width: 100%; height: 36px; margin-bottom: var(--s-5); padding: 0 var(--s-3); border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); color: var(--text-muted); cursor: pointer; text-align: left; }
+.search-btn:hover { border-color: var(--border-strong); }
+.search-btn kbd { margin-left: auto; font: 500 12px/16px var(--font); padding: 0 6px; border: 1px solid var(--border); border-radius: var(--r-sm); }
+.nav-group { display: grid; gap: 2px; }
+.nav-group + .nav-group { margin-top: var(--s-5); }
+.nav-label { padding: 0 var(--s-3) var(--s-1); font-size: 12px; line-height: 16px; color: var(--text-muted); font-weight: 600; }
+.nav-item { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav-item:hover { background: color-mix(in srgb, var(--accent-subtle) 60%, transparent); }
+.nav-item[aria-current="page"] { background: var(--accent-subtle); }
+.nav-item[aria-current="page"] .i { color: var(--accent); }
+.nav-item .count { margin-left: auto; font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); border-top: 1px solid var(--border); }
+.account .meta { min-width: 0; line-height: 18px; }
+.account .meta b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.account .meta span { color: var(--text-muted); font-size: 12px; }
+.avatar { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: 12px; }
+.avatar.sm { width: 24px; height: 24px; font-size: 12px; }
+.topbar { display: none; }
+.main { min-width: 0; }
+.page { padding: var(--s-8) var(--s-8) var(--s-12); max-width: 1264px; }
+
+/* header */
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-4); }
+.page-head .sub { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); }
+.views { display: flex; gap: var(--s-1); margin-top: var(--rhythm-content); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+.view { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 var(--s-3); border: 0; background: none; cursor: pointer; font-weight: 500; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+.view[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.view .n { font-size: 12px; font-variant-numeric: tabular-nums; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.lg { height: 44px; padding: 0 var(--s-6); font-size: 16px; }
+.btn[aria-busy="true"] { cursor: progress; }
+.spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* empty panel */
+.panel { display: grid; grid-template-columns: minmax(0, 1fr) 480px; margin-top: var(--rhythm-content); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+.msg { padding: 48px 56px 48px; min-width: 0; }
+.art { display: block; margin-bottom: var(--s-6); }
+.msg h2 { font-size: 24px; letter-spacing: -0.015em; }
+.msg .why { margin: var(--s-2) 0 0; max-width: 46ch; color: var(--text-muted); font-size: 16px; line-height: 24px; }
+.msg .go { margin-top: var(--s-6); }
+.ways { margin-top: var(--rhythm-group); max-width: 520px; }
+.ways h3 { margin: 0 0 var(--s-2); font-size: 14px; font-weight: 600; color: var(--text-muted); }
+.way { display: flex; align-items: center; gap: var(--s-3); min-height: 56px; padding: var(--s-2) 0; border-top: 1px solid var(--border); }
+.way:last-child { border-bottom: 1px solid var(--border); }
+.way .i { color: var(--text-muted); }
+.way b { display: block; font-weight: 500; }
+.way span { display: block; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+.way .go-i { margin-left: auto; color: var(--text-muted); }
+.way:hover b { text-decoration: underline; text-underline-offset: 3px; }
+.way .tx { min-width: 0; }
+.example { background: var(--bg-subtle); border-left: 1px solid var(--border); padding: 48px 40px; min-width: 0; }
+.example .tag-line { display: flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-4); color: var(--text-muted); font-weight: 500; }
+.note { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5); }
+.note h3 { margin: 0; font: 600 20px/28px var(--font-display); letter-spacing: -0.01em; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
+.chip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: var(--r-sm); background: var(--accent-subtle); color: var(--accent); font-size: 12px; line-height: 16px; font-weight: 500; white-space: nowrap; }
+.note blockquote { margin: var(--s-4) 0 0; padding: 0; font-size: 16px; line-height: 24px; }
+.note mark { background: var(--accent-subtle); color: var(--text); border-radius: 2px; padding: 1px 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.note .take { margin: var(--s-4) 0 0; padding-top: var(--s-4); border-top: 1px solid var(--border); }
+.note .take b { font-weight: 600; }
+.note .src { margin: var(--s-3) 0 0; color: var(--text-muted); font-size: 12px; line-height: 16px; display: flex; align-items: center; gap: 6px; }
+.example .cap { margin: var(--s-3) 0 0; color: var(--text-muted); }
+
+/* populated list (after creating a note) */
+.table-wrap { margin-top: var(--rhythm-content); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+thead th { text-align: left; font-weight: 500; color: var(--text-muted); height: 40px; padding: 0 var(--s-4); background: var(--bg-subtle); border-bottom: 1px solid var(--border); }
+td { height: 56px; padding: 0 var(--s-4); border-bottom: 1px solid var(--border); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+td a { font-weight: 600; display: inline-flex; align-items: center; gap: 10px; }
+td a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.nico { display: grid; place-items: center; width: 24px; height: 24px; border-radius: var(--r-sm); color: var(--accent); background: var(--accent-subtle); flex: none; }
+.nico .i { width: 16px; height: 16px; }
+.c-by { width: 160px; } .c-up { width: 140px; } .c-tags { width: 260px; }
+.skel i { display: block; height: 12px; border-radius: 3px; background: var(--bg-subtle); border: 1px solid var(--border); }
+.state { padding: 56px var(--s-4); text-align: center; }
+.state p { margin: var(--s-2) auto var(--s-4); max-width: 48ch; color: var(--text-muted); }
+
+/* dialog + toast */
+dialog { width: min(560px, calc(100% - 32px)); border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s-6); background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); }
+dialog::backdrop { background: rgb(16 24 40 / 0.5); }
+dialog h2 { font-size: 20px; }
+dialog .sub { margin: var(--rhythm-tight) 0 var(--s-5); color: var(--text-muted); }
+.fld + .fld { margin-top: var(--s-5); }
+.fld label { display: block; font-weight: 500; }
+.fld .h { display: block; color: var(--text-muted); margin-top: var(--s-1); }
+.fld input, .fld textarea { display: block; width: 100%; margin-top: var(--rhythm-near); padding: 0 var(--s-3); height: var(--control-h); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+.fld textarea { height: 120px; padding: var(--s-3); resize: vertical; line-height: 22px; }
+.fld input[aria-invalid="true"] { border: 2px solid var(--danger); padding: 0 11px; }
+.err { display: none; margin: var(--s-2) 0 0; color: var(--danger); font-weight: 500; }
+input[aria-invalid="true"] + .err { display: block; }
+.foot { display: flex; justify-content: flex-end; gap: var(--s-3); margin-top: var(--s-6); }
+.toasts { position: fixed; left: var(--s-6); bottom: var(--s-6); z-index: 50; }
+.toast { padding: var(--s-3) var(--s-4); background: var(--text); color: var(--bg); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+
+/* sheet */
+.sheet { position: fixed; inset: 0; z-index: 40; background: var(--frame); display: flex; flex-direction: column; padding: var(--s-4); overflow-y: auto; }
+.sheet .head { display: flex; align-items: center; justify-content: space-between; padding-bottom: var(--s-3); }
+.sheet .nav-item { min-height: 48px; }
+.mbtn { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; border-radius: var(--r-md); cursor: pointer; }
+
+@media (max-width: 1180px) { .panel { grid-template-columns: minmax(0, 1fr) 380px; } .msg { padding: 40px; } .example { padding: 40px 28px; } }
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 var(--s-2) 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .topbar .logo { padding: 0; min-height: 44px; }
+  .page { padding: var(--s-6) var(--s-4) var(--s-12); }
+  .panel { grid-template-columns: minmax(0, 1fr); }
+  .example { border-left: 0; border-top: 1px solid var(--border); }
+}
+@media (max-width: 640px) {
+  .msg { padding: var(--s-6) var(--s-4); }
+  .art { width: 112px; height: auto; margin-bottom: var(--s-4); }
+  .msg h2 { font-size: 24px; }
+  .msg .go .btn { width: 100%; }
+  .way { min-height: 56px; }
+  .example { padding: var(--s-6) var(--s-4); }
+  .view { height: 44px; }
+  .btn { font-size: 16px; }
+  .toasts { left: var(--s-4); right: var(--s-4); bottom: var(--s-4); }
+  .fld input, .fld textarea { font-size: 16px; }
+  .foot { flex-direction: column-reverse; }
+  .foot .btn { width: 100%; }
+  .c-by, .c-tags, thead { display: none; }
+  table, tbody, tr, td { display: block; }
+  tr { padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--border); }
+  td { height: auto; border: 0; padding: 0; }
+  td.c-up { width: auto; color: var(--text-muted); }
+  .table-wrap { border-left: 0; border-right: 0; border-radius: 0; margin-left: calc(var(--s-4) * -1); margin-right: calc(var(--s-4) * -1); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><path d="M7.5 8.5h.01"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18 14.4c2.2.6 3.5 2.6 3.5 5.6"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M3 6h9M16 6h5M3 12h3M10 12h11M3 18h11M18 18h3"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+    <symbol id="i-import" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></symbol>
+    <symbol id="i-userplus" viewBox="0 0 24 24"><circle cx="10" cy="8" r="3.5"/><path d="M3 20c0-3.6 3-6 7-6s7 2.4 7 6M19 8v6M16 11h6"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M5 17V9c0-2 1-3 3-3M13 17V9c0-2 1-3 3-3M5 13h4v4H5zM13 13h4v4h-4z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></symbol>
+  </defs>
+</svg>
+<a class="skip-link" href="#main">Skip to notes</a>
+
+<div class="shell">
+  <aside>
+    <div class="side">
+      <a class="logo" href="#" aria-label="Fieldnote home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 6.5h7l4 4V21.5H9z" stroke="var(--on-accent)" stroke-width="1.8" stroke-linejoin="round" fill="none"/><path d="M12 16h5" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round"/></svg>
+        <span>Fieldnote</span>
+      </a>
+      <button type="button" class="search-btn"><svg class="i sm" aria-hidden="true"><use href="#i-search"/></svg>Search<kbd>Ctrl K</kbd></button>
+      <nav aria-label="Main" id="mainnav">
+        <div class="nav-group">
+          <div class="nav-label">Library</div>
+          <a class="nav-item" href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-note"/></svg>Notes <span class="count" id="nav-notes">0</span></a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg>Studies</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-pen"/></svg>Highlights</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-tag"/></svg>Tags</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-book"/></svg>Sources</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Workspace</div>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg>Members <span class="count">1</span></a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-sliders"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="account">
+        <span class="avatar" aria-hidden="true">MT</span>
+        <div class="meta"><b>Mei Lin Tan</b><span>Northgate Research</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <a class="logo" href="#" aria-label="Fieldnote home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 6.5h7l4 4V21.5H9z" stroke="var(--on-accent)" stroke-width="1.8" stroke-linejoin="round" fill="none"/><path d="M12 16h5" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round"/></svg>
+        <span>Fieldnote</span>
+      </a>
+      <button class="mbtn" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </header>
+
+    <main id="main" class="page" aria-busy="false">
+      <div class="page-head">
+        <div>
+          <h1>Notes</h1>
+          <p class="sub" id="sub"></p>
+        </div>
+        <button type="button" class="btn primary" id="head-new" hidden><svg class="i sm" aria-hidden="true"><use href="#i-plus"/></svg>New note</button>
+      </div>
+      <div class="views" role="group" aria-label="Note views" id="views"></div>
+      <div id="body"></div>
+    </main>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="head">
+    <a class="logo" href="#" style="padding:0" aria-label="Fieldnote home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 6.5h7l4 4V21.5H9z" stroke="var(--on-accent)" stroke-width="1.8" stroke-linejoin="round" fill="none"/><path d="M12 16h5" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <span>Fieldnote</span>
+    </a>
+    <button class="mbtn" id="menu-close" aria-label="Close menu"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <nav aria-label="Main" id="sheetnav"></nav>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-title">
+  <form id="form" novalidate>
+    <h2 id="dlg-title">New note</h2>
+    <p class="sub">Write down what you heard or saw. You can add highlights and sources later.</p>
+    <div class="fld">
+      <label for="f-title">Title</label>
+      <input id="f-title" name="title" autocomplete="off" aria-describedby="e-title" placeholder="Interview with a customer, week 3">
+      <p class="err" id="e-title">Enter a title for your note, like “Interview with a customer”.</p>
+    </div>
+    <div class="fld">
+      <label for="f-body">Note <span class="muted" style="font-weight:400">(optional)</span></label>
+      <textarea id="f-body" name="body" style="display:block;width:100%;margin-top:8px"></textarea>
+    </div>
+    <div class="fld">
+      <label for="f-tags">Tags <span class="muted" style="font-weight:400">(optional)</span></label>
+      <span class="h">Separate tags with commas.</span>
+      <input id="f-tags" name="tags" autocomplete="off" placeholder="onboarding, interview">
+    </div>
+    <div class="foot">
+      <button type="button" class="btn" id="cancel">Cancel</button>
+      <button type="submit" class="btn primary" id="create">Create note</button>
+    </div>
+  </form>
+</dialog>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+const Q = new URLSearchParams(location.search).get('state') || '';
+const $ = (s) => document.querySelector(s);
+const ME = { name: 'Mei Lin Tan', initials: 'MT' };
+const WORKSPACE = 'Northgate Research';
+const notes = [];   // empty workspace: every count below derives from this array
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const plural = (n, a, b) => `${n} ${new Intl.PluralRules('en').select(n) === 'one' ? a : b}`;
+
+const EXAMPLE = {
+  title: 'Interview with Priya R., onboarding',
+  tags: ['onboarding', 'interview'],
+  quote: ['“I didn’t know where to start, ', 'so I clicked around.', '”'],
+  take: 'Three of five participants skipped the setup checklist.',
+  source: 'Call recording, 32 min',
+};
+const ART = `<svg class="art" width="144" height="112" viewBox="0 0 144 112" aria-hidden="true">
+  <rect x="26" y="6" width="104" height="84" rx="8" fill="var(--bg-subtle)" stroke="var(--border)"/>
+  <rect x="12" y="20" width="104" height="84" rx="8" fill="var(--surface)" stroke="var(--border-strong)"/>
+  <rect x="26" y="36" width="52" height="7" rx="3.5" fill="var(--border-strong)" opacity=".7"/>
+  <rect x="26" y="54" width="76" height="6" rx="3" fill="var(--border)"/>
+  <rect x="26" y="52" width="58" height="10" rx="3" fill="var(--accent-subtle)"/><rect x="26" y="54" width="58" height="6" rx="3" fill="var(--accent)" opacity=".28"/>
+  <rect x="26" y="70" width="64" height="6" rx="3" fill="var(--border)"/>
+  <rect x="26" y="84" width="30" height="10" rx="3" fill="var(--accent)"/>
+</svg>`;
+
+function ways() {
+  return `<div class="ways"><h3>Or start from what you have</h3>
+    <a class="way" href="#"><svg class="i" aria-hidden="true"><use href="#i-import"/></svg><div class="tx"><b>Import notes</b><span>Bring in Markdown files or an export from Notion.</span></div><svg class="i sm go-i" aria-hidden="true"><use href="#i-chev"/></svg></a>
+    <a class="way" href="#"><svg class="i" aria-hidden="true"><use href="#i-mic"/></svg><div class="tx"><b>Upload an interview recording</b><span>Fieldnote turns it into a note you can highlight.</span></div><svg class="i sm go-i" aria-hidden="true"><use href="#i-chev"/></svg></a>
+    <a class="way" href="#"><svg class="i" aria-hidden="true"><use href="#i-userplus"/></svg><div class="tx"><b>Invite a teammate</b><span>Notes are more useful with a second reader.</span></div><svg class="i sm go-i" aria-hidden="true"><use href="#i-chev"/></svg></a>
+  </div>`;
+}
+function exampleHtml() {
+  const E = EXAMPLE;
+  return `<aside class="example" aria-label="Example note">
+    <div class="tag-line"><span>Example note</span></div>
+    <article class="note">
+      <h3>${E.title}</h3>
+      <div class="chips">${E.tags.map((t) => `<span class="chip">${t}</span>`).join('')}</div>
+      <blockquote>${E.quote[0]}<mark>${E.quote[1]}</mark>${E.quote[2]}</blockquote>
+      <p class="take"><b>Takeaway.</b> ${E.take}</p>
+      <p class="src"><svg class="i sm" aria-hidden="true"><use href="#i-mic"/></svg>${E.source}</p>
+    </article>
+    <p class="cap">Highlight a line and Fieldnote saves it with its source and tags.</p>
+  </aside>`;
+}
+function tabs() {
+  const n = notes.length, mine = notes.filter((x) => x.by === ME.name).length;
+  $('#views').innerHTML = [['All notes', n, true], ['Mine', mine], ['Shared with me', 0]].map(([l, c, on]) => `<button type="button" class="view" aria-pressed="${!!on}">${l}<span class="n">${c}</span></button>`).join('');
+  $('#nav-notes').textContent = n;
+  $('#sub').textContent = n ? `${plural(n, 'note', 'notes')} in ${WORKSPACE}` : `0 notes in ${WORKSPACE}`;
+}
+function render() {
+  tabs();
+  const main = $('#main'), body = $('#body'), hb = $('#head-new');
+  if (Q === 'loading') {
+    main.setAttribute('aria-busy', 'true'); hb.hidden = true;
+    body.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Title</th><th class="c-tags">Tags</th><th class="c-by">Author</th><th class="c-up">Updated</th></tr></thead><tbody class="skel">${Array.from({ length: 6 }, (_, i) => `<tr><td><i style="width:${58 - (i % 3) * 10}%"></i></td><td class="c-tags"><i style="width:120px"></i></td><td class="c-by"><i style="width:90px"></i></td><td class="c-up"><i style="width:70px"></i></td></tr>`).join('')}</tbody></table><span class="sr-only" role="status">Loading notes</span></div>`;
+    return;
+  }
+  if (Q === 'error') {
+    hb.hidden = true;
+    body.innerHTML = `<div class="table-wrap"><div class="state"><svg class="i" style="width:28px;height:28px;color:var(--danger)" aria-hidden="true"><use href="#i-alert"/></svg><h2 style="margin-top:12px">Couldn’t load your notes</h2><p>The server didn’t respond. Nothing you wrote was lost.</p><button type="button" class="btn" onclick="location.search=''">Try again</button></div></div>`;
+    return;
+  }
+  if (!notes.length) {
+    hb.hidden = true;
+    body.innerHTML = `<section class="panel" aria-labelledby="empty-t">
+      <div class="msg">${ART}
+        <h2 id="empty-t">No notes yet</h2>
+        <p class="why">Fieldnote keeps what your team hears in research, with the quotes, tags and sources next to each note.</p>
+        <div class="go"><button type="button" class="btn primary lg" id="first">Write your first note</button></div>
+        ${ways()}
+      </div>
+      ${exampleHtml()}
+    </section>`;
+    return;
+  }
+  hb.hidden = false;
+  body.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Title</th><th class="c-tags">Tags</th><th class="c-by">Author</th><th class="c-up">Updated</th></tr></thead><tbody>${notes.map((x) => `<tr><td><a href="#"><span class="nico"><svg class="i" aria-hidden="true"><use href="#i-note"/></svg></span><span style="overflow:hidden;text-overflow:ellipsis">${esc(x.title)}</span></a></td><td class="c-tags">${x.tags.length ? x.tags.map((t) => `<span class="chip" style="margin-right:6px">${esc(t)}</span>`).join('') : '<span class="muted" aria-label="None">–</span>'}</td><td class="c-by"><span style="display:inline-flex;align-items:center;gap:8px"><span class="avatar sm" aria-hidden="true">${ME.initials}</span>${ME.name.split(' ')[0]}</span></td><td class="c-up muted">Just now</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+/* create-note dialog */
+const dlg = $('#dlg'); let opener = null;
+function openNew(e) { opener = e?.currentTarget || null; $('#form').reset(); $('#f-title').removeAttribute('aria-invalid'); dlg.showModal(); $('#f-title').focus(); }
+document.addEventListener('click', (e) => { if (e.target.closest('#first, #head-new')) openNew({ currentTarget: e.target.closest('button') }); });
+$('#cancel').addEventListener('click', () => dlg.close());
+dlg.addEventListener('close', () => opener?.isConnected && opener.focus());
+$('#f-title').addEventListener('input', (e) => e.target.removeAttribute('aria-invalid'));
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const t = $('#f-title'); if (!t.value.trim()) { t.setAttribute('aria-invalid', 'true'); t.focus(); return; }
+  const btn = $('#create'); if (btn.getAttribute('aria-busy') === 'true') return;
+  btn.setAttribute('aria-busy', 'true'); btn.innerHTML = '<span class="spin" aria-hidden="true"></span>Creating…';
+  setTimeout(() => {
+    notes.unshift({ title: t.value.trim(), tags: $('#f-tags').value.split(',').map((s) => s.trim()).filter(Boolean), by: ME.name });
+    btn.removeAttribute('aria-busy'); btn.textContent = 'Create note'; opener = null;
+    dlg.close(); render();
+    const el = document.createElement('div'); el.className = 'toast'; el.textContent = 'Note created'; $('#toasts').append(el); setTimeout(() => el.remove(), 5000);
+  }, 600);
+});
+
+/* phone nav sheet */
+const sheet = $('#sheet');
+$('#sheetnav').innerHTML = $('#mainnav').innerHTML;
+const toggleSheet = (open) => { sheet.hidden = !open; $('#menu-open').setAttribute('aria-expanded', open); (open ? $('#menu-close') : $('#menu-open')).focus(); };
+$('#menu-open').addEventListener('click', () => toggleSheet(true));
+$('#menu-close').addEventListener('click', () => toggleSheet(false));
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) toggleSheet(false); });
+render();
+</script>
+</body>
+</html>

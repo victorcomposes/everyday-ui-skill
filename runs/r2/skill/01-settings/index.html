@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings - Tallyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Brief: settings.md + forms.md + app-shell.md. Fern kit, Ocean variant, soft shape, Manrope.
+   Save model: Profile is deferred (Save changes in the section). Notifications apply at once. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0e6a87; --accent-hover: #0a546b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent); --placeholder: #6b717d;
+  --frame: #f1f8f7; --brand-deep: #0b3a37; --on-deep: #ffffff; --on-deep-muted: #a6d8d2; --accent-on-deep: #5ec2de;
+  --font: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-lg: 18px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-tight: 4px; --rhythm-near: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px; --h-row: 48px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #5ec2de; --accent-hover: #8ad3e8; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd; --accent-on-deep: #5ec2de;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/20px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link, p a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 700 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+h3 { font: 600 var(--text-md)/1.3 var(--font); margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 26px; } body { font-size: 16px; line-height: 24px; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; font-size: var(--text-xs); line-height: 16px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-sm); }
+.badge.success { background: var(--success-subtle); color: var(--success); }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 50; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.i.sm { width: 16px; height: 16px; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.shell > aside > .side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); }
+.logo { display: flex; align-items: center; gap: 10px; padding: var(--s-1) var(--s-2) var(--s-4); font: 700 18px/28px var(--font-display); letter-spacing: -0.02em; }
+.nav-group { display: grid; gap: 2px; }
+.nav-group + .nav-group { margin-top: var(--s-5); }
+.nav-label { padding: 0 var(--s-3) var(--s-1); font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); font-weight: 600; }
+.nav-item { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; color: var(--text); transition: background-color var(--t-fast) var(--ease); }
+.nav-item:hover { background: color-mix(in srgb, var(--accent-subtle) 60%, transparent); }
+.nav-item[aria-current="page"] { background: var(--accent-subtle); }
+.nav-item[aria-current="page"] .i { color: var(--accent); }
+.nav-item .count { margin-left: auto; font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); border-top: 1px solid var(--border); }
+.account .meta { min-width: 0; line-height: 18px; }
+.account .meta b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.account .meta span { color: var(--text-muted); font-size: var(--text-xs); }
+.avatar { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: 0; }
+.avatar.lg { width: 64px; height: 64px; font-size: 22px; font-family: var(--font-display); }
+.account .avatar { background: var(--bg); border: 1px solid var(--border); }
+
+.topbar { display: none; }
+.main { min-width: 0; }
+.page { padding: var(--s-10) var(--s-8) 96px; }
+.page-head { margin-bottom: var(--rhythm-content); }
+.sub { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); }
+.layout { display: grid; grid-template-columns: 200px minmax(0, 760px); gap: 64px; align-items: start; }
+.snav { position: sticky; top: var(--s-6); display: grid; gap: 2px; }
+.snav a { display: flex; align-items: center; min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-md); color: var(--text-muted); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.snav a:hover { background: var(--bg-subtle); color: var(--text); }
+.snav a[aria-current="true"] { background: var(--accent-subtle); color: var(--text); }
+.snav .sep { height: 1px; background: var(--border); margin: var(--s-2) var(--s-3); }
+
+.section { scroll-margin-top: var(--s-6); }
+.section + .section { margin-top: var(--rhythm-group); padding-top: var(--rhythm-group); border-top: 1px solid var(--border); }
+.sec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); margin-bottom: var(--rhythm-content); }
+.sec-head p { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); max-width: 60ch; }
+.sec-head .status { margin-top: 6px; }
+.status { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: var(--text-sm); white-space: nowrap; min-height: 20px; }
+.status.ok { color: var(--success); }
+.status .i { width: 16px; height: 16px; }
+
+.rows { border-top: 1px solid var(--border); }
+.row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--s-6); align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.row.top { align-items: start; }
+.label { font-weight: 600; display: block; }
+.hint { display: block; color: var(--text-muted); margin-top: var(--rhythm-tight); font-weight: 400; }
+.control { min-width: 0; }
+.field, select.field { width: 100%; height: var(--control-h); padding: 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); transition: border-color var(--t-fast) var(--ease); }
+select.field { appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23838995' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.field:hover { border-color: var(--text-muted); }
+.field[aria-invalid="true"] { border: 2px solid var(--danger); padding: 0 11px; }
+.err { display: none; margin: var(--s-2) 0 0; color: var(--danger); font-weight: 500; }
+.field[aria-invalid="true"] ~ .err { display: block; }
+.avatar-row { display: flex; align-items: center; gap: var(--s-4); }
+.avatar-row .actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.sm { height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.primary[aria-busy="true"] { cursor: progress; }
+.btn.danger-outline { border-color: var(--danger); color: var(--danger); }
+.btn.danger-outline:hover { background: var(--danger-subtle); }
+.btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn.text { border-color: transparent; background: none; color: var(--accent); padding: 0 var(--s-2); }
+.btn.text:hover { background: var(--accent-subtle); }
+.spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.form-foot { display: flex; align-items: center; justify-content: flex-end; gap: var(--s-3); padding-top: var(--s-5); }
+.form-foot .status { margin-right: auto; }
+.form-foot .btn.primary { min-width: 140px; }
+
+.summary { display: none; margin-bottom: var(--s-5); padding: var(--s-4); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); border-radius: var(--r-lg); }
+.summary.show { display: block; }
+.summary h3 { color: var(--danger); display: flex; align-items: center; gap: var(--s-2); }
+.summary ul { margin: var(--s-2) 0 0; padding-left: 28px; }
+.summary a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* notifications matrix */
+.matrix-head, .matrix-row { display: grid; grid-template-columns: minmax(0, 1fr) 72px 72px; align-items: center; gap: var(--s-2); }
+.matrix-head { padding: var(--s-2) 0; color: var(--text-muted); font-weight: 500; border-top: 1px solid var(--border); }
+.matrix-head span:not(:first-child), .matrix-row .ch { text-align: center; }
+.matrix-row { padding: var(--s-3) 0; border-top: 1px solid var(--border); }
+.matrix-row:last-child { border-bottom: 1px solid var(--border); }
+.ch { display: flex; justify-content: center; }
+.ch .ch-name { display: none; }
+.switch { position: relative; width: 48px; height: var(--control-h); background: none; border: 0; padding: 0; cursor: pointer; border-radius: var(--r-md); }
+.switch .track { position: absolute; left: 4px; top: 50%; width: 40px; height: 24px; margin-top: -12px; border-radius: var(--r-full); background: var(--border-strong); transition: background-color var(--t-base) var(--ease); }
+.switch .track::after { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform var(--t-base) var(--ease); }
+.switch[aria-checked="true"] .track { background: var(--accent); }
+.switch[aria-checked="true"] .track::after { transform: translateX(16px); }
+
+/* billing */
+.plan { display: grid; grid-template-columns: 1.1fr 1.4fr 1.2fr; border: 1px solid var(--border); border-radius: var(--r-lg); margin-bottom: var(--s-6); }
+.plan > div { padding: var(--s-5); min-width: 0; }
+.plan > div + div { border-left: 1px solid var(--border); }
+.plan .k { color: var(--text-muted); font-weight: 500; }
+.plan .v { font: 700 var(--text-xl)/28px var(--font-display); letter-spacing: -0.01em; margin-top: var(--s-1); display: flex; align-items: center; gap: var(--s-2); font-variant-numeric: tabular-nums; }
+.plan .v small { font: 400 var(--text-sm)/20px var(--font); color: var(--text-muted); letter-spacing: 0; }
+.plan .note { margin-top: var(--s-1); color: var(--text-muted); }
+.bar { height: 6px; margin-top: var(--s-3); border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); }
+.card-glyph { display: grid; place-items: center; width: 40px; height: 28px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--bg-subtle); color: var(--text-muted); flex: none; }
+.pay { display: flex; align-items: center; gap: var(--s-3); }
+.pay b { font-weight: 600; display: block; }
+.pay span { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.ctrl-end { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
+h3.sub-h { margin: var(--rhythm-group) 0 var(--s-3); }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-weight: 500; color: var(--text-muted); font-size: var(--text-sm); padding: var(--s-2) var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--border); }
+td { padding: 0 var(--s-3) 0 0; height: var(--h-row); border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+th:last-child, td:last-child { padding-right: 0; text-align: right; width: 1%; white-space: nowrap; }
+.num { text-align: right !important; }
+.muted { color: var(--text-muted); }
+.table-foot a { display: inline-flex; align-items: center; min-height: 32px; }
+.table-foot { display: flex; justify-content: space-between; align-items: center; padding-top: var(--s-3); color: var(--text-muted); }
+
+/* dialog */
+dialog { width: min(440px, calc(100% - 32px)); border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s-6); background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); }
+dialog::backdrop { background: rgb(16 24 40 / 0.5); }
+dialog h2 { font-size: var(--text-lg); line-height: 28px; }
+dialog p { margin: var(--s-2) 0 var(--s-4); }
+dialog .foot { display: flex; justify-content: flex-end; gap: var(--s-3); margin-top: var(--s-5); }
+
+/* mobile sheet */
+.sheet { position: fixed; inset: 0; z-index: 40; background: var(--frame); display: flex; flex-direction: column; padding: var(--s-4); overflow-y: auto; }
+.sheet .head { display: flex; align-items: center; justify-content: space-between; padding-bottom: var(--s-3); }
+.icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; border-radius: var(--r-md); cursor: pointer; }
+.icon-btn:hover { background: var(--accent-subtle); }
+.sheet .nav-item { min-height: 48px; }
+
+@media (max-width: 1100px) { .layout { grid-template-columns: minmax(0, 1fr); gap: 0; } .snav { position: static; display: flex; overflow-x: auto; gap: var(--s-1); margin-bottom: var(--s-6); padding-bottom: var(--s-1); scrollbar-width: none; } .snav a { white-space: nowrap; min-height: 44px; } .snav .sep { display: none; } }
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 var(--s-2) 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .topbar .logo { padding: 0; }
+  .page { padding: var(--s-6) var(--s-4) var(--s-12); }
+}
+@media (max-width: 640px) {
+  .row { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+  .sec-head { flex-wrap: wrap; }
+  .field, select.field { font-size: 16px; }
+  .plan { grid-template-columns: minmax(0, 1fr); }
+  .plan > div + div { border-left: 0; border-top: 1px solid var(--border); }
+  .form-foot { flex-wrap: wrap; }
+  .form-foot .btn.primary { width: 100%; order: -1; }
+  .form-foot .btn:not(.primary) { flex: 1; }
+  .form-foot .status { width: 100%; margin: 0; }
+  .matrix-head { display: none; }
+  .matrix-row { grid-template-columns: 1fr 1fr; padding: var(--s-4) 0; }
+  .matrix-row > div:first-child { grid-column: 1 / -1; }
+  .ch { justify-content: flex-start; align-items: center; gap: var(--s-2); }
+  .ch .ch-name { display: inline; }
+  .ctrl-end { flex-wrap: wrap; }
+  .ctrl-end .btn, .row .control > .btn { width: 100%; }
+  .avatar-row .actions .btn { height: 44px; }
+  /* invoices reflow */
+  table.reflow thead { display: none; }
+  table.reflow, table.reflow tbody, table.reflow tr, table.reflow td { display: block; }
+  table.reflow tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+  table.reflow td { border: 0; padding: 0; height: auto; width: auto; }
+  table.reflow td:last-child { width: auto; }
+  table.reflow td:nth-child(1) { grid-area: 1 / 1; font-weight: 600; }
+  table.reflow td:nth-child(2) { grid-area: 2 / 1; color: var(--text-muted); }
+  table.reflow td:nth-child(3) { grid-area: 1 / 2; text-align: right; font-weight: 600; }
+  table.reflow td:nth-child(4) { grid-area: 2 / 2; justify-self: end; }
+  table.reflow td.dl { grid-area: 3 / 1 / 4 / -1; text-align: left; }
+  table.reflow td.dl a, .table-foot a { display: inline-flex; align-items: center; min-height: 44px; }
+  .topbar .logo { min-height: 44px; }
+  .table-foot { flex-wrap: wrap; gap: var(--s-2); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+    <symbol id="i-tasks" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l3 3 5-6"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13l3-8h12l3 8"/><path d="M3 13v6h18v-6h-5l-1 3H9l-1-3z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 010 6.8M18 14.4c2.2.6 3.5 2.6 3.5 5.6"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M3 6h9M16 6h5M3 12h3M10 12h11M3 18h11M18 18h3"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></symbol>
+  </defs>
+</svg>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="shell">
+  <aside>
+    <div class="side">
+      <a class="logo" href="#" aria-label="Tallyo home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M8.5 8v12M12 8v12M15.5 8v12M19 8v12M5.5 18.5L22.5 9.5" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+        <span>Tallyo</span>
+      </a>
+      <nav aria-label="Main" id="mainnav">
+        <div class="nav-group">
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-tasks"/></svg>My tasks <span class="count">9</span></a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-inbox"/></svg>Inbox <span class="count">3</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Workspace</div>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-folder"/></svg>Projects</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg>Timeline</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg>Reports</a>
+          <a class="nav-item" href="#"><svg class="i" aria-hidden="true"><use href="#i-users"/></svg>Team</a>
+        </div>
+        <div class="nav-group">
+          <a class="nav-item" href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-sliders"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="account">
+        <span class="avatar" aria-hidden="true">AO</span>
+        <div class="meta"><b>Amara Okafor</b><span id="ws-name">Northwind Studio</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <a class="logo" href="#" aria-label="Tallyo home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M8.5 8v12M12 8v12M15.5 8v12M19 8v12M5.5 18.5L22.5 9.5" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+        <span>Tallyo</span>
+      </a>
+      <button class="icon-btn" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </header>
+
+    <main id="main" class="page">
+      <div class="page-head">
+        <h1>Settings</h1>
+        <p class="sub">Your profile, notifications and plan for <span id="ws-name-2">Northwind Studio</span>.</p>
+      </div>
+
+      <div class="layout">
+        <nav class="snav" aria-label="Settings sections">
+          <a href="#profile" aria-current="true">Profile</a>
+          <a href="#notifications">Notifications</a>
+          <a href="#billing">Plan and billing</a>
+          <span class="sep" role="presentation"></span>
+          <a href="#danger">Danger zone</a>
+        </nav>
+
+        <div>
+          <!-- Profile: deferred save -->
+          <section class="section" id="profile" aria-labelledby="h-profile">
+            <div class="sec-head">
+              <div>
+                <h2 id="h-profile">Profile</h2>
+                <p>How you appear to teammates on tasks, comments and mentions.</p>
+              </div>
+            </div>
+            <div class="summary" id="summary" role="alert" tabindex="-1">
+              <h3><svg class="i sm" aria-hidden="true"><use href="#i-alert"/></svg>There is a problem</h3>
+              <ul id="summary-list"></ul>
+            </div>
+            <form id="profile-form" novalidate>
+              <div class="rows">
+                <div class="row">
+                  <div><span class="label" id="l-photo">Photo</span><span class="hint">Shown next to your name. JPG or PNG, 2 MB at most.</span></div>
+                  <div class="control avatar-row">
+                    <span class="avatar lg" aria-hidden="true">AO</span>
+                    <div class="actions">
+                      <button type="button" class="btn sm" aria-describedby="l-photo">Upload photo</button>
+                      <button type="button" class="btn sm text">Remove</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row top">
+                  <div><label class="label" for="name">Full name</label><span class="hint" id="h-name">Teammates see this on tasks and comments.</span></div>
+                  <div class="control"><input class="field" id="name" name="name" autocomplete="name" aria-describedby="h-name e-name" data-label="Full name"><p class="err" id="e-name">Enter your full name.</p></div>
+                </div>
+                <div class="row top">
+                  <div><label class="label" for="email">Email address</label><span class="hint" id="h-email">We send assignments and invoices here.</span></div>
+                  <div class="control"><input class="field" id="email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" autocapitalize="off" aria-describedby="h-email e-email" data-label="Email address"><p class="err" id="e-email">Enter an email address in the correct format, like name@example.com.</p></div>
+                </div>
+                <div class="row top">
+                  <div><label class="label" for="title">Job title <span class="muted" style="font-weight:400">(optional)</span></label><span class="hint">Helps new teammates find the right person.</span></div>
+                  <div class="control"><input class="field" id="title" name="title" autocomplete="organization-title"></div>
+                </div>
+                <div class="row top">
+                  <div><label class="label" for="tz">Time zone</label><span class="hint">Due times and reminders use this zone.</span></div>
+                  <div class="control">
+                    <select class="field" id="tz" name="tz">
+                      <option>(GMT+00:00) London</option>
+                      <option>(GMT+01:00) Lagos</option>
+                      <option>(GMT+01:00) Berlin</option>
+                      <option>(GMT-05:00) New York</option>
+                      <option>(GMT-08:00) Los Angeles</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-foot">
+                <span class="status" id="profile-status" role="status"></span>
+                <button type="button" class="btn" id="discard" hidden>Discard</button>
+                <button type="submit" class="btn primary" id="save">Save changes</button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Notifications: instant -->
+          <section class="section" id="notifications" aria-labelledby="h-notif">
+            <div class="sec-head">
+              <div>
+                <h2 id="h-notif">Notifications</h2>
+                <p>Choose how Tallyo reaches you. Changes apply immediately.</p>
+              </div>
+              <span class="status" id="notif-status" role="status"></span>
+            </div>
+            <div class="matrix-head" aria-hidden="true"><span>Send me a notification when</span><span>Email</span><span>In app</span></div>
+            <div id="matrix"></div>
+          </section>
+
+          <!-- Plan and billing -->
+          <section class="section" id="billing" aria-labelledby="h-billing">
+            <div class="sec-head">
+              <div>
+                <h2 id="h-billing">Plan and billing</h2>
+                <p>Billed to <span id="bill-email-text">finance@northwindstudio.co</span>. Only owners and billing admins can change this.</p>
+              </div>
+              <button type="button" class="btn">Change plan</button>
+            </div>
+            <div class="plan">
+              <div><div class="k">Plan</div><div class="v"><span id="plan-name">Team</span><span class="badge accent">Monthly</span></div><div class="note" id="plan-note"></div></div>
+              <div><div class="k">Seats</div><div class="v"><span id="seats-text"></span></div><div class="bar" id="seats-bar" role="img"><i></i></div><div class="note" id="seats-note"></div></div>
+              <div><div class="k">Next invoice</div><div class="v"><span id="next-amt"></span></div><div class="note" id="next-note"></div></div>
+            </div>
+            <div class="rows">
+              <div class="row">
+                <div><span class="label">Payment method</span><span class="hint">Charged on the 1st of each month.</span></div>
+                <div class="control ctrl-end">
+                  <div class="pay">
+                    <span class="card-glyph" aria-hidden="true"><svg class="i sm"><use href="#i-card"/></svg></span>
+                    <div><b id="card-name"></b><span id="card-exp"></span></div>
+                  </div>
+                  <button type="button" class="btn sm">Update card</button>
+                </div>
+              </div>
+              <div class="row">
+                <div><span class="label">Billing email</span><span class="hint">Invoices and receipts go to this address.</span></div>
+                <div class="control ctrl-end">
+                  <span id="bill-email" style="min-width:0;overflow-wrap:anywhere"></span>
+                  <button type="button" class="btn sm">Edit email</button>
+                </div>
+              </div>
+            </div>
+            <h3 class="sub-h">Invoice history</h3>
+            <table class="reflow">
+              <thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col" class="num">Amount (USD)</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Receipt</span></th></tr></thead>
+              <tbody id="inv"></tbody>
+            </table>
+            <div class="table-foot"><span id="inv-count"></span><a class="link" href="#">View all invoices</a></div>
+          </section>
+
+          <!-- Danger zone -->
+          <section class="section" id="danger" aria-labelledby="h-danger">
+            <div class="sec-head"><div><h2 id="h-danger">Danger zone</h2></div></div>
+            <div class="rows">
+              <div class="row">
+                <div><span class="label">Delete workspace</span><span class="hint" id="del-hint"></span></div>
+                <div class="control"><button type="button" class="btn danger-outline" id="del-open">Delete workspace</button></div>
+              </div>
+            </div>
+            <p class="status" id="del-status" role="status" style="margin-top:12px"></p>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="head">
+    <a class="logo" href="#" style="padding:0" aria-label="Tallyo home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M8.5 8v12M12 8v12M15.5 8v12M19 8v12M5.5 18.5L22.5 9.5" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <span>Tallyo</span>
+    </a>
+    <button class="icon-btn" id="menu-close" aria-label="Close menu"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <nav aria-label="Main" id="sheetnav"></nav>
+</div>
+
+<dialog id="del-dialog" aria-labelledby="del-title">
+  <form method="dialog" id="del-form" novalidate>
+    <h2 id="del-title">Delete Northwind Studio?</h2>
+    <p id="del-body"></p>
+    <label class="label" for="del-confirm">Type the workspace name to confirm</label>
+    <input class="field" id="del-confirm" autocomplete="off" spellcheck="false" aria-describedby="del-err" style="margin-top:8px">
+    <p class="err" id="del-err">Type the workspace name exactly: Northwind Studio.</p>
+    <div class="foot">
+      <button type="button" class="btn" id="del-cancel">Cancel</button>
+      <button type="submit" class="btn danger" id="del-go">Delete workspace</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/* ---- data module: every number on screen derives from this ---- */
+const Q = new URLSearchParams(location.search).get('state') || '';
+const STRESS = Q === 'stress';
+const DATA = {
+  workspace: STRESS ? 'Société Générale des Transports Maritimes et Fluviaux' : 'Northwind Studio',
+  user: { name: STRESS ? 'Maximilian Alexander von Hohenberg-Schwarzenau' : 'Amara Okafor', email: STRESS ? 'very.long.first.name.and.last.name@subdomain.example-company.co.uk' : 'amara.okafor@northwindstudio.co', title: 'Product designer', tz: '(GMT+00:00) London' },
+  billingEmail: 'finance@northwindstudio.co',
+  plan: { name: 'Team', perSeat: 12, seatLimit: 25, seats: 14, nextDate: '2026-12-01' },
+  card: { brand: 'Visa', last4: '4242', exp: '08/2028' },
+  projects: 38, tasks: 1284,
+  invoices: [
+    { date: '2026-11-01', seats: 14 },
+    { date: '2026-10-01', seats: 13 },
+    { date: '2026-09-01', seats: 12 },
+  ],
+  invoiceTotal: 11,
+  notif: [
+    { id: 'assigned', label: 'A task is assigned to me', hint: 'As soon as someone gives you a task or reassigns one.', email: true, app: true },
+    { id: 'mentions', label: 'Someone mentions me', hint: 'In a comment, a description or a project update.', email: true, app: true },
+    { id: 'due', label: 'A task is due soon', hint: 'One reminder, the morning before the due date.', email: false, app: true },
+    { id: 'status', label: 'A project I follow changes status', hint: 'On track, at risk or off track.', email: false, app: true },
+    { id: 'weekly', label: 'Weekly summary', hint: 'A Monday email with last week’s finished and overdue tasks.', email: true, app: false },
+  ],
+};
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+const fmtDate = (d) => { const x = new Date(d + 'T00:00:00Z'); return `${x.getUTCDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][x.getUTCMonth()]} ${x.getUTCFullYear()}`; };
+const n = new Intl.NumberFormat('en-US');
+const $ = (s) => document.querySelector(s);
+
+/* ---- render ---- */
+document.querySelectorAll('#ws-name, #ws-name-2').forEach((e) => (e.textContent = DATA.workspace));
+$('#name').value = DATA.user.name; $('#email').value = DATA.user.email; $('#title').value = DATA.user.title; $('#tz').value = DATA.user.tz;
+
+const P = DATA.plan;
+$('#plan-note').textContent = `${usd.format(P.perSeat)} per seat each month`;
+$('#seats-text').innerHTML = `${P.seats} <small>of ${P.seatLimit} used</small>`;
+$('#seats-bar').firstElementChild.style.width = `${(P.seats / P.seatLimit) * 100}%`;
+$('#seats-bar').setAttribute('aria-label', `${P.seats} of ${P.seatLimit} seats used`);
+$('#seats-note').textContent = `${P.seatLimit - P.seats} seats free`;
+$('#next-amt').textContent = usd.format(P.seats * P.perSeat);
+$('#next-note').textContent = `${P.seats} seats, charged ${fmtDate(P.nextDate)}`;
+$('#card-name').textContent = `${DATA.card.brand} ending ${DATA.card.last4}`;
+$('#card-exp').textContent = `Expires ${DATA.card.exp}`;
+$('#bill-email').textContent = DATA.billingEmail;
+$('#bill-email-text').textContent = DATA.billingEmail;
+$('#inv').innerHTML = DATA.invoices.map((v) => `<tr><td>${fmtDate(v.date)}</td><td>Team plan, ${v.seats} seats</td><td class="num">${usd.format(v.seats * P.perSeat)}</td><td><span class="badge success">Paid</span></td><td class="dl"><a class="link" href="#">Download PDF<span class="sr-only"> for ${fmtDate(v.date)}</span></a></td></tr>`).join('');
+$('#inv-count').textContent = `Showing ${DATA.invoices.length} of ${DATA.invoiceTotal} invoices`;
+$('#del-hint').textContent = `This deletes ${n.format(DATA.projects)} projects and ${n.format(DATA.tasks)} tasks and cannot be undone.`;
+$('#del-body').textContent = `This deletes ${n.format(DATA.projects)} projects and ${n.format(DATA.tasks)} tasks for everyone in the workspace. It cannot be undone.`;
+$('#del-title').textContent = `Delete ${DATA.workspace}?`;
+$('#del-err').textContent = `Type the workspace name exactly: ${DATA.workspace}.`;
+
+/* notifications (instant) */
+$('#matrix').innerHTML = DATA.notif.map((r) => `
+  <div class="matrix-row">
+    <div><span class="label">${r.label}</span><span class="hint">${r.hint}</span></div>
+    ${['email', 'app'].map((c) => `<div class="ch"><button type="button" class="switch" role="switch" aria-checked="${r[c]}" data-id="${r.id}" data-ch="${c}" aria-label="${c === 'email' ? 'Email' : 'In app'}: ${r.label}"><span class="track"></span></button><span class="ch-name" aria-hidden="true">${c === 'email' ? 'Email' : 'In app'}</span></div>`).join('')}
+  </div>`).join('');
+const nstat = $('#notif-status');
+$('#matrix').addEventListener('click', (e) => {
+  const b = e.target.closest('.switch'); if (!b) return;
+  const on = b.getAttribute('aria-checked') !== 'true';
+  b.setAttribute('aria-checked', on);
+  const r = DATA.notif.find((x) => x.id === b.dataset.id); r[b.dataset.ch] = on;
+  nstat.className = 'status ok';
+  nstat.innerHTML = '<svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Saved';
+});
+
+/* profile (deferred) */
+const form = $('#profile-form'), save = $('#save'), pstat = $('#profile-status'), disc = $('#discard');
+const fields = ['name', 'email', 'title', 'tz'];
+let saved = Object.fromEntries(fields.map((f) => [f, $('#' + f).value]));
+const dirty = () => fields.some((f) => $('#' + f).value !== saved[f]);
+const setStatus = (t, ok) => { pstat.className = 'status' + (ok ? ' ok' : ''); pstat.innerHTML = (ok ? '<svg class="i" aria-hidden="true"><use href="#i-check"/></svg>' : '') + t; };
+const refresh = () => { disc.hidden = !dirty(); if (dirty()) setStatus('Unsaved changes'); else if (!pstat.classList.contains('ok')) setStatus(''); };
+form.addEventListener('input', (e) => { e.target.removeAttribute('aria-invalid'); pstat.classList.remove('ok'); refresh(); });
+disc.addEventListener('click', () => { fields.forEach((f) => { $('#' + f).value = saved[f]; $('#' + f).removeAttribute('aria-invalid'); }); $('#summary').classList.remove('show'); setStatus(''); refresh(); });
+function validate() {
+  const errs = [];
+  if (!$('#name').value.trim()) errs.push(['name', 'Enter your full name']);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('#email').value.trim())) errs.push(['email', 'Enter an email address in the correct format, like name@example.com']);
+  fields.forEach((f) => $('#' + f).removeAttribute('aria-invalid'));
+  errs.forEach(([f]) => $('#' + f).setAttribute('aria-invalid', 'true'));
+  const box = $('#summary');
+  box.classList.toggle('show', errs.length > 0);
+  $('#summary-list').innerHTML = errs.map(([f, m]) => `<li><a href="#${f}">${m}</a></li>`).join('');
+  return errs;
+}
+$('#summary-list').addEventListener('click', (e) => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); $(a.getAttribute('href')).focus(); });
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (save.getAttribute('aria-busy') === 'true') return;
+  const errs = validate();
+  if (errs.length) { setStatus(''); $('#summary').focus(); return; }
+  if (!dirty()) { setStatus('No changes to save'); return; }
+  save.setAttribute('aria-busy', 'true'); save.innerHTML = '<span class="spin" aria-hidden="true"></span>Saving…'; setStatus('');
+  setTimeout(() => {
+    fields.forEach((f) => (saved[f] = $('#' + f).value));
+    save.removeAttribute('aria-busy'); save.textContent = 'Save changes';
+    disc.hidden = true; setStatus('Changes saved', true);
+    $('.account .meta b').textContent = saved.name;
+  }, 700);
+});
+if (Q === 'error') { $('#email').value = 'amara.okafor@northwindstudio'; form.requestSubmit(); $('#summary').blur(); }
+
+/* section nav scroll-spy */
+const links = [...document.querySelectorAll('.snav a')];
+const secs = links.map((a) => $(a.getAttribute('href')));
+links.forEach((a) => a.addEventListener('click', () => links.forEach((l) => l.setAttribute('aria-current', l === a))));
+addEventListener('scroll', () => {
+  let cur = 0; secs.forEach((s, i) => { if (s.getBoundingClientRect().top < innerHeight * 0.35) cur = i; });
+  links.forEach((l, i) => l.setAttribute('aria-current', i === cur));
+}, { passive: true });
+
+/* phone menu sheet */
+const sheet = $('#sheet');
+$('#sheetnav').innerHTML = $('#mainnav').innerHTML;
+const toggleSheet = (open) => { sheet.hidden = !open; $('#menu-open').setAttribute('aria-expanded', open); (open ? $('#menu-close') : $('#menu-open')).focus(); };
+$('#menu-open').addEventListener('click', () => toggleSheet(true));
+$('#menu-close').addEventListener('click', () => toggleSheet(false));
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) toggleSheet(false); });
+if (Q === 'menu') { sheet.hidden = false; }
+
+/* delete dialog with typed confirm */
+const dlg = $('#del-dialog');
+$('#del-open').addEventListener('click', () => { $('#del-confirm').value = ''; $('#del-confirm').removeAttribute('aria-invalid'); dlg.showModal(); });
+$('#del-cancel').addEventListener('click', () => dlg.close());
+$('#del-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const c = $('#del-confirm');
+  if (c.value.trim() !== DATA.workspace) { c.setAttribute('aria-invalid', 'true'); c.focus(); return; }
+  dlg.close();
+  $('#del-status').textContent = 'Deletion requested. We emailed the workspace owners to confirm it.';
+});
+</script>
+</body>
+</html>

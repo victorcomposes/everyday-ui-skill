@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "region": {
+        "impact": "moderate",
+        "nodes": 2
+      }
+    },
+    "byImpact": {
+      "moderate": {
+        "rules": 1,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(27, 31, 42)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(91, 75, 219)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 24,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Tallyo",
+        "w": 79,
+        "h": 26
+      },
+      {
+        "tag": "a",
+        "text": "Profile",
+        "w": 72,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Notifications",
+        "w": 115,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Plan & billing",
+        "w": 119,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Change photo",
+        "w": 127,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "Priya",
+        "w": 324,
+        "h": 43
+      },
+      {
+        "tag": "input",
+        "text": "Raman",
+        "w": 324,
+        "h": 43
+      },
+      {
+        "tag": "input",
+        "text": "priya.raman@northwind.studio",
+        "w": 324,
+        "h": 43
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

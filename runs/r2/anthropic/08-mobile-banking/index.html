@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home - Kestrel Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--indigo:#2A2480;--indigo2:#3A33A8;--bg:#F3F2FA;--card:#fff;--ink:#17163A;--ink2:#6A698C;--line:#E4E3F0;--in:#0E8A5F;--lav:#CFCBFF;--sun:#FFC83D}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font:15px/1.4 Manrope,system-ui,sans-serif;color:var(--ink);background:#D9D8EC;display:grid;place-items:center;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px}
+.phone{position:relative;width:100%;max-width:410px;height:min(844px,calc(100vh - 40px));background:var(--bg);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 0 10px #17163A,0 30px 70px -10px #17163A99}
+.scroll{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+/* hero */
+.hero{background:var(--indigo);color:#fff;padding:22px 22px 26px;border-radius:0 0 28px 28px;position:relative;overflow:hidden}
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.av{width:40px;height:40px;border-radius:50%;background:var(--sun);color:var(--indigo);display:grid;place-items:center;font-weight:800}
+.bar p{font-size:14px;color:var(--lav)}
+.bar b{display:block;font-size:17px;line-height:1.2}
+.bell{margin-left:auto;width:44px;height:44px;border-radius:50%;background:#ffffff1f;display:grid;place-items:center;position:relative}
+.bell svg{width:22px;height:22px}
+.bell i{position:absolute;top:10px;right:11px;width:9px;height:9px;border-radius:50%;background:var(--sun);border:2px solid var(--indigo)}
+.lab{display:flex;align-items:center;gap:8px;color:var(--lav);font-size:14px}
+.eye{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:var(--lav);margin-left:auto}
+.eye:hover{background:#ffffff1f}
+.eye svg{width:20px;height:20px}
+.bal{font-size:42px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:4px 0 4px}
+.bal small{font-size:26px;font-weight:700;opacity:.8}
+.meta{color:var(--lav);font-size:14px}
+.meta b{color:#fff;font-weight:600}
+.spark{position:absolute;right:0;bottom:50px;width:120px;height:48px;opacity:.55;pointer-events:none}
+/* actions */
+.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:20px 16px 4px}
+.act{display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600;font-size:13px;padding:4px 0;border-radius:14px}
+.act span{width:58px;height:58px;border-radius:20px;background:#fff;display:grid;place-items:center;color:var(--indigo);box-shadow:0 1px 0 var(--line);transition:transform .1s}
+.act:active span{transform:scale(.94)}
+.act:hover span{background:#E8E6FF}
+.act svg{width:26px;height:26px}
+.act.main span{background:var(--indigo);color:#fff}
+.act.main:hover span{background:var(--indigo2)}
+/* month */
+.month{margin:16px 16px 0;background:#fff;border-radius:20px;padding:16px 18px}
+.month .t{display:flex;justify-content:space-between;align-items:baseline}
+.month b{font-size:16px}
+.month .t span{color:var(--in);font-weight:600;font-size:13px}
+.seg{display:flex;gap:3px;height:10px;margin:12px 0 10px;border-radius:9px;overflow:hidden}
+.seg i{display:block}
+.key{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--ink2);font-size:13px}
+.key span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:6px}
+/* txns */
+.tx{padding:24px 16px 20px}
+.tx .h{display:flex;justify-content:space-between;align-items:baseline;padding:0 6px 4px}
+.tx h2{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.tx .h button{color:var(--indigo2);font-weight:700;font-size:14px;padding:8px 6px;margin:-8px -6px}
+.day{color:var(--ink2);font-weight:600;font-size:13px;padding:14px 6px 6px}
+.list{background:#fff;border-radius:20px;overflow:hidden}
+.row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;padding:13px 16px;min-height:64px}
+.row+.row{border-top:1px solid var(--line)}
+.row:hover{background:#FAF9FF}
+.ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:15px}
+.ic svg{width:22px;height:22px}
+.row b{display:block;font-weight:700;line-height:1.25}
+.row small{color:var(--ink2);font-size:13px}
+.amt{font-weight:700;text-align:right}
+.amt.in{color:var(--in)}
+.amt small{display:block;font-weight:500}
+.pend{display:inline-block;font-size:12px;font-weight:700;color:#8A5A00;background:#FFF0C9;padding:0 7px;border-radius:99px;margin-left:6px;vertical-align:1px}
+/* tabbar */
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-top:1px solid var(--line);padding:6px 6px calc(8px + env(safe-area-inset-bottom));flex:none}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--ink2);min-height:52px;justify-content:center;border-radius:12px}
+.tabs button svg{width:24px;height:24px}
+.tabs button[aria-current]{color:var(--indigo)}
+.tabs button[aria-current] svg{fill:#E4E1FF}
+/* sheet */
+.scrim{position:absolute;inset:0;background:#17163A88;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:28px 28px 0 0;padding:10px 22px calc(24px + env(safe-area-inset-bottom));transform:translateY(105%);visibility:hidden;transition:transform .25s ease,visibility 0s .25s;z-index:21}
+.sheet.on{transform:none;visibility:visible;transition-delay:0s}
+.grab{width:44px;height:5px;border-radius:9px;background:#D2D0E6;margin:0 auto 18px}
+.sheet .top{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;margin-bottom:16px}
+.sheet .ic{width:56px;height:56px;margin-bottom:6px}
+.sheet h3{font-size:18px}
+.sheet .big{font-size:32px;font-weight:800;letter-spacing:-.02em}
+.sheet dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:18px}
+.sheet dt{color:var(--ink2)}
+.sheet dd{text-align:right;font-weight:600}
+.sheet .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sbtn{min-height:50px;border-radius:14px;font-weight:700;background:var(--bg);color:var(--ink)}
+.sbtn.pri{background:var(--indigo);color:#fff}
+.toast{position:absolute;left:50%;top:18px;transform:translate(-50%,-80px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:14px;font-weight:600;font-size:14px;transition:transform .25s;z-index:30;white-space:nowrap}
+.toast.on{transform:translate(-50%,0)}
+@media (max-width:480px){
+  body{display:block;background:var(--bg)}
+  .phone{max-width:none;height:100vh;height:100dvh;border-radius:0;box-shadow:none}
+}
+@media (max-height:700px) and (min-width:481px){.phone{height:calc(100vh - 20px);border-radius:28px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="scroll" id="scroll">
+    <header class="hero">
+      <div class="bar">
+        <div class="av" aria-hidden="true">TA</div>
+        <div><p>Good afternoon</p><b>Tunde Adeyemi</b></div>
+        <button class="bell" aria-label="Notifications, 1 unread"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg><i></i></button>
+      </div>
+      <div class="lab">Current account
+        <button class="eye" id="eye" aria-label="Hide balance" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" id="eyeic"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+      <div class="bal" id="bal" aria-live="polite">&pound;4,218<small>.36</small></div>
+      <div class="meta"><b id="pen">&pound;116.25</b> pending. Account ending 4417.</div>
+      <svg class="spark" viewBox="0 0 150 56" fill="none" aria-hidden="true"><path d="M0 40 14 34 28 38 42 26 56 30 70 20 84 26 98 14 112 22 126 10 150 4" stroke="#CFCBFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </header>
+
+    <nav class="acts" aria-label="Quick actions">
+      <button class="act main" data-t="Choose who to send money to"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20 4l-4 16-4-7z"/><path d="m12 13 8-9"/></svg></span>Send</button>
+      <button class="act" data-t="Share a request link"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-4-4m4 4 4-4M5 20h14"/></svg></span>Request</button>
+      <button class="act" data-t="Pick a bill to pay"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></svg></span>Pay a bill</button>
+      <button class="act" data-t="Add money from a card"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M12 9.5v5M9.5 12h5"/></svg></span>Add money</button>
+    </nav>
+
+    <section class="month" aria-label="Spending this month">
+      <div class="t"><b>Spent in November: &pound;1,284.50</b><span>&pound;216 less than October</span></div>
+      <div class="seg" role="img" aria-label="Groceries 34 percent, Bills 29 percent, Transport 14 percent, Eating out 12 percent, Other 11 percent">
+        <i style="flex:34;background:#2A2480"></i><i style="flex:29;background:#6B64E0"></i><i style="flex:14;background:#FFC83D"></i><i style="flex:12;background:#FF7A6B"></i><i style="flex:11;background:#B9B6D6"></i>
+      </div>
+      <div class="key"><span style="--c:#2A2480">Groceries</span><span style="--c:#6B64E0">Bills</span><span style="--c:#FFC83D">Transport</span><span style="--c:#FF7A6B">Eating out</span></div>
+    </section>
+
+    <section class="tx" aria-labelledby="th">
+      <div class="h"><h2 id="th">Recent activity</h2><button data-t="Showing all activity">See all</button></div>
+      <div id="txs"></div>
+    </section>
+  </div>
+
+  <nav class="tabs" aria-label="Main">
+    <button aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9H4z"/></svg>Home</button>
+    <button data-t="Cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18"/></svg>Cards</button>
+    <button data-t="Payments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h13l-3-3M17 16H4l3 3"/></svg>Payments</button>
+    <button data-t="Insights"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V12M12 20V4M19 20v-6"/></svg>Insights</button>
+    <button data-t="More"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/></svg>More</button>
+  </nav>
+
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t" aria-hidden="true">
+    <div class="grab"></div>
+    <div class="top"><div class="ic" id="sh-ic"></div><h3 id="sh-t"></h3><div class="big" id="sh-a"></div></div>
+    <dl id="sh-d"></dl>
+    <div class="btns"><button class="sbtn" id="sh-r">Report a problem</button><button class="sbtn pri" id="sh-c">Close</button></div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const I={
+ shop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+ in:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m0 0-6-6m6 6 6-6"/></svg>',
+ train:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/></svg>',
+ cup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2"/></svg>',
+ play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+ out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 19 5M9 5h10v10"/></svg>',
+ car:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15v-3l2-5h12l2 5v3zM4 15v3M20 15v3M7 12h.01M17 12h.01"/></svg>'
+};
+const T=[
+ ['Today, Thursday 26 November',[
+  ['Pret A Manger','Eating out',-4.85,'cup','#FFE7E3','#C2402D','Card ending 4417','Pending',true],
+  ['Tesco Express','Groceries',-12.4,'shop','#E4E1FF','#2A2480','Card ending 4417','Pending',true],
+  ['Salary, Brightwell Ltd','Income',2450,'in','#D8F3E8','#0E8A5F','Bank transfer','Completed',false]]],
+ ['Yesterday',[
+  ['Transport for London','Transport',-8.8,'train','#FFF0C9','#8A5A00','Contactless','Completed',false],
+  ['Transfer to Amara Obi','Sent money',-60,'out','#E4E1FF','#2A2480','Faster Payment','Completed',false]]],
+ ['Tuesday 24 November',[
+  ['Netflix','Subscriptions',-10.99,'play','#FFE7E3','#C2402D','Direct debit','Completed',false],
+  ['Uber','Transport',-14.2,'car','#FFF0C9','#8A5A00','Card ending 4417','Completed',false]]]
+];
+const gbp=n=>'£'+Math.abs(n).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
+const flat=[];
+$('txs').innerHTML=T.map(([d,rows])=>`<div class="day">${d}</div><div class="list">${rows.map(r=>{const i=flat.push({d,r})-1;const inc=r[2]>0;
+ return `<button class="row" data-i="${i}"><span class="ic" style="background:${r[4]};color:${r[5]}">${I[r[3]]}</span><span><b>${r[0]}${r[8]?'<span class="pend">Pending</span>':''}</b><small>${r[1]}</small></span><span class="amt ${inc?'in':''}">${inc?'+':'-'}${gbp(r[2])}</span></button>`}).join('')}</div>`).join('');
+/* balance hide */
+let hidden=false;
+$('eye').onclick=()=>{hidden=!hidden;$('eye').setAttribute('aria-pressed',hidden);$('eye').setAttribute('aria-label',hidden?'Show balance':'Hide balance');
+ $('bal').innerHTML=hidden?'&pound;&bull;&bull;&bull;&bull;&bull;&bull;':'&pound;4,218<small>.36</small>';$('pen').textContent=hidden?'£•••':'£116.25';
+ $('eyeic').innerHTML=hidden?'<path d="M3 3l18 18M10.6 6.2A9.7 9.7 0 0 1 12 6c6.4 0 10 6 10 6a17 17 0 0 1-3.3 3.9M6.6 7.6A17 17 0 0 0 2 12s3.6 6 10 6a9.6 9.6 0 0 0 4.2-1"/>':'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'};
+/* toast */
+let th;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(th);th=setTimeout(()=>t.classList.remove('on'),1900)}
+document.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click',()=>toast(b.dataset.t)));
+/* sheet */
+let opener;
+function open(i,btn){opener=btn;const {d,r}=flat[i],inc=r[2]>0;
+ $('sh-ic').style.background=r[4];$('sh-ic').style.color=r[5];$('sh-ic').innerHTML=I[r[3]];
+ $('sh-t').textContent=r[0];$('sh-a').textContent=(inc?'+':'-')+gbp(r[2]);$('sh-a').style.color=inc?'var(--in)':'var(--ink)';
+ $('sh-d').innerHTML=`<dt>Status</dt><dd>${r[7]}</dd><dt>Category</dt><dd>${r[1]}</dd><dt>Paid with</dt><dd>${r[6]}</dd><dt>Date</dt><dd>${d.replace('Today, ','').replace(/^Yesterday$/,'Wednesday 25 November')}</dd>`;
+ $('scrim').classList.add('on');$('sheet').classList.add('on');$('sheet').setAttribute('aria-hidden','false');$('sh-c').focus()}
+function close(){$('scrim').classList.remove('on');$('sheet').classList.remove('on');$('sheet').setAttribute('aria-hidden','true');opener&&opener.focus()}
+$('txs').addEventListener('click',e=>{const b=e.target.closest('.row');if(b)open(+b.dataset.i,b)});
+$('scrim').onclick=close;$('sh-c').onclick=close;
+$('sh-r').onclick=()=>{close();toast('We will message you about this payment')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('sheet').classList.contains('on'))close()});
+</script>
+</body>
+</html>

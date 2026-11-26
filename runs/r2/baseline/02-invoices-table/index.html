@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoices - Penwick Books</title>
+<style>
+:root{--bg:#f5f6f8;--surface:#fff;--ink:#1a2030;--muted:#677084;--line:#e3e6ec;--brand:#0f766e;--brand-ink:#fff;--brand-soft:#e0f4f1;
+--paid:#146c43;--paid-bg:#e0f5ea;--due:#8a5a00;--due-bg:#fdf0d0;--over:#b3261e;--over-bg:#fde4e2;--draft:#4a5368;--draft-bg:#eceef3;--hover:#f8f9fb}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1116;--surface:#161a22;--ink:#e9ecf3;--muted:#99a2b4;--line:#262c38;--brand:#2dd4bf;--brand-ink:#04211e;--brand-soft:#10302c;
+--paid:#5fd49a;--paid-bg:#11291f;--due:#f3c25c;--due-bg:#302508;--over:#ff8a80;--over-bg:#341412;--draft:#aab2c4;--draft-bg:#232936;--hover:#1b2029}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+aside{background:var(--surface);border-right:1px solid var(--line);padding:20px 12px;position:sticky;top:0;height:100vh}
+.logo{font-weight:700;font-size:17px;padding:0 10px 20px;display:flex;gap:8px;align-items:center}
+.logo i{width:22px;height:22px;border-radius:6px;background:var(--brand);display:block}
+aside a{display:block;padding:8px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500}
+aside a.on{background:var(--brand-soft);color:var(--brand)}
+main{padding:28px 32px 48px;min-width:0}
+.title{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h1{margin:0;font-size:24px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 14px;min-height:38px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--hover)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-align:left;cursor:pointer}
+.stat:hover,.stat.on{border-color:var(--brand)}
+.stat .l{color:var(--muted);font-size:12.5px}
+.stat .v{font-size:22px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.stat.o .v{color:var(--over)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.tools{display:flex;gap:10px;padding:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);align-items:center}
+.search{position:relative;flex:1 1 240px;min-width:0}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.search input{width:100%;min-height:38px;padding:0 12px 0 34px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+select{min-height:38px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:var(--bg)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:5px 12px;cursor:pointer;font-weight:500;color:var(--muted)}
+.chip[aria-pressed=true]{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.bulk{display:none;align-items:center;gap:10px;padding:10px 16px;background:var(--brand-soft);border-bottom:1px solid var(--line)}
+.bulk.show{display:flex}.bulk b{margin-right:auto}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface);user-select:none}
+th button{all:unset;cursor:pointer;display:inline-flex;gap:4px;align-items:center}
+th button:focus-visible{outline:2px solid var(--brand)}
+td{padding:12px;border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--hover)}
+.r{text-align:right}.num{font-variant-numeric:tabular-nums}
+.inv{font-weight:600}
+.cust small{display:block;color:var(--muted)}
+.st{display:inline-flex;gap:5px;align-items:center;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600}
+.st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st.paid{background:var(--paid-bg);color:var(--paid)}.st.due{background:var(--due-bg);color:var(--due)}.st.over{background:var(--over-bg);color:var(--over)}.st.draft{background:var(--draft-bg);color:var(--draft)}
+.act{display:flex;gap:4px;justify-content:flex-end}
+.ib{border:1px solid transparent;background:none;border-radius:6px;min-height:32px;padding:0 10px;cursor:pointer;color:var(--brand);font-weight:600}
+.ib:hover{background:var(--brand-soft)}
+.cards{display:none}
+.foot{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-top:1px solid var(--line);color:var(--muted);gap:8px;flex-wrap:wrap}
+.empty{padding:48px 16px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand);cursor:pointer}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;opacity:0;transition:.2s;pointer-events:none}
+.toast.show{opacity:1}
+.mtop{display:none}
+@media (max-width:800px){
+  .app{grid-template-columns:1fr}
+  aside{display:none}
+  .mtop{display:flex;align-items:center;gap:8px;background:var(--surface);border-bottom:1px solid var(--line);padding:0 16px;height:52px;font-weight:700}
+  .mtop i{width:20px;height:20px;border-radius:6px;background:var(--brand)}
+  main{padding:16px}
+  h1{font-size:21px}
+  .stats{grid-template-columns:1fr 1fr}
+  .tw{display:none}
+  .cards{display:block}
+  .card{padding:14px 16px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px}
+  .card:last-child{border-bottom:0}
+  .card .cb{grid-row:1/3;align-self:start;padding-top:2px}
+  .card .a{font-weight:600}
+  .card .b{color:var(--muted);font-size:13px}
+  .card .amt{font-weight:700;text-align:right}
+  .card .x{grid-column:2/4;display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+  .tools select{flex:1}
+  .chips{flex-wrap:nowrap;overflow-x:auto;width:100%;scrollbar-width:none}
+  .chip{white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<div class="mtop"><i></i>Penwick Books</div>
+<div class="app">
+<aside>
+  <div class="logo"><i></i>Penwick Books</div>
+  <a href="#">Dashboard</a><a class="on" href="#">Invoices</a><a href="#">Bills</a><a href="#">Customers</a><a href="#">Banking</a><a href="#">Reports</a>
+</aside>
+<main>
+  <div class="title">
+    <h1>Invoices</h1>
+    <div style="display:flex;gap:8px"><button class="btn" id="export">Export CSV</button><button class="btn primary">+ New invoice</button></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="panel">
+    <div class="tools">
+      <label class="search"><span style="position:absolute;left:-9999px">Search invoices</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Search invoice number or customer"></label>
+      <select id="range" aria-label="Date range">
+        <option value="all">All time</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option>
+      </select>
+      <div class="chips" id="chips" role="group" aria-label="Filter by status"></div>
+    </div>
+    <div class="bulk" id="bulk"><b id="bulkn"></b><button class="btn" data-bulk="remind">Send reminder</button><button class="btn" data-bulk="paid">Mark as paid</button></div>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th style="width:36px"><input type="checkbox" id="all" aria-label="Select all"></th>
+          <th aria-sort="none"><button data-k="no">Invoice</button></th>
+          <th><button data-k="cust">Customer</button></th>
+          <th><button data-k="issued">Issued</button></th>
+          <th><button data-k="due">Due</button></th>
+          <th><button data-k="status">Status</button></th>
+          <th class="r"><button data-k="amt">Amount</button></th>
+          <th class="r">Actions</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="foot"><span id="count"></span><span id="total"></span></div>
+  </div>
+</main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const today=new Date('2026-11-26');
+const D=(s)=>new Date(s);
+let data=[
+["INV-1048","Harbor &amp; Pine Cafe","hello@harborpine.co","2026-11-20","2026-12-20",1840.00,"due"],
+["INV-1047","Calloway Architects","ap@calloway.design","2026-11-18","2026-12-18",6250.00,"due"],
+["INV-1046","Brightwater Dental","office@brightwaterdental.com","2026-11-12","2026-11-26",980.50,"due"],
+["INV-1045","Lumen Yoga Collective","pay@lumenyoga.org","2026-11-05","2026-11-19",420.00,"over"],
+["INV-1044","Northgate Hardware","accounts@northgatehw.com","2026-10-29","2026-11-28",3310.75,"due"],
+["INV-1043","Tidewell Marine Supply","bill@tidewell.com","2026-10-22","2026-11-05",12480.00,"over"],
+["INV-1042","Okafor &amp; Daughters Catering","amara@okafor-catering.com","2026-10-15","2026-11-14",2175.00,"paid"],
+["INV-1041","Studio Fenwick","finance@studiofenwick.com","2026-10-09","2026-11-08",5600.00,"paid"],
+["INV-1040","Greenleaf Pediatrics","admin@greenleafpeds.com","2026-10-02","2026-10-16",1390.00,"over"],
+["INV-1039","Marlow Print Works","orders@marlowprint.co","2026-09-28","2026-10-28",760.25,"paid"],
+["INV-1038","Redfield Bike Co.","ride@redfieldbike.com","2026-09-19","2026-10-19",2890.00,"paid"],
+["INV-1037","Solstice Event Hire","team@solsticehire.com","2026-09-10","2026-10-10",4120.00,"paid"],
+["INV-1036","Birchwood Veterinary","frontdesk@birchwoodvet.com","2026-09-02","2026-10-02",1545.00,"paid"],
+["INV-1035","Quill &amp; Ink Stationers","ap@quillink.com","2026-08-26","2026-09-25",615.40,"paid"],
+["INV-1049","Aldous Legal LLP","","2026-11-25","2026-12-25",7800.00,"draft"]
+].map(r=>({no:r[0],cust:r[1],email:r[2],issued:r[3],due:r[4],amt:r[5],status:r[6]}));
+data.sort((a,b)=>b.no.localeCompare(a.no));
+const L={paid:"Paid",due:"Due",over:"Overdue",draft:"Draft"};
+const money=n=>n.toLocaleString('en-US',{style:'currency',currency:'USD'});
+const fd=s=>D(s).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+const st={q:"",status:"all",range:"all",sort:"no",dir:-1,sel:new Set()};
+const $=id=>document.getElementById(id);
+function visible(){
+  let r=data.filter(x=>{
+    const t=(x.no+" "+x.cust+" "+x.email).toLowerCase();
+    if(st.q&&!t.includes(st.q))return false;
+    if(st.status!=="all"&&x.status!==st.status)return false;
+    if(st.range!=="all"&&(today-D(x.issued))/864e5>+st.range)return false;
+    return true});
+  r.sort((a,b)=>{const A=a[st.sort],B=b[st.sort];return (A>B?1:A<B?-1:0)*st.dir});
+  return r;
+}
+function actions(x){
+  if(x.status==="draft")return `<button class="ib" data-a="send" data-n="${x.no}">Send</button>`;
+  if(x.status==="paid")return `<button class="ib" data-a="receipt" data-n="${x.no}">Receipt</button>`;
+  return `<button class="ib" data-a="remind" data-n="${x.no}">Remind</button><button class="ib" data-a="paid" data-n="${x.no}">Mark paid</button>`;
+}
+function render(){
+  const v=visible();
+  $('rows').innerHTML=v.length?v.map(x=>`<tr>
+   <td><input type="checkbox" data-s="${x.no}" ${st.sel.has(x.no)?"checked":""} aria-label="Select ${x.no}"></td>
+   <td class="inv">${x.no}</td><td class="cust">${x.cust}<small>${x.email||"No email yet"}</small></td>
+   <td>${fd(x.issued)}</td><td>${fd(x.due)}</td><td><span class="st ${x.status}">${L[x.status]}</span></td>
+   <td class="r num">${money(x.amt)}</td><td><div class="act">${actions(x)}</div></td></tr>`).join("")
+   :`<tr><td colspan="8"><div class="empty"><b>No invoices match</b>Try a different search or clear the filters.</div></td></tr>`;
+  $('cards').innerHTML=v.length?v.map(x=>`<div class="card">
+   <div class="cb"><input type="checkbox" data-s="${x.no}" ${st.sel.has(x.no)?"checked":""} aria-label="Select ${x.no}"></div>
+   <div class="a">${x.cust}</div><div class="amt num">${money(x.amt)}</div>
+   <div class="b">${x.no} - due ${fd(x.due)}</div><div></div>
+   <div class="x"><span class="st ${x.status}">${L[x.status]}</span><div class="act">${actions(x)}</div></div></div>`).join("")
+   :`<div class="empty"><b>No invoices match</b>Try a different search or clear the filters.</div>`;
+  $('count').textContent=`${v.length} of ${data.length} invoices`;
+  $('total').textContent=`Total ${money(v.reduce((s,x)=>s+x.amt,0))}`;
+  const n=st.sel.size;$('bulk').classList.toggle('show',n>0);$('bulkn').textContent=`${n} selected`;
+  $('all').checked=v.length>0&&v.every(x=>st.sel.has(x.no));
+  chips();stats();
+}
+function sum(s){return data.filter(x=>x.status===s).reduce((a,x)=>a+x.amt,0)}
+function stats(){
+  const o=[["all","Total billed",data.filter(x=>x.status!=="draft").reduce((a,x)=>a+x.amt,0),""],["due","Awaiting payment",sum("due"),""],["over","Overdue",sum("over"),"o"],["paid","Paid",sum("paid"),""]];
+  $('stats').innerHTML=o.map(s=>`<button class="stat ${s[3]} ${st.status===s[0]&&s[0]!=="all"?"on":""}" data-f="${s[0]}"><div class="l">${s[1]}</div><div class="v">${money(s[2])}</div></button>`).join("");
+}
+function chips(){
+  $('chips').innerHTML=[["all","All"],["due","Due"],["over","Overdue"],["paid","Paid"],["draft","Draft"]].map(c=>`<button class="chip" data-f="${c[0]}" aria-pressed="${st.status===c[0]}">${c[1]}${c[0]!=="all"?` ${data.filter(x=>x.status===c[0]).length}`:""}</button>`).join("");
+}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200)}
+function act(a,ns){
+  ns.forEach(n=>{const x=data.find(d=>d.no===n);if(a==="paid")x.status="paid";if(a==="send")x.status="due"});
+  const w={remind:"Reminder sent",paid:"Marked as paid",send:"Invoice sent",receipt:"Receipt downloaded"}[a];
+  toast(ns.length>1?`${w} for ${ns.length} invoices`:`${w}: ${ns[0]}`);st.sel.clear();render();
+}
+document.addEventListener('click',e=>{
+  const f=e.target.closest('[data-f]');if(f){st.status=st.status===f.dataset.f?"all":f.dataset.f;render();return}
+  const a=e.target.closest('[data-a]');if(a){act(a.dataset.a,[a.dataset.n]);return}
+  const b=e.target.closest('[data-bulk]');if(b){act(b.dataset.bulk,[...st.sel]);return}
+  const k=e.target.closest('th button');if(k){const s=k.dataset.k;st.dir=st.sort===s?-st.dir:1;st.sort=s;render()}
+});
+document.addEventListener('change',e=>{
+  if(e.target.id==="all"){const v=visible();e.target.checked?v.forEach(x=>st.sel.add(x.no)):v.forEach(x=>st.sel.delete(x.no));render()}
+  else if(e.target.dataset.s){e.target.checked?st.sel.add(e.target.dataset.s):st.sel.delete(e.target.dataset.s);render()}
+  else if(e.target.id==="range"){st.range=e.target.value;render()}
+});
+$('q').addEventListener('input',e=>{st.q=e.target.value.trim().toLowerCase();render()});
+$('export').onclick=()=>{
+  const rows=[["Invoice","Customer","Issued","Due","Status","Amount"],...visible().map(x=>[x.no,x.cust.replace(/&amp;/g,"&"),x.issued,x.due,L[x.status],x.amt])];
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="invoices.csv";a.click();toast("Exported "+(rows.length-1)+" invoices");
+};
+render();
+</script>
+</body>
+</html>

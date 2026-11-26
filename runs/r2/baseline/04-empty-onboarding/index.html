@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome to Fieldnote</title>
+<style>
+:root{--bg:#faf8f4;--surface:#fff;--ink:#231f1a;--muted:#6c655b;--line:#e8e3d9;--brand:#c2410c;--brand-ink:#fff;--brand-soft:#fdeee4;--ok:#2f7d4f;--ok-soft:#e1f3e8}
+@media (prefers-color-scheme:dark){:root{--bg:#15130f;--surface:#1e1b16;--ink:#f0ece4;--muted:#a69e90;--line:#312d25;--brand:#fb923c;--brand-ink:#1d0e03;--brand-soft:#33210f;--ok:#6fd49a;--ok-soft:#14291d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+aside{background:var(--surface);border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh}
+.ws{display:flex;align-items:center;gap:10px;padding:6px 8px 16px}
+.ws .mk{width:30px;height:30px;border-radius:8px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:700}
+.ws b{display:block;line-height:1.2}.ws small{color:var(--muted)}
+aside a{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500}
+aside a.on{background:var(--brand-soft);color:var(--brand)}
+aside a svg{width:17px;height:17px;flex:none}
+aside .h{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:16px 10px 6px}
+aside .grow{flex:1}
+.mtop{display:none}
+main{padding:48px 40px 64px;display:flex;justify-content:center}
+.in{width:100%;max-width:760px}
+.eyebrow{color:var(--brand);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+h1{font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:6px 0 10px}
+.lead{color:var(--muted);font-size:16.5px;max-width:560px;margin:0 0 28px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:36px}
+.act{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:132px}
+.act:hover{border-color:var(--brand)}
+.act.pri{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.act.pri:hover{filter:brightness(1.08)}
+.act .ic{width:36px;height:36px;border-radius:9px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}
+.act.pri .ic{background:rgba(255,255,255,.2);color:inherit}
+.act b{font-size:16px}
+.act span{font-size:13.5px;opacity:.82}
+.act:not(.pri) span{color:var(--muted);opacity:1}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.list header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 6px}
+.list h2{margin:0;font-size:16px}
+.prog{color:var(--muted);font-size:13px}
+.bar{height:6px;background:var(--bg);border-radius:99px;margin:6px 18px 8px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;width:25%;background:var(--brand);transition:width .3s}
+.step{display:flex;gap:12px;align-items:flex-start;padding:12px 18px;border-top:1px solid var(--line)}
+.step label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;flex:1}
+.step input{position:absolute;opacity:0}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;margin-top:1px;display:grid;place-items:center;color:transparent}
+.step input:checked+.dot{background:var(--ok);border-color:var(--ok);color:#fff}
+.step input:focus-visible+.dot{outline:2px solid var(--brand);outline-offset:2px}
+.step input:checked~.tx b{text-decoration:line-through;color:var(--muted)}
+.tx b{display:block;font-weight:600}.tx span{color:var(--muted);font-size:13.5px}
+.link{color:var(--brand);font-weight:600;font-size:13.5px;background:none;border:0;cursor:pointer;padding:6px 0;white-space:nowrap}
+.tip{margin-top:20px;display:flex;gap:12px;color:var(--muted);font-size:14px}
+.tip b{color:var(--ink)}
+.skel{margin-top:28px;opacity:.9}
+.dlg{position:fixed;inset:0;background:rgba(20,16,10,.5);display:none;align-items:center;justify-content:center;padding:16px}
+.dlg.show{display:flex}
+.box{background:var(--surface);border-radius:14px;padding:24px;width:100%;max-width:420px;border:1px solid var(--line)}
+.box h3{margin:0 0 4px;font-size:18px}.box p{margin:0 0 16px;color:var(--muted)}
+.box input[type=text],.box input[type=email]{width:100%;min-height:42px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);margin-bottom:12px}
+.box .r{display:flex;gap:8px;justify-content:flex-end}
+.btn{min-height:40px;border-radius:8px;border:1px solid var(--line);background:var(--surface);padding:0 16px;font-weight:600;cursor:pointer}
+.btn.p{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:22px;text-align:center;color:var(--muted);margin-bottom:12px}
+@media (max-width:800px){
+  .app{grid-template-columns:1fr}
+  aside{display:none}
+  .mtop{display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--line);font-weight:700}
+  .mtop .mk{width:26px;height:26px;border-radius:7px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:13px}
+  main{padding:24px 16px 40px}
+  h1{font-size:26px}
+  .actions{grid-template-columns:1fr}
+  .act{min-height:0}
+  .step{flex-wrap:wrap}
+  .step .link{margin-left:34px}
+}
+</style>
+</head>
+<body>
+<div class="mtop"><div class="mk">F</div>Fieldnote</div>
+<div class="app">
+<aside>
+  <div class="ws"><div class="mk">F</div><div><b>Marlowe Lab</b><small>Free trial - 14 days left</small></div></div>
+  <a class="on" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Home</a>
+  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/></svg>All notes</a>
+  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</a>
+  <div class="h">Projects</div>
+  <a href="#" style="opacity:.6">No projects yet</a>
+  <div class="grow"></div>
+  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.500 3-6 7-6s7 2.500 7 6M17 4.500a3.500 3.500 0 010 7M22 20c0-2.500-1.500-4.500-4-5.500"/></svg>Invite teammates</a>
+  <a href="#">Settings</a>
+</aside>
+
+<main><div class="in">
+  <div class="eyebrow">Welcome, Imani</div>
+  <h1>Your workspace is ready. Let's put the first finding in it.</h1>
+  <p class="lead">Fieldnote keeps interview notes, observations and quotes in one place, so your team can find what you learned months later.</p>
+
+  <div class="actions">
+    <button class="act pri" data-open="note">
+      <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      <b>Write your first note</b><span>Capture an interview, a call or a quick observation.</span>
+    </button>
+    <button class="act" data-open="import">
+      <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></div>
+      <b>Import existing notes</b><span>Bring in Markdown, Notion exports or Google Docs.</span>
+    </button>
+  </div>
+
+  <section class="list" aria-labelledby="gs">
+    <header><h2 id="gs">Get started</h2><span class="prog" id="prog">1 of 4 done</span></header>
+    <div class="bar" aria-hidden="true"><i id="fill"></i></div>
+    <div class="step"><label><input type="checkbox" checked><span class="dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><span class="tx"><b>Create your workspace</b><span>Marlowe Lab is set up.</span></span></label></div>
+    <div class="step"><label><input type="checkbox"><span class="dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><span class="tx"><b>Add your first note</b><span>Try a template: "User interview" or "Field visit".</span></span></label><button class="link" data-open="note">Start</button></div>
+    <div class="step"><label><input type="checkbox"><span class="dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><span class="tx"><b>Tag a quote</b><span>Highlight text in a note to save it as a quote.</span></span></label></div>
+    <div class="step"><label><input type="checkbox"><span class="dot"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><span class="tx"><b>Invite a teammate</b><span>Research is better when it is shared.</span></span></label><button class="link" data-open="invite">Invite</button></div>
+  </section>
+
+  <p class="tip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-4 10.500c.7.700 1 1.500 1 2.500h6c0-1 .3-1.800 1-2.500A6 6 0 0012 3z"/></svg><span><b>Tip:</b> press <kbd style="font:inherit;border:1px solid var(--line);border-radius:4px;padding:0 5px">N</kbd> anywhere to start a new note.</span></p>
+</div></main>
+</div>
+
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dt">
+  <div class="box">
+    <div id="v-note"><h3 id="dt">New note</h3><p>Give it a title. You can add the content next.</p>
+      <input type="text" id="title" placeholder="e.g. Interview with Sam, onboarding pain points"></div>
+    <div id="v-import" hidden><h3>Import notes</h3><p>Drop files here or choose them from your computer.</p>
+      <div class="drop">.md, .txt, .zip (Notion export)</div></div>
+    <div id="v-invite" hidden><h3>Invite a teammate</h3><p>They get an email with a link to join Marlowe Lab.</p>
+      <input type="email" id="mail" placeholder="teammate@company.com"></div>
+    <div class="r"><button class="btn" id="cancel">Cancel</button><button class="btn p" id="ok">Continue</button></div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const boxes=[...document.querySelectorAll('.step input')];
+const upd=()=>{const n=boxes.filter(b=>b.checked).length;$('prog').textContent=`${n} of ${boxes.length} done`;$('fill').style.width=n/boxes.length*100+'%'};
+boxes.forEach(b=>b.onchange=upd);upd();
+let opener=null;
+function open(k,from){opener=from;['note','import','invite'].forEach(x=>$('v-'+x).hidden=x!==k);$('dlg').classList.add('show');
+  ({note:$('title'),invite:$('mail'),import:$('ok')})[k].focus()}
+function close(){$('dlg').classList.remove('show');opener&&opener.focus()}
+document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>open(b.dataset.open,b));
+$('cancel').onclick=close;$('ok').onclick=close;
+document.addEventListener('keydown',e=>{
+  if(e.key==="Escape"&&$('dlg').classList.contains('show'))close();
+  if((e.key==="n"||e.key==="N")&&!e.target.closest('input')&&!e.metaKey&&!e.ctrlKey)open('note',document.activeElement);
+});
+$('dlg').addEventListener('click',e=>{if(e.target===$('dlg'))close()});
+</script>
+</body>
+</html>

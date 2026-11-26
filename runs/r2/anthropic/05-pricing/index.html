@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing - Relay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F5FF;--card:#fff;--ink:#0D1335;--ink2:#4F587D;--line:#DADFF2;--blue:#2540F5;--blue-d:#1A2FC4;--blue-t:#E5E9FF;--ok:#17A168;--warn:#F2A20F;--bad:#E04646}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font:16px/1.55 'Public Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3,.sora{font-family:Sora,sans-serif;letter-spacing:-.02em;line-height:1.15}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 32px}
+nav.top{display:flex;align-items:center;gap:32px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font:700 21px Sora;letter-spacing:-.03em;color:var(--ink);text-decoration:none}
+nav.top .l{display:flex;gap:26px;margin-left:12px}
+nav.top a.t{color:var(--ink2);text-decoration:none;font-weight:500}
+nav.top a.t:hover,nav.top a.t[aria-current]{color:var(--ink)}
+nav.top .r{margin-left:auto;display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:10px;font-weight:600;text-decoration:none;border:1.5px solid #B6BDE0;background:#fff;color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--ink)}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.pri:hover{background:var(--blue-d)}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.dark:hover{background:#1D2554}
+.btn.sm{min-height:38px;padding:0 16px}
+.btn.full{width:100%}
+header.hero{padding:44px 0 34px}
+h1{font-size:54px;font-weight:700;max-width:16ch}
+.hero p.lead{font-size:19px;color:var(--ink2);max-width:52ch;margin-top:18px}
+.pulse{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px 14px}
+.pulse .hd{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:600;margin-bottom:12px}
+.pulse .hd span{color:var(--ink2);font-weight:500}
+.pulse .hd b{color:var(--ok)}
+.ticks{display:flex;gap:3px;height:38px;position:relative}
+.ticks i{flex:1;border-radius:3px;background:var(--ok);cursor:default;min-width:0}
+.ticks i.w{background:var(--warn)}.ticks i.d{background:var(--bad)}
+.ticks i:hover,.ticks i:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.tip{position:absolute;bottom:46px;background:var(--ink);color:#fff;font-size:13px;padding:6px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;opacity:0;transform:translateX(-50%);z-index:5}
+.tip.on{opacity:1}
+.pulse .ft{display:flex;justify-content:space-between;color:var(--ink2);font-size:13px;margin-top:8px}
+.billing{display:flex;align-items:center;gap:14px;margin:52px 0 22px;flex-wrap:wrap}
+.billing h2{font-size:30px;margin-right:auto}
+.tog{display:inline-grid;grid-template-columns:1fr 1fr;background:#E3E7FA;border-radius:12px;padding:4px}
+.tog button{all:unset;cursor:pointer;padding:9px 18px;border-radius:9px;font-weight:600;color:var(--ink2);text-align:center}
+.tog button[aria-pressed=true]{background:#fff;color:var(--ink);box-shadow:0 1px 3px #0D133530}
+.tog button:focus-visible{outline:3px solid var(--blue)}
+.tog small{font-weight:600;color:var(--ok);margin-left:4px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column}
+.plan.pick{border:2px solid var(--blue);box-shadow:0 18px 40px -18px #2540F566;position:relative}
+.plan .flag{position:absolute;top:-13px;left:24px;background:var(--blue);color:#fff;font-size:13px;font-weight:600;padding:2px 12px;border-radius:99px}
+.plan h3{font-size:22px}
+.plan .for{color:var(--ink2);margin:4px 0 18px;min-height:3.1em}
+.plan .pr{display:flex;align-items:baseline;gap:6px}
+.plan .pr b{font:700 46px Sora;letter-spacing:-.04em}
+.plan .pr span{color:var(--ink2)}
+.plan .bill{color:var(--ink2);font-size:14px;margin:2px 0 20px;min-height:1.5em}
+.plan ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px;border-top:1px solid var(--line);padding-top:20px}
+.plan li{display:flex;gap:10px;align-items:flex-start}
+.plan li svg{width:18px;height:18px;flex:none;margin-top:3px;color:var(--ok)}
+.plan .btn{margin-top:0}
+.plan ul{margin-bottom:24px}
+.note{color:var(--ink2);font-size:14px;margin-top:16px}
+/* comparison */
+.cmp{margin-top:84px}
+.cmp h2{font-size:30px;margin-bottom:6px}
+.cmp>p{color:var(--ink2);margin-bottom:22px}
+.mtabs{display:none}
+.tblw{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:clip}
+table{width:100%;border-collapse:collapse}
+thead th{position:sticky;top:0;background:#fff;z-index:3;padding:18px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:bottom}
+thead td{background:#fff;position:sticky;top:0;z-index:3;border-bottom:1px solid var(--line);width:34%}
+thead th .n{font:600 18px Sora}
+thead th .p{color:var(--ink2);font-weight:400;font-size:14px}
+thead th.pk{background:var(--blue-t)}
+tbody th.g{background:#F8F9FF;font:600 15px Sora;padding:12px 16px;text-align:left;border-top:1px solid var(--line)}
+tbody th[scope=row]{font-weight:500;text-align:left;padding:13px 16px;border-top:1px solid var(--line)}
+tbody td{padding:13px 16px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+td.pk{background:#F6F7FF}
+.yes{color:var(--ok);display:inline-flex}
+.yes svg{width:20px;height:20px}
+.no{color:#9AA1C4}
+.faq{margin-top:84px;display:grid;grid-template-columns:1fr 1.5fr;gap:48px}
+.faq h2{font-size:30px}
+.faq details{border-top:1px solid var(--line);padding:18px 0}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;font:600 17px Sora;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;line-height:1;color:var(--blue)}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{color:var(--ink2);margin-top:10px;max-width:60ch}
+.cta{margin:84px 0 0;background:var(--ink);color:#fff;border-radius:22px;padding:44px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cta h2{font-size:30px;max-width:20ch}
+.cta p{color:#B9C0E6;margin-top:8px}
+footer{padding:44px 0 56px;color:var(--ink2);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media (max-width:1000px){.plans{grid-template-columns:1fr;max-width:520px;margin:0 auto}.plan .for{min-height:0}.faq{grid-template-columns:1fr;gap:20px}h1{font-size:42px}}
+@media (max-width:760px){
+  .ticks{gap:1px}.ticks i{border-radius:2px}
+  .wrap{padding:0 16px}
+  nav.top{height:60px;gap:12px}nav.top .l{display:none}nav.top .r .btn:first-child{display:none}
+  h1{font-size:34px}.hero p.lead{font-size:17px}
+  header.hero{padding-top:28px}
+  .billing h2{flex-basis:100%;font-size:26px}
+  .plan{padding:22px}
+  .cmp{margin-top:60px}.faq{margin-top:60px}
+  .mtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#E3E7FA;border-radius:12px;padding:4px;margin-bottom:14px}
+  .mtabs button{all:unset;text-align:center;padding:10px 4px;border-radius:9px;font-weight:600;color:var(--ink2);cursor:pointer}
+  .mtabs button[aria-pressed=true]{background:#fff;color:var(--ink)}
+  .mtabs button:focus-visible{outline:3px solid var(--blue)}
+  table.c1 [data-c="2"],table.c1 [data-c="3"],table.c2 [data-c="1"],table.c2 [data-c="3"],table.c3 [data-c="1"],table.c3 [data-c="2"]{display:none}
+  thead td{width:50%}
+  thead th{padding:14px 12px}tbody th[scope=row],tbody td{padding:12px}
+  thead th .p{display:none}
+  td{text-align:right}
+  .cta{padding:28px 22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top" aria-label="Main">
+    <a class="logo" href="#"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><rect width="30" height="30" rx="8" fill="#2540F5"/><path d="M8 9l6 6-6 6" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 9l6 6-6 6" stroke="#9FB0FF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Relay</a>
+    <div class="l"><a class="t" href="#">Product</a><a class="t" href="#" aria-current="page">Pricing</a><a class="t" href="#">Docs</a><a class="t" href="#">Status</a></div>
+    <div class="r"><a class="btn sm" href="#">Sign in</a><a class="btn sm pri" href="#">Start free</a></div>
+  </nav>
+
+  <header class="hero">
+    <h1>Find out your API is down before your customers do.</h1>
+    <p class="lead">Relay checks your endpoints from 12 regions, tells the right person within seconds and keeps the history. Start free and pay when you need more checks.</p>
+
+    <div class="pulse" aria-label="Relay's own uptime over the last 90 days">
+      <div class="hd"><div>Relay API, last 90 days <span id="up"></span></div><span>Hover a day for details</span></div>
+      <div class="ticks" id="ticks" role="list"><div class="tip" id="tip" aria-hidden="true"></div></div>
+      <div class="ft"><span>29 Aug</span><span>Today, 26 Nov</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="plans-h">
+    <div class="billing">
+      <h2 id="plans-h">Pick a plan</h2>
+      <div class="tog" role="group" aria-label="Billing period">
+        <button type="button" id="b-m" aria-pressed="false">Monthly</button>
+        <button type="button" id="b-y" aria-pressed="true">Yearly <small>save 17%</small></button>
+      </div>
+    </div>
+
+    <div class="plans">
+      <article class="plan">
+        <h3>Hobby</h3>
+        <p class="for">For side projects and a first look at Relay.</p>
+        <div class="pr"><b>$0</b><span>forever</span></div>
+        <div class="bill">No card needed</div>
+        <a class="btn full" href="#">Start free</a>
+        <ul>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>5 monitors</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Checks every 5 minutes</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Email alerts</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>7 days of history</li>
+        </ul>
+      </article>
+
+      <article class="plan pick">
+        <span class="flag">Most teams start here</span>
+        <h3>Team</h3>
+        <p class="for">For product teams that carry a pager.</p>
+        <div class="pr"><b data-m="29" data-y="24">$24</b><span>per month</span></div>
+        <div class="bill" data-m="Billed monthly" data-y="Billed as $288 each year">Billed as $288 each year</div>
+        <a class="btn pri full" href="#">Start a 14-day trial</a>
+        <ul>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>50 monitors</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Checks every minute from 12 regions</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Slack, PagerDuty and webhook alerts</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Multi-step API checks</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>10 teammates, 90 days of history</li>
+        </ul>
+      </article>
+
+      <article class="plan">
+        <h3>Scale</h3>
+        <p class="for">For platforms with customers who hold you to an SLA.</p>
+        <div class="pr"><b data-m="99" data-y="82">$82</b><span>per month</span></div>
+        <div class="bill" data-m="Billed monthly" data-y="Billed as $984 each year">Billed as $984 each year</div>
+        <a class="btn dark full" href="#">Start a 14-day trial</a>
+        <ul>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>500 monitors</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Checks every 15 seconds</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>On-call schedules and escalation</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>SSO and audit log</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Unlimited teammates, 13 months of history</li>
+        </ul>
+      </article>
+    </div>
+    <p class="note">Need more than 500 monitors, or a private region? <a href="#" style="color:var(--blue-d);font-weight:600">Talk to us</a> about a custom plan. Extra monitors cost $0.40 each per month on Team and Scale.</p>
+  </section>
+
+  <section class="cmp" aria-labelledby="cmp-h">
+    <h2 id="cmp-h">Compare every feature</h2>
+    <p>All plans include unlimited alert recipients on Slack and email, and a public status page.</p>
+    <div class="mtabs" role="group" aria-label="Show plan">
+      <button type="button" data-c="1" aria-pressed="false">Hobby</button>
+      <button type="button" data-c="2" aria-pressed="true">Team</button>
+      <button type="button" data-c="3" aria-pressed="false">Scale</button>
+    </div>
+    <div class="tblw">
+      <table class="c2" id="tbl">
+        <thead><tr>
+          <td></td>
+          <th data-c="1" scope="col"><div class="n">Hobby</div><div class="p">$0</div></th>
+          <th data-c="2" scope="col" class="pk"><div class="n">Team</div><div class="p" data-m="$29 per month" data-y="$24 per month">$24 per month</div></th>
+          <th data-c="3" scope="col"><div class="n">Scale</div><div class="p" data-m="$99 per month" data-y="$82 per month">$82 per month</div></th>
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-h">
+    <h2 id="faq-h">Questions we hear before people sign up</h2>
+    <div>
+      <details><summary>What counts as a monitor?</summary><p>One monitor is one endpoint check, such as a GET on /health. A multi-step check that calls three endpoints in order still counts as one monitor.</p></details>
+      <details><summary>Can I change plans later?</summary><p>Yes. Upgrades apply at once and we credit the unused part of your current period. Downgrades start at your next renewal.</p></details>
+      <details><summary>What happens if I go over my monitor limit?</summary><p>Existing monitors keep running. You pay $0.40 for each extra monitor on Team and Scale, or you can pause the ones you do not need. Hobby stops you at 5.</p></details>
+      <details><summary>Do you offer a refund?</summary><p>Yearly plans have a 30-day refund window. Monthly plans can be cancelled at any time and are not charged again.</p></details>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div><h2>Set up your first monitor in about two minutes.</h2><p>Paste a URL, pick where alerts go and you are watching.</p></div>
+    <a class="btn pri" href="#">Start free</a>
+  </section>
+
+  <footer><span>Relay Systems Ltd. Prices in US dollars, tax added at checkout.</span><span>Security  |  Privacy  |  Terms</span></footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+/* uptime ticks: 90 days, two small incidents */
+const MO=['Aug','Sep','Oct','Nov'];
+const start=new Date(2026,7,29);
+const bad={19:['w','Elevated latency for 22 minutes'],47:['d','Outage for 11 minutes, EU region'],71:['w','Delayed alerts for 14 minutes']};
+const t=$('ticks'),tip=$('tip');
+for(let i=0;i<90;i++){
+  const d=new Date(start);d.setDate(start.getDate()+i);
+  const b=document.createElement('i');const lab=d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  const msg=bad[i]?bad[i][1]:'No downtime';
+  if(bad[i])b.className=bad[i][0];
+  b.tabIndex=0;b.setAttribute('role','listitem');b.setAttribute('aria-label',lab+': '+msg);
+  const on=()=>{tip.textContent=lab+': '+msg;tip.classList.add('on');const r=b.getBoundingClientRect(),p=t.getBoundingClientRect();let x=r.left-p.left+r.width/2;const h=tip.offsetWidth/2;x=Math.max(h,Math.min(p.width-h,x));tip.style.left=x+'px'};
+  b.onmouseenter=on;b.onfocus=on;b.onmouseleave=b.onblur=()=>tip.classList.remove('on');
+  t.appendChild(b);
+}
+$('up').innerHTML='<b>99.98% uptime</b>';
+/* billing toggle */
+function bill(y){
+  $('b-y').setAttribute('aria-pressed',y);$('b-m').setAttribute('aria-pressed',!y);
+  document.querySelectorAll('[data-m]').forEach(e=>{const v=e.dataset[y?'y':'m'];e.textContent=(e.classList.contains('p')||e.tagName==='B'||e.classList.contains('bill'))?(e.tagName==='B'?'$'+v:v):v});
+}
+$('b-y').onclick=()=>bill(true);$('b-m').onclick=()=>bill(false);
+/* comparison */
+const Y='<span class="yes" role="img" aria-label="Included"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 10.5 4 4 8-9"/></svg></span>';
+const N='<span class="no" role="img" aria-label="Not included">Not included</span>';
+const rows=[
+ ['Monitoring'],
+ ['Monitors','5','50','500'],
+ ['Check interval','5 minutes','1 minute','15 seconds'],
+ ['Regions','2','12','12, plus private regions'],
+ ['Multi-step API checks',N,Y,Y],
+ ['Assertions on status, body and headers',Y,Y,Y],
+ ['Alerts'],
+ ['Email and Slack',Y,Y,Y],
+ ['PagerDuty and webhooks',N,Y,Y],
+ ['Maintenance windows',N,Y,Y],
+ ['On-call schedules and escalation',N,N,Y],
+ ['Team and data'],
+ ['Teammates','1','10','Unlimited'],
+ ['History','7 days','90 days','13 months'],
+ ['Public status pages','1','3','10'],
+ ['SSO and audit log',N,N,Y],
+ ['Support'],
+ ['Support channel','Community','Email','Email and shared Slack channel'],
+ ['First response target','None','1 business day','1 hour, any day'],
+ ['Uptime SLA for Relay',N,'99.9%','99.99%']
+];
+$('tb').innerHTML=rows.map(r=>r.length===1?`<tr><th class="g" colspan="4" scope="colgroup">${r[0]}</th></tr>`:`<tr><th scope="row">${r[0]}</th>${[1,2,3].map(c=>`<td data-c="${c}"${c===2?' class="pk"':''}>${r[c]}</td>`).join('')}</tr>`).join('');
+document.querySelectorAll('.mtabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.mtabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  $('tbl').className='c'+b.dataset.c;
+});
+</script>
+</body>
+</html>

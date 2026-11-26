@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fernwell - Today</title>
+<style>
+  :root{
+    --bg:#f3f5f0; --surface:#fff; --ink:#1b2a21; --muted:#66756b; --line:#e0e6dc;
+    --brand:#2f6b45; --brand-soft:#e5f0e8; --warn:#b4540a; --warn-soft:#fdf0e1; --bad:#b3261e; --bad-soft:#fde9e7; --good:#1f7a43;
+    --c1:#2f6b45; --c2:#a9c9b3;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#0e1511; --surface:#16201a; --ink:#e8f0ea; --muted:#92a398; --line:#26332b; --brand:#6fc08a; --brand-soft:#1c2e22; --warn:#f0a35e; --warn-soft:#33250f; --bad:#ff8a80; --bad-soft:#3a1c1a; --good:#6fcf97; --c1:#6fc08a; --c2:#2c4a37}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+  .side{background:var(--surface);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;padding:0 8px 18px}
+  .side a{display:flex;gap:10px;align-items:center;padding:10px;border-radius:9px;color:var(--muted);text-decoration:none;font-weight:500;min-height:42px}
+  .side a[aria-current]{background:var(--brand-soft);color:var(--brand);font-weight:600}
+  .side a:hover{background:var(--bg)}
+  .side .who{margin-top:auto;display:flex;gap:10px;align-items:center;padding:10px 8px;border-top:1px solid var(--line);font-size:14px}
+  .av{width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--surface);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+  main{padding:24px 28px 40px;min-width:0}
+  .top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  h1{margin:0;font-size:26px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin-top:2px}
+  .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px}
+  .seg button{border:0;background:none;padding:8px 14px;border-radius:7px;font:600 13px inherit;font-family:inherit;color:var(--muted);cursor:pointer;min-height:36px}
+  .seg button[aria-pressed=true]{background:var(--brand);color:var(--surface)}
+  button:focus-visible,a:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 55%,transparent);outline-offset:2px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;min-width:0}
+  .card h2{margin:0 0 2px;font-size:15px}
+  .card .hint{color:var(--muted);font-size:13px;margin:0 0 14px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+  .kpi .l{color:var(--muted);font-size:13px}
+  .kpi .v{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+  .d{font-size:13px;font-weight:600;display:inline-flex;gap:4px;align-items:center}
+  .d.up{color:var(--good)} .d.dn{color:var(--bad)}
+  .d span{color:var(--muted);font-weight:400}
+  .grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px;margin-bottom:14px}
+  .grid.b{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .chart{width:100%;height:auto;display:block}
+  .legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:8px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+  .alerts{display:grid;gap:10px}
+  .al{display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;background:var(--warn-soft)}
+  .al.bad{background:var(--bad-soft)}
+  .al svg{flex:none;margin-top:2px}
+  .al b{display:block;font-size:14px}
+  .al small{color:var(--muted);font-size:13px}
+  .al.bad b{color:var(--bad)} .al:not(.bad) b{color:var(--warn)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{font-weight:500;color:var(--muted);text-align:left;font-size:12px;padding:0 0 8px}
+  td{padding:10px 0;border-top:1px solid var(--line)}
+  td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+  .tag{font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--brand-soft);color:var(--brand)}
+  .tag.p{background:var(--warn-soft);color:var(--warn)}
+  .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+  .bar i{display:block;height:100%;background:var(--c1)}
+  .prod{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+  .prod:first-of-type{border-top:0}
+  .pot{width:36px;height:36px;border-radius:9px;background:var(--brand-soft);display:grid;place-items:center}
+  .prod b{font-weight:600;font-size:14px;display:block}
+  .prod small{color:var(--muted);font-size:12px}
+  .low{color:var(--bad);font-weight:600}
+  .tab{display:none}
+  @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)} .grid,.grid.b{grid-template-columns:1fr}}
+  @media (max-width:760px){
+    .app{grid-template-columns:1fr}
+    .side{position:fixed;inset:auto 0 0 0;height:64px;flex-direction:row;padding:6px 8px;z-index:5;border-top:1px solid var(--line);border-right:0;justify-content:space-around}
+    .side .brand,.side .who{display:none}
+    .side a{flex-direction:column;gap:2px;font-size:11px;padding:6px 10px;min-width:56px;min-height:48px;justify-content:center}
+    main{padding:18px 16px 90px}
+    h1{font-size:22px}
+    .kpi .v{font-size:25px}
+    .kpis{gap:10px}
+    .card{padding:16px}
+    .mhead{display:flex!important}
+  }
+  .mhead{display:none;align-items:center;gap:10px;font-weight:700;margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="side" aria-label="Main">
+    <div class="brand"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--brand)"/><path d="M14 22v-8M14 14c0-4-3-6-7-6 0 4 3 6 7 6zM14 16c0-3 2-5 6-5 0 3-2 5-6 5z" fill="none" stroke="var(--surface)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Fernwell</div>
+    <a href="#" aria-current="page"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 9l7-6 7 6v7H11v-5H7v5H2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Today</a>
+    <a href="#"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 4h2l2 8h8l2-6H5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/><circle cx="7" cy="15" r="1.2" fill="currentColor"/><circle cx="13" cy="15" r="1.2" fill="currentColor"/></svg>Orders</a>
+    <a href="#"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 16V9M9 9c0-3-2-5-6-5 0 3 2 5 6 5zM9 11c0-2 2-4 5-4 0 3-2 4-5 4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Plants</a>
+    <a href="#"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 15c1-3 3-4 6-4s5 1 6 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Customers</a>
+    <div class="who"><div class="av">PR</div><div><b>Priya Raman</b><br><span style="color:var(--muted);font-size:12px">Owner</span></div></div>
+  </nav>
+
+  <main>
+    <div class="mhead"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--brand)"/><path d="M14 22v-8M14 14c0-4-3-6-7-6 0 4 3 6 7 6zM14 16c0-3 2-5 6-5 0 3-2 5-6 5z" fill="none" stroke="var(--surface)" stroke-width="1.8" stroke-linecap="round"/></svg>Fernwell</div>
+    <div class="top">
+      <div><h1>Good afternoon, Priya</h1><div class="sub">Thursday 26 November, as of 14:20. You are ahead of a normal Thursday.</div></div>
+      <div class="seg" role="group" aria-label="Compare with"><button aria-pressed="true">vs last Thursday</button><button aria-pressed="false">vs yesterday</button></div>
+    </div>
+
+    <section class="kpis" aria-label="Today at a glance">
+      <div class="card kpi"><div class="l">Sales today</div><div class="v">£1,284</div><span class="d up">&#9650; 18% <span>vs £1,088</span></span></div>
+      <div class="card kpi"><div class="l">Orders</div><div class="v">37</div><span class="d up">&#9650; 6 <span>more than last week</span></span></div>
+      <div class="card kpi"><div class="l">Average order</div><div class="v">£34.70</div><span class="d up">&#9650; 4% <span>vs £33.30</span></span></div>
+      <div class="card kpi"><div class="l">Visitors who bought</div><div class="v">3.1%</div><span class="d dn">&#9660; 0.4 pts <span>vs 3.5%</span></span></div>
+    </section>
+
+    <div class="grid">
+      <section class="card" aria-labelledby="h-s">
+        <h2 id="h-s">Sales by hour</h2>
+        <p class="hint">Today is ahead of last Thursday since 10:00. The evening peak is still to come.</p>
+        <svg class="chart" viewBox="0 0 640 240" role="img" aria-label="Line chart of sales per hour. Today reaches 1,284 pounds by 14:00, above last Thursday at 1,088.">
+          <g stroke="var(--line)" stroke-width="1"><line x1="44" y1="20" x2="630" y2="20"/><line x1="44" y1="70" x2="630" y2="70"/><line x1="44" y1="120" x2="630" y2="120"/><line x1="44" y1="170" x2="630" y2="170"/><line x1="44" y1="210" x2="630" y2="210"/></g>
+          <g fill="var(--muted)" font-size="12" text-anchor="end"><text x="36" y="24">£1.5k</text><text x="36" y="74">£1k</text><text x="36" y="124">£500</text><text x="36" y="214">£0</text></g>
+          <g fill="var(--muted)" font-size="12" text-anchor="middle"><text x="44" y="232">00:00</text><text x="190" y="232">06:00</text><text x="337" y="232">12:00</text><text x="483" y="232">18:00</text><text x="624" y="232">24:00</text></g>
+          <path d="M44 210 L117 208 L190 205 L227 190 L263 160 L300 130 L337 108 L373 92 L410 80 L446 66 L483 48 L520 38 L557 42 L593 70 L630 100" fill="none" stroke="var(--c2)" stroke-width="2.5" stroke-dasharray="5 4"/>
+          <path d="M44 210 L117 209 L190 206 L227 184 L263 150 L300 112 L337 80 L360 58" fill="none" stroke="var(--c1)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="360" cy="58" r="5.5" fill="var(--c1)" stroke="var(--surface)" stroke-width="2"/>
+          <text x="368" y="48" fill="var(--ink)" font-size="12" font-weight="700">£1,284 now</text>
+        </svg>
+        <div class="legend"><span><i style="background:var(--c1)"></i>Today</span><span><i style="background:var(--c2)"></i>Last Thursday</span></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-a">
+        <h2 id="h-a">Needs you today</h2>
+        <p class="hint">Three things, most urgent first.</p>
+        <div class="alerts">
+          <div class="al bad"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="none" stroke="var(--bad)" stroke-width="1.6"/><path d="M9 5v5M9 12.5v.5" stroke="var(--bad)" stroke-width="1.8" stroke-linecap="round"/></svg><div><b>4 orders must ship by 16:00</b><small>Promised next-day delivery. The courier collects at 16:30.</small></div></div>
+          <div class="al"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2l8 14H1z" fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 7v4M9 13v.5" stroke="var(--warn)" stroke-width="1.8" stroke-linecap="round"/></svg><div><b>Monstera deliciosa: 2 left</b><small>You sold 9 this week. Next supplier delivery is Monday.</small></div></div>
+          <div class="al"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 4h14v9H6l-4 3z" fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-linejoin="round"/></svg><div><b>2 customer messages waiting</b><small>The oldest is 5 hours old. A leaf-curl question.</small></div></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid b">
+      <section class="card" aria-labelledby="h-o">
+        <h2 id="h-o">Latest orders</h2>
+        <p class="hint">37 today, 29 fulfilled or ready.</p>
+        <table>
+          <thead><tr><th>Customer</th><th>Status</th><th>Total</th></tr></thead>
+          <tbody>
+            <tr><td>Hannah Moore</td><td><span class="tag p">To pack</span></td><td>£62.00</td></tr>
+            <tr><td>Luis Ortega</td><td><span class="tag p">To pack</span></td><td>£18.50</td></tr>
+            <tr><td>Aiko Tanaka</td><td><span class="tag">Shipped</span></td><td>£41.00</td></tr>
+            <tr><td>Ben Whitfield</td><td><span class="tag">Shipped</span></td><td>£27.90</td></tr>
+            <tr><td>Sofia Rossi</td><td><span class="tag">Shipped</span></td><td>£74.25</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card" aria-labelledby="h-p">
+        <h2 id="h-p">Best sellers today</h2>
+        <p class="hint">Units sold, with stock left.</p>
+        <div class="prod"><div class="pot"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V8M10 8c0-3-2-5-5-5 0 3 2 5 5 5zM10 10c0-2 2-4 5-4 0 3-2 4-5 4z" fill="none" stroke="var(--brand)" stroke-width="1.6" stroke-linecap="round"/><path d="M6 15h8l-1 3H7z" fill="var(--brand)"/></svg></div><div><b>Snake plant, 30 cm</b><small>24 in stock</small></div><b>11</b></div>
+        <div class="prod"><div class="pot"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V8M10 8c0-3-2-5-5-5 0 3 2 5 5 5zM10 10c0-2 2-4 5-4 0 3-2 4-5 4z" fill="none" stroke="var(--brand)" stroke-width="1.6" stroke-linecap="round"/><path d="M6 15h8l-1 3H7z" fill="var(--brand)"/></svg></div><div><b>Pothos, hanging</b><small>17 in stock</small></div><b>8</b></div>
+        <div class="prod"><div class="pot"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V8M10 8c0-3-2-5-5-5 0 3 2 5 5 5zM10 10c0-2 2-4 5-4 0 3-2 4-5 4z" fill="none" stroke="var(--brand)" stroke-width="1.6" stroke-linecap="round"/><path d="M6 15h8l-1 3H7z" fill="var(--brand)"/></svg></div><div><b>Monstera deliciosa</b><small class="low">2 in stock</small></div><b>5</b></div>
+        <div class="prod"><div class="pot"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 15V8M10 8c0-3-2-5-5-5 0 3 2 5 5 5zM10 10c0-2 2-4 5-4 0 3-2 4-5 4z" fill="none" stroke="var(--brand)" stroke-width="1.6" stroke-linecap="round"/><path d="M6 15h8l-1 3H7z" fill="var(--brand)"/></svg></div><div><b>Terracotta pot, 14 cm</b><small>63 in stock</small></div><b>4</b></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-t">
+        <h2 id="h-t">Where visitors come from</h2>
+        <p class="hint">1,194 visits today.</p>
+        <div style="display:grid;gap:14px">
+          <div><div style="display:flex;justify-content:space-between"><span>Search</span><b>46%</b></div><div class="bar"><i style="width:46%"></i></div></div>
+          <div><div style="display:flex;justify-content:space-between"><span>Instagram</span><b>27%</b></div><div class="bar"><i style="width:27%"></i></div></div>
+          <div><div style="display:flex;justify-content:space-between"><span>Email newsletter</span><b>15%</b></div><div class="bar"><i style="width:15%"></i></div></div>
+          <div><div style="display:flex;justify-content:space-between"><span>Direct</span><b>12%</b></div><div class="bar"><i style="width:12%"></i></div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>

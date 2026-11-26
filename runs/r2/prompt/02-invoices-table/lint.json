@@ -1,0 +1,99 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside"
+    ]
+  },
+  "fontFamilies": [
+    "ui-sans-serif"
+  ],
+  "textColors": 8,
+  "minFontPx": 11.6667,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(201, 203, 228)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(11, 87, 208)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 46,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "New invoice",
+        "w": 358,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 332,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "All statuses\nDraft\nAwaiting pa",
+        "w": 154,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "Last 90 days\nThis month\nThis y",
+        "w": 118,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 18,
+        "h": 18
+      },
+      {
+        "tag": "button",
+        "text": "INVOICE",
+        "w": 52,
+        "h": 17
+      },
+      {
+        "tag": "button",
+        "text": "CUSTOMER",
+        "w": 68,
+        "h": 17
+      },
+      {
+        "tag": "button",
+        "text": "ISSUED",
+        "w": 44,
+        "h": 17
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}
