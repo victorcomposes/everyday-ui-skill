@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team - Cobalt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F4F9; --surface:#fff; --ink:#161B33; --muted:#5A6178; --line:#DFE2EC;
+  --cobalt:#1D3FD8; --cobalt-ink:#142C9C; --cobalt-soft:#E7ECFF;
+  --danger:#C2301F; --danger-soft:#FDECE9; --ok:#17794F;
+  --r:10px;
+  font-family:'Onest',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:6px}
+.app{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+
+/* sidebar */
+.side{background:var(--surface);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;font-weight:700;font-size:19px;letter-spacing:-.02em}
+.brand svg{width:28px;height:28px}
+.ws{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg)}
+.ws b{display:block;font-weight:600;font-size:14px;line-height:1.2}
+.ws small{color:var(--muted);font-size:12.5px}
+.ws .sq{width:30px;height:30px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500}
+.nav a svg{width:18px;height:18px;flex:none}
+.nav a:hover{background:var(--bg);color:var(--ink)}
+.nav a[aria-current=page]{background:var(--cobalt-soft);color:var(--cobalt-ink);font-weight:600}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:8px}
+.me small{color:var(--muted);display:block;font-size:12.5px}
+
+/* main */
+main{padding:40px clamp(20px,4vw,56px) 80px;max-width:1040px;width:100%}
+h1{font-size:34px;line-height:1.1;letter-spacing:-.03em;margin:0 0 6px;font-weight:700}
+.sub{color:var(--muted);margin:0}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.seats{min-width:230px}
+.seats p{margin:0 0 6px;font-size:13.5px;color:var(--muted);display:flex;justify-content:space-between}
+.seats p b{color:var(--ink);font-weight:600}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;display:flex}
+.bar i{display:block;height:100%;background:var(--cobalt)}
+.bar i+i{background:repeating-linear-gradient(135deg,#9DB0FF 0 4px,#C7D2FF 4px 8px)}
+
+/* invite sentence */
+.invite{background:var(--cobalt);color:#fff;border-radius:16px;padding:22px 24px 18px;margin-bottom:34px}
+.invite h2{margin:0 0 14px;font-size:15px;font-weight:600;color:#C9D4FF}
+.sentence{position:relative;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:20px;font-weight:500;letter-spacing:-.01em}
+.sentence input,.sentence select{background:#fff;color:var(--ink);border:2px solid transparent;border-radius:10px;padding:10px 14px;font-size:16px;height:46px}
+.sentence input{flex:1 1 260px;min-width:0}
+.sentence input::placeholder{color:#8A91A8}
+.sentence input[aria-invalid=true]{border-color:#FFB4A8}
+.btn{height:46px;border:0;border-radius:10px;padding:0 18px;font-weight:600;cursor:pointer;background:var(--ink);color:#fff;transition:background .15s}
+.btn:hover{background:#000}
+.invite .btn{background:#fff;color:var(--cobalt-ink)}
+.invite .btn:hover{background:var(--cobalt-soft)}
+.invite :focus-visible{outline-color:#fff}
+.hint{margin:12px 0 0;font-size:14px;color:#D5DDFF;min-height:21px}
+.hint.err{color:#FFD3CB;font-weight:600}
+
+/* list */
+.bar-tools{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+.tabs{display:flex;gap:4px;background:#E7E9F2;padding:4px;border-radius:11px}
+.tabs button{border:0;background:none;padding:7px 14px;border-radius:8px;font-weight:600;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(22,27,51,.12)}
+.tabs span{color:var(--muted);font-weight:500;margin-left:4px}
+.search{position:relative;flex:0 1 280px;min-width:180px;width:100%;max-width:280px}
+.search input{width:100%;height:40px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:0 12px 0 38px}
+.search svg{position:absolute;left:12px;top:11px;width:18px;height:18px;color:var(--muted)}
+
+.list{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 170px 120px 44px;align-items:center;gap:16px;padding:14px 18px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row.cols{padding:10px 18px;background:#FAFAFD;color:var(--muted);font-size:13px;font-weight:500}
+.who{display:flex;align-items:center;gap:12px;min-width:0}
+.who b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:14px;flex:none}
+.av.dashed{background:none;border:1.5px dashed #9AA2BA;color:var(--muted)}
+.row select{width:100%;height:38px;border:1px solid var(--line);border-radius:9px;padding:0 10px;background:var(--surface);cursor:pointer}
+.row select:disabled{background:var(--bg);color:var(--muted);cursor:not-allowed}
+.active{color:var(--muted);font-size:14px}
+.active.now{color:var(--ok);font-weight:600}
+.icon{width:38px;height:38px;border:0;background:none;border-radius:9px;display:grid;place-items:center;color:var(--muted);cursor:pointer}
+.icon:hover{background:var(--danger-soft);color:var(--danger)}
+.icon:disabled{opacity:.35;cursor:not-allowed;background:none;color:var(--muted)}
+.icon svg{width:19px;height:19px}
+.pend-actions{display:flex;gap:6px;justify-content:flex-end;grid-column:span 2}
+.link{border:1px solid var(--line);background:var(--surface);border-radius:9px;height:36px;padding:0 12px;font-weight:600;cursor:pointer;font-size:14px}
+.link:hover{border-color:var(--cobalt);color:var(--cobalt-ink)}
+.link.d:hover{border-color:var(--danger);color:var(--danger)}
+.empty{padding:44px 24px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+.roles{margin-top:30px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.roles div{padding:16px 18px;border-left:1px solid var(--line)}
+.roles div:first-child{border-left:0}
+.roles b{display:block;margin-bottom:4px}
+.roles p{margin:0;color:var(--muted);font-size:14px}
+
+/* dialog + toast */
+dialog{border:0;border-radius:16px;padding:26px;max-width:440px;width:calc(100% - 32px);box-shadow:0 24px 70px rgba(22,27,51,.35);color:var(--ink)}
+dialog::backdrop{background:rgba(22,27,51,.45)}
+dialog h3{margin:0 0 8px;font-size:20px;letter-spacing:-.02em}
+dialog p{margin:0 0 22px;color:var(--muted)}
+.dlg-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.btn.ghost{background:var(--bg);color:var(--ink)}
+.btn.ghost:hover{background:#E7E9F2}
+.btn.danger{background:var(--danger)}
+.btn.danger:hover{background:#9C2314}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 14px 12px 18px;border-radius:12px;display:flex;gap:16px;align-items:center;opacity:0;pointer-events:none;transition:.22s;z-index:20;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{background:none;border:0;color:#9DB0FF;font-weight:700;cursor:pointer;padding:4px 6px}
+.sr{position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+@media (max-width:900px){
+  .roles{grid-template-columns:1fr 1fr}
+  .roles div:nth-child(3){border-left:0}
+  .roles div:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:760px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;height:auto;flex-direction:row;align-items:center;gap:14px;padding:12px 16px;border-right:0;border-bottom:1px solid var(--line);overflow-x:auto}
+  .ws,.me{display:none}
+  .brand{padding:0}
+  .nav{flex-direction:row;gap:2px}
+  .nav a{padding:8px 10px;white-space:nowrap}
+  .nav a svg{display:none}
+  main{padding:26px 16px 80px}
+  h1{font-size:28px}
+  .head{margin-bottom:20px}
+  .seats{width:100%}
+  .invite{padding:18px 16px 14px;border-radius:14px}
+  .sentence{font-size:17px;gap:10px}
+  .sentence>*:not(.sr){width:100%}
+  .sentence>span{width:auto}
+  .sentence .btn{width:100%}
+  .bar-tools{align-items:stretch}
+  .tabs{width:100%}.tabs button{flex:1}
+  .search{max-width:none;flex-basis:100%}
+  .row.cols{display:none}
+  .row{grid-template-columns:minmax(0,1fr) 40px;grid-template-areas:"who x" "role role" "act act";gap:10px 8px;padding:14px}
+  .row .who{grid-area:who}
+  .row .roleCell{grid-area:role}
+  .row .icon{grid-area:x}
+  .row .active{grid-area:act;font-size:13px}
+  .row .pend-actions{grid-area:act;justify-content:flex-start;grid-column:auto}
+  .roles{grid-template-columns:1fr}
+  .roles div{border-left:0;border-top:1px solid var(--line)}
+  .roles div:first-child{border-top:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#1D3FD8"/><path d="M14 6a8 8 0 1 0 0 16" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><circle cx="19" cy="14" r="2.6" fill="#fff"/></svg>
+      Cobalt
+    </div>
+    <div class="ws"><span class="sq">H</span><span><b>Halden Studio</b><small>Pro plan</small></span></div>
+    <nav class="nav" aria-label="Workspace">
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Projects</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H9l-5 4z" stroke-linejoin="round"/></svg>Reviews</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4v16H5zM11 4h4v16h-4zM17 6l3.5 1-3.5 13-3.5-1z" stroke-linejoin="round"/></svg>Library</a>
+      <a href="#" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c1.9.6 3.1 2.2 3.5 5"/></svg>Team</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10.5h18"/></svg>Billing</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>Settings</a>
+    </nav>
+    <div class="me"><span class="av" style="background:#FFE3C2;color:#7A3E00">AO</span><span><b style="font-weight:600">Amara Okafor</b><small>Owner</small></span></div>
+  </aside>
+
+  <main>
+    <div class="head">
+      <div>
+        <h1>Team</h1>
+        <p class="sub">Choose who can see, comment on and approve designs in Halden Studio.</p>
+      </div>
+      <div class="seats" aria-live="polite">
+        <p><span><b id="seatUsed">13</b> of 15 seats in use</span><span id="seatLeft">2 free</span></p>
+        <div class="bar" role="img" aria-label="Seat usage"><i id="barA"></i><i id="barB"></i></div>
+      </div>
+    </div>
+
+    <form class="invite" id="inviteForm" novalidate>
+      <h2>Invite someone</h2>
+      <div class="sentence">
+        <span>Invite</span>
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" placeholder="name@company.com" autocomplete="off">
+        <span>as</span>
+        <label class="sr" for="inviteRole">Role</label>
+        <select id="inviteRole">
+          <option>Admin</option><option selected>Reviewer</option><option>Viewer</option>
+        </select>
+        <button class="btn" type="submit">Send invite</button>
+      </div>
+      <p class="hint" id="hint" aria-live="polite"></p>
+    </form>
+
+    <div class="bar-tools">
+      <div class="tabs" role="tablist" aria-label="Team lists">
+        <button role="tab" id="tabM" aria-selected="true" aria-controls="list">Members<span id="cM">10</span></button>
+        <button role="tab" id="tabP" aria-selected="false" aria-controls="list">Waiting to join<span id="cP">3</span></button>
+      </div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        <label class="sr" for="q">Search members</label>
+        <input id="q" type="search" placeholder="Search by name or email">
+      </div>
+    </div>
+
+    <div class="list" id="list" role="tabpanel"></div>
+
+    <section class="roles" aria-label="What each role can do">
+      <div><b>Owner</b><p>Everything, including billing and deleting the workspace.</p></div>
+      <div><b>Admin</b><p>Manage members, projects and integrations.</p></div>
+      <div><b>Reviewer</b><p>Comment on designs and approve or request changes.</p></div>
+      <div><b>Viewer</b><p>Open designs and read comments. Cannot comment.</p></div>
+    </section>
+  </main>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlgT">
+  <h3 id="dlgT"></h3>
+  <p id="dlgP"></p>
+  <div class="dlg-actions">
+    <button class="btn ghost" id="dlgNo" type="button">Keep member</button>
+    <button class="btn danger" id="dlgYes" type="button">Remove member</button>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status"><span id="toastT"></span><button id="toastU" type="button">Undo</button></div>
+
+<script>
+const TINTS=[['#FFE3C2','#7A3E00'],['#D9F0E4','#115B38'],['#E7DCFB','#4A2A94'],['#FFD9E2','#8A1F3F'],['#D3E8FA','#1A4C80'],['#F6F0B8','#5C5200']];
+let members=[
+ {id:1,name:'Amara Okafor',email:'amara@haldenstudio.co',role:'Owner',active:'Online now'},
+ {id:2,name:'Jonas Weber',email:'jonas@haldenstudio.co',role:'Admin',active:'12 minutes ago'},
+ {id:3,name:'Priya Raman',email:'priya@haldenstudio.co',role:'Reviewer',active:'Today, 09:41'},
+ {id:4,name:'Tomás Herrera',email:'tomas.herrera@haldenstudio.co',role:'Reviewer',active:'Yesterday'},
+ {id:5,name:'Linnea Sjöberg',email:'linnea@northlight.se',role:'Viewer',active:'Yesterday'},
+ {id:6,name:'Kofi Mensah',email:'kofi@haldenstudio.co',role:'Reviewer',active:'3 days ago'},
+ {id:7,name:'Mei Tanaka',email:'mei@haldenstudio.co',role:'Admin',active:'Online now'},
+ {id:8,name:'Daniel Rothstein',email:'daniel@brightpath.io',role:'Viewer',active:'Last week'},
+ {id:9,name:'Sofia Bianchi',email:'sofia@haldenstudio.co',role:'Reviewer',active:'Last week'},
+ {id:10,name:'Oluwaseun Adeyemi',email:'seun@haldenstudio.co',role:'Viewer',active:'Nov 2'}
+];
+let pending=[
+ {id:101,email:'hannah.lindqvist@northlight.se',role:'Reviewer',sent:'Invited 2 days ago'},
+ {id:102,email:'marcus@brightpath.io',role:'Viewer',sent:'Invited 5 days ago'},
+ {id:103,email:'rin.okada@haldenstudio.co',role:'Admin',sent:'Invited last week'}
+];
+const SEATS=15, ROLES=['Admin','Reviewer','Viewer'];
+const DESC={Admin:'Admins manage members, projects and integrations.',Reviewer:'Reviewers comment on designs and approve or request changes.',Viewer:'Viewers open designs and read comments. They cannot comment.'};
+let tab='m', query='', nextId=200, undoFn=null, tt;
+const $=s=>document.querySelector(s);
+const initials=n=>n.split(/[\s@.]+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+const tint=s=>TINTS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0)%TINTS.length];
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function avatar(label,dashed){const t=tint(label);return dashed?`<span class="av dashed" aria-hidden="true">${initials(label)}</span>`:`<span class="av" style="background:${t[0]};color:${t[1]}" aria-hidden="true">${initials(label)}</span>`}
+const trash='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 7V4h4v3M6.5 7l1 13h9l1-13M10 11v5M14 11v5"/></svg>';
+
+function render(){
+  const q=query.trim().toLowerCase(), L=$('#list');
+  const owners=members.filter(m=>m.role==='Owner').length;
+  let h='';
+  if(tab==='m'){
+    const rows=members.filter(m=>!q||m.name.toLowerCase().includes(q)||m.email.toLowerCase().includes(q));
+    if(!rows.length){h=`<div class="empty"><b>No one matches "${esc(query)}"</b>Check the spelling or search by email address.</div>`}
+    else{
+      h='<div class="row cols" aria-hidden="true"><span>Name</span><span>Role</span><span>Last active</span><span></span></div>';
+      h+=rows.map(m=>{
+        const lock=m.role==='Owner';
+        return `<div class="row" data-id="${m.id}">
+          <div class="who">${avatar(m.name)}<span style="min-width:0"><b>${esc(m.name)}</b><small>${esc(m.email)}</small></span></div>
+          <div class="roleCell"><select aria-label="Role for ${esc(m.name)}" data-role ${lock?'disabled title="The owner role cannot be changed here"':''}>
+            ${lock?'<option>Owner</option>':ROLES.map(r=>`<option${r===m.role?' selected':''}>${r}</option>`).join('')}
+          </select></div>
+          <span class="active${m.active==='Online now'?' now':''}">${m.active}</span>
+          <button class="icon" data-remove aria-label="Remove ${esc(m.name)}" ${lock&&owners<2?'disabled title="The owner cannot be removed"':''}>${trash}</button>
+        </div>`}).join('');
+    }
+  }else{
+    const rows=pending.filter(p=>!q||p.email.toLowerCase().includes(q));
+    if(!rows.length){h=`<div class="empty"><b>${pending.length?'No invite matches that search':'No invites waiting'}</b>${pending.length?'Check the spelling.':'Invite someone above and they appear here until they join.'}</div>`}
+    else h=rows.map(p=>`<div class="row" data-id="${p.id}">
+        <div class="who">${avatar(p.email,true)}<span style="min-width:0"><b>${esc(p.email)}</b><small>${p.sent}</small></span></div>
+        <div class="roleCell pend-select"><select aria-label="Role for ${esc(p.email)}" data-prole>${ROLES.map(r=>`<option${r===p.role?' selected':''}>${r}</option>`).join('')}</select></div>
+        <div class="pend-actions"><button class="link" data-resend>Resend</button><button class="link d" data-revoke>Revoke</button></div>
+      </div>`).join('');
+  }
+  L.innerHTML=h;
+  $('#cM').textContent=members.length;$('#cP').textContent=pending.length;
+  const used=members.length+pending.length;
+  $('#seatUsed').textContent=used;
+  $('#seatLeft').textContent=Math.max(SEATS-used,0)+' free';
+  $('#barA').style.width=members.length/SEATS*100+'%';$('#barB').style.width=pending.length/SEATS*100+'%';
+}
+function toast(msg,undo){
+  $('#toastT').textContent=msg;undoFn=undo||null;$('#toastU').hidden=!undo;
+  $('#toast').classList.add('on');clearTimeout(tt);tt=setTimeout(()=>$('#toast').classList.remove('on'),5500);
+}
+$('#toastU').onclick=()=>{if(undoFn){undoFn();render();}$('#toast').classList.remove('on')};
+
+function setTab(t){tab=t;$('#tabM').setAttribute('aria-selected',t==='m');$('#tabP').setAttribute('aria-selected',t==='p');render()}
+$('#tabM').onclick=()=>setTab('m');$('#tabP').onclick=()=>setTab('p');
+$('#q').oninput=e=>{query=e.target.value;render()};
+
+$('#list').addEventListener('change',e=>{
+  const id=+e.target.closest('.row').dataset.id;
+  if(e.target.matches('[data-role]')){
+    const m=members.find(x=>x.id===id),prev=m.role;m.role=e.target.value;
+    toast(`${m.name} is now ${m.role==='Admin'?'an Admin':'a '+m.role}.`,()=>{m.role=prev});
+  }
+  if(e.target.matches('[data-prole]')){
+    const p=pending.find(x=>x.id===id);p.role=e.target.value;toast(`Invite for ${p.email} changed to ${p.role}.`);
+  }
+});
+const dlg=$('#dlg');let target=null;
+$('#list').addEventListener('click',e=>{
+  const row=e.target.closest('.row');if(!row)return;const id=+row.dataset.id;
+  if(e.target.closest('[data-remove]')){
+    target=members.find(x=>x.id===id);
+    $('#dlgT').textContent=`Remove ${target.name} from Halden Studio?`;
+    $('#dlgP').textContent=`${target.name.split(' ')[0]} loses access to all 14 projects right away. Their comments stay in reviews.`;
+    dlg.showModal();
+  }
+  if(e.target.closest('[data-resend]')){const p=pending.find(x=>x.id===id);p.sent='Invited just now';toast(`Invite sent again to ${p.email}.`);render()}
+  if(e.target.closest('[data-revoke]')){
+    const i=pending.findIndex(x=>x.id===id),p=pending[i];pending.splice(i,1);
+    toast(`Invite to ${p.email} revoked.`,()=>{pending.splice(i,0,p)});render();
+  }
+});
+$('#dlgNo').onclick=()=>dlg.close();
+$('#dlgYes').onclick=()=>{
+  const i=members.findIndex(x=>x.id===target.id),m=members[i];members.splice(i,1);dlg.close();
+  toast(`Removed ${m.name} from the team.`,()=>{members.splice(i,0,m)});render();
+};
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+
+const hint=$('#hint');
+function showHint(){hint.className='hint';hint.textContent=DESC[$('#inviteRole').value]}
+$('#inviteRole').onchange=showHint;showHint();
+$('#inviteForm').onsubmit=e=>{
+  e.preventDefault();
+  const el=$('#email'),v=el.value.trim().toLowerCase();
+  const bad=msg=>{el.setAttribute('aria-invalid','true');hint.className='hint err';hint.textContent=msg;el.focus()};
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))return bad('Enter a full email address, such as name@company.com.');
+  if(members.some(m=>m.email===v))return bad(`${v} is already on the team.`);
+  if(pending.some(p=>p.email===v))return bad(`${v} already has an invite waiting. Resend it from the waiting list.`);
+  if(members.length+pending.length>=SEATS)return bad('All 15 seats are in use. Remove someone or upgrade your plan to invite more people.');
+  el.removeAttribute('aria-invalid');
+  pending.unshift({id:nextId++,email:v,role:$('#inviteRole').value,sent:'Invited just now'});
+  el.value='';showHint();setTab('p');toast(`Invite sent to ${v}.`);
+};
+$('#email').oninput=e=>{e.target.removeAttribute('aria-invalid');showHint()};
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today - Little Fern Plant Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Signature: Fern kit (default hue) / soft shape / Sora + Inter (warm, lively commerce) */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f1f8f7; --brand-deep: #0b3a37; --on-deep: #ffffff; --on-deep-muted: #a6d8d2;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Sora", var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-lg: 18px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+  --control-h: 36px;
+  --w-sidebar: 248px; --w-content: 1200px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px) { :root { --control-h: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/20px var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 700 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-lg)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 30; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; font-size: var(--text-xs); line-height: 16px; font-weight: 500; padding: 2px 8px; border-radius: var(--r-sm); }
+.badge.warn { background: var(--warning-subtle); color: var(--warning); }
+.badge.neutral { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); height: var(--control-h); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { height: 32px; min-height: 32px; padding: 0 var(--s-3); font-weight: 500; }
+@media (max-width: 640px) { .btn.sm { height: 44px; min-height: 44px; } }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-5) var(--s-3) var(--s-4); }
+.brand-row { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--s-2) var(--s-5); }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 700 18px/1.1 var(--font-display); letter-spacing: -0.02em; min-height: 44px; }
+.menu-btn { display: none; width: 44px; height: 44px; align-items: center; justify-content: center; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); cursor: pointer; }
+nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+nav a { display: flex; align-items: center; gap: var(--s-3); min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; color: var(--text-muted); }
+nav a:hover { background: color-mix(in srgb, var(--accent-subtle) 70%, transparent); color: var(--text); }
+nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text); }
+nav a[aria-current="page"] svg { color: var(--accent); }
+nav a .count { margin-left: auto; color: var(--text-muted); font-weight: 400; font-size: var(--text-sm); }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); border-top: 1px solid var(--border); }
+.avatar { width: 36px; height: 36px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-sm); flex: none; }
+.account .who { min-width: 0; }
+.account b { display: block; font-weight: 600; line-height: 18px; }
+.account .who span { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; }
+
+/* content */
+main { padding: var(--s-8); }
+.content { max-width: 1128px; margin: 0 auto; }
+.page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-4); }
+.page-head p { margin: var(--rhythm-title) 0 0; color: var(--text-muted); }
+.actions { display: flex; gap: var(--s-2); flex: none; }
+
+.strip { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--rhythm-content); padding: var(--s-4) var(--s-5); border-radius: var(--r-lg); border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent); background: var(--warning-subtle); }
+.strip > svg { color: var(--warning); }
+.strip .msg { flex: 1; min-width: 0; }
+.strip .msg strong { font-weight: 600; font-size: var(--text-md); display: block; line-height: 24px; }
+.strip .msg span { color: var(--text-muted); }
+.prog { display: flex; align-items: center; gap: var(--s-3); width: 220px; flex: none; color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; }
+.prog .bar { flex: 1; height: 6px; border-radius: var(--r-full); background: color-mix(in srgb, var(--warning) 22%, transparent); overflow: hidden; }
+.prog .bar i { display: block; height: 100%; background: var(--warning); border-radius: var(--r-full); }
+.strip.calm { background: var(--bg-subtle); border-color: var(--border); }
+.strip.calm > svg { color: var(--accent); }
+
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: var(--rhythm-group); }
+.kpi { padding: 0 var(--s-6); border-left: 1px solid var(--border); }
+.kpi:first-child { padding-left: 0; border-left: 0; }
+.kpi .l { color: var(--text-muted); font-weight: 500; font-size: var(--text-sm); }
+.kpi .v { font: 600 30px/1.1 var(--font-display); letter-spacing: -0.02em; margin: var(--s-2) 0 var(--s-2); white-space: nowrap; }
+.delta { display: flex; align-items: center; gap: 4px; font-weight: 500; font-size: var(--text-sm); }
+.delta.good { color: var(--success); } .delta.bad { color: var(--danger); } .delta.flat { color: var(--text-muted); }
+.delta svg { width: 12px; height: 12px; fill: currentColor; stroke: none; }
+.kpi .ctx { color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; margin-top: 2px; }
+
+.grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--s-6); margin-top: var(--rhythm-group); }
+.grid + .grid { margin-top: var(--s-6); }
+.panel { border: 1px solid var(--border); border-radius: var(--r-xl); background: var(--surface); display: flex; flex-direction: column; min-width: 0; }
+.panel > header { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); padding: var(--s-5) var(--s-6) 0; min-height: 56px; }
+.panel > header a { display: inline-flex; align-items: center; min-height: 32px; font-weight: 500; }
+.panel .body { padding: var(--s-4) var(--s-6) var(--s-5); flex: 1; min-width: 0; }
+.sub { color: var(--text-muted); font-size: var(--text-sm); margin: 2px 0 0; }
+
+/* chart */
+.legend { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-6); margin-bottom: var(--s-3); }
+.legend div { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); }
+.legend b { color: var(--text); font-weight: 600; }
+.sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; }
+.chart text { font: 400 12px var(--font); fill: var(--text-muted); }
+.chart .grid-line { stroke: var(--border); stroke-width: 1; }
+.chart .today { fill: var(--accent); }
+.chart .last { fill: var(--border-strong); opacity: 0.6; }
+.note { color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; margin: var(--s-2) 0 0; }
+
+/* lists */
+.rows { list-style: none; margin: 0; padding: 0; }
+.rows li { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; min-height: 64px; padding: var(--s-2) 0; border-top: 1px solid var(--border); }
+.rows li:first-child { border-top: 0; }
+.rows.stock li { grid-template-columns: 40px minmax(0, 1fr) 76px; }
+.tile { width: 40px; height: 40px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; }
+.tile.pot { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+.tile svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.rows .n { font-weight: 500; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rows .m { color: var(--text-muted); font-size: var(--text-sm); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rows .r { text-align: right; font-weight: 500; }
+.rows .r small { display: block; color: var(--text-muted); font-weight: 400; font-size: var(--text-xs); line-height: 16px; }
+.rows.stock .m.out { color: var(--danger); font-weight: 500; }
+.rows.stock .m.soon { color: var(--warning); font-weight: 500; }
+.rows.stock .act { text-align: right; }
+
+/* table */
+.table-wrap { padding: var(--s-3) var(--s-6) var(--s-4); }
+table.orders { width: 100%; border-collapse: collapse; }
+.orders th { text-align: left; font-weight: 500; color: var(--text-muted); font-size: var(--text-sm); padding: 0 var(--s-3) var(--s-2); border-bottom: 1px solid var(--border); height: 36px; vertical-align: middle; white-space: nowrap; }
+.orders td { padding: 0 var(--s-3); height: 48px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.orders tr:last-child td { border-bottom: 0; }
+.orders th:first-child, .orders td:first-child { padding-left: 0; }
+.orders th:last-child, .orders td:last-child { padding-right: 0; }
+.orders .num { text-align: right; }
+.orders .id { color: var(--text-muted); }
+.orders .cust { font-weight: 500; }
+.orders .ph { display: none; }
+.orders .tot { font-weight: 500; }
+.chart .sr-only td { text-align: right; }
+
+/* states */
+.state { padding: var(--s-6) 0; color: var(--text-muted); max-width: 40ch; }
+.state strong { display: block; color: var(--text); font-weight: 600; font-size: var(--text-md); margin-bottom: 4px; }
+.state .btn { margin-top: var(--s-3); }
+.state.err strong { color: var(--danger); }
+
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .prog { display: none; }
+}
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { border-right: 0; border-bottom: 1px solid var(--border); }
+  .side { position: static; height: auto; padding: 0 var(--s-4); }
+  .brand-row { padding: var(--s-2) 0; }
+  .menu-btn { display: inline-flex; }
+  .side nav, .side .account { display: none; }
+  .side.open nav { display: block; padding-bottom: var(--s-2); }
+  .side.open .account { display: flex; margin-top: 0; }
+  nav a { min-height: 44px; }
+  main { padding: var(--s-6) var(--s-4) var(--s-12); }
+  .kpis { grid-template-columns: 1fr 1fr; row-gap: var(--s-6); }
+  .kpi { padding: 0 var(--s-4); }
+  .kpi:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .kpi .v { font-size: 26px; }
+}
+@media (max-width: 640px) {
+  .page-head { align-items: flex-start; }
+  .page-head p { max-width: 24ch; }
+  .strip { flex-wrap: wrap; align-items: flex-start; padding: var(--s-4); }
+  .strip .btn { width: 100%; height: 44px; }
+  .panel > header { padding: var(--s-4) var(--s-4) 0; }
+  .panel > header a { min-height: 44px; }
+  .panel .body { padding: var(--s-3) var(--s-4) var(--s-4); }
+  .table-wrap { padding: var(--s-2) var(--s-4) var(--s-3); }
+  .rows.stock li { grid-template-columns: 40px minmax(0, 1fr) auto; }
+  table.orders thead { display: none; }
+  table.orders, table.orders tbody, table.orders tr, table.orders td { display: block; }
+  table.orders tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+  table.orders tr:last-child { border-bottom: 0; }
+  table.orders td { border: 0; padding: 0; height: auto; }
+  .orders td.id, .orders td.time, .orders td.items { display: none; }
+  .orders .ph { display: block; color: var(--text-muted); font-size: var(--text-sm); }
+  .orders td.cust { grid-column: 1; grid-row: 1; }
+  .orders td.tot { grid-column: 2; grid-row: 1; text-align: right; }
+  .orders td.cust .ph { margin-top: 2px; }
+  .orders td.status { grid-column: 2; grid-row: 2; text-align: right; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="n-home" viewBox="0 0 20 20"><path d="M3 9.5L10 3l7 6.5V17H3z"/><path d="M8 17v-5h4v5"/></symbol>
+  <symbol id="n-orders" viewBox="0 0 20 20"><path d="M3 6l7-3 7 3v8l-7 3-7-3z"/><path d="M3 6l7 3 7-3M10 9v8"/></symbol>
+  <symbol id="n-products" viewBox="0 0 20 20"><path d="M4 16C4 8 9 4 16 4c0 8-4 12-12 12z"/><path d="M4 16l7-7"/></symbol>
+  <symbol id="n-stock" viewBox="0 0 20 20"><path d="M10 3l7 4-7 4-7-4z"/><path d="M3 11l7 4 7-4"/></symbol>
+  <symbol id="n-customers" viewBox="0 0 20 20"><circle cx="8" cy="7" r="3"/><path d="M2.5 16c.5-3 3-5 5.5-5s5 2 5.5 5"/><path d="M13 4.5a3 3 0 010 5.5M15 11.5c1.6.6 2.5 2.3 2.7 4.5"/></symbol>
+  <symbol id="n-marketing" viewBox="0 0 20 20"><path d="M3 8v4h3l6 4V4L6 8z"/><path d="M15 8.5a2.5 2.5 0 010 3"/></symbol>
+  <symbol id="n-reports" viewBox="0 0 20 20"><path d="M4 16V9M10 16V4M16 16v-5"/></symbol>
+  <symbol id="n-settings" viewBox="0 0 20 20"><path d="M3 6h8M15 6h2M3 14h2M9 14h8"/><circle cx="13" cy="6" r="2"/><circle cx="7" cy="14" r="2"/></symbol>
+  <symbol id="n-menu" viewBox="0 0 20 20"><path d="M3 6h14M3 10h14M3 14h14"/></symbol>
+  <symbol id="n-clock" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M10 5.5V10l3 2"/></symbol>
+  <symbol id="n-alert" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M10 6v4.5M10 13.6v.01"/></symbol>
+  <symbol id="g-plant" viewBox="0 0 24 24"><path d="M12 15V9"/><path d="M12 12c-5 0-7-3-7-7 4 0 7 2 7 7z"/><path d="M12 10c0-4 2-6.5 7-6.5 0 4-2 6.5-7 6.5z"/><path d="M7 16h10l-1.2 5H8.2z"/></symbol>
+  <symbol id="g-pot" viewBox="0 0 24 24"><path d="M5 9h14l-1.5 11h-11z"/><path d="M4 5.5h16V9H4z"/></symbol>
+  <symbol id="d-up" viewBox="0 0 12 12"><path d="M6 2l5 8H1z"/></symbol>
+  <symbol id="d-down" viewBox="0 0 12 12"><path d="M6 10L1 2h10z"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside>
+    <div class="side" id="side">
+      <div class="brand-row">
+        <a class="logo" href="#" aria-label="Little Fern Plant Co. home">
+          <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M8 21c0-8 4-12 12-12 0 8-4 12-12 12z" fill="none" stroke="var(--on-accent)" stroke-width="2.2" stroke-linejoin="round"/><path d="M8 21l7-7" stroke="var(--on-accent)" stroke-width="2.2" stroke-linecap="round"/></svg>
+          Little Fern
+        </a>
+        <button class="menu-btn" type="button" id="menu" aria-label="Menu" aria-expanded="false" aria-controls="nav"><svg class="i" aria-hidden="true"><use href="#n-menu"/></svg></button>
+      </div>
+      <nav id="nav" aria-label="Main">
+        <ul>
+          <li><a href="#" aria-current="page"><svg class="i" aria-hidden="true"><use href="#n-home"/></svg>Today</a></li>
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#n-orders"/></svg>Orders<span class="count" id="nav-count"></span></a></li>
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#n-products"/></svg>Products</a></li>
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#n-stock"/></svg>Stock</a></li>
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#n-customers"/></svg>Customers</a></li>
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#n-marketing"/></svg>Marketing</a></li>
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#n-reports"/></svg>Reports</a></li>
+          <li><a href="#"><svg class="i" aria-hidden="true"><use href="#n-settings"/></svg>Settings</a></li>
+        </ul>
+      </nav>
+      <div class="account">
+        <span class="avatar" aria-hidden="true">MB</span>
+        <span class="who"><b>Maya Brandt</b><span>Owner</span></span>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <h1>Today</h1>
+          <p id="subtitle"></p>
+        </div>
+        <div class="actions"><a class="btn" href="#">Add product</a></div>
+      </div>
+
+      <div id="strip"></div>
+      <section class="kpis" id="kpis" aria-label="Key numbers"></section>
+
+      <div class="grid">
+        <section class="panel" aria-labelledby="h-chart">
+          <header><div><h2 id="h-chart">Sales by hour</h2><p class="sub">Today and last Friday, up to 15:20</p></div></header>
+          <div class="body" id="chart-body"></div>
+        </section>
+        <section class="panel" aria-labelledby="h-best">
+          <header><h2 id="h-best">Best sellers today</h2><a class="link" href="#">View products</a></header>
+          <div class="body" id="best-body"></div>
+        </section>
+      </div>
+
+      <div class="grid">
+        <section class="panel" aria-labelledby="h-orders">
+          <header><h2 id="h-orders">Latest orders</h2><a class="link" href="#" id="all-orders">View all orders</a></header>
+          <div id="orders-body"></div>
+        </section>
+        <section class="panel" aria-labelledby="h-stock">
+          <header><h2 id="h-stock">Running low</h2><a class="link" href="#">View stock</a></header>
+          <div class="body" id="stock-body"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ---- one data module. Every number on screen is derived from it. ---- */
+const NOW = { h: 15, m: 20 };                      // Friday 27 November 2026, 15:20
+const COURIER = { h: 16, m: 30 };
+const STATE = new URLSearchParams(location.search).get('state');   // empty | error
+const T = (t, total, cust, items, packed, lead) => ({ t, total, cust, items, packed, lead });
+const ORDERS_FULL = [
+  T('08:12', 24.00, 'Aoife Brennan', 1, true, 'Snake plant'),
+  T('08:47', 48.50, 'Callum Reid', 2, true, 'Monstera'),
+  T('09:03', 16.95, 'Priya Nair', 1, true, 'Pothos'),
+  T('09:31', 72.00, 'Marta Lindqvist', 3, true, 'Calathea'),
+  T('09:58', 31.50, 'Yusuf Demir', 2, true, 'Pilea'),
+  T('10:14', 28.00, 'Hannah Okafor', 1, true, 'Monstera'),
+  T('10:42', 44.95, 'Ben Achterberg', 2, true, 'Rubber plant'),
+  T('10:55', 19.50, 'Rosalind Cho', 1, true, 'Pothos'),
+  T('11:08', 63.00, 'Joanne Whitcombe', 3, true, 'Snake plant'),
+  T('11:36', 36.50, 'Femi Adeyemi', 2, true, 'Pilea'),
+  T('11:52', 22.00, 'Greta Holm', 2, true, 'Terracotta pot'),
+  T('12:05', 84.50, 'Sofia Marchetti', 4, true, 'Monstera'),
+  T('12:20', 27.95, 'Dev Raman', 1, true, 'Calathea'),
+  T('12:41', 39.00, 'Isla MacKenzie', 2, true, 'Snake plant'),
+  T('13:02', 52.50, 'Noor Haddad', 3, true, 'Pothos'),
+  T('13:27', 18.00, 'Tomas Weber', 1, true, 'Terracotta pot'),
+  T('13:49', 46.00, 'Esther Mbeki', 2, false, 'Rubber plant'),
+  T('14:06', 33.95, 'Lucas Ferreira', 2, false, 'Pilea'),
+  T('14:22', 29.50, 'Wendy Aldous', 1, false, 'Monstera'),
+  T('14:48', 58.00, 'Ravi Menon', 3, false, 'Snake plant'),
+  T('14:59', 21.50, 'Clara Eriksen', 1, false, 'Pothos'),
+  T('15:04', 37.00, 'Oluwaseun Bello', 2, false, 'Calathea'),
+  T('15:12', 26.50, 'Maeve Doherty', 1, false, 'Terracotta pot'),
+].map((o, i) => ({ ...o, id: 1016 + i }));
+const LAST_FRIDAY = { hourly: [38.00, 71.50, 96.40, 118.00, 142.50, 120.00, 130.00, 90.00], orders: 22, visitors: 647 };  // 08:00 to 15:20
+const VISITORS_TODAY = 793;
+const BEST_FULL = [
+  { name: 'Monstera deliciosa', variant: 'Medium, 21cm pot', units: 5, price: 28.00, kind: 'plant' },
+  { name: 'Snake plant, Zeylanica', variant: 'Small, 12cm pot', units: 6, price: 18.00, kind: 'plant' },
+  { name: 'Terracotta pot', variant: '15cm, frost proof', units: 7, price: 12.00, kind: 'pot' },
+  { name: 'Marble Queen pothos', variant: 'Hanging basket', units: 5, price: 14.00, kind: 'plant' },
+  { name: 'Pilea peperomioides', variant: 'Small, 10cm pot', units: 4, price: 16.00, kind: 'plant' },
+];
+const STOCK_FULL = [
+  { name: 'Pilea peperomioides', variant: 'Small, 10cm pot', left: 0, perDay: 4, kind: 'plant' },
+  { name: 'Monstera deliciosa', variant: 'Medium, 21cm pot', left: 2, perDay: 5, kind: 'plant' },
+  { name: 'Calathea orbifolia', variant: 'Medium, 17cm pot', left: 3, perDay: 2, kind: 'plant' },
+  { name: 'Marble Queen pothos', variant: 'Hanging basket', left: 6, perDay: 5, kind: 'plant' },
+  { name: 'Terracotta pot', variant: '15cm, frost proof', left: 9, perDay: 7, kind: 'pot' },
+];
+const ORDERS = STATE === 'empty' ? [] : ORDERS_FULL;
+const BEST = STATE === 'empty' ? [] : BEST_FULL;
+const STOCK = STATE === 'empty' ? [] : STOCK_FULL;
+const VISITORS = STATE === 'empty' ? 0 : VISITORS_TODAY;
+
+/* ---- derived ---- */
+const gbp = (n) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(n);
+const sum = (a) => a.reduce((s, x) => s + x, 0);
+const hourOf = (o) => +o.t.slice(0, 2);
+const HOURS = [8, 9, 10, 11, 12, 13, 14, 15];
+const todayHourly = HOURS.map((h) => sum(ORDERS.filter((o) => hourOf(o) === h).map((o) => o.total)));
+const sales = sum(ORDERS.map((o) => o.total)), count = ORDERS.length;
+const lastSales = sum(LAST_FRIDAY.hourly), lastCount = LAST_FRIDAY.orders;
+const avg = count ? sales / count : 0, lastAvg = lastSales / lastCount;
+const conv = VISITORS ? count / VISITORS * 100 : 0, lastConv = lastCount / LAST_FRIDAY.visitors * 100;
+const toPack = ORDERS.filter((o) => !o.packed);
+const pct = (a, b) => (a - b) / b * 100;
+const signed = (n, d = 1) => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n).toFixed(d);
+const minsLeft = (COURIER.h * 60 + COURIER.m) - (NOW.h * 60 + NOW.m);
+const hm = (m) => (m >= 60 ? Math.floor(m / 60) + ' h ' : '') + (m % 60 ? (m % 60) + ' min' : '').trim();
+const $ = (s) => document.querySelector(s);
+
+/* ---- render ---- */
+$('#subtitle').textContent = 'Friday 27 November. Updated 15:20 and compared with last Friday at the same time.';
+$('#nav-count').textContent = toPack.length ? toPack.length : '';
+
+function renderStrip() {
+  const el = $('#strip');
+  if (STATE === 'empty') {
+    el.innerHTML = `<div class="strip calm"><svg class="i" aria-hidden="true"><use href="#n-products"/></svg><div class="msg"><strong>Your shop has no products yet</strong><span>Add your first plant to start taking orders.</span></div><a class="btn primary" href="#">Add your first product</a></div>`;
+  } else if (toPack.length) {
+    const packed = count - toPack.length;
+    el.innerHTML = `<div class="strip"><svg class="i" aria-hidden="true"><use href="#n-clock"/></svg>
+      <div class="msg"><strong>${toPack.length} orders to pack before the 16:30 courier</strong><span>${hm(minsLeft)} left. The courier takes parcels from the front door.</span></div>
+      <div class="prog" aria-label="${packed} of ${count} orders packed"><div class="bar" aria-hidden="true"><i style="width:${(packed / count * 100).toFixed(1)}%"></i></div><span>${packed} of ${count} packed</span></div>
+      <a class="btn primary" href="#">Start packing</a></div>`;
+  } else {
+    el.innerHTML = `<div class="strip calm"><svg class="i" aria-hidden="true"><use href="#n-home"/></svg><div class="msg"><strong>Nothing needs you right now</strong><span>Every order is packed for the courier.</span></div></div>`;
+  }
+}
+function delta(cur, prev, kind) {
+  if (!prev) return `<div class="delta flat">No data yet</div>`;
+  const d = kind === 'pts' ? cur - prev : kind === 'abs' ? cur - prev : pct(cur, prev);
+  const label = kind === 'pts' ? signed(d) + ' pts' : kind === 'abs' ? signed(d, 0) : signed(d) + '%';
+  const cls = Math.abs(d) < 0.05 ? 'flat' : d > 0 ? 'good' : 'bad';
+  const arrow = cls === 'flat' ? '' : `<svg viewBox="0 0 12 12" aria-hidden="true"><use href="#d-${d > 0 ? 'up' : 'down'}"/></svg>`;
+  return `<div class="delta ${cls}">${arrow}<span>${label} vs last Friday</span></div>`;
+}
+function renderKpis() {
+  const empty = STATE === 'empty';
+  const k = [
+    ['Sales', gbp(sales), empty ? '<div class="delta flat">No orders yet</div>' : delta(sales, lastSales), empty ? '' : `${gbp(lastSales)} at this time`],
+    ['Orders', String(count), empty ? '<div class="delta flat">No orders yet</div>' : delta(count, lastCount, 'abs'), empty ? '' : `${lastCount} at this time`],
+    ['Average order', gbp(avg), empty ? '<div class="delta flat">No orders yet</div>' : delta(avg, lastAvg), empty ? '' : `${gbp(lastAvg)} at this time`],
+    ['Conversion', conv.toFixed(1) + '%', empty ? '<div class="delta flat">No visitors yet</div>' : delta(conv, lastConv, 'pts'), empty ? '' : `${VISITORS} visitors, ${signed(pct(VISITORS, LAST_FRIDAY.visitors))}%`],
+  ];
+  $('#kpis').innerHTML = k.map(([l, v, d, c]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div>${d}<div class="ctx">${c}</div></div>`).join('');
+}
+
+/* Chart: grouped bars, one pair per hour, drawn at the container width. */
+function renderChart() {
+  const body = $('#chart-body');
+  if (STATE === 'empty') { body.innerHTML = `<div class="state"><strong>No sales yet today</strong>Hourly sales show here once your first order arrives.</div>`; return; }
+  const cs = getComputedStyle(body), W = Math.max(260, (body.clientWidth || 640) - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)), H = 232, m = { l: 44, r: 4, t: 8, b: 28 };
+  const max = 160, plotW = W - m.l - m.r, plotH = H - m.t - m.b, gw = plotW / HOURS.length;
+  const bw = Math.min(26, gw * 0.3), gap = 3, y = (v) => m.t + plotH - v / max * plotH;
+  const narrow = W < 480;
+  let g = '';
+  for (const t of [0, 50, 100, 150]) g += `<line class="grid-line" x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/><text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">£${t}</text>`;
+  HOURS.forEach((h, i) => {
+    const cx = m.l + gw * i + gw / 2, a = todayHourly[i], b = LAST_FRIDAY.hourly[i];
+    const label = String(h).padStart(2, '0') + (narrow ? '' : ':00');
+    g += `<rect class="today" x="${cx - bw - gap / 2}" y="${y(a)}" width="${bw}" height="${plotH + m.t - y(a)}" rx="4"><title>${label}, today: ${gbp(a)}</title></rect>
+          <rect class="last" x="${cx + gap / 2}" y="${y(b)}" width="${bw}" height="${plotH + m.t - y(b)}" rx="4"><title>${label}, last Friday: ${gbp(b)}</title></rect>
+          <text x="${cx}" y="${H - 8}" text-anchor="middle">${label}</text>`;
+  });
+  const rows = HOURS.map((h, i) => `<tr><th scope="row">${h}:00</th><td>${gbp(todayHourly[i])}</td><td>${gbp(LAST_FRIDAY.hourly[i])}</td></tr>`).join('');
+  body.innerHTML = `<div class="legend"><div><span class="sw" style="background:var(--accent)"></span>Today <b>${gbp(sales)}</b></div><div><span class="sw" style="background:var(--border-strong);opacity:.6"></span>Last Friday <b>${gbp(lastSales)}</b></div></div>
+    <div class="chart"><svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Bar chart of sales per hour from 08:00 to 15:20. Today ${gbp(sales)}, last Friday ${gbp(lastSales)}.">${g}</svg>
+    <table class="sr-only"><caption>Sales by hour in pounds</caption><thead><tr><th>Hour</th><th>Today</th><th>Last Friday</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="note">Hour of day, 24-hour clock. The 15:00 bars stop at 15:20.</p>`;
+}
+
+const glyph = (k) => `<span class="tile${k === 'pot' ? ' pot' : ''}" aria-hidden="true"><svg><use href="#g-${k}"/></svg></span>`;
+let bestFailed = STATE === 'error';
+function renderBest() {
+  const body = $('#best-body');
+  if (bestFailed) { body.innerHTML = `<div class="state err" role="alert"><strong>Couldn't load best sellers</strong>Your orders and sales are safe. Try again in a moment.<br><button class="btn sm" type="button" id="retry">Try again</button></div>`; $('#retry').addEventListener('click', () => { bestFailed = false; renderBest(); }); return; }
+  if (!BEST.length) { body.innerHTML = `<div class="state"><strong>No sales to rank yet</strong>Your best sellers show here after the first orders.</div>`; return; }
+  const ranked = BEST.map((b) => ({ ...b, rev: b.units * b.price })).sort((a, b) => b.rev - a.rev);
+  body.innerHTML = `<ul class="rows">${ranked.map((b) => `<li>${glyph(b.kind)}<span><span class="n">${b.name}</span><span class="m">${b.variant}</span></span><span class="r">${gbp(b.rev)}<small>${b.units} sold</small></span></li>`).join('')}</ul>`;
+}
+function renderOrders() {
+  const body = $('#orders-body');
+  if (!ORDERS.length) { body.innerHTML = `<div class="body"><div class="state"><strong>No orders yet</strong>New orders show here with their packing status.</div></div>`; $('#all-orders').hidden = true; return; }
+  const latest = [...ORDERS].reverse().slice(0, 6);
+  $('#all-orders').textContent = `View all ${count} orders`;
+  body.innerHTML = `<div class="table-wrap"><table class="orders"><thead><tr><th scope="col">Order</th><th scope="col">Time</th><th scope="col">Customer</th><th scope="col" class="num">Items</th><th scope="col">Status</th><th scope="col" class="num">Total</th></tr></thead><tbody>
+    ${latest.map((o) => `<tr><td class="id">#${o.id}</td><td class="time">${o.t}</td>
+      <td class="cust"><a href="#">${o.cust}</a><span class="ph">#${o.id}, ${o.t}, ${o.items} ${o.items === 1 ? 'item' : 'items'}</span></td>
+      <td class="num items">${o.items}</td>
+      <td class="status"><span class="badge ${o.packed ? 'neutral' : 'warn'}">${o.packed ? 'Packed' : 'To pack'}</span></td>
+      <td class="num tot">${gbp(o.total)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function renderStock() {
+  const body = $('#stock-body');
+  if (!STOCK.length) { body.innerHTML = `<div class="state"><strong>Nothing to restock</strong>Plants running low show here with the days left.</div>`; return; }
+  body.innerHTML = `<ul class="rows stock">${STOCK.map((s) => {
+    const cover = s.left / s.perDay;
+    const [txt, cls] = s.left === 0 ? ['Sold out', 'out'] : cover < 1 ? [`${s.left} left, out by tomorrow`, 'soon'] : [`${s.left} left, about ${Math.floor(cover)} ${Math.floor(cover) === 1 ? 'day' : 'days'}`, 'soon'];
+    return `<li>${glyph(s.kind)}<span><span class="n">${s.name}</span><span class="m ${cls}">${txt}</span></span><span class="act"><a class="btn sm" href="#" aria-label="Restock ${s.name}">Restock</a></span></li>`;
+  }).join('')}</ul>`;
+}
+
+function renderAll() { renderStrip(); renderKpis(); renderChart(); renderBest(); renderOrders(); renderStock(); }
+renderAll();
+let rw = $('#chart-body').clientWidth;
+new ResizeObserver(() => { const w = $('#chart-body').clientWidth; if (w !== rw) { rw = w; renderChart(); } }).observe($('#chart-body'));
+$('#menu').addEventListener('click', () => { const o = $('#side').classList.toggle('open'); $('#menu').setAttribute('aria-expanded', String(o)); });
+</script>
+</body>
+</html>

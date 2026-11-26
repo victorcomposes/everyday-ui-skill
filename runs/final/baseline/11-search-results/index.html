@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chickpea curry - Spoonful recipes</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Georgia, "Times New Roman", serif; background: #fffdf8; color: #2b2b2b; }
+  header { border-bottom: 1px solid #e6dfcf; padding: 14px 24px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  header b { font-size: 22px; color: #c2410c; }
+  header form { flex: 1; display: flex; gap: 8px; min-width: 240px; max-width: 520px; }
+  header input { flex: 1; padding: 9px; font-size: 15px; border: 1px solid #bbb; border-radius: 4px; }
+  header button { padding: 9px 16px; background: #c2410c; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
+  main { max-width: 1000px; margin: 20px auto; padding: 0 16px; font-family: Arial, Helvetica, sans-serif; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .count { color: #666; margin: 0 0 16px; font-size: 14px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filters button { padding: 6px 12px; border: 1px solid #ccc; background: #fff; border-radius: 16px; cursor: pointer; font-size: 13px; }
+  .filters button.on { background: #c2410c; color: #fff; border-color: #c2410c; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: #fff; border: 1px solid #e6dfcf; border-radius: 6px; overflow: hidden; }
+  .pic { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+  .card div.txt { padding: 12px; }
+  .card h2 { font-size: 16px; margin: 0 0 6px; }
+  .card p { margin: 0 0 8px; font-size: 13px; color: #555; }
+  .meta { font-size: 12px; color: #777; }
+  .stars { color: #d98a00; }
+  .empty { padding: 40px; text-align: center; color: #777; }
+  @media (max-width: 800px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } header { padding: 12px 16px; } }
+</style>
+</head>
+<body>
+<header>
+  <b>Spoonful</b>
+  <form onsubmit="return false"><input type="search" value="chickpea curry" aria-label="Search recipes"><button>Search</button></form>
+</header>
+<main>
+  <h1>Results for "chickpea curry"</h1>
+  <p class="count" id="count"></p>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">All</button>
+    <button data-f="vegan">Vegan</button>
+    <button data-f="30">Under 30 min</button>
+    <button data-f="slow">Slow cooker</button>
+    <button data-f="coconut">Coconut</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+<script>
+  const recipes = [
+    { t: "Easy Chickpea Curry", d: "A one-pot weeknight curry with tomatoes, spinach and garam masala.", time: 30, rating: 4.8, n: 1243, tags: ["vegan","30"], c: "#f5d6a8", e: "🍛" },
+    { t: "Creamy Coconut Chickpea Curry", d: "Rich coconut milk, ginger and lime over fluffy basmati rice.", time: 35, rating: 4.7, n: 876, tags: ["vegan","coconut"], c: "#fbe3c4", e: "🥥" },
+    { t: "Slow Cooker Chickpea Curry", d: "Set it in the morning and come home to a fragrant dinner.", time: 240, rating: 4.6, n: 412, tags: ["vegan","slow"], c: "#e9d2b0", e: "🍲" },
+    { t: "Chana Masala", d: "Classic Punjabi-style chickpeas in a tangy spiced tomato gravy.", time: 40, rating: 4.9, n: 2210, tags: ["vegan"], c: "#f3c9a0", e: "🌶️" },
+    { t: "15-Minute Chickpea Curry", d: "Pantry staples only. Canned chickpeas, curry paste and a splash of cream.", time: 15, rating: 4.4, n: 590, tags: ["30"], c: "#f8e3b5", e: "⏱️" },
+    { t: "Chickpea and Sweet Potato Curry", d: "Roasted sweet potato adds sweetness to a coconut curry base.", time: 45, rating: 4.7, n: 934, tags: ["vegan","coconut"], c: "#f2c78e", e: "🍠" },
+    { t: "Chickpea Spinach Curry", d: "Iron-rich and quick, with fresh spinach wilted into the sauce.", time: 25, rating: 4.5, n: 701, tags: ["vegan","30"], c: "#cfe3b8", e: "🥬" },
+    { t: "Thai Red Chickpea Curry", d: "Red curry paste, coconut milk and crunchy green beans.", time: 30, rating: 4.6, n: 388, tags: ["vegan","30","coconut"], c: "#f4b99a", e: "🌶️" },
+    { t: "Slow Cooker Chickpea Tikka Masala", d: "Mild, creamy and great for meal prep.", time: 300, rating: 4.5, n: 267, tags: ["slow"], c: "#eec28f", e: "🍛" }
+  ];
+  let f = "all";
+  function render() {
+    const list = recipes.filter(r => f === "all" || r.tags.includes(f));
+    document.getElementById("count").textContent = list.length + " recipes";
+    document.getElementById("grid").innerHTML = list.length ? list.map(r => `<article class="card"><div class="pic" style="background:${r.c}">${r.e}</div><div class="txt"><h2>${r.t}</h2><p>${r.d}</p><div class="meta"><span class="stars">${"★".repeat(Math.round(r.rating))}</span> ${r.rating} (${r.n.toLocaleString()}) &middot; ${r.time >= 60 ? Math.floor(r.time/60) + " hr" + (r.time%60 ? " " + r.time%60 + " min" : "") : r.time + " min"}</div></div></article>`).join("") : '<div class="empty">No recipes found.</div>';
+  }
+  document.getElementById("filters").onclick = e => {
+    if (!e.target.dataset.f) return;
+    f = e.target.dataset.f;
+    document.querySelectorAll("#filters button").forEach(b => b.classList.toggle("on", b === e.target));
+    render();
+  };
+  render();
+</script>
+</body>
+</html>

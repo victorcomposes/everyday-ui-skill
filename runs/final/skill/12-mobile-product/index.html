@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arc 2 Runner - Kickroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Ember kit, Copper variant, crisp shape, pairing B */
+  --accent: #a84a12; --accent-hover: #86390c; --accent-subtle: #fdeee5; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f7f7f8;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Sora", var(--font);
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 26px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 2px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px; --r-full: 999px;
+  --w-col: 430px; --h-topbar: 56px; --h-bar: 80px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #f0a060; --accent-hover: #f5bb88; --accent-subtle: #36210f; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d; --frame: #17191d;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg-subtle); color: var(--text);
+  font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 600 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-lg)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+ul { list-style: none; margin: 0; padding: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+/* phone column: full bleed on phones, a centred finished screen on desktop */
+.app { position: relative; width: 100%; max-width: var(--w-col); margin: var(--s-6) auto; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: var(--shadow-pop); overflow-x: clip; }
+@media (max-width: 440px) { .app { margin: 0; border: 0; border-radius: 0; box-shadow: none; min-height: 100dvh; } }
+
+.topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; height: var(--h-topbar); padding: 0 var(--s-2);
+  background: var(--surface); border-bottom: 1px solid transparent; transition: border-color var(--t-base) var(--ease); }
+.topbar.scrolled { border-bottom-color: var(--border); }
+.topbar .name { margin-left: var(--s-1); font: 600 17px/1.3 var(--font-display); letter-spacing: -0.01em; opacity: 0; transition: opacity var(--t-base) var(--ease); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.topbar.scrolled .name { opacity: 1; }
+.topbar .actions { margin-left: auto; display: flex; flex-shrink: 0; }
+.icon-btn { flex-shrink: 0; position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: var(--r-md); cursor: pointer; color: var(--text); }
+.icon-btn:hover { background: var(--bg-subtle); }
+.count { position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--r-full); background: var(--accent); color: var(--on-accent);
+  font-size: var(--text-xs); line-height: 18px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; box-shadow: 0 0 0 2px var(--surface); }
+.fav[aria-pressed="true"] svg { fill: var(--accent); stroke: var(--accent); }
+
+/* gallery */
+.gallery { position: relative; background: var(--frame); }
+.slides { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; height: 248px; overscroll-behavior-x: contain; }
+.slides::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 100%; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; padding: var(--s-4); }
+.slide svg { width: 100%; height: 100%; display: block; }
+.pager { position: absolute; left: var(--s-4); right: var(--s-4); bottom: var(--s-3); display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--border-strong); opacity: .5; }
+.dots i.on { opacity: 1; background: var(--text); width: 18px; }
+.pager .n { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; background: var(--surface); padding: 2px 8px; border-radius: var(--r-sm); }
+
+/* content */
+.body { padding: var(--s-5) var(--s-4) var(--s-6); }
+.brand { color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; }
+.body h1 { margin-top: 2px; }
+.sub { margin-top: var(--rhythm-tight); color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.rate { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 0; font-variant-numeric: tabular-nums; }
+.rate svg { color: var(--accent); }
+.rate b { font-weight: 600; }
+.rate.none span { text-decoration: none; }
+.rate span { color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px; }
+.priceRow { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-1) var(--s-3); margin-top: var(--s-1); }
+.price { font: 600 32px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.was { color: var(--text-muted); text-decoration: line-through; font-variant-numeric: tabular-nums; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 600; background: var(--accent-subtle); color: var(--accent); }
+.promise { display: flex; gap: var(--s-3); align-items: flex-start; margin-top: var(--s-6); padding: var(--s-3) var(--s-4); background: var(--bg-subtle); border-radius: var(--r-lg); }
+.promise svg { flex-shrink: 0; margin-top: 2px; color: var(--success); }
+.promise b { font-weight: 600; }
+.promise span { display: block; color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+
+.sect { margin-top: var(--s-8); }
+.sect-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-3); min-height: 44px; }
+.sect-head h2 { font-size: var(--text-md); line-height: var(--lh-md); letter-spacing: 0; }
+.sect-head .val { font-weight: 400; color: var(--text-muted); }
+.link-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); margin-right: calc(var(--s-2) * -1); border: 0; background: none; cursor: pointer; color: var(--accent); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
+.link-btn.left { margin-left: calc(var(--s-2) * -1); margin-right: 0; }
+.swatches { display: flex; gap: var(--s-3); }
+.sect-head.tight { min-height: 0; margin-bottom: var(--s-2); }
+.sw { position: relative; width: 52px; height: 52px; border-radius: var(--r-full); border: 1px solid var(--border-strong); background: var(--surface); padding: 4px; cursor: pointer; }
+.sw[aria-checked="true"] { border: 2px solid var(--accent); padding: 3px; box-shadow: 0 0 0 2px var(--surface) inset; }
+.sw svg { display: block; width: 100%; height: 100%; border-radius: var(--r-full); }
+.sw.out::after { content: ""; position: absolute; left: 6px; right: 6px; top: 50%; border-top: 2px solid var(--text-muted); transform: rotate(-45deg); }
+.seg { display: inline-flex; border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: 2px; gap: 2px; }
+.seg button { min-width: 44px; height: 44px; padding: 0 var(--s-2); border: 0; background: transparent; border-radius: var(--r-sm); cursor: pointer; font-weight: 500; color: var(--text-muted); }
+.seg button[aria-checked="true"] { background: var(--bg-subtle); color: var(--text); font-weight: 600; box-shadow: inset 0 0 0 2px var(--text); }
+.sizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-2); }
+.size { height: 48px; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); cursor: pointer; font-weight: 500; font-variant-numeric: tabular-nums;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.size:hover { background: var(--bg-subtle); }
+.size[aria-checked="true"] { background: var(--accent-subtle); border: 2px solid var(--accent); font-weight: 600; }
+.size[aria-disabled="true"] { background: var(--bg-subtle); border-color: var(--border); color: var(--text-muted); text-decoration: line-through; cursor: not-allowed; }
+.sizes.err .size:not([aria-disabled="true"]) { border-color: var(--danger); }
+.hint { margin-top: var(--s-3); color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.err-msg { display: flex; gap: var(--s-2); align-items: center; margin-top: var(--s-3); color: var(--danger); font-weight: 500; }
+.stockline { margin-top: var(--s-3); color: var(--warning); font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; }
+.soldbox { display: flex; gap: var(--s-3); padding: var(--s-4); border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent); background: var(--warning-subtle); border-radius: var(--r-lg); margin-bottom: var(--s-4); }
+.soldbox svg { color: var(--warning); flex-shrink: 0; margin-top: 2px; }
+.soldbox b { display: block; font-weight: 600; }
+.soldbox button { margin: var(--s-1) 0 0 -8px; }
+
+.gauge { position: relative; height: 8px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); margin: var(--s-5) 0 var(--s-2); }
+.gauge .mid { position: absolute; left: 33.3%; width: 33.4%; top: -1px; bottom: -1px; background: var(--accent-subtle); }
+.gauge .mk { position: absolute; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: var(--r-full); background: var(--accent); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--accent); }
+.gl { display: flex; justify-content: space-between; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.fit-line { margin-top: var(--s-3); }
+.fit-line b { font-weight: 600; }
+
+details { border-top: 1px solid var(--border); }
+details:last-of-type { border-bottom: 1px solid var(--border); }
+summary { display: flex; align-items: center; justify-content: space-between; min-height: 56px; cursor: pointer; list-style: none; font-weight: 600; }
+summary::-webkit-details-marker { display: none; }
+summary svg { transition: transform var(--t-base) var(--ease); flex-shrink: 0; }
+details[open] summary svg { transform: rotate(180deg); }
+details .in { padding: 0 0 var(--s-4); color: var(--text-muted); }
+details .in li { padding: 3px 0; }
+details .in li::before { content: ""; display: inline-block; width: 4px; height: 4px; margin: 0 10px 3px 0; border-radius: var(--r-full); background: var(--border-strong); }
+
+.score { display: flex; gap: var(--s-5); align-items: center; }
+.score .big { font: 600 32px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.score .of { color: var(--text-muted); font-size: var(--text-sm); }
+.bars { flex: 1; display: grid; gap: 6px; }
+.bars div { display: grid; grid-template-columns: 12px 1fr 32px; gap: var(--s-2); align-items: center; font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.bars i { display: block; height: 6px; border-radius: var(--r-full); background: var(--bg-subtle); position: relative; border: 1px solid var(--border); }
+.bars i s { position: absolute; left: 0; top: -1px; bottom: -1px; background: var(--accent); border-radius: var(--r-full); }
+.bars span:last-child { text-align: right; }
+.review { padding: var(--s-4) 0; border-top: 1px solid var(--border); margin-top: var(--s-4); }
+.review:first-of-type { margin-top: var(--s-5); }
+.rv-h { display: flex; align-items: center; gap: var(--s-3); }
+.av { width: 36px; height: 36px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: var(--text-sm); flex-shrink: 0; }
+.rv-h b { display: block; font-weight: 600; line-height: var(--lh-sm); }
+.rv-h span { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.rv-h .st { margin-left: auto; color: var(--accent); display: inline-flex; gap: 1px; }
+.review h3 { margin: var(--s-3) 0 2px; font-size: var(--text-md); font-weight: 600; }
+.review p { color: var(--text-muted); }
+
+.rail { display: flex; gap: var(--s-3); overflow-x: auto; margin: 0 calc(var(--s-4) * -1); padding: 0 var(--s-4); scroll-snap-type: x proximity; scrollbar-width: none;
+  scroll-padding-left: var(--s-4); }
+.rail::-webkit-scrollbar { display: none; }
+.rec { flex: 0 0 148px; scroll-snap-align: start; display: block; }
+.rec .im { height: 120px; background: var(--frame); border-radius: var(--r-lg); padding: var(--s-2); }
+.rec .im svg { width: 100%; height: 100%; display: block; }
+.rec b { display: flex; align-items: center; min-height: 44px; font-weight: 500; line-height: var(--lh-sm); }
+.rec span { display: block; margin-top: -6px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* sticky bar stays inside the column */
+.bar { position: sticky; bottom: 0; z-index: 10; background: var(--surface); border-top: 1px solid var(--border); padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom));
+  display: flex; align-items: center; gap: var(--s-4); }
+.bar .stat { min-width: 0; flex: 1; }
+.bar .stat b { display: block; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .stat span { display: block; color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .stat span.warn { color: var(--danger); font-weight: 500; }
+.cta { flex: 0 0 auto; min-width: 168px; height: 52px; padding: 0 var(--s-6); border: 0; border-radius: var(--r-md); background: var(--accent); color: var(--on-accent); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.cta:hover { background: var(--accent-hover); }
+.toast { position: absolute; left: var(--s-4); right: var(--s-4); bottom: calc(100% + var(--s-3)); display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
+  min-height: 48px; padding: 0 var(--s-2) 0 var(--s-4); background: var(--text); color: var(--bg); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.toast button { min-height: 44px; padding: 0 var(--s-3); border: 0; background: none; cursor: pointer; font-weight: 600; color: var(--bg); text-decoration: underline; text-underline-offset: 2px; }
+:root:not([data-theme="light"]) .toast button { color: var(--bg); }
+
+/* size guide sheet */
+dialog { position: fixed; inset: auto 0 0 0; margin: 0 auto; width: 100%; max-width: var(--w-col); max-height: 86dvh; padding: 0; border: 0; border-radius: var(--r-xl) var(--r-xl) 0 0;
+  background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); overflow: hidden; }
+dialog[open] { display: flex; flex-direction: column; }
+dialog::backdrop { background: rgb(0 0 0 / 0.45); }
+.grab { width: 36px; height: 4px; border-radius: var(--r-full); background: var(--border-strong); margin: var(--s-2) auto 0; opacity: .6; }
+.sheet-h { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--s-2) 0 var(--s-4); min-height: 52px; border-bottom: 1px solid var(--border); }
+.sheet-b { padding: var(--s-4); overflow: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { height: 44px; padding: 0 var(--s-2); text-align: right; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 500; font-size: var(--text-sm); }
+th:first-child { text-align: left; }
+tbody th { color: var(--text); font-weight: 600; font-size: var(--text-md); border-bottom: 1px solid var(--border); }
+tr.pick td, tr.pick th { background: var(--accent-subtle); }
+.sheet-f { padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); }
+.sheet-f .cta { width: 100%; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); }
+.sheet-f .cta:hover { background: var(--bg-subtle); }
+
+.state { padding: var(--s-12) var(--s-4); }
+.state h1 { font-size: 26px; }
+.state p { margin-top: var(--s-2); color: var(--text-muted); }
+.state .cta { margin-top: var(--s-5); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#sizes">Skip to sizes</a>
+<div class="app" id="app">
+  <header class="topbar" id="topbar">
+    <button class="icon-btn" type="button" aria-label="Back to sneakers" onclick="history.length > 1 ? history.back() : null">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <p class="name" id="barName"></p>
+    <div class="actions">
+      <button class="icon-btn fav" type="button" id="favBtn" aria-pressed="false" aria-label="Save to wishlist">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg>
+      </button>
+      <button class="icon-btn" type="button" aria-label="Bag, 2 items" id="bagBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        <span class="count" id="bagCount" aria-hidden="true">2</span>
+      </button>
+    </div>
+  </header>
+  <main id="main"></main>
+  <div class="bar" id="bar" role="region" aria-label="Add to bag"></div>
+</div>
+
+<dialog id="guide" aria-labelledby="guideTitle">
+  <div class="grab" aria-hidden="true"></div>
+  <div class="sheet-h"><h2 id="guideTitle">Size guide</h2>
+    <button class="icon-btn" type="button" id="guideClose" aria-label="Close size guide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div class="sheet-b" id="guideBody"></div>
+  <div class="sheet-f"><button class="cta" type="button" id="guideDone">Done</button></div>
+</dialog>
+
+<script>
+/* ---------- data: one module, the page renders from it ---------- */
+const TODAY = new Date('2026-11-27T15:40:00');
+const MODE = new URLSearchParams(location.search).get('state') || '';
+const SIZES = [ // uk, eu, us, foot length cm
+  [6, 39, 7, 24.6], [6.5, 40, 7.5, 25.0], [7, 40.5, 8, 25.4], [7.5, 41, 8.5, 25.8], [8, 42, 9, 26.2], [8.5, 42.5, 9.5, 26.6],
+  [9, 43, 10, 27.0], [9.5, 44, 10.5, 27.4], [10, 44.5, 11, 27.8], [10.5, 45, 11.5, 28.2], [11, 46, 12, 28.6], [12, 47, 13, 29.4]];
+const COLOURS = {
+  Chalk:    { up: '#ece7de', ov: '#d6cebf', ac: '#a84a12', so: '#f7f4ee', lace: '#ffffff', stock: [0, 4, 7, 0, 12, 9, 2, 6, 3, 8, 5, 0] },
+  Graphite: { up: '#3a3f4a', ov: '#262a33', ac: '#f0a060', so: '#d9dade', lace: '#aeb3bf', stock: [3, 6, 8, 5, 10, 7, 9, 4, 6, 2, 0, 3] },
+  Dune:     { up: '#cdb48b', ov: '#b39a6e', ac: '#2f3a2f', so: '#f1ebe0', lace: '#f6f0e4', stock: [0, 0, 5, 7, 6, 8, 4, 0, 2, 5, 3, 0] },
+  Fern:     { up: '#5c7a5a', ov: '#456047', ac: '#ece6d2', so: '#e9e6dc', lace: '#d4dccd', stock: [2, 5, 6, 4, 9, 11, 8, 7, 5, 3, 1, 0] },
+};
+if (MODE === 'empty') COLOURS.Chalk.stock = SIZES.map(() => 0);
+const P = {
+  brand: 'Halden', name: MODE === 'stress' ? 'Arc 2 Runner Limited Anniversary Collaboration Trail Pack in Recycled Engineered Mesh' : 'Arc 2 Runner',
+  sub: 'Men’s road running shoe', price: MODE === 'stress' ? 1284 : 139, was: MODE === 'stress' ? null : 165,
+  dist: MODE === 'stress' ? [0, 0, 0, 0, 0] : [248, 44, 12, 5, 3], // reviews with 5, 4, 3, 2, 1 stars
+  fit: 0.44, // 0 runs small, 1 runs large, from the review form
+};
+const REVIEWS = [
+  { who: 'Daniel R.', init: 'DR', stars: 5, size: 'UK 9', title: 'Light, and holds up on wet roads', body: 'Ran 40 km a week in them for two months. The heel stays put and the midsole has not gone flat.', when: '12 Nov' },
+  { who: 'Amara O.', init: 'AO', stars: 4, size: 'UK 7', title: 'Comfortable, a touch narrow', body: 'Good cushioning for daily miles. I would size up half if you have wide feet.', when: '3 Nov' },
+];
+const RECS = [
+  { n: 'Halden Arc Trail', p: 149, c: { up: '#5c7a5a', ov: '#456047', ac: '#ece6d2', so: '#e9e6dc', lace: '#d4dccd' } },
+  { n: 'Nimbus Court Low', p: 110, c: { up: '#ece7de', ov: '#d6cebf', ac: '#3a3f4a', so: '#ffffff', lace: '#ffffff' } },
+  { n: 'Halden Arc 2 Mid', p: 155, c: { up: '#3a3f4a', ov: '#262a33', ac: '#f0a060', so: '#d9dade', lace: '#aeb3bf' } },
+];
+const S = { colour: 'Chalk', size: null, unit: 'UK', fav: false, bag: 2, last: null, tried: false, toast: '' };
+const total = P.dist.reduce((a, b) => a + b, 0);
+const avg = total ? P.dist.reduce((s, n, i) => s + n * (5 - i), 0) / total : 0;
+
+/* ---------- helpers ---------- */
+const $ = (s) => document.querySelector(s);
+const gbp = (n) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(n);
+const num = (n) => n.toLocaleString('en-GB');
+const sizeLabel = (r) => ({ UK: r[0], EU: r[1], US: r[2] }[S.unit]);
+const stockOf = (colour = S.colour) => COLOURS[colour].stock;
+const sizesInStock = (colour = S.colour) => stockOf(colour).filter(n => n > 0).length;
+const ico = {
+  star: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2 6.3 20.3l1.2-6.4L2.8 9.5l6.4-.8z"/></svg>',
+  chev: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+  truck: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9h-11zM13.5 9.5H18l3.5 3.5v2.5h-8z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>',
+  alert: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.4v.1"/></svg>',
+};
+
+/* ---------- the shoe, drawn from a colourway ---------- */
+function shoe(c, view, label) {
+  const vb = { full: '0 0 400 240', toe: '200 70 200 150', heel: '10 30 220 190' }[view];
+  return `<svg viewBox="${vb}" role="img" aria-label="${label}">
+  <ellipse cx="205" cy="212" rx="170" ry="10" fill="#000" opacity=".08"/>
+  <path d="M42 160C38 128 44 96 64 76 80 60 106 58 124 66 142 74 150 92 178 98 212 105 252 112 292 126 336 140 372 150 380 162Z" fill="${c.up}"/>
+  <path d="M42 160C38 128 44 96 64 76L82 84C68 106 68 132 74 160Z" fill="${c.ov}"/>
+  <path d="M296 128C336 140 372 150 380 162L292 162Z" fill="${c.ov}"/>
+  <path d="M64 76C80 60 106 58 124 66L118 92C100 86 80 90 66 100Z" fill="#20232b"/>
+  <path d="M74 140C124 124 196 118 264 140" fill="none" stroke="${c.ac}" stroke-width="11" stroke-linecap="round"/>
+  <path d="M150 99l-6 14M168 103l-6 14M186 107l-6 14M204 111l-6 14M222 116l-6 14" stroke="${c.lace}" stroke-width="5" stroke-linecap="round"/>
+  <path d="M120 66C140 72 150 90 178 98" fill="none" stroke="${c.ov}" stroke-width="5" stroke-linecap="round"/>
+  <path d="M36 158L384 160C390 178 380 197 352 200L72 200C46 200 32 188 36 158Z" fill="${c.so}"/>
+  <path d="M40 184L372 186" stroke="#000" stroke-opacity=".14" stroke-width="3" stroke-linecap="round"/>
+  <path d="M36 158L384 160" stroke="#000" stroke-opacity=".12" stroke-width="2"/>
+  </svg>`;
+}
+function swatch(c) { return `<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="${c.up}"/><path d="M20 0a20 20 0 0 1 0 40z" fill="${c.ac}"/><circle cx="20" cy="20" r="20" fill="none" stroke="#000" stroke-opacity=".1"/></svg>`; }
+
+/* ---------- render ---------- */
+function fitText(f) { return f < 0.33 ? 'Runs small' : f > 0.67 ? 'Runs large' : f < 0.5 ? 'True to size, a touch snug' : 'True to size'; }
+function delivery() {
+  const d = new Date(TODAY); d.setDate(d.getDate() + 1);
+  return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+function render() {
+  const c = COLOURS[S.colour];
+  const stock = stockOf();
+  const live = sizesInStock();
+  const soldOut = live === 0;
+  const low = SIZES.filter((r, i) => stock[i] > 0 && stock[i] <= 3).map(r => `${S.unit} ${sizeLabel(r)}`);
+  const alt = Object.keys(COLOURS).filter(k => k !== S.colour && sizesInStock(k) > 0);
+  const sale = P.was ? P.was - P.price : 0;
+  const stars = (n) => ico.star.repeat(n);
+
+  $('#barName').textContent = `${P.brand} ${P.name}`;
+  $('#main').innerHTML = `
+  <section class="gallery" aria-label="Product photos" aria-roledescription="carousel">
+    <div class="slides" id="slides" tabindex="0" aria-label="Photos, swipe for more">
+      ${['full', 'toe', 'heel'].map((v, i) => `<div class="slide">${shoe(c, v, `${P.brand} ${P.name} in ${S.colour}, ${['side view', 'toe detail', 'heel detail'][i]}`)}</div>`).join('')}
+    </div>
+    <div class="pager"><div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div><span class="n" id="slideN" aria-live="polite">1 of 3</span></div>
+  </section>
+  <div class="body">
+    <p class="brand">${P.brand}, ${P.sub.charAt(0).toLowerCase() + P.sub.slice(1)}</p>
+    <h1 id="pname">${P.name}</h1>
+    ${total ? `<a class="rate" href="#reviews">${ico.star}<b>${avg.toFixed(1)}</b><span>${num(total)} reviews</span></a>` : '<p class="rate none"><span>No reviews yet</span></p>'}
+    <div class="priceRow"><span class="price">${gbp(P.price).replace('.00', '')}</span>${P.was ? `<span class="was"><span class="sr-only">Was </span>${gbp(P.was).replace('.00', '')}</span><span class="badge">Save ${gbp(sale).replace('.00', '')}</span>` : ''}</div>
+
+    <div class="sect"><div class="sect-head tight"><h2 id="colLabel">Colour <span class="val" id="colVal">${S.colour}</span></h2></div>
+      <div class="swatches" role="radiogroup" aria-labelledby="colLabel">
+        ${Object.keys(COLOURS).map(k => { const n = sizesInStock(k); return `<button class="sw${n ? '' : ' out'}" type="button" role="radio" aria-checked="${k === S.colour}" data-colour="${k}" aria-label="${k}, ${n ? `${n} sizes in stock` : 'sold out'}">${swatch(COLOURS[k])}</button>`; }).join('')}
+      </div>
+    </div>
+
+    <div class="sect" id="sizes"><div class="sect-head"><h2 id="sizeLabel">Size <span class="val">${S.size === null ? '' : `${S.unit} ${sizeLabel(SIZES.find(r => r[0] === S.size))}`}</span></h2>
+      <div class="seg" role="radiogroup" aria-label="Size system">${['UK', 'EU', 'US'].map(u => `<button type="button" role="radio" aria-checked="${S.unit === u}" data-unit="${u}">${u}</button>`).join('')}</div></div>
+      ${soldOut ? `<div class="soldbox">${ico.alert}<div><b>${S.colour} is sold out in every size</b>${alt.length ? `We have ${alt[0]} in ${sizesInStock(alt[0])} sizes. ` : ''}New stock lands most weeks.<br>${alt.length ? `<button class="link-btn" type="button" data-colour="${alt[0]}">Show ${alt[0]}</button>` : ''}</div></div>` : ''}
+      <div class="sizes${S.tried && S.size === null && !soldOut ? ' err' : ''}" id="sizeGrid" role="radiogroup" aria-labelledby="sizeLabel" aria-describedby="sizeMsg">
+        ${SIZES.map((r, i) => { const out = stock[i] === 0; return `<button class="size" type="button" role="radio" aria-checked="${S.size === r[0]}" ${out ? 'aria-disabled="true"' : ''} data-size="${r[0]}">${sizeLabel(r)}${out ? '<span class="sr-only"> sold out</span>' : ''}</button>`; }).join('')}
+      </div>
+      <div id="sizeMsg" aria-live="polite">${S.tried && S.size === null && !soldOut ? `<p class="err-msg">${ico.alert}Select a size to add this to your bag.</p>` : ''}</div>
+      ${low.length && !soldOut ? `<p class="stockline">Low stock in ${low.join(', ')}</p>` : ''}
+      <button class="link-btn left" type="button" id="guideBtn" aria-haspopup="dialog">Size guide</button>
+      ${soldOut ? '' : `<div class="promise">${ico.truck}<div><b>Free delivery, arrives ${delivery()}</b><span>Order before 9pm tonight. Free returns for 30 days.</span></div></div>`}
+    </div>
+
+    <div class="sect"><div class="sect-head"><h2>How it fits</h2></div>
+      <div class="gauge" role="img" aria-label="${fitText(P.fit)} according to ${num(total)} reviews"><div class="mid"></div><div class="mk" style="left:${P.fit * 100}%"></div></div>
+      <div class="gl"><span>Runs small</span><span>True to size</span><span>Runs large</span></div>
+      <p class="fit-line"><b>${fitText(P.fit)}.</b> <span style="color:var(--text-muted)">${total ? `Based on ${num(total)} reviews. Most runners kept their usual size.` : 'Not enough reviews yet.'}</span></p>
+    </div>
+
+    <div class="sect">
+      <details open><summary>Product details ${ico.chev}</summary><div class="in"><ul>
+        <li>Cushioned EVA midsole with an 8 mm drop</li><li>Engineered mesh upper with a padded collar</li><li>Weighs 262 g in UK 9</li><li>Rubber outsole with a road-grip pattern</li></ul></div></details>
+      <details><summary>Materials and care ${ico.chev}</summary><div class="in"><ul><li>Upper: 62% recycled polyester, 38% TPU</li><li>Wipe clean with a damp cloth</li><li>Air dry away from direct heat</li></ul></div></details>
+      <details><summary>Delivery and returns ${ico.chev}</summary><div class="in"><ul><li>Free next-day delivery on orders over £100</li><li>Free returns within 30 days, worn indoors only</li><li>Refunds reach you within 5 working days</li></ul></div></details>
+    </div>
+
+    <div class="sect" id="reviews"><div class="sect-head"><h2>Reviews</h2></div>
+      ${total ? `<div class="score"><div><div class="big">${avg.toFixed(1)}</div><div class="of">${num(total)} reviews</div></div>
+        <div class="bars">${P.dist.map((n, i) => `<div><span>${5 - i}</span><i><s style="width:${(n / total * 100).toFixed(1)}%"></s></i><span>${n}</span></div>`).join('')}</div></div>
+      ${REVIEWS.map(r => `<article class="review"><div class="rv-h"><span class="av" aria-hidden="true">${r.init}</span><div><b>${r.who}</b><span>Bought ${r.size}, ${r.when}</span></div><span class="st" role="img" aria-label="${r.stars} out of 5">${stars(r.stars)}</span></div><h3>${r.title}</h3><p>${r.body}</p></article>`).join('')}` : '<p class="sub">Be the first to review this shoe after your run.</p>'}
+    </div>
+
+    <div class="sect"><div class="sect-head"><h2>You may also like</h2></div>
+      <div class="rail">${RECS.map(r => `<a class="rec" href="#"><div class="im">${shoe(r.c, 'full', r.n)}</div><b>${r.n}</b><span>${gbp(r.p).replace('.00', '')}</span></a>`).join('')}</div>
+    </div>
+  </div>`;
+  renderBar();
+  const f = $('#favBtn'); f.setAttribute('aria-pressed', S.fav); f.setAttribute('aria-label', S.fav ? 'Remove from wishlist' : 'Save to wishlist');
+  $('#bagCount').textContent = S.bag; $('#bagBtn').setAttribute('aria-label', `Bag, ${S.bag} items`);
+  bindGallery();
+}
+function renderBar() {
+  const soldOut = sizesInStock() === 0;
+  const row = S.size !== null && SIZES.find(r => r[0] === S.size);
+  const l1 = soldOut ? `${S.colour} is sold out` : row ? `${S.colour}, ${S.unit} ${sizeLabel(row)}` : 'No size selected';
+  $('#bar').innerHTML = `${S.toast ? `<div class="toast" role="status"><span>${S.toast}</span>${S.last ? '<button type="button" id="undo">Undo</button>' : ''}</div>` : '<div role="status" class="sr-only"></div>'}
+    <div class="stat"><b>${gbp(P.price).replace('.00', '')}</b><span class="${S.tried && !row && !soldOut ? 'warn' : ''}">${l1}</span></div>
+    <button class="cta" type="button" id="cta">${soldOut ? 'Notify me' : 'Add to bag'}</button>`;
+}
+function bindGallery() {
+  const sl = $('#slides'); if (!sl) return;
+  sl.addEventListener('scroll', () => {
+    const i = Math.round(sl.scrollLeft / sl.clientWidth);
+    $('#slideN').textContent = `${i + 1} of 3`;
+    [...$('#dots').children].forEach((d, k) => d.classList.toggle('on', k === i));
+  }, { passive: true });
+}
+
+/* ---------- size guide ---------- */
+const dlg = $('#guide');
+function openGuide() {
+  $('#guideBody').innerHTML = `<p class="sub" style="margin:0 0 var(--s-3)">Measure your foot from heel to longest toe. If you are between sizes, choose the larger one.</p>
+  <table><thead><tr><th scope="col">UK</th><th scope="col">EU</th><th scope="col">US</th><th scope="col">Foot, cm</th></tr></thead><tbody>
+  ${SIZES.map(r => `<tr class="${r[0] === S.size ? 'pick' : ''}"><th scope="row">${r[0]}</th><td>${r[1]}</td><td>${r[2]}</td><td>${r[3].toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
+  dlg.showModal();
+}
+$('#guideClose').onclick = $('#guideDone').onclick = () => dlg.close();
+dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+dlg.addEventListener('close', () => $('#guideBtn')?.focus({ preventScroll: true }));
+
+/* ---------- events ---------- */
+let toastTimer;
+function toast(msg, undo) { S.toast = msg; S.last = undo || null; renderBar(); clearTimeout(toastTimer); toastTimer = setTimeout(() => { S.toast = ''; S.last = null; renderBar(); }, 6000); }
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button, a'); if (!t) return;
+  if (t.dataset.colour) { S.colour = t.dataset.colour; if (S.size !== null && stockOf()[SIZES.findIndex(r => r[0] === S.size)] === 0) S.size = null; keepScroll(); }
+  else if (t.dataset.unit) { S.unit = t.dataset.unit; keepScroll(); $(`[data-unit="${S.unit}"]`).focus({ preventScroll: true }); }
+  else if (t.dataset.size) { if (t.getAttribute('aria-disabled') === 'true') return; S.size = Number(t.dataset.size); S.tried = false; keepScroll(); $(`[data-size="${S.size}"]`).focus({ preventScroll: true }); }
+  else if (t.id === 'guideBtn') openGuide();
+  else if (t.id === 'favBtn') { S.fav = !S.fav; t.setAttribute('aria-pressed', S.fav); t.setAttribute('aria-label', S.fav ? 'Remove from wishlist' : 'Save to wishlist'); }
+  else if (t.id === 'undo') { S.bag = Math.max(0, S.bag - 1); $('#bagCount').textContent = S.bag; $('#bagBtn').setAttribute('aria-label', `Bag, ${S.bag} items`); clearTimeout(toastTimer); S.toast = ''; S.last = null; renderBar(); }
+  else if (t.id === 'cta') {
+    if (sizesInStock() === 0) { toast('We will email you when it is back in stock.'); return; }
+    if (S.size === null) { S.tried = true; render(); const g = $('#sizeGrid'); g.scrollIntoView({ block: 'center', behavior: 'smooth' }); g.querySelector('.size:not([aria-disabled="true"])').focus({ preventScroll: true }); return; }
+    S.bag += 1; $('#bagCount').textContent = S.bag; $('#bagBtn').setAttribute('aria-label', `Bag, ${S.bag} items`);
+    toast('Added to your bag', true);
+  }
+});
+function keepScroll() { const y = scrollY; render(); scrollTo(0, y); }
+addEventListener('scroll', () => $('#topbar').classList.toggle('scrolled', scrollY > 8), { passive: true });
+
+if (MODE === 'error') {
+  $('#main').innerHTML = `<div class="state"><h1>We couldn’t load this shoe</h1><p>Your bag is safe. Check your connection and try again.</p><button class="cta" type="button" onclick="location.search=''">Try again</button></div>`;
+  $('#bar').hidden = true;
+} else {
+  render();
+  if (MODE === 'sheet') openGuide();
+}
+</script>
+</body>
+</html>

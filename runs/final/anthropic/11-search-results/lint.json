@@ -1,0 +1,112 @@
+{
+  "axe": {
+    "rules": {
+      "heading-order": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 7
+      }
+    },
+    "byImpact": {
+      "moderate": {
+        "rules": 2,
+        "nodes": 8
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "fraunces",
+    "karla"
+  ],
+  "textColors": 7,
+  "minFontPx": 13.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(51, 32, 15)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(184, 52, 31)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 8,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Tin & Spoon",
+        "w": 171,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Saved (7)",
+        "w": 99,
+        "h": 41
+      },
+      {
+        "tag": "select",
+        "text": "Best match\nHighest rated\nQuick",
+        "w": 210,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "chana masala",
+        "w": 131,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "coconut chickpea curry",
+        "w": 197,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "spinach and chickpea",
+        "w": 187,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "slow cooker chickpeas",
+        "w": 190,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "chickpea tikka masala",
+        "w": 193,
+        "h": 37
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

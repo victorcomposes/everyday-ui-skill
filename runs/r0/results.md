@@ -4,12 +4,14 @@ Judges: opusA, opusB, sonnetA, sonnetB. Conditions: baseline, prompt, anthropic,
 
 ## Mean overall per condition
 
-| condition | mean overall | wins | ties |
-| --- | --- | --- | --- |
-| baseline | 6.75 | 0 | 2 |
-| prompt | 5.56 | 0 | 0 |
-| anthropic | 6.94 | 1 | 4 |
-| skill | 7.19 | 3 | 2 |
+| condition | mean overall | light mean | wins | ties |
+| --- | --- | --- | --- | --- |
+| baseline | 6.75 | 6.97 | 0 | 2 |
+| prompt | 5.56 | 6.60 | 0 | 0 |
+| anthropic | 6.94 | 7.54 | 1 | 4 |
+| skill | 7.19 | 7.28 | 3 | 2 |
+
+Light mean: the mean of every criterion except dark mode, overall included.
 
 ## Mean per criterion
 

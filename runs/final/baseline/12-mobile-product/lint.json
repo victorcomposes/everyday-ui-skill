@@ -1,0 +1,115 @@
+{
+  "axe": {
+    "rules": {
+      "heading-order": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "landmark-one-main": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 9
+      }
+    },
+    "byImpact": {
+      "moderate": {
+        "rules": 3,
+        "nodes": 11
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "arial"
+  ],
+  "textColors": 6,
+  "minFontPx": 13.3333,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(0, 0, 0)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 12,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "6",
+        "w": 52,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "7",
+        "w": 52,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "7.5",
+        "w": 52,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "8",
+        "w": 52,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 6
+      },
+      "landmark-one-main": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 6
+      },
+      "moderate": {
+        "rules": 2,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 6
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "figtree",
+    "outfit"
+  ],
+  "textColors": 14,
+  "minFontPx": 11.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(182, 205, 209)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(240, 80, 47)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 22,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 174,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "text": "Settings",
+        "w": 174,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "text": "All\n6",
+        "w": 100,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Messages\n1",
+        "w": 150,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Proposals\n1",
+        "w": 148,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Payments\n2",
+        "w": 150,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Contracts\n2",
+        "w": 151,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Account",
+        "w": 111,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

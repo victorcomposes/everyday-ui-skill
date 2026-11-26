@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoices - Penny &amp; Pine Books</title>
+<style>
+:root{
+  --bg:#f7f7f5; --surface:#fff; --ink:#16181d; --muted:#585d68; --line:#e3e4e8;
+  --brand:#2f3fd1; --brand-soft:#eceefd; --focus:#0b57d0;
+  --paid:#0d6b3a; --paid-bg:#e0f4e8; --due:#7a4a00; --due-bg:#fdefd3; --over:#a11d1d; --over-bg:#fde4e2; --draft:#454a55; --draft-bg:#eceef2;
+  font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+aside{background:#14162b;color:#c9cbe4;padding:20px 14px;position:sticky;top:0;height:100vh}
+aside .brand{display:flex;gap:10px;align-items:center;color:#fff;font-weight:700;font-size:16px;padding:4px 10px 22px}
+aside ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+aside a{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:8px;color:#c9cbe4;text-decoration:none;font-weight:500}
+aside a:hover{background:#22254a;color:#fff}
+aside a[aria-current=page]{background:#2b2f66;color:#fff}
+main{padding:28px 32px 48px;min-width:0}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+h1{margin:0;font-size:26px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:2px 0 0}
+.btn{font:inherit;font-weight:600;border-radius:8px;padding:8px 14px;min-height:38px;border:1px solid #9296a3;background:#fff;color:var(--ink);cursor:pointer}
+.btn:hover{background:#f1f2f5}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:#2431a8}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.stat:hover{border-color:#b9bcc7}
+.stat[aria-pressed=true]{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand);background:var(--brand-soft)}
+.stat span{display:block;color:var(--muted);font-size:13px}
+.stat strong{display:block;font-size:22px;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+.stat.o strong{color:var(--over)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tools{display:flex;gap:10px;padding:12px;border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:center}
+.search{position:relative;flex:1 1 240px;min-width:0}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{width:100%;font:inherit;padding:8px 12px 8px 34px;min-height:38px;border:1px solid #9296a3;border-radius:8px}
+select{font:inherit;min-height:38px;padding:6px 10px;border:1px solid #9296a3;border-radius:8px;background:#fff;color:var(--ink)}
+.bulk{display:none;align-items:center;gap:10px;padding:10px 14px;background:var(--brand-soft);border-bottom:1px solid var(--line)}
+.bulk.on{display:flex;flex-wrap:wrap}
+.bulk b{margin-right:auto}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:10px 14px;background:#fafafb;border-bottom:1px solid var(--line);white-space:nowrap}
+th button{all:unset;cursor:pointer;display:inline-flex;gap:4px;align-items:center;text-transform:inherit;letter-spacing:inherit}
+th button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fafaff}
+tbody tr[data-sel=true]{background:var(--brand-soft)}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+th.num{text-align:right}
+.id{font-weight:600;font-variant-numeric:tabular-nums}
+.cust{font-weight:500}
+.cust small{display:block;color:var(--muted);font-weight:400}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.paid{background:var(--paid-bg);color:var(--paid)}.sent{background:var(--due-bg);color:var(--due)}.overdue{background:var(--over-bg);color:var(--over)}.draft{background:var(--draft-bg);color:var(--draft)}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);cursor:pointer}
+.act{display:flex;gap:4px;justify-content:flex-end}
+.ic{all:unset;box-sizing:border-box;width:34px;height:34px;display:grid;place-items:center;border-radius:8px;cursor:pointer;color:var(--muted)}
+.ic:hover{background:#eceef2;color:var(--ink)}
+.ic:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.foot{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;color:var(--muted);border-top:1px solid var(--line);flex-wrap:wrap;gap:8px}
+.empty{padding:48px 16px;text-align:center;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.mtop{display:none}
+@media (max-width:860px){
+  .shell{display:block}
+  aside{display:none}
+  .mtop{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#14162b;color:#fff;font-weight:700}
+  main{padding:20px 16px 40px}
+  .stats{grid-template-columns:1fr 1fr}
+  .head .btn.primary{width:100%}
+  /* cards on phones */
+  table{min-width:0}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  tbody tr{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;padding:14px;border-bottom:1px solid var(--line)}
+  td{padding:0;border:0}
+  td.c-sel{grid-row:1/3;align-self:start;padding-top:2px}
+  td.c-id{grid-column:2;grid-row:1}
+  td.c-cust{grid-column:2;grid-row:2}
+  td.c-amt{grid-column:3;grid-row:1}
+  td.c-st{grid-column:3;grid-row:2;text-align:right}
+  td.c-due{grid-column:2;grid-row:3;color:var(--muted);margin-top:6px}
+  td.c-iss{display:none}
+  td.c-act{grid-column:3;grid-row:3;margin-top:2px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside aria-label="Primary">
+  <div class="brand"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#5b6bff"/><path d="M7 16V8l5 6 5-6v8" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Ledgerly</div>
+  <nav><ul>
+    <li><a href="#">Overview</a></li>
+    <li><a href="#" aria-current="page">Invoices</a></li>
+    <li><a href="#">Bills</a></li>
+    <li><a href="#">Customers</a></li>
+    <li><a href="#">Banking</a></li>
+    <li><a href="#">Reports</a></li>
+  </ul></nav>
+</aside>
+<div>
+<div class="mtop">Ledgerly <span style="font-weight:400;opacity:.8">/ Invoices</span></div>
+<main>
+  <div class="head">
+    <div><h1>Invoices</h1><p class="sub">Penny &amp; Pine Books - last 90 days</p></div>
+    <button class="btn primary" type="button">New invoice</button>
+  </div>
+
+  <div class="stats" role="group" aria-label="Filter by status">
+    <button class="stat" data-f="all" aria-pressed="true"><span>All invoices</span><strong id="s-all">-</strong></button>
+    <button class="stat" data-f="sent" aria-pressed="false"><span>Awaiting payment</span><strong id="s-sent">-</strong></button>
+    <button class="stat o" data-f="overdue" aria-pressed="false"><span>Overdue</span><strong id="s-overdue">-</strong></button>
+    <button class="stat" data-f="paid" aria-pressed="false"><span>Paid this quarter</span><strong id="s-paid">-</strong></button>
+  </div>
+
+  <section class="panel" aria-label="Invoice list">
+    <div class="tools">
+      <div class="search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <label class="sr" for="q">Search invoices</label><input id="q" type="search" placeholder="Search by customer or invoice number"></div>
+      <label class="sr" for="st">Status</label>
+      <select id="st"><option value="all">All statuses</option><option value="draft">Draft</option><option value="sent">Awaiting payment</option><option value="overdue">Overdue</option><option value="paid">Paid</option></select>
+      <label class="sr" for="rg">Date range</label>
+      <select id="rg"><option>Last 90 days</option><option>This month</option><option>This year</option></select>
+    </div>
+    <div class="bulk" id="bulk" role="region" aria-label="Bulk actions"><b id="bc">0 selected</b>
+      <button class="btn" type="button" id="remind">Send reminder</button><button class="btn" type="button">Mark as paid</button><button class="btn" type="button">Download PDF</button></div>
+    <div class="scroll">
+    <table>
+      <thead><tr>
+        <th scope="col" style="width:40px"><input type="checkbox" id="all" aria-label="Select all invoices"></th>
+        <th scope="col" aria-sort="none"><button type="button" data-k="id">Invoice</button></th>
+        <th scope="col"><button type="button" data-k="cust">Customer</button></th>
+        <th scope="col"><button type="button" data-k="iss">Issued</button></th>
+        <th scope="col" aria-sort="none"><button type="button" data-k="due">Due</button></th>
+        <th scope="col">Status</th>
+        <th scope="col" class="num"><button type="button" data-k="amt">Amount</button></th>
+        <th scope="col"><span class="sr">Actions</span></th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    </div>
+    <div class="empty" id="empty" hidden>No invoices match these filters. <button class="btn" type="button" id="clr" style="margin-left:8px">Clear filters</button></div>
+    <div class="foot"><span id="count" role="status" aria-live="polite"></span><span>Amounts in USD</span></div>
+  </section>
+</main>
+</div>
+</div>
+
+<script>
+const D=[
+["INV-1048","Hartley Furniture Co.","accounts@hartleyfurn.com","2026-11-18","2026-12-18","sent",4820.00],
+["INV-1047","Northgate Dental","billing@northgatedental.com","2026-11-15","2026-11-29","sent",1260.50],
+["INV-1046","Marlowe & Finch LLP","ap@marlowefinch.com","2026-11-12","2026-11-26","sent",9400.00],
+["INV-1045","Cedar Lane Bakery","jo@cedarlane.bake","2026-10-30","2026-11-13","overdue",385.75],
+["INV-1044","Orbit Cycle Works","finance@orbitcycle.io","2026-10-28","2026-11-11","paid",2140.00],
+["INV-1043","Hartley Furniture Co.","accounts@hartleyfurn.com","2026-10-20","2026-11-19","paid",3975.00],
+["INV-1042","Quill & Ink Studio","hello@quillink.studio","2026-10-14","2026-10-28","overdue",720.00],
+["INV-1041","Lakeside Physio","admin@lakesidephysio.co","2026-10-09","2026-10-23","paid",1580.00],
+["INV-1040","Fernhill Nursery","orders@fernhill.farm","2026-10-02","2026-10-16","paid",612.40],
+["INV-1039","Brightwell Tutors","pay@brightwell.edu","2026-09-29","2026-10-13","paid",1900.00],
+["INV-1038","Marlowe & Finch LLP","ap@marlowefinch.com","2026-09-22","2026-10-06","paid",8200.00],
+["INV-1049","Tidewater Marine","office@tidewatermarine.com","2026-11-24","2026-12-24","draft",5310.00]
+].map(([id,cust,mail,iss,due,st,amt])=>({id,cust,mail,iss,due,st,amt}));
+const label={paid:"Paid",sent:"Awaiting payment",overdue:"Overdue",draft:"Draft"};
+const money=n=>n.toLocaleString("en-US",{style:"currency",currency:"USD"});
+const date=s=>new Date(s+"T00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+const state={f:"all",q:"",k:"id",dir:-1,sel:new Set()};
+const $=s=>document.querySelector(s);
+const ic=(p)=>`<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">${p}</svg>`;
+function stats(){
+  const sum=s=>D.filter(d=>s==="all"?d.st!=="draft":d.st===s).reduce((a,d)=>a+d.amt,0);
+  $("#s-all").textContent=D.filter(d=>d.st!=="draft").length+" - "+money(sum("all"));
+  ["sent","overdue","paid"].forEach(s=>$("#s-"+s).textContent=money(sum(s)));
+}
+function render(){
+  let r=D.filter(d=>(state.f==="all"||d.st===state.f)&&(d.id+d.cust).toLowerCase().includes(state.q));
+  r.sort((a,b)=>(a[state.k]>b[state.k]?1:-1)*state.dir);
+  $("#rows").innerHTML=r.map(d=>`<tr data-sel="${state.sel.has(d.id)}">
+   <td class="c-sel"><input type="checkbox" data-id="${d.id}" ${state.sel.has(d.id)?"checked":""} aria-label="Select ${d.id}"></td>
+   <td class="c-id id">${d.id}</td>
+   <td class="c-cust cust">${d.cust.replace("&","&amp;")}<small>${d.mail}</small></td>
+   <td class="c-iss">${date(d.iss)}</td>
+   <td class="c-due">${d.st==="paid"?"Paid":"Due "+date(d.due)}</td>
+   <td class="c-st"><span class="pill ${d.st}">${label[d.st]}</span></td>
+   <td class="c-amt num">${money(d.amt)}</td>
+   <td class="c-act"><div class="act">
+     <button class="ic" aria-label="Send reminder for ${d.id}" title="Send reminder">${ic('<path d="M2 4.5h14v9H2z M2 5l7 5 7-5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>')}</button>
+     <button class="ic" aria-label="Download ${d.id} as PDF" title="Download PDF">${ic('<path d="M9 2v9m0 0L5.5 7.5M9 11l3.5-3.5M3 15h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>')}</button>
+   </div></td></tr>`).join("");
+  $("#empty").hidden=r.length>0;
+  $("#count").textContent=`Showing ${r.length} of ${D.length} invoices`;
+  $("#bulk").classList.toggle("on",state.sel.size>0);
+  $("#bc").textContent=state.sel.size+" selected";
+  $("#all").checked=r.length>0&&r.every(d=>state.sel.has(d.id));
+  document.querySelectorAll(".stat").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===state.f));
+  $("#st").value=state.f==="all"||D.some(d=>d.st===state.f)?state.f:"all";
+  document.querySelectorAll("th[aria-sort]").forEach(th=>th.setAttribute("aria-sort",th.querySelector("button").dataset.k===state.k?(state.dir>0?"ascending":"descending"):"none"));
+  return r;
+}
+let cur;
+const go=()=>{cur=render();};
+document.addEventListener("click",e=>{
+  const s=e.target.closest(".stat"); if(s){state.f=s.dataset.f;go();}
+  const h=e.target.closest("th button"); if(h){state.dir=state.k===h.dataset.k?-state.dir:1;state.k=h.dataset.k;go();}
+  if(e.target.id==="clr"){state.f="all";state.q="";$("#q").value="";go();}
+});
+$("#q").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase();go();});
+$("#st").addEventListener("change",e=>{state.f=e.target.value;go();});
+$("#rows").addEventListener("change",e=>{const id=e.target.dataset.id;if(id){e.target.checked?state.sel.add(id):state.sel.delete(id);go();}});
+$("#all").addEventListener("change",e=>{cur.forEach(d=>e.target.checked?state.sel.add(d.id):state.sel.delete(d.id));go();});
+stats();go();
+</script>
+</body>
+</html>

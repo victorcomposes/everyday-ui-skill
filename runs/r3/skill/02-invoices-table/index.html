@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoices - Tidewell Books</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Brief: Tidewell Books, invoices list. Harbour Steel kit / crisp shape / IBM Plex Sans. Feel: precise.
+   Domain detail: "29 days overdue" beside the due date, and a paid-progress bar on part-paid invoices. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #1f5f9e; --accent-hover: #174b7d; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a;
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px; --text-xl: 20px; --lh-xl: 28px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 2px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px; --h-topbar: 56px; --h-row: 48px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d; --frame: #131a2b; --brand-deep: #0e1a38;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+  --text: #e9ebef; --text-muted: #a0a6b2;
+  --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+  --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+  --placeholder: #8b919d; --frame: #131a2b; --brand-deep: #0e1a38;
+  --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 600 28px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 26px; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; background: var(--bg-subtle); color: var(--text-muted); }
+.badge.success { background: var(--success-subtle); color: var(--success); }
+.badge.danger { background: var(--danger-subtle); color: var(--danger); }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+.muted { color: var(--text-muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.text { border-color: transparent; background: none; color: var(--accent); padding: 0 var(--s-3); }
+.btn.text:hover { background: var(--accent-subtle); }
+.btn.sm { min-height: var(--control-h-sm); }
+.field { min-height: var(--control-h); width: 100%; padding: 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+select.field { appearance: none; padding-right: 32px;
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23838995' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; }
+.field[aria-invalid="true"] { border: 2px solid var(--danger); padding: 0 calc(var(--s-3) - 1px); }
+.err { display: flex; gap: 6px; margin-top: var(--s-2); color: var(--danger); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.shell > aside > .side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); }
+.logo { display: flex; align-items: center; gap: 10px; padding: 0 var(--s-2); min-height: 44px; font: 600 18px/1 var(--font-display); letter-spacing: -0.01em; }
+.nav { display: flex; flex-direction: column; gap: 2px; margin-top: var(--s-4); }
+.nav + .nav { margin-top: var(--s-6); }
+.nav a { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); }
+.nav a:hover { background: var(--accent-subtle); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav a[aria-current="page"] svg { color: var(--accent); }
+.nav .count { margin-left: auto; font-size: var(--text-xs); color: var(--text-muted); }
+.account { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: var(--s-3) var(--s-2); border-top: 1px solid var(--border); }
+.account .who { min-width: 0; line-height: 1.3; }
+.account .who b { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.account .who span { display: block; font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.avatar { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-xs); font-weight: 600; }
+.topbar { display: none; }
+
+main { padding: var(--s-8) var(--s-8) 64px; min-width: 0; }
+.page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); }
+.page-head p { margin-top: var(--rhythm-title); color: var(--text-muted); }
+.page-head .acts { display: flex; gap: var(--s-2); flex: none; }
+
+.summary { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--s-3) var(--s-12); margin-top: var(--rhythm-content); }
+.summary > div { min-width: 0; }
+.summary .lab { color: var(--text-muted); font-weight: 500; }
+.summary .big { margin-top: 2px; font: 600 32px/1.1 var(--font-display); letter-spacing: -0.02em; }
+.summary .mid { margin-top: 2px; font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; }
+.summary .sub { color: var(--text-muted); font-size: var(--text-sm); }
+.summary .sep { align-self: stretch; width: 1px; min-height: 64px; background: var(--border); }
+
+.tabs { display: flex; gap: var(--s-6); margin-top: var(--rhythm-content); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; color: var(--text-muted); font-weight: 500; cursor: pointer; }
+.tab:hover { color: var(--text); }
+.tab[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.tab .n { color: var(--text-muted); font-weight: 400; }
+
+.toolbar { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4) 0; min-height: 68px; }
+.search { position: relative; width: 300px; flex: none; }
+.search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.search .field { padding-left: 34px; }
+.filters { display: flex; gap: var(--s-3); align-items: center; }
+.filters select { width: auto; min-width: 150px; }
+.filters-btn { display: none; }
+.bulk { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4) 0; min-height: 68px; flex-wrap: wrap; }
+.bulk b { font-weight: 600; margin-right: var(--s-2); }
+
+.tbl { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: clip; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+thead th { position: sticky; top: 0; background: var(--bg-subtle); height: 40px; padding: 0 var(--s-3); text-align: left; font-weight: 500; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+tbody td { height: var(--h-row); padding: 0 var(--s-3); border-bottom: 1px solid var(--border); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: var(--bg-subtle); }
+tbody tr[aria-selected="true"] td { background: var(--accent-subtle); }
+.r { text-align: right; }
+.c-cb { width: 44px; padding-right: 0 !important; }
+.c-inv { width: 148px; } .c-iss { width: 96px; } .c-st { width: 108px; } .c-due { width: 188px; } .c-amt { width: 164px; } .c-act { width: 52px; padding: 0 var(--s-2) !important; }
+.sort { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0; border: 0; background: none; font: inherit; font-weight: 500; color: inherit; cursor: pointer; }
+.r .sort { flex-direction: row-reverse; }
+.sort:hover { color: var(--text); }
+th[aria-sort] .sort { color: var(--text); }
+.cust { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cust:hover { color: var(--accent); }
+.id { color: var(--text-muted); }
+.note { display: block; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); }
+.note.over { color: var(--danger); font-weight: 500; }
+.amt { display: block; }
+.prog { display: flex; white-space: nowrap; align-items: center; justify-content: flex-end; gap: 6px; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); }
+.prog i { display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--border); overflow: hidden; }
+.prog i b { display: block; height: 100%; background: var(--success); }
+.dash { color: var(--text-muted); }
+input[type="checkbox"] { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.cb { display: inline-grid; place-items: center; width: 32px; height: 44px; cursor: pointer; }
+.kebab { display: inline-grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: var(--r-md); background: none; color: var(--text-muted); cursor: pointer; }
+.kebab:hover, .kebab[aria-expanded="true"] { background: var(--bg-subtle); color: var(--text); }
+tr:hover .kebab:hover { background: var(--border); }
+
+.foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); padding: var(--s-4) 0; color: var(--text-muted); }
+.pager { display: flex; align-items: center; gap: var(--s-1); }
+.pager .btn { min-width: var(--control-h-sm); }
+.pager .btn[aria-current="page"] { background: var(--accent-subtle); border-color: var(--accent); color: var(--text); font-weight: 600; }
+
+.state { padding: var(--s-12) var(--s-6); text-align: center; border: 1px solid var(--border); border-radius: var(--r-lg); }
+.state h2 { font-size: var(--text-xl); }
+.state p { margin: var(--s-2) auto 0; color: var(--text-muted); max-width: 48ch; }
+.state .link { display: inline-flex; align-items: center; min-height: 44px; }
+.state .acts { margin-top: var(--s-5); display: flex; gap: var(--s-3); justify-content: center; align-items: center; flex-wrap: wrap; }
+.tbl .state { border: 0; border-top: 0; }
+.ghost { max-width: 420px; margin: 0 auto var(--s-6); display: grid; gap: 6px; opacity: 1; }
+.ghost div { display: grid; grid-template-columns: 1fr 52px 40px; gap: 8px; height: 28px; align-items: center; padding: 0 10px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+.ghost i { display: block; height: 6px; border-radius: 3px; background: var(--border); }
+.ghost div:nth-child(2) { opacity: .6; } .ghost div:nth-child(3) { opacity: .35; }
+.ghost b { display: block; height: 14px; border-radius: 2px; background: var(--accent-subtle); }
+.sk td { height: var(--h-row); } .sk i { display: block; height: 10px; border-radius: 3px; background: var(--bg-subtle); border: 1px solid var(--border); }
+
+.menu { position: fixed; z-index: 40; min-width: 200px; padding: var(--s-1); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--shadow-pop); }
+.menu button { display: flex; align-items: center; width: 100%; min-height: 36px; padding: 0 var(--s-3); border: 0; border-radius: var(--r-md); background: none; text-align: left; cursor: pointer; }
+.menu button:hover, .menu button:focus-visible { background: var(--bg-subtle); outline-offset: -2px; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50; display: flex; align-items: center; gap: var(--s-4); max-width: calc(100% - 32px); padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--text); color: var(--bg); box-shadow: var(--shadow-pop); }
+.toast button { border: 0; background: none; color: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; min-height: 32px; padding: 0 var(--s-1); }
+
+dialog { width: min(440px, calc(100% - 32px)); padding: var(--s-6); border: 0; border-radius: var(--r-xl); background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); }
+dialog::backdrop { background: rgb(10 14 20 / 0.5); }
+dialog .fld { margin-top: var(--s-5); }
+dialog label { display: block; font-weight: 500; margin-bottom: var(--s-2); }
+.dlg-acts { display: flex; justify-content: flex-end; gap: var(--s-2); margin-top: var(--s-6); }
+
+/* tablet and phone */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: var(--h-topbar); padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .menu-btn { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-3); margin-right: -8px; border: 0; background: none; font-weight: 500; border-radius: var(--r-md); cursor: pointer; }
+  .sheet { position: fixed; inset: var(--h-topbar) 0 0 0; z-index: 9; background: var(--frame); padding: var(--s-4); overflow-y: auto; }
+  .sheet .nav { margin-top: 0; }
+  .sheet .nav a { min-height: 48px; }
+  main { padding: var(--s-6) var(--s-4) 48px; }
+}
+@media (max-width: 640px) {
+  .page-head .acts .btn { padding: 0 var(--s-3); }
+  .summary { gap: var(--s-4) var(--s-8); }
+  .summary .sep { display: none; }
+  .summary .big { font-size: 28px; }
+  .tabs { gap: var(--s-5); margin-right: calc(var(--s-4) * -1); padding-right: var(--s-6);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
+  .toolbar { flex-wrap: wrap; padding: var(--s-3) 0; }
+  .search { width: auto; flex: 1 1 160px; }
+  .field, .btn, .tab { font-size: 16px; }
+  .filters-btn { display: inline-flex; }
+  .filters { display: none; width: 100%; flex-direction: column; align-items: stretch; }
+  .filters.open { display: flex; }
+  .filters select { width: 100%; }
+  .bulk .btn { flex: 1 1 auto; }
+  .tbl { border: 0; border-radius: 0; overflow: visible; }
+  table, tbody { display: block; }
+  thead { display: none; }
+  tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto 44px; grid-template-areas: "c a k" "i s k" "d d k"; gap: 0 var(--s-3); align-items: center; padding: var(--s-2) 0 var(--s-3); border-bottom: 1px solid var(--border); position: relative; }
+  tbody td { display: block; height: auto; padding: 0; border: 0; min-width: 0; }
+  tbody tr:hover td, tbody tr[aria-selected="true"] td { background: none; }
+  td.c-cb, td.c-iss { display: none; }
+  .cust { display: flex; align-items: center; min-height: 44px; margin-top: -4px; margin-bottom: -4px; }
+  td.t-c { grid-area: c; } td.c-amt { grid-area: a; font-weight: 500; width: auto; } td.c-inv { grid-area: i; width: auto; } td.c-st { grid-area: s; width: auto; text-align: right; } td.t-due { grid-area: d; width: auto; } td.c-act { grid-area: k; width: auto; padding: 0 !important; align-self: stretch; display: grid; place-items: center; }
+  td.t-due .note { display: inline; margin-left: 6px; }
+  td.t-due.empty { display: none; }
+  .prog i { display: none; }
+  .summary > div:nth-of-type(3) { display: none; }
+  .kebab { width: 44px; height: 44px; }
+  .foot { flex-direction: column; align-items: flex-start; }
+  .pager { width: 100%; }
+  .pager .btn { flex: 1; }
+  .pager .num { display: none; }
+  .ghost { margin-bottom: var(--s-5); }
+  .sk tr { display: block; }
+  dialog .dlg-acts { flex-direction: column-reverse; }
+  dialog .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4M8.5 12h7M8.5 16h5"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.8c2 .6 3.2 2.3 3.5 5.2"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9.5 12 4l9 5.5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20.5h18"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-percent" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="18.5" r="1.2"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="m6 14 6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 10 6 6 6-6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></symbol>
+  </defs>
+</svg>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <a class="logo" href="#" aria-label="Tidewell Books home">
+    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="5" fill="var(--accent)"/><path d="M7 9h14M7 14h10M7 19h6" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>
+    Tidewell
+  </a>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sheet"><svg class="i"><use href="#i-menu"/></svg><span>Menu</span></button>
+</div>
+<div class="sheet" id="sheet" hidden><nav class="nav" aria-label="Menu" id="sheetNav"></nav></div>
+
+<div class="shell">
+  <aside>
+    <div class="side">
+      <a class="logo" href="#" aria-label="Tidewell Books home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="5" fill="var(--accent)"/><path d="M7 9h14M7 14h10M7 19h6" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>
+        Tidewell
+      </a>
+      <nav class="nav" aria-label="Main" id="mainNav"></nav>
+      <nav class="nav" aria-label="Account" id="lastNav"></nav>
+      <div class="account">
+        <span class="avatar" aria-hidden="true">RA</span>
+        <div class="who"><b>Rosa Adeyemi</b><span>Ashby Mews Design</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header class="page-head">
+      <div>
+        <h1>Invoices</h1>
+        <p id="headSub"></p>
+      </div>
+      <div class="acts">
+        <button class="btn" type="button" id="exportBtn">Export</button>
+        <button class="btn primary" type="button" id="newBtn">New invoice</button>
+      </div>
+    </header>
+
+    <div class="summary" id="summary"></div>
+
+    <div class="tabs" id="tabs" role="group" aria-label="Invoice status"></div>
+
+    <div class="toolbar" id="toolbar">
+      <div class="search">
+        <svg class="i sm" aria-hidden="true"><use href="#i-search"/></svg>
+        <label class="sr-only" for="q">Search invoices</label>
+        <input class="field" id="q" type="search" placeholder="Search invoices" autocomplete="off">
+      </div>
+      <button class="btn filters-btn" type="button" id="filtersBtn" aria-expanded="false" aria-controls="filters"><svg class="i sm" aria-hidden="true"><use href="#i-filter"/></svg><span id="filtersLabel">Filters</span></button>
+      <div class="filters" id="filters">
+        <label class="sr-only" for="fCust">Customer</label>
+        <select class="field" id="fCust"></select>
+        <label class="sr-only" for="fDue">Due date</label>
+        <select class="field" id="fDue">
+          <option value="">Any due date</option>
+          <option value="week">Due in the next 7 days</option>
+          <option value="month">Due in the next 30 days</option>
+          <option value="past">Due in the past 30 days</option>
+        </select>
+        <button class="btn text" type="button" id="clearBtn" hidden>Clear filters</button>
+      </div>
+    </div>
+    <div class="bulk" id="bulk" hidden>
+      <b id="bulkCount"></b>
+      <button class="btn" type="button" id="bulkRemind">Send reminders</button>
+      <button class="btn" type="button" id="bulkPaid">Mark as paid</button>
+      <button class="btn text" type="button" id="bulkClear">Clear selection</button>
+    </div>
+
+    <div id="tableArea"></div>
+    <div class="foot" id="foot"></div>
+  </main>
+</div>
+
+<div class="menu" id="menu" role="menu" hidden></div>
+
+<dialog id="newDlg" aria-labelledby="newTitle">
+  <form id="newForm" method="dialog" novalidate>
+    <h2 id="newTitle">New invoice</h2>
+    <div class="fld"><label for="nCust">Customer</label><select class="field" id="nCust"></select></div>
+    <div class="fld"><label for="nAmt">Amount (GBP)</label><input class="field" id="nAmt" inputmode="decimal" autocomplete="off" placeholder="1,250.00" aria-describedby="nAmtErr">
+      <div class="err" id="nAmtErr" hidden><svg class="i sm" style="margin-top:2px" aria-hidden="true"><use href="#i-alert"/></svg><span>Enter an amount above 0, like 1,250.00.</span></div></div>
+    <div class="fld"><label for="nDue">Due date</label><input class="field" id="nDue" type="date"></div>
+    <div class="dlg-acts"><button class="btn" type="button" id="newCancel">Cancel</button><button class="btn primary" type="submit">Create draft</button></div>
+  </form>
+</dialog>
+
+<script>
+/* ---------- data: one module, everything on screen derives from it ---------- */
+const TODAY = new Date('2026-11-27T10:00:00Z');
+const CUSTOMERS = ['Bramwell Dental Group', 'Northgate Veterinary Partners LLP', 'Marlow & Pike Joinery', 'Ashdown Bakehouse', 'Kiln Street Studio',
+  'Fenwick Plumbing Supplies', 'Larkspur Florists', 'Quill & Anchor Books', 'Thornbury Cycles', 'Westcombe Physio', 'Oakhill Garden Centre',
+  'Redfern Print Works', 'Saltmarsh Café', 'Ivy Lane Nursery', 'Copperfield Roofing', 'Hollis Brothers Haulage', 'Greenacre Farm Shop',
+  'Nightingale Yoga', 'Tallow & Wick Candles', 'Harbour & Finch Ltd'];
+// [number, customer, issued, due, amount, paid so far, draft]
+const RAW = [
+  [406, 4, '2026-11-26', '2026-12-26', 960.00, 0, 1], [405, 12, '2026-11-25', '2026-12-25', 312.50, 0, 1],
+  [404, 19, '2026-11-24', '2026-12-08', 2480.00, 0], [403, 8, '2026-11-22', '2026-12-06', 645.00, 0],
+  [402, 0, '2026-11-20', '2026-12-04', 1850.00, 0], [401, 11, '2026-11-18', '2026-12-02', 3120.40, 0],
+  [400, 6, '2026-11-17', '2026-11-30', 218.00, 0], [399, 1, '2026-11-14', '2026-12-14', 18204.50, 0],
+  [398, 9, '2026-11-12', '2026-11-26', 540.00, 0], [397, 5, '2026-11-10', '2026-11-24', 4380.00, 1500.00],
+  [396, 2, '2026-11-08', '2026-12-08', 7250.00, 3000.00], [395, 16, '2026-11-06', '2026-11-20', 412.80, 412.80],
+  [394, 3, '2026-11-04', '2026-11-18', 156.00, 156.00], [393, 14, '2026-11-03', '2026-12-03', 9600.00, 0],
+  [392, 17, '2026-10-30', '2026-11-13', 280.00, 0], [391, 13, '2026-10-28', '2026-11-27', 735.00, 0],
+  [390, 7, '2026-10-26', '2026-11-09', 1295.75, 1295.75], [389, 15, '2026-10-24', '2026-11-07', 5410.00, 0],
+  [388, 18, '2026-10-22', '2026-11-05', 186.50, 186.50], [387, 10, '2026-10-20', '2026-11-03', 2240.00, 2240.00],
+  [386, 19, '2026-10-15', '2026-10-29', 1240.00, 0], [385, 0, '2026-10-12', '2026-10-26', 1760.00, 1760.00],
+  [384, 12, '2026-10-10', '2026-10-24', 298.00, 298.00], [383, 8, '2026-10-08', '2026-10-22', 1120.00, 1120.00],
+  [382, 4, '2026-10-05', '2026-10-19', 960.00, 960.00], [381, 9, '2026-10-02', '2026-10-16', 540.00, 540.00],
+  [380, 11, '2026-09-28', '2026-10-12', 2875.00, 2875.00], [379, 2, '2026-09-25', '2026-10-09', 6140.00, 6140.00],
+  [378, 16, '2026-09-22', '2026-10-06', 389.40, 389.40], [377, 3, '2026-09-20', '2026-10-04', 156.00, 156.00],
+  [376, 14, '2026-09-15', '2026-09-29', 8200.00, 8200.00], [375, 6, '2026-09-12', '2026-09-26', 218.00, 218.00],
+  [374, 17, '2026-09-08', '2026-09-22', 280.00, 280.00], [373, 5, '2026-09-02', '2026-09-16', 3960.00, 3960.00],
+  [372, 13, '2026-08-28', '2026-09-11', 735.00, 735.00], [371, 1, '2026-08-25', '2026-09-08', 16890.00, 16890.00],
+];
+const STRESS = [
+  [407, 1, '2026-11-26', '2026-11-30', 1284900.50, 0], [408, 17, '2026-11-26', '2026-12-01', 0.00, 0],
+];
+const params = new URLSearchParams(location.search);
+const STATE = params.get('state') || '';
+const day = 86400000;
+const mkInv = (r) => ({ num: r[0], cust: CUSTOMERS[r[1]], issued: r[2], due: r[3], amount: r[4], paid: r[5], draft: !!r[6] });
+let invoices = STATE === 'empty' ? [] : RAW.concat(STATE === 'stress' ? STRESS : []).map(mkInv);
+const id = (i) => `INV-2026-${String(i.num).padStart(4, '0')}`;
+const utc = (iso) => new Date(iso + 'T12:00:00Z');
+const daysFromToday = (iso) => Math.round((utc(iso) - new Date('2026-11-27T12:00:00Z')) / day);
+const status = (i) => i.draft ? 'Draft' : i.paid >= i.amount ? 'Paid' : daysFromToday(i.due) < 0 ? 'Overdue' : 'Open';
+const balance = (i) => i.amount - i.paid;
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtDate = (iso, full) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${MONTHS[m - 1]}${full || y !== 2026 ? ' ' + y : ''}`; };
+const nf2 = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const nf0 = new Intl.NumberFormat('en-GB');
+const plural = (n, one, many) => `${nf0.format(n)} ${n === 1 ? one : many}`;
+const paidOn = (i) => { const d = new Date(utc(i.due).getTime() - 2 * day); return d.toISOString().slice(0, 10); };
+
+/* ---------- state ---------- */
+const S = { tab: 'all', q: '', cust: '', due: '', sort: { key: 'issued', dir: 'desc' }, page: 1, sel: new Set() };
+const PAGE = 25;
+const $ = (s, r = document) => r.querySelector(s);
+const icon = (n, c = '') => `<svg class="i ${c}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ---------- shell ---------- */
+const navMain = [['grid', 'Dashboard'], ['doc', 'Invoices', 14], ['quote', 'Quotes'], ['users', 'Customers'], ['receipt', 'Expenses'], ['bank', 'Bank feeds'], ['chart', 'Reports']];
+const navLast = [['percent', 'Tax'], ['gear', 'Settings']];
+const navHtml = (items) => items.map(([i, l, c]) => `<a href="#" ${l === 'Invoices' ? 'aria-current="page"' : ''}>${icon(i)}<span>${l}</span>${c ? `<span class="count">${c}</span>` : ''}</a>`).join('');
+$('#mainNav').innerHTML = navHtml(navMain); $('#lastNav').innerHTML = navHtml(navLast);
+$('#sheetNav').innerHTML = navHtml(navMain) + '<div style="height:16px"></div>' + navHtml(navLast);
+const menuBtn = $('#menuBtn'), sheet = $('#sheet');
+menuBtn.addEventListener('click', () => { const open = sheet.hidden; sheet.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); menuBtn.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu'); });
+
+/* ---------- derived views ---------- */
+function visible() {
+  const q = S.q.trim().toLowerCase();
+  let rows = invoices.filter((i) => {
+    const st = status(i);
+    if (S.tab !== 'all' && st.toLowerCase() !== S.tab) return false;
+    if (q && !(i.cust.toLowerCase().includes(q) || id(i).toLowerCase().includes(q))) return false;
+    if (S.cust && i.cust !== S.cust) return false;
+    if (S.due) { const d = daysFromToday(i.due); if (S.due === 'week' && !(d >= 0 && d <= 7)) return false; if (S.due === 'month' && !(d >= 0 && d <= 30)) return false; if (S.due === 'past' && !(d < 0 && d >= -30)) return false; }
+    return true;
+  });
+  const { key, dir } = S.sort, m = dir === 'asc' ? 1 : -1;
+  rows.sort((a, b) => {
+    const av = key === 'cust' ? a.cust.toLowerCase() : key === 'amount' ? a.amount : a[key];
+    const bv = key === 'cust' ? b.cust.toLowerCase() : key === 'amount' ? b.amount : b[key];
+    return (av < bv ? -1 : av > bv ? 1 : a.num - b.num) * m;
+  });
+  return rows;
+}
+const filtersActive = () => (S.q.trim() ? 1 : 0) + (S.cust ? 1 : 0) + (S.due ? 1 : 0) + (S.tab !== 'all' ? 1 : 0);
+
+function renderSummary() {
+  if (!invoices.length) { $('#summary').innerHTML = ''; return; }
+  const live = invoices.filter((i) => ['Overdue', 'Open'].includes(status(i)));
+  const over = live.filter((i) => status(i) === 'Overdue');
+  const sum = (a) => a.reduce((s, i) => s + balance(i), 0);
+  const recent = invoices.filter((i) => status(i) === 'Paid' && daysFromToday(paidOn(i)) >= -30);
+  $('#summary').innerHTML = `
+    <div><div class="lab">Overdue</div><div class="big">${gbp.format(sum(over))}</div><div class="sub">${plural(over.length, 'invoice', 'invoices')}, oldest ${Math.max(...over.map((i) => -daysFromToday(i.due)))} days late</div></div>
+    <span class="sep" aria-hidden="true"></span>
+    <div><div class="lab">Outstanding</div><div class="mid">${gbp.format(sum(live))}</div><div class="sub">${plural(live.length, 'invoice', 'invoices')} unpaid</div></div>
+    <div><div class="lab">Paid in the last 30 days</div><div class="mid">${gbp.format(recent.reduce((s, i) => s + i.amount, 0))}</div><div class="sub">${plural(recent.length, 'invoice', 'invoices')}</div></div>`;
+  const nOver = over.length;
+  $('#headSub').textContent = `${plural(invoices.length, 'invoice', 'invoices')}, ${nOver} overdue`;
+}
+function renderTabs() {
+  const counts = { all: invoices.length };
+  invoices.forEach((i) => { const k = status(i).toLowerCase(); counts[k] = (counts[k] || 0) + 1; });
+  $('#tabs').innerHTML = [['all', 'All'], ['open', 'Open'], ['overdue', 'Overdue'], ['paid', 'Paid'], ['draft', 'Draft']]
+    .map(([k, l]) => `<button class="tab" type="button" data-tab="${k}" aria-pressed="${S.tab === k}">${l} <span class="n">${counts[k] || 0}</span></button>`).join('');
+}
+function renderFilters() {
+  const sel = $('#fCust'); if (!sel.options.length) sel.innerHTML = '<option value="">All customers</option>' + [...CUSTOMERS].sort().map((c) => `<option>${esc(c)}</option>`).join('');
+  sel.value = S.cust; $('#fDue').value = S.due;
+  const extra = (S.cust ? 1 : 0) + (S.due ? 1 : 0);
+  $('#clearBtn').hidden = !filtersActive();
+  $('#filtersLabel').textContent = extra ? `Filters (${extra})` : 'Filters';
+}
+const dueCell = (i) => {
+  const st = status(i), d = daysFromToday(i.due);
+  if (st === 'Draft') return `<span class="dash" aria-label="None">–</span>`;
+  if (st === 'Paid') return `<span title="${fmtDate(i.due, 1)}">${fmtDate(i.due)}</span><span class="note">Paid ${fmtDate(paidOn(i))}</span>`;
+  const note = st === 'Overdue' ? `<span class="note over">${plural(-d, 'day', 'days')} overdue</span>` : d === 0 ? '<span class="note">Due today</span>' : `<span class="note">Due in ${plural(d, 'day', 'days')}</span>`;
+  return `<span title="${fmtDate(i.due, 1)}">${fmtDate(i.due)}</span>${note}`;
+};
+const badge = (st) => `<span class="badge ${st === 'Paid' ? 'success' : st === 'Overdue' ? 'danger' : st === 'Open' ? 'accent' : ''}">${st}</span>`;
+const amountCell = (i) => {
+  const st = status(i);
+  const part = !i.draft && i.paid > 0 && i.paid < i.amount;
+  return `<span class="amt">${nf2.format(i.amount)}</span>` + (part ? `<span class="prog" title="${nf2.format(i.paid)} of ${nf2.format(i.amount)} paid"><i><b style="width:${Math.round(i.paid / i.amount * 100)}%"></b></i>${nf2.format(i.paid)} paid</span>` : '');
+};
+function thSort(key, label, cls = '') {
+  const on = S.sort.key === key;
+  const aria = on ? ` aria-sort="${S.sort.dir === 'asc' ? 'ascending' : 'descending'}"` : '';
+  return `<th scope="col" class="${cls}"${aria}><button class="sort" type="button" data-sort="${key}">${label}${on ? icon(S.sort.dir === 'asc' ? 'up' : 'down', 'sm') : ''}</button></th>`;
+}
+function render() {
+  renderSummary(); renderTabs(); renderFilters();
+  const area = $('#tableArea'), foot = $('#foot'), rows = visible();
+  S.sel = new Set([...S.sel].filter((n) => invoices.some((i) => i.num === n)));
+  $('#bulk').hidden = S.sel.size === 0; $('#toolbar').hidden = S.sel.size > 0;
+  $('#bulkCount').textContent = `${S.sel.size} selected`;
+  area.removeAttribute('aria-busy');
+  $('#newBtn').hidden = !invoices.length || STATE === 'error'; $('#exportBtn').hidden = !invoices.length;
+
+  if (STATE === 'loading' && !window.__loaded) {
+    area.setAttribute('aria-busy', 'true');
+    area.innerHTML = `<div class="tbl"><table class="sk"><thead><tr><th class="c-cb"></th><th>Customer</th><th class="c-inv">Invoice</th><th class="c-iss">Issued</th><th class="c-st">Status</th><th class="c-due">Due</th><th class="c-amt r">Amount (GBP)</th><th class="c-act"></th></tr></thead><tbody>${
+      Array.from({ length: 9 }, () => '<tr><td></td><td><i style="width:60%"></i></td><td><i style="width:80%"></i></td><td><i style="width:60%"></i></td><td><i style="width:70%"></i></td><td><i style="width:60%"></i></td><td><i style="width:60%;margin-left:auto"></i></td><td></td></tr>').join('')}</tbody></table><span class="sr-only" role="status">Loading invoices</span></div>`;
+    foot.innerHTML = ''; return;
+  }
+  if (STATE === 'error') {
+    area.innerHTML = `<div class="state" role="alert"><h2>Couldn’t load invoices</h2><p>The server didn’t respond. Your invoices are safe. Check your connection and try again.</p><div class="acts"><button class="btn primary" type="button" onclick="location.search=''">Try again</button><a class="link" href="#">Check service status</a></div></div>`;
+    foot.innerHTML = ''; return;
+  }
+  if (!invoices.length) {
+    area.innerHTML = `<div class="state"><div class="ghost" aria-hidden="true"><div><i style="width:60%"></i><i></i><b></b></div><div><i style="width:45%"></i><i></i><b></b></div><div><i style="width:70%"></i><i></i><b></b></div></div><h2>No invoices yet</h2><p>Invoices you create or import appear here, with their status and due dates.</p><div class="acts"><button class="btn primary" type="button" data-new>Create your first invoice</button><a class="link" href="#">Import from CSV</a></div></div>`;
+    $('#tabs').hidden = true; $('#toolbar').hidden = true; foot.innerHTML = ''; return;
+  }
+  const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+  S.page = Math.min(S.page, pages);
+  const slice = rows.slice((S.page - 1) * PAGE, S.page * PAGE);
+  if (!rows.length) {
+    area.innerHTML = `<div class="tbl"><table><thead><tr><th>Customer</th></tr></thead></table><div class="state"><h2>No invoices match these filters</h2><p>${S.q.trim() ? `Nothing matches “${esc(S.q.trim())}”. Check the spelling or remove a filter.` : 'Remove a filter to see more invoices.'}</p><div class="acts"><button class="btn" type="button" id="clearInline">Clear filters</button></div></div></div>`;
+    foot.innerHTML = `<span>0 of ${plural(invoices.length, 'invoice', 'invoices')}</span>`; return;
+  }
+  const allOn = slice.every((i) => S.sel.has(i.num)), someOn = slice.some((i) => S.sel.has(i.num));
+  area.innerHTML = `<div class="tbl"><table><caption class="sr-only">Invoices, sorted by ${S.sort.key === 'cust' ? 'customer' : S.sort.key}</caption>
+    <thead><tr><th scope="col" class="c-cb"><label class="cb"><input type="checkbox" id="selAll" aria-label="Select all invoices on this page" ${allOn ? 'checked' : ''}></label></th>
+    ${thSort('cust', 'Customer')}<th scope="col" class="c-inv">Invoice</th>${thSort('issued', 'Issued', 'c-iss')}<th scope="col" class="c-st">Status</th>${thSort('due', 'Due', 'c-due')}${thSort('amount', 'Amount (GBP)', 'c-amt r')}<th scope="col" class="c-act"><span class="sr-only">Actions</span></th></tr></thead>
+    <tbody>${slice.map((i) => {
+      const st = status(i);
+      return `<tr data-num="${i.num}" aria-selected="${S.sel.has(i.num)}">
+      <td class="c-cb"><label class="cb"><input type="checkbox" data-sel="${i.num}" aria-label="Select ${esc(i.cust)}, ${id(i)}" ${S.sel.has(i.num) ? 'checked' : ''}></label></td>
+      <td class="t-c"><a class="cust" href="#" title="${esc(i.cust)}">${esc(i.cust)}</a></td>
+      <td class="c-inv id">${id(i)}</td><td class="c-iss muted">${fmtDate(i.issued)}</td>
+      <td class="c-st">${badge(st)}</td><td class="c-due t-due${st === 'Draft' ? ' empty' : ''}">${dueCell(i)}</td>
+      <td class="c-amt r">${amountCell(i)}</td>
+      <td class="c-act"><button class="kebab" type="button" data-menu="${i.num}" aria-haspopup="menu" aria-expanded="false" aria-label="Actions for ${id(i)}">${icon('more')}</button></td></tr>`; }).join('')}</tbody></table></div>`;
+  const sa = $('#selAll'); if (sa) sa.indeterminate = someOn && !allOn;
+  const from = (S.page - 1) * PAGE + 1, to = from + slice.length - 1;
+  foot.innerHTML = `<span>${from}–${to} of ${nf0.format(rows.length)}</span>${pages > 1 ? `<nav class="pager" aria-label="Pagination">
+    <button class="btn sm" type="button" data-page="${S.page - 1}" ${S.page === 1 ? 'aria-disabled="true"' : ''}>Previous</button>
+    ${Array.from({ length: pages }, (_, k) => `<button class="btn sm num" type="button" data-page="${k + 1}" ${k + 1 === S.page ? 'aria-current="page"' : ''}>${k + 1}</button>`).join('')}
+    <button class="btn sm" type="button" data-page="${S.page + 1}" ${S.page === pages ? 'aria-disabled="true"' : ''}>Next</button></nav>` : ''}`;
+}
+
+/* ---------- events ---------- */
+$('#tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-tab]'); if (b) { S.tab = b.dataset.tab; S.page = 1; render(); } });
+$('#q').addEventListener('input', (e) => { S.q = e.target.value; S.page = 1; render(); });
+$('#fCust').addEventListener('change', (e) => { S.cust = e.target.value; S.page = 1; render(); });
+$('#fDue').addEventListener('change', (e) => { S.due = e.target.value; S.page = 1; render(); });
+const clearAll = () => { S.tab = 'all'; S.q = ''; S.cust = ''; S.due = ''; S.page = 1; $('#q').value = ''; render(); };
+$('#clearBtn').addEventListener('click', clearAll);
+$('#filtersBtn').addEventListener('click', (e) => { const o = $('#filters').classList.toggle('open'); e.currentTarget.setAttribute('aria-expanded', String(o)); });
+$('#tableArea').addEventListener('click', (e) => {
+  if (e.target.closest('#clearInline')) return clearAll();
+  if (e.target.closest('[data-new]')) return openNew();
+  const s = e.target.closest('[data-sort]');
+  if (s) { const k = s.dataset.sort; S.sort = S.sort.key === k ? { key: k, dir: S.sort.dir === 'asc' ? 'desc' : 'asc' } : { key: k, dir: k === 'cust' ? 'asc' : 'desc' }; return render(); }
+  const m = e.target.closest('[data-menu]'); if (m) return openMenu(m);
+});
+$('#tableArea').addEventListener('change', (e) => {
+  if (e.target.id === 'selAll') { const slice = visible().slice((S.page - 1) * PAGE, S.page * PAGE); slice.forEach((i) => e.target.checked ? S.sel.add(i.num) : S.sel.delete(i.num)); return render(); }
+  const n = e.target.dataset.sel; if (n) { e.target.checked ? S.sel.add(+n) : S.sel.delete(+n); render(); }
+});
+$('#foot').addEventListener('click', (e) => { const b = e.target.closest('[data-page]'); if (b && b.getAttribute('aria-disabled') !== 'true') { S.page = +b.dataset.page; render(); window.scrollTo({ top: 0 }); } });
+
+/* row menu */
+const menu = $('#menu'); let menuBtnEl = null;
+function items(i) {
+  const st = status(i), v = ['View invoice'];
+  if (st === 'Draft') return ['Edit draft', 'Send invoice', 'Delete draft'];
+  if (st === 'Paid') return [...v, 'Download PDF', 'Duplicate'];
+  return [...v, 'Send reminder', 'Mark as paid', 'Download PDF'];
+}
+function openMenu(btn) {
+  if (menuBtnEl === btn) return closeMenu();
+  closeMenu(); menuBtnEl = btn; btn.setAttribute('aria-expanded', 'true');
+  const inv = invoices.find((i) => i.num === +btn.dataset.menu);
+  menu.innerHTML = items(inv).map((l) => `<button role="menuitem" type="button">${l}</button>`).join('');
+  menu.hidden = false;
+  const r = btn.getBoundingClientRect(), mw = menu.offsetWidth, mh = menu.offsetHeight;
+  menu.style.left = Math.max(8, Math.min(innerWidth - mw - 8, r.right - mw)) + 'px';
+  menu.style.top = (r.bottom + mh + 8 > innerHeight ? r.top - mh - 4 : r.bottom + 4) + 'px';
+  menu.firstElementChild.focus();
+  menu.onclick = (e) => { const b = e.target.closest('button'); if (!b) return; const label = b.textContent; closeMenu(true); act(inv, label); };
+}
+function closeMenu(restore) { menu.hidden = true; if (menuBtnEl) { menuBtnEl.setAttribute('aria-expanded', 'false'); if (restore !== false) menuBtnEl.focus({ preventScroll: true }); } menuBtnEl = null; }
+document.addEventListener('click', (e) => { if (!menu.hidden && !e.target.closest('#menu') && !e.target.closest('[data-menu]')) closeMenu(false); });
+document.addEventListener('keydown', (e) => {
+  if (menu.hidden) return;
+  if (e.key === 'Escape') closeMenu();
+  const bs = [...menu.querySelectorAll('button')], k = bs.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); bs[(k + 1) % bs.length].focus(); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); bs[(k - 1 + bs.length) % bs.length].focus(); }
+});
+function act(inv, label) {
+  if (label === 'Send reminder') return toast(`Reminder sent to ${inv.cust}`);
+  if (label === 'Mark as paid') { const prev = inv.paid; inv.paid = inv.amount; render(); return toast(`${id(inv)} marked as paid`, () => { inv.paid = prev; render(); }); }
+  if (label === 'Download PDF') return toast(`${id(inv)}.pdf is downloading`);
+  if (label === 'Send invoice') { inv.draft = false; render(); return toast(`${id(inv)} sent to ${inv.cust}`); }
+  if (label === 'Delete draft') { const idx = invoices.indexOf(inv); invoices.splice(idx, 1); render(); return toast(`${id(inv)} deleted`, () => { invoices.splice(idx, 0, inv); render(); }); }
+  toast(`${label}: ${id(inv)}`);
+}
+/* bulk */
+const selected = () => invoices.filter((i) => S.sel.has(i.num));
+$('#bulkClear').addEventListener('click', () => { S.sel.clear(); render(); });
+$('#bulkRemind').addEventListener('click', () => { const n = selected().filter((i) => ['Overdue', 'Open'].includes(status(i))).length; S.sel.clear(); render(); toast(`${plural(n, 'reminder', 'reminders')} sent`); });
+$('#bulkPaid').addEventListener('click', () => {
+  const rows = selected().filter((i) => ['Overdue', 'Open'].includes(status(i))), prev = rows.map((i) => i.paid);
+  rows.forEach((i) => { i.paid = i.amount; }); S.sel.clear(); render();
+  toast(`${plural(rows.length, 'invoice', 'invoices')} marked as paid`, () => { rows.forEach((i, k) => { i.paid = prev[k]; }); render(); });
+});
+/* export */
+$('#exportBtn').addEventListener('click', () => {
+  const rows = visible(), csv = ['Invoice,Customer,Issued,Due,Status,Amount GBP,Paid GBP'].concat(rows.map((i) => [id(i), `"${i.cust}"`, i.issued, i.due, status(i), i.amount.toFixed(2), i.paid.toFixed(2)].join(','))).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'invoices.csv'; a.click(); URL.revokeObjectURL(a.href);
+  toast(`Exported ${plural(rows.length, 'invoice', 'invoices')} to invoices.csv`);
+});
+/* toast */
+let toastT;
+function toast(msg, undo) {
+  document.querySelectorAll('.toast').forEach((t) => t.remove()); clearTimeout(toastT);
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.innerHTML = `<span>${esc(msg)}</span>`;
+  if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { undo(); t.remove(); }; t.append(b); }
+  document.body.append(t); toastT = setTimeout(() => t.remove(), 6000);
+}
+/* new invoice */
+const dlg = $('#newDlg');
+function openNew() {
+  $('#nCust').innerHTML = [...CUSTOMERS].sort().map((c) => `<option>${esc(c)}</option>`).join('');
+  $('#nAmt').value = ''; $('#nAmt').removeAttribute('aria-invalid'); $('#nAmtErr').hidden = true;
+  $('#nDue').value = '2026-12-27'; dlg.showModal(); $('#nCust').focus();
+}
+$('#newBtn').addEventListener('click', openNew);
+$('#newCancel').addEventListener('click', () => dlg.close());
+$('#newForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const amt = parseFloat($('#nAmt').value.replace(/,/g, ''));
+  if (!(amt > 0)) { $('#nAmt').setAttribute('aria-invalid', 'true'); $('#nAmtErr').hidden = false; $('#nAmt').focus(); return; }
+  const num = Math.max(...invoices.map((i) => i.num), 405) + 1;
+  invoices.unshift({ num, cust: $('#nCust').value, issued: '2026-11-27', due: $('#nDue').value || '2026-12-27', amount: amt, paid: 0, draft: true });
+  dlg.close(); S.tab = 'all'; S.sort = { key: 'issued', dir: 'desc' }; $('#tabs').hidden = false; render(); toast(`Draft ${id(invoices[0])} created`);
+});
+render();
+if (STATE === 'loading') setTimeout(() => { window.__loaded = true; render(); }, 2500);
+</script>
+</body>
+</html>

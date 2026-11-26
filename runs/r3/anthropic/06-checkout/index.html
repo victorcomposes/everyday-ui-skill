@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout - Redcherry Roasters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#26170F;--ink2:#6A5A50;--line:#E4DCD6;--bg:#FFFFFF;--tint:#F6F2F0;--cherry:#C0283A;--cherry-d:#9C1D2D;--cherry-t:#FBE9EB;--ok:#2B7A4B;--err:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.5 'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #E0586A;outline-offset:2px;border-radius:6px}
+h1,h2,.serif{font-family:'Young Serif',Georgia,serif;font-weight:400;letter-spacing:-.005em}
+.hd{border-bottom:1px solid var(--line);padding:0 32px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font:400 22px 'Young Serif';text-decoration:none;color:var(--ink)}
+.hd .sec{display:flex;gap:8px;align-items:center;color:var(--ink2);font-size:14px}
+.page{display:grid;grid-template-columns:minmax(0,1fr) 480px;min-height:calc(100vh - 68px)}
+.left{padding:36px 56px 64px 32px;max-width:760px;justify-self:end;width:100%}
+.right{background:var(--tint);border-left:1px solid var(--line);padding:36px 32px 64px 44px}
+.right>div{position:sticky;top:32px;max-width:420px}
+h1{font-size:32px;line-height:1.15;margin-bottom:6px}
+.crumb{color:var(--ink2);margin-bottom:28px}
+fieldset{border:0;padding:0;margin:0 0 34px;min-width:0}
+legend{font:400 21px 'Young Serif';padding:0;margin-bottom:14px}
+.g{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.c6{grid-column:span 6}.c3{grid-column:span 3}.c2{grid-column:span 2}.c4{grid-column:span 4}
+.f label{display:block;font-weight:600;font-size:14px;margin-bottom:5px}
+.f input,.f select{width:100%;min-height:48px;padding:10px 13px;border:1.5px solid #BFB2A9;border-radius:9px;background:#fff}
+.f input:hover,.f select:hover{border-color:var(--ink)}
+.f input[aria-invalid=true],.f select[aria-invalid=true]{border-color:var(--err);background:#FFF8F7}
+.f .e{color:var(--err);font-size:14px;margin-top:4px;display:none}
+.f .e.on{display:block}
+.f .h{color:var(--ink2);font-size:13px;margin-top:4px}
+.opt{display:grid;gap:10px}
+.opt label{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1.5px solid #BFB2A9;border-radius:12px;cursor:pointer;background:#fff}
+.opt label:hover{border-color:var(--ink)}
+.opt label:has(input:checked){border-color:var(--cherry);box-shadow:0 0 0 1px var(--cherry);background:#FFFBFB}
+.opt label:has(input:focus-visible){outline:3px solid #E0586A;outline-offset:2px}
+.opt input{accent-color:var(--cherry);width:20px;height:20px;flex:none}
+.opt .t{flex:1;min-width:0}
+.opt b{display:block}
+.opt small{color:var(--ink2)}
+.opt .p{font-weight:700;white-space:nowrap}
+.opt .p.free{color:var(--ok)}
+.cardbox{margin-top:12px;padding:18px;border:1.5px solid var(--line);border-radius:12px;background:var(--tint)}
+.cardbox[hidden]{display:none}
+.alt{color:var(--ink2);margin-top:12px}
+.place{width:100%;min-height:58px;border:0;border-radius:12px;background:var(--cherry);color:#fff;font:700 18px 'Instrument Sans';cursor:pointer;box-shadow:0 3px 0 var(--cherry-d)}
+.place:hover{background:var(--cherry-d);box-shadow:0 3px 0 #7B1523}
+.place:active{transform:translateY(2px);box-shadow:0 1px 0 var(--cherry-d)}
+.place:disabled{opacity:.7;cursor:default}
+.fine{color:var(--ink2);font-size:13px;margin-top:12px;text-align:center}
+/* summary */
+.right h2{font-size:21px;margin-bottom:16px}
+.items{list-style:none;padding:0;display:grid;gap:18px;margin-bottom:22px}
+.it{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center}
+.bag{width:64px;height:76px;position:relative}
+.bag svg{width:64px;height:76px;display:block}
+.it b{display:block;line-height:1.25}
+.it small{color:var(--ink2);display:block}
+.qty{display:inline-flex;align-items:center;border:1.5px solid #BFB2A9;border-radius:8px;margin-top:6px;background:#fff}
+.qty button{all:unset;width:32px;height:32px;text-align:center;cursor:pointer;font-size:18px;border-radius:6px}
+.qty button:hover{background:var(--tint)}
+.qty button:focus-visible{outline:3px solid #E0586A}
+.qty span{min-width:24px;text-align:center;font-weight:600}
+.pr{font-weight:700;font-variant-numeric:tabular-nums}
+.code{display:flex;gap:8px;margin-bottom:6px}
+.code input{flex:1;min-width:0;min-height:46px;padding:0 13px;border:1.5px solid #BFB2A9;border-radius:9px;background:#fff}
+.code button{min-height:46px;padding:0 18px;border-radius:9px;border:1.5px solid var(--ink);background:transparent;font-weight:600;cursor:pointer}
+.code button:hover{background:var(--ink);color:#fff}
+.cm{font-size:14px;min-height:21px;margin-bottom:12px}
+.tot{border-top:1px solid #D4C9C2;padding-top:16px;display:grid;gap:8px;font-variant-numeric:tabular-nums}
+.tot div{display:flex;justify-content:space-between}.tot [hidden]{display:none}
+.tot .gt{border-top:1px solid #D4C9C2;margin-top:6px;padding-top:14px;font:400 22px 'Young Serif'}
+.tot .gt span:last-child{font-size:22px}
+.ship{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:14px}
+.ship .b{height:6px;background:var(--line);border-radius:9px;margin-top:8px;overflow:hidden}
+.ship .b i{display:block;height:100%;background:var(--ok);transition:width .25s}
+.roast{display:flex;gap:10px;align-items:flex-start;margin-top:20px;font-size:14px;color:var(--ink2)}
+.roast svg{flex:none;width:20px;height:20px;color:var(--cherry);margin-top:2px}
+.sumtog{display:none}
+.done{display:none;max-width:520px;margin:12vh auto;padding:0 24px;text-align:center}
+.done.on{display:block}
+.done .tick{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;margin:0 auto 18px}
+.done h1{margin-bottom:10px}
+.done p{color:var(--ink2)}
+@media (max-width:980px){
+  .page{grid-template-columns:1fr}
+  .right{order:-1;border-left:0;border-bottom:1px solid var(--line);padding:0}
+  .right>div{position:static;max-width:none}
+  .left{padding:28px 20px 56px;max-width:none}
+  .sumtog{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;font-weight:600;list-style:none}
+  .sumtog::-webkit-details-marker{display:none}
+  .sumtog span:first-child::after{content:" \25BE"}
+  details[open] .sumtog span:first-child::after{content:" \25B4"}
+  .sumin{padding:0 20px 24px}
+  .right h2{display:none}
+}
+@media (max-width:600px){
+  .c3{grid-column:span 1}
+  .hd{padding:0 16px;height:60px}.hd .sec span{display:none}
+  .g{grid-template-columns:repeat(2,1fr);gap:12px}.c6,.c4{grid-column:span 2}.c3,.c2{grid-column:span 1}
+  h1{font-size:27px}
+  .cardbox{padding:14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (min-width:981px){.sumin{display:block}}
+</style>
+</head>
+<body>
+<header class="hd">
+  <a class="logo" href="#"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><ellipse cx="15" cy="17" rx="10" ry="9" fill="#C0283A"/><path d="M15 9C13 6 10 5 8 6c1 3 3 4 7 4z" fill="#2B7A4B"/><path d="M15 9c0-3 1-5 3-6" stroke="#26170F" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M11 14c2-1 5-1 6 1" stroke="#fff" stroke-opacity=".5" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Redcherry Roasters</a>
+  <div class="sec"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg><span>Secure checkout</span></div>
+</header>
+
+<div class="page" id="page">
+  <main class="left">
+    <h1>Checkout</h1>
+    <p class="crumb">Already have an account? <a href="#" style="color:var(--cherry-d);font-weight:600">Sign in</a> to use your saved address.</p>
+
+    <form id="f" novalidate>
+      <fieldset>
+        <legend>Where should we send it?</legend>
+        <div class="g">
+          <div class="f c6"><label for="em">Email</label><input id="em" type="email" autocomplete="email" inputmode="email" value="" placeholder="you@example.com" required><div class="e" id="em-e"></div><div class="h">We email your tracking link here.</div></div>
+          <div class="f c3"><label for="fn">First name</label><input id="fn" autocomplete="given-name" required><div class="e" id="fn-e"></div></div>
+          <div class="f c3"><label for="ln">Last name</label><input id="ln" autocomplete="family-name" required><div class="e" id="ln-e"></div></div>
+          <div class="f c6"><label for="ad">Street address</label><input id="ad" autocomplete="address-line1" required><div class="e" id="ad-e"></div></div>
+          <div class="f c6"><label for="a2">Apartment, suite or floor (optional)</label><input id="a2" autocomplete="address-line2"></div>
+          <div class="f c6"><label for="ci">City</label><input id="ci" autocomplete="address-level2" required><div class="e" id="ci-e"></div></div>
+          <div class="f c3"><label for="st">State</label>
+            <select id="st" autocomplete="address-level1" required><option value="">Choose</option><option>California</option><option>Colorado</option><option>Illinois</option><option>Massachusetts</option><option>New York</option><option>Oregon</option><option>Texas</option><option>Washington</option></select><div class="e" id="st-e"></div></div>
+          <div class="f c3"><label for="zp">ZIP code</label><input id="zp" autocomplete="postal-code" inputmode="numeric" maxlength="10" required><div class="e" id="zp-e"></div></div>
+          <div class="f c6"><label for="ph">Phone (optional)</label><input id="ph" type="tel" autocomplete="tel" inputmode="tel"><div class="h">Only used if the courier cannot find you.</div></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>How fast do you want it?</legend>
+        <div class="opt" id="del">
+          <label><input type="radio" name="d" value="std" checked><span class="t"><b>Standard</b><small>Arrives Thursday 3 to Monday 7 December</small></span><span class="p" id="p-std">Free</span></label>
+          <label><input type="radio" name="d" value="exp"><span class="t"><b>Express</b><small>Arrives Tuesday 1 December</small></span><span class="p">$9.00</span></label>
+          <label><input type="radio" name="d" value="pick"><span class="t"><b>Collect from the roastery</b><small>14 Tanner Row, ready Tuesday 1 December after 10:00</small></span><span class="p free">Free</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>How would you like to pay?</legend>
+        <div class="opt" id="pay">
+          <label><input type="radio" name="p" value="card" checked><span class="t"><b>Credit or debit card</b></span>
+            <svg width="70" height="22" viewBox="0 0 70 22" aria-hidden="true"><rect width="32" height="22" rx="4" fill="#26170F"/><circle cx="12" cy="11" r="6" fill="#C0283A"/><circle cx="20" cy="11" r="6" fill="#F0A53A" fill-opacity=".9"/><rect x="38" width="32" height="22" rx="4" fill="#1F4FBF"/><path d="M45 15l3-8h2l-3 8zm7-8h4c1.5 0 2.5.8 2.5 2s-1 2.2-2.5 2.2h-2L52 15z" fill="#fff"/></svg></label>
+          <label><input type="radio" name="p" value="pp"><span class="t"><b>PayPal</b><small>You will sign in to PayPal to finish.</small></span></label>
+        </div>
+        <div class="cardbox" id="cb">
+          <div class="g">
+            <div class="f c6"><label for="cn">Card number</label><input id="cn" autocomplete="cc-number" inputmode="numeric" placeholder="1234 5678 9012 3456" maxlength="19"><div class="e" id="cn-e"></div></div>
+            <div class="f c3"><label for="cx">Expiry date</label><input id="cx" autocomplete="cc-exp" inputmode="numeric" placeholder="MM/YY" maxlength="5"><div class="e" id="cx-e"></div></div>
+            <div class="f c3"><label for="cv">Security code</label><input id="cv" autocomplete="cc-csc" inputmode="numeric" placeholder="3 digits" maxlength="4"><div class="e" id="cv-e"></div></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <button class="place" id="place" type="submit">Pay $0.00</button>
+      <p class="fine">Your card is charged when your coffee ships. Cancel before the roast date and you pay nothing.</p>
+    </form>
+  </main>
+
+  <aside class="right">
+    <div>
+      <details id="sd">
+        <summary class="sumtog"><span>Order summary</span><span class="pr" id="mtot"></span></summary>
+        <div class="sumin">
+          <h2>Your order</h2>
+          <ul class="items" id="items"></ul>
+          <form class="code" id="codef"><input id="cd" aria-label="Discount code" placeholder="Discount code"><button type="submit">Apply</button></form>
+          <div class="cm" id="cm" role="status"></div>
+          <div class="ship" id="shipmsg"><span id="sm"></span><div class="b"><i id="sb"></i></div></div>
+          <div class="tot">
+            <div><span>Subtotal</span><span id="t-sub"></span></div>
+            <div style="color:var(--ok)" id="t-dr" hidden><span id="t-dl">Discount</span><span id="t-dv"></span></div>
+            <div><span>Delivery</span><span id="t-ship"></span></div>
+            <div><span>Estimated tax</span><span id="t-tax"></span></div>
+            <div class="gt"><span>Total</span><span id="t-tot"></span></div>
+          </div>
+          <div class="roast"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"/><path d="M10 5.5V10l3 2"/></svg><span>Roasted to order on Mondays and Thursdays. Your next roast is Monday 30 November.</span></div>
+        </div>
+      </details>
+    </div>
+  </aside>
+</div>
+
+<section class="done" id="done" role="status">
+  <div class="tick"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15.5 5.5 5.5L23 9"/></svg></div>
+  <h1>Order placed</h1>
+  <p id="dmsg"></p>
+</section>
+
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>'$'+n.toFixed(2);
+const items=[
+ {id:1,name:'Guji Natural',note:'Ethiopia, 250 g, whole bean',price:18.5,qty:2,c:'#C0283A',l:'#F4C9CE'},
+ {id:2,name:'Huila Washed',note:'Colombia, 250 g, filter grind',price:16,qty:1,c:'#E0A21B',l:'#FBEAB7'}];
+const bag=(c,l)=>`<svg viewBox="0 0 64 76" aria-hidden="true"><path d="M10 12h44l3 56a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4z" fill="${c}"/><path d="M10 12h44l.6 10H9.4z" fill="#000" fill-opacity=".14"/><rect x="9" y="6" width="46" height="8" rx="2" fill="${c}"/><rect x="9" y="6" width="46" height="8" rx="2" fill="#fff" fill-opacity=".2"/><rect x="16" y="32" width="32" height="26" rx="3" fill="${l}"/><path d="M24 50c0-8 4-12 8-12s8 4 8 12z" fill="${c}" fill-opacity=".85"/><path d="M32 40v10" stroke="${l}" stroke-width="1.6"/></svg>`;
+let disc=0,discName='';
+const FREE_AT=40;
+function ship(sub){const d=document.querySelector('input[name=d]:checked').value;return d==='exp'?9:d==='pick'?0:(sub>=FREE_AT?0:4.5)}
+function calc(){
+  const sub=items.reduce((t,i)=>t+i.price*i.qty,0);
+  const dv=sub*disc,sh=sub?ship(sub):0,tax=(sub-dv)*0.0725,tot=sub-dv+sh+tax;
+  $('items').innerHTML=items.map(i=>`<li class="it"><div class="bag">${bag(i.c,i.l)}</div><div><b>${i.name}</b><small>${i.note}</small><div class="qty"><button type="button" data-q="-1" data-i="${i.id}" aria-label="Remove one ${i.name}">&minus;</button><span aria-live="polite">${i.qty}</span><button type="button" data-q="1" data-i="${i.id}" aria-label="Add one ${i.name}">+</button></div></div><div class="pr">${money(i.price*i.qty)}</div></li>`).join('')||'<li>Your basket is empty.</li>';
+  $('t-sub').textContent=money(sub);
+  $('t-dr').hidden=!disc;if(disc){$('t-dl').textContent='Discount ('+discName+')';$('t-dv').textContent='-'+money(dv)}
+  $('t-ship').textContent=sh?money(sh):'Free';
+  $('p-std').textContent=sub>=FREE_AT?'Free':'$4.50';$('p-std').className='p'+(sub>=FREE_AT?' free':'');
+  $('t-tax').textContent=money(tax);$('t-tot').textContent=money(tot);$('mtot').textContent=money(tot);
+  $('place').textContent='Pay '+money(tot);
+  const left=Math.max(0,FREE_AT-sub);
+  $('sm').textContent=left?`Add ${money(left)} more for free standard delivery.`:'Your order qualifies for free standard delivery.';
+  $('sb').style.width=Math.min(100,sub/FREE_AT*100)+'%';
+  $('place').disabled=!sub;
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(!b)return;const it=items.find(i=>i.id==b.dataset.i);it.qty+=+b.dataset.q;if(it.qty<1)items.splice(items.indexOf(it),1);calc()});
+document.querySelectorAll('input[name=d]').forEach(r=>r.onchange=calc);
+document.querySelectorAll('input[name=p]').forEach(r=>r.onchange=()=>{$('cb').hidden=document.querySelector('input[name=p]:checked').value!=='card'});
+$('codef').onsubmit=e=>{e.preventDefault();const v=$('cd').value.trim().toUpperCase(),m=$('cm');
+  if(v==='FIRSTBAG'){disc=.1;discName=v;m.style.color='var(--ok)';m.textContent='FIRSTBAG applied: 10% off your coffee.'}
+  else{disc=0;m.style.color='var(--err)';m.textContent=v?'We do not recognise that code. Try FIRSTBAG for 10% off your first order.':'Enter a code first.'}
+  calc()};
+/* input formatting */
+$('cn').oninput=e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim();
+$('cx').oninput=e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);e.target.value=v};
+$('cv').oninput=e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,4);
+/* validation */
+function err(id,msg){const i=$(id),e=$(id+'-e');if(!e)return !msg;e.textContent=msg;e.classList.toggle('on',!!msg);i.setAttribute('aria-invalid',!!msg);if(msg)i.setAttribute('aria-describedby',id+'-e');return !msg}
+const luhn=s=>{let n=0,a=false;for(let i=s.length-1;i>=0;i--){let d=+s[i];if(a){d*=2;if(d>9)d-=9}n+=d;a=!a}return n%10===0};
+$('f').onsubmit=e=>{e.preventDefault();
+  const req=(id,m)=>err(id,$(id).value.trim()?'':m);
+  const checks=[
+    ()=>err('em',!$('em').value.trim()?'Enter your email so we can send tracking.':!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('em').value)?'Check the email. It should look like you@example.com.':''),
+    ()=>req('fn','Enter your first name.'),()=>req('ln','Enter your last name.'),()=>req('ad','Enter your street address.'),
+    ()=>req('ci','Enter your city.'),()=>req('st','Choose your state.'),
+    ()=>err('zp',/^\d{5}(-\d{4})?$/.test($('zp').value.trim())?'':'Enter a 5-digit ZIP code.')];
+  if(document.querySelector('input[name=p]:checked').value==='card')checks.push(
+    ()=>{const v=$('cn').value.replace(/\s/g,'');return err('cn',v.length<13||!luhn(v)?'Check the card number. It looks incomplete or mistyped.':'')},
+    ()=>{const m=$('cx').value.match(/^(\d\d)\/(\d\d)$/);return err('cx',m&&+m[1]>=1&&+m[1]<=12&&(2000+ +m[2])*12+ +m[1]>=2026*12+11?'':'Enter a valid date as MM/YY.')},
+    ()=>err('cv',/^\d{3,4}$/.test($('cv').value)?'':'Enter the 3 or 4 digit code on your card.'));
+  const bad=checks.map(c=>c()).map((ok,i)=>ok?null:i).filter(i=>i!==null);
+  if(bad.length){const first=document.querySelector('[aria-invalid=true]');first&&first.focus();return}
+  $('place').disabled=true;$('place').textContent='Placing your order...';
+  setTimeout(()=>{$('page').style.display='none';$('done').classList.add('on');
+    $('dmsg').textContent='Thanks, '+$('fn').value.trim()+'. A receipt is on its way to '+$('em').value.trim()+'. Your beans roast on Monday 30 November and ship the same day.';window.scrollTo(0,0)},800)};
+/* summary open on desktop */
+const mq=matchMedia('(min-width:981px)');const sync=()=>{$('sd').open=mq.matches?true:$('sd').open};mq.onchange=sync;sync();
+document.querySelector('.sumtog').addEventListener('click',e=>{if(mq.matches)e.preventDefault()});
+calc();
+</script>
+</body>
+</html>

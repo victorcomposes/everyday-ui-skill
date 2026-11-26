@@ -1,0 +1,26 @@
+{
+  "05-pricing": {
+    "A": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 6, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile.png: the compare table shows only the Hobby column with no visible plan switcher, so on a phone it compares nothing" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the small detached dollar sign before each price ('$ 29') reads like a spacing bug" },
+    "C": { "hierarchy": 6, "layout": 6, "typography": 8, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 1, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "dark.png: there is no dark mode, the page renders identical to light" },
+    "D": { "hierarchy": 7, "layout": 6, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 4, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile.png: the compare table section labels (MON, AL, DATA AI, SECURIT) are clipped at the right edge" }
+  },
+  "06-checkout": {
+    "A": { "hierarchy": 7, "layout": 6, "typography": 8, "colour": 7, "craft": 7, "realism": 7, "mobile": 7, "dark": 1, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "dark.png: there is no dark mode, the page renders identical to light" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the order summary is not sticky, so the right column sits empty for the lower 1000 px of the form" },
+    "C": { "hierarchy": 6, "layout": 6, "typography": 7, "colour": 7, "craft": 5, "realism": 6, "mobile": 5, "dark": 6, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the quantity steppers collide with the variant text ('bean[- 2 +]', 'filter[- 1 +]')" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 5, "dark": 1, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "dark.png: there is no dark mode, the page renders identical to light" }
+  },
+  "07-dashboard": {
+    "A": { "hierarchy": 7, "layout": 6, "typography": 7, "colour": 7, "craft": 6, "realism": 8, "mobile": 5, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the sidebar background ends at 900 px and leaves a bare strip below it" },
+    "B": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 6, "dark": 1, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the navigation disappears on a phone, with no menu button or tab bar" },
+    "C": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 1, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the nav collapses to a lone 'Today' pill with no way to reach Orders, Products or Customers" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the conversion delta wraps to two lines with its arrow orphaned to the left" }
+  },
+  "08-mobile-banking": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 7, "realism": 9, "mobile": 8, "dark": 6, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "dark.png: the navy header barely separates from the near-black body" },
+    "B": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 7, "realism": 7, "mobile": 5, "dark": 1, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the header sparkline runs past the card's right edge into the phone bezel" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 5, "mobile": 7, "dark": 6, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile.png: home holds only a balance and six transactions, with no spending view or upcoming payments" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 6, "mobile": 5, "dark": 1, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "dark.png: there is no dark mode, the page renders identical to light" }
+  }
+}

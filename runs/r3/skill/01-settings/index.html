@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings - Tallyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap">
+<style>
+/* Brief: Tallyo settings. Fern kit / standard shape / Plus Jakarta Sans + Inter. Feel: calm and quick.
+   Save model: Profile is deferred (Save changes at the end of the section). Notifications are instant (switches, quiet "Saved"). */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f1f8f7; --brand-deep: #0b3a37;
+  --on-deep: #ffffff; --on-deep-muted: #a6d8d2; --accent-on-deep: #4fc7bd;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Plus Jakarta Sans", var(--font);
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px; --text-xl: 20px; --lh-xl: 28px; --text-2xl: 24px; --lh-2xl: 32px; --text-3xl: 30px; --lh-3xl: 36px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --w-sidebar: 248px; --w-content: 1000px;
+  --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd; --accent-on-deep: #4fc7bd;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+  --text: #e9ebef; --text-muted: #a0a6b2;
+  --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+  --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+  --placeholder: #8b919d;
+  --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd; --accent-on-deep: #4fc7bd;
+  --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link, p a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+h3 { font: 600 var(--text-md)/1.4 var(--font); margin: 0; }
+p { margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 26px; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; }
+.badge.success { background: var(--success-subtle); color: var(--success); }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.num { font-variant-numeric: tabular-nums; }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+
+/* buttons and fields */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.danger { border-color: var(--danger); color: var(--danger); }
+.btn.danger:hover { background: var(--danger-subtle); }
+.btn.danger-fill { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn[aria-busy="true"] { cursor: progress; }
+.field { min-height: var(--control-h); width: 100%; padding: 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+select.field { appearance: none; padding-right: 36px;
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23838995' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center; }
+.field[aria-invalid="true"] { border: 2px solid var(--danger); padding: 0 calc(var(--s-3) - 1px); }
+.field:disabled { background: var(--bg-subtle); color: var(--text-muted); cursor: not-allowed; }
+.err { display: flex; gap: 6px; margin-top: var(--s-2); color: var(--danger); font-size: var(--text-sm); }
+.hint { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--s-1); }
+.muted { color: var(--text-muted); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.shell > aside > .side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); }
+.logo { display: flex; align-items: center; gap: 10px; padding: 0 var(--s-2); min-height: 44px; font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; }
+.nav { display: flex; flex-direction: column; gap: 2px; margin-top: var(--s-4); }
+.nav + .nav { margin-top: var(--s-6); }
+.nav a { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text); }
+.nav a:hover { background: var(--accent-subtle); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav a[aria-current="page"] svg { color: var(--accent); }
+.nav .count { margin-left: auto; font-size: var(--text-xs); color: var(--text-muted); }
+.account { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: var(--s-3) var(--s-2); border-top: 1px solid var(--border); }
+.account .who { min-width: 0; line-height: 1.3; }
+.account .who b { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.account .who span { display: block; font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.avatar { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-size: 12px; font-weight: 600; }
+.avatar.lg { width: 64px; height: 64px; font: 700 20px/1 var(--font-display); }
+.topbar { display: none; }
+
+main { padding: var(--s-8) var(--s-10) 96px; min-width: 0; }
+.wrap { max-width: var(--w-content); }
+.head p { margin-top: var(--rhythm-title); color: var(--text-muted); }
+.layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--s-12); margin-top: var(--rhythm-content); align-items: start; }
+.snav { position: sticky; top: var(--s-8); display: flex; flex-direction: column; gap: 2px; }
+.snav a { display: flex; align-items: center; min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-md); color: var(--text-muted); font-weight: 500; }
+.snav a:hover { background: var(--bg-subtle); color: var(--text); }
+.snav a[aria-current="true"] { background: var(--accent-subtle); color: var(--text); }
+
+section.set { scroll-margin-top: var(--s-8); }
+section.set + section.set { margin-top: var(--rhythm-group); padding-top: var(--rhythm-group); border-top: 1px solid var(--border); }
+.sec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); }
+.sec-head p { margin-top: var(--rhythm-tight); color: var(--text-muted); max-width: 65ch; }
+.status { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; color: var(--success); font-weight: 500; white-space: nowrap; opacity: 0; transition: opacity var(--t-base) var(--ease); }
+.status.on { opacity: 1; }
+.status.neutral { color: var(--text-muted); }
+.rows { margin-top: var(--rhythm-content); }
+.row { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: var(--s-6); padding: var(--s-5) 0; border-top: 1px solid var(--border); align-items: start; }
+.row > label, .row > .lab { font-weight: 500; padding-top: 8px; }
+.row .hint { font-weight: 400; margin-top: 0; }
+.row.tg { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.row.tg .lab { padding-top: 0; }
+.row .ctl { min-width: 0; }
+.row.c { align-items: center; }
+.row.c > .lab { padding-top: 0; }
+.row .ctl.end { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.photo { display: flex; align-items: center; gap: var(--s-4); }
+.photo .acts { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.formfoot { display: flex; align-items: center; gap: var(--s-4); padding-top: var(--s-5); }
+.formfoot .btn { min-width: 148px; }
+
+/* switch */
+.sw { position: relative; display: inline-block; width: 44px; height: 44px; flex: none; }
+.sw input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+.sw .track { position: absolute; left: 2px; top: 10px; width: 40px; height: 24px; border-radius: var(--r-full); background: var(--border-strong); transition: background-color var(--t-fast) var(--ease); }
+.sw .track::after { content: ""; position: absolute; left: 2px; top: 2px; width: 20px; height: 20px; border-radius: var(--r-full); background: #fff; transition: transform var(--t-fast) var(--ease); }
+.sw input:checked + .track { background: var(--accent); }
+.sw input:checked + .track::after { transform: translateX(16px); }
+.sw input:focus-visible + .track { outline: 2px solid var(--focus); outline-offset: 2px; }
+.sw input:disabled { cursor: not-allowed; }
+.sw input:disabled + .track { opacity: 0.5; }
+.gated .lab, .gated .hint { color: var(--text-muted); }
+.gated .lab { font-weight: 500; }
+
+/* plan */
+.plan { margin-top: var(--rhythm-content); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6); }
+.plan-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-4); }
+.plan-name { display: flex; align-items: center; gap: var(--s-2); font-weight: 500; color: var(--text-muted); }
+.price { margin-top: var(--s-2); font: 700 36px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.price small { font: 400 var(--text-sm)/var(--lh-sm) var(--font); letter-spacing: 0; color: var(--text-muted); margin-left: 4px; }
+.plan .sub { margin-top: var(--s-2); color: var(--text-muted); }
+.seats { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--border); }
+.seats-line { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+.bar { margin-top: var(--s-3); height: 8px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); }
+.seats .hint { margin-top: var(--s-2); }
+
+table { width: 100%; border-collapse: collapse; }
+.inv { margin-top: var(--s-4); }
+.inv caption { text-align: left; }
+.inv th { font-weight: 500; color: var(--text-muted); text-align: left; padding: 0 var(--s-3) var(--s-2) 0; font-size: 14px; border-bottom: 1px solid var(--border); }
+.inv td { height: var(--h-row, 48px); padding: 0 var(--s-3) 0 0; border-bottom: 1px solid var(--border); }
+.inv th.r, .inv td.r { text-align: right; }
+.inv th.x, .inv td.x { width: 96px; padding-right: 0; text-align: right; }
+.inv td.d { font-variant-numeric: tabular-nums; }
+.inv th.st, .inv td.st { padding-left: var(--s-6); }
+
+.danger-row { align-items: center; }
+dialog { width: min(440px, calc(100% - 32px)); padding: var(--s-6); border: 0; border-radius: var(--r-xl); background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); }
+dialog::backdrop { background: rgb(10 14 20 / 0.5); }
+dialog h2 { font-size: var(--text-xl); }
+dialog p { margin-top: var(--s-3); color: var(--text-muted); }
+dialog label { display: block; margin-top: var(--s-5); font-weight: 500; }
+dialog .field { margin-top: var(--s-2); }
+.dlg-acts { display: flex; justify-content: flex-end; gap: var(--s-2); margin-top: var(--s-6); }
+
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 30; padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--text); color: var(--bg); box-shadow: var(--shadow-pop); }
+
+/* phone */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: var(--h-topbar); padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .menu-btn { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-3); margin-right: -8px; border: 0; background: none; font-weight: 500; border-radius: var(--r-md); cursor: pointer; }
+  .sheet { position: fixed; inset: var(--h-topbar) 0 0 0; z-index: 9; background: var(--frame); padding: var(--s-4); overflow-y: auto; }
+  .sheet .nav { margin-top: 0; }
+  .sheet .nav a { min-height: 48px; }
+  main { padding: var(--s-6) var(--s-4) 64px; }
+  .layout { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+  .snav { position: static; flex-direction: row; gap: var(--s-1); border-bottom: 1px solid var(--border); }
+  .snav a { flex: 1 1 auto; justify-content: center; min-height: 44px; padding: 0 var(--s-2); border-radius: var(--r-md) var(--r-md) 0 0; text-align: center; font-size: 14px; }
+  .row { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+  .row > label, .row > .lab { padding-top: 0; }
+  .row.tg { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-4); }
+  .field, .btn { font-size: 16px; }
+  .formfoot { flex-wrap: wrap; }
+  .formfoot .btn { width: 100%; }
+  .plan { padding: var(--s-5); }
+  .plan-top { flex-direction: column; }
+  .plan-top .btn { width: 100%; }
+  .sec-head { flex-direction: column; gap: var(--s-2); }
+  .status { min-height: 0; display: none; }
+  .status.on { display: inline-flex; }
+  .photo { flex-wrap: wrap; }
+  .inv thead { display: none; }
+  .inv, .inv tbody, .inv tr, .inv td { display: block; }
+  .inv tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "d a" "ds st" "x x"; gap: 2px var(--s-3); padding: var(--s-3) 0 0; border-bottom: 1px solid var(--border); align-items: center; }
+  .inv td { height: auto; border: 0; padding: 0; text-align: left; }
+  .inv td.d { grid-area: d; } .inv td.r { grid-area: a; } .inv td.ds { grid-area: ds; color: var(--text-muted); } .inv td.st { grid-area: st; padding-left: 0; } .inv td.x { grid-area: x; }
+  .inv td.r { text-align: right; }
+  .inv td.x { width: auto; text-align: left; }
+  .inv td.x a { display: inline-flex; align-items: center; min-height: 44px; }
+  .inv td.d, .inv td.r { font-weight: 500; }
+  .danger-row .btn { width: 100%; }
+  dialog .dlg-acts { flex-direction: column-reverse; }
+  dialog .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-tasks" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5 5h14l2 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-timeline" viewBox="0 0 24 24"><path d="M4 6h9M8 12h12M6 18h8"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.8c2 .6 3.2 2.3 3.5 5.2"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <a class="logo" href="#" aria-label="Tallyo home">
+    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 14.5l3.2 3.2L19.5 10" fill="none" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Tallyo
+  </a>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sheet"><svg class="i"><use href="#i-menu"/></svg><span>Menu</span></button>
+</div>
+<div class="sheet" id="sheet" hidden>
+  <nav class="nav" aria-label="Workspace menu" id="sheetNav"></nav>
+</div>
+
+<div class="shell">
+  <aside>
+    <div class="side">
+      <a class="logo" href="#" aria-label="Tallyo home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M9 14.5l3.2 3.2L19.5 10" fill="none" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tallyo
+      </a>
+      <nav class="nav" aria-label="Main" id="mainNav"></nav>
+      <nav class="nav" aria-label="Workspace" id="lastNav"></nav>
+      <div class="account">
+        <span class="avatar" aria-hidden="true">IO</span>
+        <div class="who"><b>Imani Okafor-Reyes</b><span>Brightwell Studio</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div class="wrap">
+      <header class="head">
+        <h1>Settings</h1>
+        <p>Manage your profile, notifications and your workspace plan.</p>
+      </header>
+
+      <div class="layout">
+        <nav class="snav" aria-label="Settings sections" id="snav">
+          <a href="#profile" aria-current="true">Profile</a>
+          <a href="#notifications">Notifications</a>
+          <a href="#billing">Plan and billing</a>
+        </nav>
+
+        <div class="sections">
+          <!-- PROFILE: deferred save -->
+          <section class="set" id="profile" aria-labelledby="h-profile">
+            <div class="sec-head">
+              <div>
+                <h2 id="h-profile">Profile</h2>
+                <p>Your teammates see this on tasks, comments and mentions.</p>
+              </div>
+            </div>
+            <form id="profileForm" novalidate>
+              <div class="rows">
+                <div class="row">
+                  <div class="lab" id="l-photo">Photo</div>
+                  <div class="ctl photo" role="group" aria-labelledby="l-photo">
+                    <span class="avatar lg" aria-hidden="true">IO</span>
+                    <div class="acts">
+                      <button class="btn" type="button" style="min-height:var(--control-h-sm)">Upload photo</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label for="name">Full name</label>
+                  <div class="ctl">
+                    <input class="field" id="name" name="name" type="text" autocomplete="name" value="Imani Okafor-Reyes" aria-describedby="name-err">
+                    <div class="err" id="name-err" hidden><svg class="i sm" style="margin-top:2px"><use href="#i-alert"/></svg><span>Enter your full name so teammates can find you.</span></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label for="email">Email</label>
+                  <div class="ctl">
+                    <input class="field" id="email" name="email" type="email" autocomplete="email" inputmode="email" value="imani@brightwell.example" aria-describedby="email-hint email-err">
+                    <p class="hint" id="email-hint">Notifications and sign-in links go here.</p>
+                    <div class="err" id="email-err" hidden><svg class="i sm" style="margin-top:2px"><use href="#i-alert"/></svg><span>Enter an email address like name@company.com.</span></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label for="title">Job title <span class="muted" style="font-weight:400">(optional)</span></label>
+                  <div class="ctl"><input class="field" id="title" name="title" type="text" autocomplete="organization-title" value="Product designer"></div>
+                </div>
+                <div class="row">
+                  <label for="tz">Time zone</label>
+                  <div class="ctl">
+                    <select class="field" id="tz" name="tz">
+                      <option>(UTC−08:00) Pacific Time, Los Angeles</option>
+                      <option>(UTC−05:00) Eastern Time, New York</option>
+                      <option selected>(UTC+00:00) London</option>
+                      <option>(UTC+01:00) Berlin, Lagos</option>
+                      <option>(UTC+05:30) Mumbai</option>
+                    </select>
+                    <p class="hint">Due dates and reminders follow this zone.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="formfoot">
+                <button class="btn primary" type="submit" id="saveBtn">Save changes</button>
+                <span class="status neutral" id="profileStatus" role="status" aria-live="polite"></span>
+              </div>
+            </form>
+          </section>
+
+          <!-- NOTIFICATIONS: instant save -->
+          <section class="set" id="notifications" aria-labelledby="h-notif">
+            <div class="sec-head">
+              <div>
+                <h2 id="h-notif">Notifications</h2>
+                <p>Changes here apply right away.</p>
+              </div>
+              <span class="status" id="notifStatus" role="status" aria-live="polite"><svg class="i sm"><use href="#i-check"/></svg>Saved</span>
+            </div>
+            <div class="rows" id="notifRows"></div>
+          </section>
+
+          <!-- BILLING -->
+          <section class="set" id="billing" aria-labelledby="h-billing">
+            <div class="sec-head">
+              <div>
+                <h2 id="h-billing">Plan and billing</h2>
+                <p>Plan changes and invoices apply to the whole workspace.</p>
+              </div>
+            </div>
+            <div class="plan" id="plan"></div>
+            <div class="rows" style="margin-top:var(--s-6)">
+              <div class="row c">
+                <div class="lab">Payment method</div>
+                <div class="ctl end">
+                  <span style="display:flex;align-items:center;gap:var(--s-3);min-width:0"><svg class="i" style="color:var(--text-muted)"><use href="#i-card"/></svg><span>Visa ending 4242<br><span class="muted">Expires 08/2028</span></span></span>
+                  <button class="btn" type="button" style="min-height:var(--control-h-sm)">Update card</button>
+                </div>
+              </div>
+              <div class="row c">
+                <div class="lab">Billing email</div>
+                <div class="ctl end">
+                  <span style="min-width:0;overflow-wrap:anywhere">finance@brightwell.example</span>
+                  <a class="link" href="#billing" style="display:inline-flex;align-items:center;justify-content:flex-end;min-height:44px;min-width:44px">Edit</a>
+                </div>
+              </div>
+            </div>
+            <h3 style="margin-top:var(--s-8)">Invoices</h3>
+            <table class="inv reflow">
+              <caption class="sr-only">Invoice history</caption>
+              <thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col" class="r">Amount (USD)</th><th scope="col" class="st">Status</th><th scope="col" class="x"><span class="sr-only">Download</span></th></tr></thead>
+              <tbody id="invBody"></tbody>
+            </table>
+          </section>
+
+          <!-- DANGER -->
+          <section class="set" id="danger" aria-labelledby="h-danger">
+            <h2 id="h-danger" class="sr-only">Delete workspace</h2>
+            <div class="row danger-row" style="border-top:0;border-bottom:0;padding:0">
+              <div class="lab" style="padding:0">Delete workspace<p class="hint" id="dangerHint"></p></div>
+              <div class="ctl" style="justify-self:end"><button class="btn danger" type="button" id="delBtn">Delete Brightwell Studio</button></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<dialog id="delDlg" aria-labelledby="delTitle">
+  <form method="dialog" id="delForm" novalidate>
+    <h2 id="delTitle">Delete Brightwell Studio?</h2>
+    <p id="delBody"></p>
+    <label for="delConfirm">Type the workspace name to confirm</label>
+    <input class="field" id="delConfirm" type="text" autocomplete="off" placeholder="Brightwell Studio" aria-describedby="delErr">
+    <div class="err" id="delErr" hidden><svg class="i sm" style="margin-top:2px"><use href="#i-alert"/></svg><span>The name does not match. Type Brightwell Studio exactly.</span></div>
+    <div class="dlg-acts">
+      <button class="btn" type="button" id="delCancel">Keep workspace</button>
+      <button class="btn danger-fill" type="submit">Delete workspace</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+// One data module. Every number on screen derives from it.
+const TODAY = new Date('2026-11-27T10:00:00Z');
+const DATA = {
+  workspace: 'Brightwell Studio',
+  projects: 38, tasks: 1284,
+  plan: { name: 'Team', seatPrice: 9, seatsBought: 12, seatsUsed: 9, renews: '2026-12-03' },
+  invoices: [
+    { date: '2026-11-03', seats: 12 }, { date: '2026-10-03', seats: 12 },
+    { date: '2026-09-03', seats: 10 }, { date: '2026-08-03', seats: 10 },
+  ],
+  notifications: [
+    { id: 'assigned', label: 'Task assigned to me', hint: 'An email when someone gives you a task.', on: true },
+    { id: 'mentions', label: 'Comments and mentions', hint: 'An email when someone replies to you or mentions you.', on: true },
+    { id: 'due', label: 'Due date reminders', hint: 'A reminder before your tasks are due.', select: ['1 day before', 'Same morning', 'Never'], value: '1 day before' },
+    { id: 'weekly', label: 'Weekly summary', hint: 'A Monday email with last week’s activity.', on: false },
+    { id: 'slack', label: 'Slack notifications', hint: 'Available on the Business plan.', gated: true },
+  ],
+};
+const money = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtDate = (iso) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
+const $ = (s, r = document) => r.querySelector(s);
+const icon = (n, c = '') => `<svg class="i ${c}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+
+// Navigation
+const navMain = [['home', 'Home'], ['tasks', 'My tasks'], ['inbox', 'Inbox', 4], ['folder', 'Projects'], ['timeline', 'Timeline'], ['chart', 'Reports']];
+const navLast = [['users', 'Team'], ['gear', 'Settings']];
+const navHtml = (items) => items.map(([i, l, c]) => `<a href="#" ${l === 'Settings' ? 'aria-current="page"' : ''}>${icon(i)}<span>${l}</span>${c ? `<span class="count num">${c}</span>` : ''}</a>`).join('');
+$('#mainNav').innerHTML = navHtml(navMain);
+$('#lastNav').innerHTML = navHtml(navLast);
+$('#sheetNav').innerHTML = navHtml(navMain) + `<div style="height:16px"></div>` + navHtml(navLast);
+const menuBtn = $('#menuBtn'), sheet = $('#sheet');
+menuBtn.addEventListener('click', () => {
+  const open = sheet.hidden;
+  sheet.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open));
+  menuBtn.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu');
+});
+
+// Notifications (instant)
+const statusEl = $('#notifStatus');
+let statusT;
+$('#notifRows').innerHTML = DATA.notifications.map((n) => {
+  if (n.select) return `<div class="row tg"><div><label class="lab" for="n-${n.id}">${n.label}</label><p class="hint">${n.hint}</p></div>
+    <select class="field" id="n-${n.id}" style="width:auto;min-width:150px">${n.select.map((o) => `<option ${o === n.value ? 'selected' : ''}>${o}</option>`).join('')}</select></div>`;
+  if (n.gated) return `<div class="row tg gated"><div><span class="lab" id="n-${n.id}-l">${n.label}</span><p class="hint" id="n-${n.id}-h">${n.hint} <a class="link" href="#billing">Compare plans</a></p></div>
+    <span class="sw"><input type="checkbox" role="switch" disabled aria-labelledby="n-${n.id}-l" aria-describedby="n-${n.id}-h"><span class="track"></span></span></div>`;
+  return `<div class="row tg"><div><label class="lab" for="n-${n.id}">${n.label}</label><p class="hint">${n.hint}</p></div>
+    <span class="sw"><input type="checkbox" role="switch" id="n-${n.id}" ${n.on ? 'checked' : ''}><span class="track"></span></span></div>`;
+}).join('');
+$('#notifRows').addEventListener('change', () => {
+  statusEl.classList.add('on'); clearTimeout(statusT); statusT = setTimeout(() => statusEl.classList.remove('on'), 2200);
+});
+statusEl.classList.remove('on');
+
+// Plan and billing, derived
+const p = DATA.plan, monthly = p.seatPrice * p.seatsBought, pct = Math.round((p.seatsUsed / p.seatsBought) * 100);
+$('#plan').innerHTML = `
+  <div class="plan-top">
+    <div>
+      <div class="plan-name">${p.name} plan <span class="badge accent">Current</span></div>
+      <div class="price">${money(monthly)}<small>per month</small></div>
+      <p class="sub">${p.seatsBought} seats at ${money(p.seatPrice)}. Renews on ${fmtDate(p.renews)}.</p>
+    </div>
+    <button class="btn" type="button">Change plan</button>
+  </div>
+  <div class="seats">
+    <div class="seats-line"><span style="font-weight:500">Seats in use</span><span class="num">${p.seatsUsed} of ${p.seatsBought}</span></div>
+    <div class="bar" role="img" aria-label="${p.seatsUsed} of ${p.seatsBought} seats in use"><i style="width:${pct}%"></i></div>
+    <p class="hint">${p.seatsBought - p.seatsUsed} seats are free. <a class="link" href="#billing">Invite teammates</a></p>
+  </div>`;
+$('#invBody').innerHTML = DATA.invoices.map((v) => `<tr>
+  <td class="d">${fmtDate(v.date)}</td><td class="ds">${p.name} plan, ${v.seats} seats</td>
+  <td class="r num">${money(v.seats * p.seatPrice)}</td><td class="st"><span class="badge success">Paid</span></td>
+  <td class="x"><a class="link" href="#billing" aria-label="Download PDF for ${fmtDate(v.date)}">Download</a></td></tr>`).join('');
+
+// Danger zone
+const nf = new Intl.NumberFormat('en-US');
+const consequence = `This deletes ${nf.format(DATA.projects)} projects and ${nf.format(DATA.tasks)} tasks and cannot be undone.`;
+$('#dangerHint').textContent = consequence;
+$('#delBody').textContent = consequence + ' Everyone loses access immediately.';
+const dlg = $('#delDlg'), delConfirm = $('#delConfirm'), delErr = $('#delErr');
+$('#delBtn').addEventListener('click', () => { delErr.hidden = true; delConfirm.value = ''; delConfirm.removeAttribute('aria-invalid'); dlg.showModal(); delConfirm.focus(); });
+$('#delCancel').addEventListener('click', () => dlg.close());
+$('#delForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (delConfirm.value.trim() !== DATA.workspace) { delErr.hidden = false; delConfirm.setAttribute('aria-invalid', 'true'); delConfirm.focus(); return; }
+  dlg.close(); toast('Workspace scheduled for deletion. Owners can undo this for 14 days.');
+});
+function toast(msg) {
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg; document.body.append(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// Profile (deferred save)
+const form = $('#profileForm'), saveBtn = $('#saveBtn'), pStatus = $('#profileStatus');
+const fields = ['name', 'email', 'title', 'tz'].map((id) => $('#' + id));
+let saved = Object.fromEntries(fields.map((f) => [f.id, f.value]));
+const dirty = () => fields.some((f) => f.value !== saved[f.id]);
+function setStatus(msg, ok) { pStatus.textContent = ''; if (msg) { pStatus.innerHTML = (ok ? icon('check', 'sm') : '') + msg; } pStatus.classList.toggle('neutral', !ok); pStatus.classList.toggle('on', !!msg); }
+function validate() {
+  const nameBad = !$('#name').value.trim();
+  const emailBad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('#email').value.trim());
+  for (const [id, bad] of [['name', nameBad], ['email', emailBad]]) {
+    $('#' + id + '-err').hidden = !bad;
+    bad ? $('#' + id).setAttribute('aria-invalid', 'true') : $('#' + id).removeAttribute('aria-invalid');
+  }
+  return nameBad ? $('#name') : emailBad ? $('#email') : null;
+}
+fields.forEach((f) => f.addEventListener('input', () => { setStatus(''); if (f.getAttribute('aria-invalid') && f.value.trim()) validate(); }));
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const bad = validate();
+  if (bad) { bad.focus(); setStatus('Fix the highlighted field to save.', false); return; }
+  if (!dirty()) { setStatus('No changes to save', false); return; }
+  saveBtn.setAttribute('aria-busy', 'true'); saveBtn.textContent = 'Saving…'; setStatus('');
+  setTimeout(() => {
+    saved = Object.fromEntries(fields.map((f) => [f.id, f.value]));
+    saveBtn.removeAttribute('aria-busy'); saveBtn.textContent = 'Save changes'; setStatus('Changes saved', true);
+  }, 700);
+});
+if (new URLSearchParams(location.search).get('state') === 'error') { $('#name').value = ''; validate(); }
+
+// Section nav: mark the section in view
+const links = [...document.querySelectorAll('#snav a')];
+const mark = (id) => links.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + id)));
+links.forEach((a) => a.addEventListener('click', () => mark(a.getAttribute('href').slice(1))));
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) mark(en.target.id); }), { rootMargin: '-20% 0px -70% 0px' });
+  ['profile', 'notifications', 'billing'].forEach((id) => io.observe(document.getElementById(id)));
+}
+</script>
+</body>
+</html>

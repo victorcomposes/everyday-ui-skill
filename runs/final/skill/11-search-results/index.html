@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saltbox Kitchen - chickpea curry recipes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Ember kit, soft shape, pairing A */
+  --accent: #c2410c; --accent-hover: #9a3412; --accent-subtle: #fdeee5; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f7f7f8; --brand-deep: #1c1f26; --on-deep: #ffffff; --on-deep-muted: #b4b9c4; --accent-on-deep: #ff9a5c;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", var(--font);
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 26px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --w-content: 1200px; --w-facets: 240px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #ff9a5c; --accent-hover: #ffb88a; --accent-subtle: #36210f; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #17191d; --brand-deep: #0f1115; --on-deep: #e9ebef; --on-deep-muted: #a0a6b2;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; display: flex; flex-direction: column; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 600 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-lg)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+ul { list-style: none; margin: 0; padding: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 50; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4);
+  border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn-primary:hover { background: var(--accent-hover); }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; gap: 4px; padding: 2px 8px; border-radius: var(--r-sm);
+  font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; background: var(--bg-subtle); color: var(--text-muted); }
+.badge.good { background: var(--success-subtle); color: var(--success); }
+
+/* header band */
+.top { background: var(--frame); border-bottom: 1px solid var(--border); }
+.top-in { max-width: var(--w-content); margin: 0 auto; padding: var(--s-4) var(--s-8); display: flex; align-items: center; gap: var(--s-8); }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 700 var(--text-lg)/1 var(--font-display); letter-spacing: -0.02em; min-height: 44px; flex-shrink: 0; }
+.nav { display: flex; align-items: center; gap: var(--s-1); margin-left: auto; flex-shrink: 0; }
+.nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; color: var(--text-muted); }
+.nav a:hover { background: var(--bg-subtle); color: var(--text); }
+.nav a[aria-current="page"] { color: var(--text); background: var(--accent-subtle); }
+.nav .signin { color: var(--text); }
+
+/* search field */
+.search { position: relative; flex: 1; max-width: 680px; min-width: 0; }
+.field { position: relative; display: flex; align-items: center; height: 44px; }
+.field input { width: 100%; height: 44px; border: 1px solid var(--border-strong); border-radius: var(--r-full); background: var(--surface);
+  padding: 0 96px 0 44px; font-size: var(--text-md); }
+.field .lead { position: absolute; left: var(--s-4); top: 12px; pointer-events: none; }
+.field .tail { position: absolute; right: 2px; top: 0; display: flex; align-items: center; }
+.field input::-webkit-search-cancel-button { display: none; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: var(--r-full); cursor: pointer; color: var(--text-muted); flex-shrink: 0; }
+.icon-btn:hover { background: var(--bg-subtle); color: var(--text); }
+.icon-btn.go { color: var(--accent); }
+.suggest { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 20; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-pop); padding: var(--s-2) 0; max-height: 60dvh; overflow: auto; }
+.suggest .gh { margin: 0; padding: var(--s-2) var(--s-4) var(--s-1); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; color: var(--text-muted); }
+.suggest [role="option"] { display: flex; align-items: center; gap: var(--s-3); min-height: 44px; padding: 0 var(--s-4); cursor: pointer; }
+.suggest [role="option"][aria-selected="true"], .suggest [role="option"]:hover { background: var(--accent-subtle); }
+.suggest svg { color: var(--text-muted); flex-shrink: 0; }
+
+/* page layout */
+main { flex: 1; width: 100%; max-width: var(--w-content); margin: 0 auto; padding: var(--rhythm-content) var(--s-8) var(--s-16); }
+.head { margin-bottom: var(--rhythm-content); }
+.head .sub { margin-top: var(--rhythm-title); color: var(--text-muted); font-size: var(--text-md); line-height: var(--lh-md); }
+.layout { display: grid; grid-template-columns: var(--w-facets) minmax(0, 1fr); gap: var(--rhythm-group); align-items: start; }
+
+/* facets */
+.facets-head { display: none; }
+.facets .group { padding: var(--s-4) 0; border-top: 1px solid var(--border); }
+.facets .group:first-of-type { border-top: 0; padding-top: 0; }
+.facets fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.facets legend { padding: 0; margin-bottom: var(--s-2); font-weight: 600; font-size: var(--text-sm); }
+.opt { display: flex; align-items: center; gap: var(--s-3); min-height: 36px; cursor: pointer; border-radius: var(--r-sm); }
+.opt input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); flex-shrink: 0; }
+.opt .n { margin-left: auto; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.opt.zero { color: var(--text-muted); }
+.sheet-foot { display: none; }
+.scrim { display: none; }
+
+/* toolbar */
+.bar { display: flex; align-items: center; gap: var(--s-4); min-height: 44px; }
+.bar .range { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.sort { margin-left: auto; display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); }
+.sort select { height: var(--control-h); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); padding: 0 var(--s-3); font-weight: 500; }
+.filters-btn { display: none; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-top: var(--s-3); }
+.chip { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 32px; padding: 0 var(--s-1) 0 var(--s-3); border-radius: var(--r-full); background: var(--accent-subtle); color: var(--text); font-weight: 500; border: 1px solid transparent; white-space: nowrap; }
+.chip button { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 0; background: transparent; border-radius: var(--r-full); cursor: pointer; color: var(--accent); }
+.chip button:hover { background: var(--surface); }
+.clear-all { min-height: 32px; padding: 0 var(--s-2); border: 0; background: none; cursor: pointer; color: var(--accent); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
+
+/* results */
+.list { margin-top: var(--s-3); border-top: 1px solid var(--border); }
+.res { position: relative; display: grid; grid-template-columns: 112px minmax(0, 1fr) 104px; gap: var(--s-5); padding: var(--s-4) 0; border-bottom: 1px solid var(--border); }
+.res:hover { background: var(--bg-subtle); }
+.thumb { width: 112px; height: 84px; border-radius: var(--r-md); overflow: hidden; background: var(--accent-subtle); display: block; }
+.thumb svg { display: block; width: 100%; height: 100%; }
+.res .kicker { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.res .title { margin: 2px 0 0; font: 600 var(--text-lg)/1.3 var(--font-display); letter-spacing: -0.01em; }
+.res .title a::after { content: ""; position: absolute; inset: 0; }
+.res .title a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.res strong { font-weight: 700; }
+.res .title strong { font-weight: 700; color: var(--accent); }
+.res .snip { margin-top: var(--s-1); color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.res .snip strong { color: var(--text); }
+.meta { margin-top: var(--s-2); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); }
+.rating { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rating svg { color: var(--accent); }
+.rating b { font-weight: 600; }
+.rating span { color: var(--text-muted); }
+.uses { color: var(--text-muted); }
+.uses strong { color: var(--text); font-weight: 600; }
+.side { text-align: right; font-variant-numeric: tabular-nums; }
+.side b { display: block; font: 600 var(--text-md)/var(--lh-md) var(--font); }
+.side span { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.inline-meta { display: none; }
+
+/* pagination */
+.pager { display: flex; align-items: center; gap: var(--s-1); margin-top: var(--s-6); flex-wrap: wrap; }
+.pager .count { margin-right: auto; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.pager button { min-width: 36px; min-height: 36px; padding: 0 var(--s-2); border: 1px solid transparent; border-radius: var(--r-md); background: transparent; cursor: pointer; font-variant-numeric: tabular-nums; font-weight: 500; }
+.pager button:hover:not(:disabled) { background: var(--bg-subtle); }
+.pager button[aria-current="page"] { background: var(--accent-subtle); color: var(--text); border-color: var(--accent); }
+.pager button:disabled { color: var(--text-muted); cursor: default; opacity: 0.6; }
+
+/* states */
+.state { max-width: 560px; padding: var(--s-6) 0; }
+.state h2 { font-size: 24px; line-height: 1.2; letter-spacing: -0.02em; }
+.state p { margin-top: var(--s-2); color: var(--text-muted); font-size: var(--text-md); line-height: var(--lh-md); }
+.state .acts { margin-top: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.state .art { margin-bottom: var(--s-5); }
+.banner { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-4); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); border-radius: var(--r-lg); }
+.banner svg { color: var(--danger); flex-shrink: 0; margin-top: 2px; }
+.banner b { display: block; font-weight: 600; }
+.recents { margin-top: var(--rhythm-content); display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.recents a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); border: 1px solid var(--border-strong); border-radius: var(--r-full); font-weight: 500; }
+.recents a:hover { background: var(--bg-subtle); }
+.group-h { margin-top: var(--rhythm-group); }
+.group-h:first-child { margin-top: 0; }
+.group-h h2 { margin-bottom: var(--s-3); }
+
+.foot { border-top: 1px solid var(--border); background: var(--frame); }
+.foot div { max-width: var(--w-content); margin: 0 auto; padding: var(--s-6) var(--s-8); color: var(--text-muted); display: flex; gap: var(--s-6); flex-wrap: wrap; align-items: center; }
+.foot a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+
+@media (max-width: 900px) {
+  .nav a:not(.signin) { display: none; }
+  .top-in { flex-wrap: wrap; padding: var(--s-2) var(--s-4) var(--s-3); gap: var(--s-1) var(--s-4); }
+  .search { order: 3; flex: 1 0 100%; max-width: none; }
+  main { padding: var(--s-5) var(--s-4) var(--s-12); }
+  h1 { font-size: 26px; }
+  .head { margin-bottom: var(--s-4); }
+  .head .sub { margin-top: var(--s-2); font-size: var(--text-sm); line-height: var(--lh-sm); }
+  .layout { display: block; }
+  .filters-btn { display: inline-flex; }
+  .sort label span { display: none; }
+  .bar { gap: var(--s-3); }
+  .bar .range { display: none; }
+  .chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(var(--s-4) * -1); padding: 0 var(--s-4); scrollbar-width: none;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip, .clear-all { flex-shrink: 0; min-height: 44px; }
+  .chip button { width: 44px; height: 44px; margin: 0 -8px 0 -4px; }
+  /* facets become a bottom sheet */
+  .facets { position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; max-height: 86dvh; display: flex; flex-direction: column; background: var(--surface);
+    border-radius: var(--r-xl) var(--r-xl) 0 0; box-shadow: var(--shadow-dialog); transform: translateY(105%); visibility: hidden;
+    transition: transform var(--t-base) var(--ease), visibility 0s linear var(--t-base); }
+  .facets.open { transform: none; visibility: visible; transition: transform var(--t-base) var(--ease); }
+  .facets-head { display: flex; align-items: center; justify-content: space-between; padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); border-bottom: 1px solid var(--border); }
+  .facets-head h2 { font-size: var(--text-md); }
+  .facets .scroll { overflow: auto; padding: var(--s-4); flex: 1; }
+  .opt { min-height: 44px; }
+  .sheet-foot { display: block; padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: var(--surface); }
+  .sheet-foot .btn { width: 100%; }
+  .scrim { position: fixed; inset: 0; z-index: 30; background: rgb(0 0 0 / 0.4); }
+  .scrim.open { display: block; }
+  .list { margin-inline: calc(var(--s-4) * -1); }
+  .res { grid-template-columns: 88px minmax(0, 1fr); gap: var(--s-3); padding: var(--s-4); }
+  .thumb { width: 88px; height: 72px; }
+  .res .snip, .res .uses, .res .side { display: none; }
+  .res .title { font-size: var(--text-md); }
+  .inline-meta { display: inline; color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .res .title a { display: inline-flex; align-items: center; min-height: 44px; }
+  .res .title { margin: 0; }
+  .meta { margin-top: 0; }
+  .meta .badge ~ .badge { display: none; }
+  .pager { padding-inline: 0; }
+  .pager .count { flex: 1 0 100%; margin-bottom: var(--s-2); }
+  .pager button { min-width: 44px; min-height: 44px; }
+  body { font-size: var(--text-md); line-height: var(--lh-md); }
+  .foot div { padding-inline: var(--s-4); }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#results">Skip to results</a>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="?" aria-label="Saltbox Kitchen home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="9" fill="var(--accent)"/><path d="M6.5 14.5h15a7.5 7.5 0 0 1-15 0z" fill="var(--on-accent)"/><path d="M11 11c0-1.6 1.6-1.6 1.6-3.2M16 11c0-1.6 1.6-1.6 1.6-3.2" stroke="var(--on-accent)" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+      Saltbox
+    </a>
+    <form class="search" id="searchForm" role="search" autocomplete="off">
+      <label class="sr-only" for="q">Search recipes and collections</label>
+      <div class="field">
+        <svg class="lead" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" style="color:var(--text-muted)"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" name="q" type="search" enterkeyhint="search" placeholder="Search recipes, ingredients and collections" role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list">
+        <span class="tail"><button class="icon-btn" type="button" id="clearBtn" aria-label="Clear search" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        <button class="icon-btn go" type="submit" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></span>
+      </div>
+      <div class="suggest" id="suggest" role="listbox" aria-label="Suggestions" hidden></div>
+    </form>
+    <nav class="nav" aria-label="Main">
+      <a href="#" aria-current="page">Recipes</a>
+      <a href="#">Collections</a>
+      <a href="#">Meal plans</a>
+      <a class="signin" href="#">Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="head">
+    <h1 id="title"></h1>
+    <p class="sub" id="sub"></p>
+  </div>
+  <div class="layout" id="layout">
+    <aside class="facets" id="facets" aria-label="Filters"></aside>
+    <section id="results" aria-label="Search results" tabindex="-1"></section>
+  </div>
+</main>
+<div class="scrim" id="scrim"></div>
+
+<footer class="foot"><div><span>Saltbox Kitchen, tested recipes since 2014</span><a href="#">Recipe index</a><a href="#">Help</a><a href="#">Privacy</a></div></footer>
+
+<script>
+/* ---------- data: one module, everything on the page derives from it ---------- */
+const BASE = [
+ // title, mins, rating, reviews, author, serves, diet (v vegan, t vegetarian, g gluten-free, d dairy-free), method, snippet, uses, tone
+ ['Easy chickpea curry',35,4.8,2184,'Priya Raman',4,'vtgd','One pot','A weeknight chickpea curry with tinned tomatoes, coconut milk and a spoon of garam masala. Ready in 35 minutes.',['chickpeas','coconut milk','tomatoes'],0],
+ ['Spinach and chickpea curry',30,4.7,1432,'Tom Hadley',4,'vtgd','One pot','Wilted spinach and chickpeas in a mild curry sauce with fresh ginger and garlic. Good with basmati or naan.',['chickpeas','spinach','ginger'],3],
+ ['Slow cooker chickpea curry',250,4.6,861,'Sam Whitlock',6,'vtgd','Slow cooker','Ten minutes of prep, then leave it. A thick, fragrant curry that freezes well for lunches.',['chickpeas','sweet potato','coconut milk'],1],
+ ['Chana masala',45,4.9,3071,'Arjun Mehta',4,'vtgd','One pot','The classic Punjabi chickpea curry: tangy, dry-spiced and built on slow-cooked onions. Serve with roti.',['chickpeas','onions','amchur'],2],
+ ['Chickpea and sweet potato curry',40,4.7,1190,'Ines Carvalho',4,'vtgd','One pot','Sweet potato melts into the sauce while the chickpeas hold their shape. Finish with lime and coriander.',['chickpeas','sweet potato','lime'],5],
+ ['Chickpea tikka masala',40,4.6,1675,'Nadia Farouk',4,'tg','One pot','Chickpeas in a creamy tomato sauce with tikka spices. A vegetarian curry house favourite at home.',['chickpeas','yoghurt','tomatoes'],1],
+ ['Coconut chickpea curry with lime',25,4.5,802,'Lucy Pemberton',3,'vtgd','One pot','A light coconut curry that comes together in 25 minutes, with a squeeze of lime to cut the richness.',['chickpeas','coconut milk','lime'],4],
+ ['Thai red chickpea curry',30,4.4,655,'Hannah Voss',4,'vtgd','One pot','Red curry paste, coconut milk and crisp green beans with tender chickpeas. Finished with basil.',['chickpeas','red curry paste','green beans'],0],
+ ['Roast cauliflower and chickpea curry',55,4.8,1403,'Kofi Mensah',4,'vtgd','Oven','Roast the cauliflower and chickpeas first for deeper flavour, then fold into a spiced tomato curry.',['chickpeas','cauliflower','tomatoes'],5],
+ ['Instant Pot chickpea curry from dried',60,4.5,512,'Ben Aldous',6,'vtgd','Instant Pot','Skip the soaking: dried chickpeas cook to tender in the pressure cooker and take on the curry sauce.',['dried chickpeas','onions','garam masala'],2],
+ ['Butter chickpea curry',35,4.7,1520,'Priya Raman',4,'tg','One pot','Silky, mildly sweet and rich with butter and cream. The one that wins over people who say they dislike chickpeas.',['chickpeas','butter','cream'],1],
+ ['Chickpea and potato curry',50,4.3,389,'Tom Hadley',4,'vtgd','One pot','Waxy potatoes and chickpeas simmered in a turmeric and cumin curry. Cheap, filling and better the next day.',['chickpeas','potatoes','turmeric'],4],
+ ['Quick pantry chickpea curry',20,4.4,1766,'Lucy Pemberton',2,'vtgd','One pot','Two tins and a jar of curry paste. For the night when the fridge is empty and you still want a proper dinner.',['chickpeas','curry paste','tinned tomatoes'],0],
+ ['Chickpea curry with paneer',40,4.6,714,'Nadia Farouk',4,'tg','One pot','Golden cubes of paneer and chickpeas in a smooth onion and tomato curry. High in protein.',['chickpeas','paneer','onions'],3],
+ ['Kerala-style chickpea curry',55,4.8,926,'Ines Carvalho',4,'vtgd','One pot','Roasted coconut, curry leaves and black pepper give this southern Indian curry its deep, nutty heat.',['chickpeas','coconut','curry leaves'],2],
+ ['Slow cooker chickpea and lentil curry',370,4.5,477,'Sam Whitlock',6,'vtgd','Slow cooker','Red lentils break down into a thick sauce around whole chickpeas. A big batch for the freezer.',['chickpeas','red lentils','carrots'],5],
+ ['One-tray chickpea curry traybake',50,4.2,268,'Hannah Voss',4,'vtgd','Oven','Everything on one tray with a curry paste glaze, then a spoon of yoghurt to serve. Very little washing up.',['chickpeas','peppers','curry paste'],4],
+ ['Chickpea curry soup',30,4.3,331,'Kofi Mensah',4,'vtgd','One pot','A chickpea curry thinned into a spiced soup with red lentils and a swirl of coconut milk.',['chickpeas','red lentils','coconut milk'],3],
+ ['Mild chickpea curry for kids',25,4.6,1042,'Ben Aldous',4,'vtgd','One pot','No chilli, plenty of flavour: apple, sweet spices and a little coconut. Most children finish the bowl.',['chickpeas','apple','coconut milk'],1],
+ ['Chickpea curry with mango',35,4.1,203,'Arjun Mehta',4,'vtgd','One pot','Ripe mango and chickpeas in a sweet and sour curry, with a hit of green chilli.',['chickpeas','mango','green chilli'],0],
+ ['Aubergine and chickpea curry',45,4.7,880,'Priya Raman',4,'vtgd','One pot','Soft, silky aubergine soaks up a smoky tomato curry. A good way to use up the end of summer.',['chickpeas','aubergine','tomatoes'],2],
+ ['Lamb and chickpea curry',95,4.6,540,'Kofi Mensah',6,'gd','One pot','Slow-braised lamb shoulder and chickpeas in a rich, bay-scented curry for a Sunday table.',['lamb shoulder','chickpeas','bay leaves'],5],
+ ['Chicken and chickpea curry',50,4.5,987,'Tom Hadley',4,'gd','One pot','Chicken thighs and chickpeas in one pan. A middle ground for a table of mixed eaters.',['chicken thighs','chickpeas','yoghurt'],1],
+ ['Chickpea curry with coconut rice',45,4.4,420,'Lucy Pemberton',4,'vtgd','One pot','A complete dinner: chickpea curry plus rice cooked in coconut milk, both done in 45 minutes.',['chickpeas','basmati rice','coconut milk'],4],
+ ['Chickpea and cauliflower korma',45,4.5,615,'Hannah Voss',4,'vtgd','One pot','A gentle, creamy korma made with cashew cream instead of dairy. Mild enough for the whole family.',['chickpeas','cauliflower','cashews'],3],
+ ['Chickpea curry in 15 minutes',15,4.0,1288,'Ben Aldous',2,'vtgd','One pot','The fastest curry we have tested. Not the deepest flavour, but it works on a Tuesday.',['chickpeas','curry powder','spinach'],0],
+ ['Our best chickpea curry recipes',null,null,null,'Saltbox Kitchen',12,'','','Twelve tested chickpea curries, from a 15 minute dinner to a slow cooker batch for the freezer.',[],0,'collection'],
+ ['Vegan curry night: 15 dinners',null,null,null,'Saltbox Kitchen',15,'','','Fifteen dairy-free curries built around chickpeas, lentils and seasonal vegetables.',[],0,'collection'],
+];
+const TONES = ['#d98a2b','#c2541e','#b9772e','#7e9a3c','#d9a23a','#a8451f'];
+const SEATS = [[30,50],[44,56],[58,48],[70,58],[52,62],[38,64]];
+let DATA = BASE.map((b, i) => ({ id: i, kind: b[11] || 'recipe', t: b[0], m: b[1], r: b[2], n: b[3], by: b[4], srv: b[5],
+  diet: (b[6].includes('v') ? ['Vegan', 'Vegetarian'] : b[6].includes('t') ? ['Vegetarian'] : []).concat(b[6].includes('g') ? ['Gluten-free'] : [], b[6].includes('d') ? ['Dairy-free'] : []),
+  meth: b[7], s: b[8], u: b[9], tone: b[10] }));
+
+const params = new URLSearchParams(location.search);
+const MODE = params.get('state') || '';
+if (MODE === 'stress') {
+  DATA = DATA.concat([
+    { id: 90, kind: 'recipe', t: 'Grandmother Okonkwo-Featherstonehaugh\'s extraordinarily slow-simmered Sunday chickpea curry with roasted aubergine, tamarind and fresh curry leaves', m: 485, r: null, n: 0, by: 'Maximilian Featherstonehaugh-Wetherell', srv: 12, diet: ['Dairy-free'], meth: 'One pot', s: 'Averyveryveryveryveryveryveryveryveryveryveryverylongunbrokenwordaboutchickpeacurrytocheckwrapping and then a normal sentence.', u: ['chickpeas', 'tamarind', 'curry leaves'], tone: 5 },
+    { id: 91, kind: 'recipe', t: 'Chickpea curry', m: 5, r: 5, n: 1, by: 'Jo', srv: 1, diet: ['Vegan', 'Vegetarian'], meth: 'One pot', s: 'Chickpea curry.', u: ['chickpeas'], tone: 0 },
+  ]);
+}
+const RECENTS = ['lentil dal', 'one pot pasta', 'banana bread'];
+const SUGGESTIONS = ['chickpea curry', 'chickpea curry slow cooker', 'chickpea curry coconut milk', 'chickpea and spinach curry', 'chana masala', 'chickpea tikka masala'];
+const VOCAB = [...new Set(DATA.flatMap(d => d.t.toLowerCase().split(/[^a-z]+/)).filter(w => w.length > 3))];
+
+const S = { q: params.has('q') ? params.get('q') : MODE === 'empty' ? '' : MODE === 'noresults' ? 'chickpea curyy' : 'chickpea curry',
+  type: new Set(), diet: new Set(), meth: new Set(), time: 0, rating: 0, sort: 'rel', page: 1, sheet: false };
+const PER = 10;
+const TIMES = [[30, 'Under 30 minutes'], [45, 'Under 45 minutes'], [60, 'Under 1 hour']];
+const RATINGS = [[4.5, '4.5 stars and up'], [4, '4 stars and up']];
+
+/* ---------- helpers ---------- */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const stem = (w) => w.replace(/(ies|y|s)$/, '');
+const tokens = (q) => q.toLowerCase().split(/\s+/).filter(Boolean);
+const fmtNum = (n) => n.toLocaleString('en-GB');
+const fmtTime = (m) => m < 60 ? `${m} min` : `${Math.floor(m / 60)} hr${m % 60 ? ` ${m % 60} min` : ''}`;
+const plural = (n, one, many) => `${fmtNum(n)} ${n === 1 ? one : many}`;
+const hay = (d) => `${d.t} ${d.s} ${d.u.join(' ')} ${d.diet.join(' ')}`.toLowerCase();
+const matchesQuery = (d, q) => tokens(q).every(t => hay(d).includes(stem(t)));
+function hi(text, q) {
+  const st = tokens(q).map(stem).filter(Boolean);
+  if (!st.length) return esc(text);
+  const re = new RegExp(`(${st.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})(\\w*)`, 'gi');
+  return esc(text).replace(re, '<strong>$1$2</strong>').replace(/<\/strong> <strong>/g, ' ');
+}
+function lev(a, b) {
+  const m = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) m[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+    m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return m[a.length][b.length];
+}
+function didYouMean(q) {
+  let changed = false;
+  const out = tokens(q).map(t => {
+    if (VOCAB.some(v => v.includes(stem(t)))) return t;
+    const best = VOCAB.map(v => [lev(t, v), v]).sort((x, y) => x[0] - y[0])[0];
+    if (best && best[0] <= 2) { changed = true; return best[1]; }
+    return t;
+  });
+  return changed ? out.join(' ') : '';
+}
+
+/* ---------- filtering and facets ---------- */
+function passes(d, skip) {
+  if (skip !== 'type' && S.type.size && !S.type.has(d.kind)) return false;
+  if (skip !== 'diet' && [...S.diet].some(x => !d.diet.includes(x))) return false;
+  if (skip !== 'meth' && S.meth.size && !S.meth.has(d.meth)) return false;
+  if (skip !== 'time' && S.time && !(d.m !== null && d.m <= S.time)) return false;
+  if (skip !== 'rating' && S.rating && !(d.r !== null && d.r >= S.rating)) return false;
+  return true;
+}
+const pool = () => DATA.filter(d => matchesQuery(d, S.q));
+const countFor = (facet, pred) => pool().filter(d => passes(d, facet) && pred(d)).length;
+function score(d) {
+  const text = tokens(S.q).reduce((s, t) => { const k = stem(t); return s + (d.t.toLowerCase().includes(k) ? 3 : 0) + (d.s.toLowerCase().includes(k) ? 1 : 0); }, 0);
+  return text + (d.r || 0) * 1.5 + Math.log10((d.n || 0) + 1) / 2 + (d.kind === 'collection' ? 8 : 0);
+}
+function results() {
+  const r = pool().filter(d => passes(d));
+  const cmp = { rel: (a, b) => score(b) - score(a), rating: (a, b) => (b.r || 0) - (a.r || 0) || b.n - a.n, quick: (a, b) => (a.m ?? 1e9) - (b.m ?? 1e9) }[S.sort];
+  return r.sort(cmp);
+}
+const applied = () => [
+  ...[...S.type].map(v => ['type', v, v === 'recipe' ? 'Recipes' : 'Collections']),
+  ...[...S.diet].map(v => ['diet', v, v]),
+  ...(S.time ? [['time', S.time, TIMES.find(t => t[0] === S.time)[1]]] : []),
+  ...(S.rating ? [['rating', S.rating, RATINGS.find(t => t[0] === S.rating)[1]]] : []),
+  ...[...S.meth].map(v => ['meth', v, v]),
+];
+function removeFilter(f, v) {
+  if (f === 'time') S.time = 0; else if (f === 'rating') S.rating = 0; else S[f].delete(v);
+  S.page = 1;
+}
+
+/* ---------- drawing ---------- */
+const ico = {
+  star: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2 6.3 20.3l1.2-6.4L2.8 9.5l6.4-.8z"/></svg>',
+  x: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  clock: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  search: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+  sliders: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>',
+  alert: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.8 19.5h18.4z"/><path d="M12 10v4.5M12 17.2v.1"/></svg>',
+};
+function bowl(tone) {
+  const c = TONES[tone % TONES.length];
+  const chick = SEATS.map(([x, y], i) => `<circle cx="${x + 6}" cy="${y - 6 + (i % 2) * 3}" r="3.2" fill="#ecc985"/>`).join('');
+  return `<svg viewBox="0 0 112 84" aria-hidden="true" focusable="false"><rect width="112" height="84" fill="var(--accent-subtle)"/>
+  <ellipse cx="56" cy="40" rx="38" ry="13" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <ellipse cx="56" cy="40" rx="32" ry="10" fill="${c}"/>${chick}<circle cx="46" cy="38" r="2" fill="#5f8a3a"/><circle cx="68" cy="42" r="2" fill="#5f8a3a"/><circle cx="60" cy="34" r="1.6" fill="#5f8a3a"/>
+  <path d="M18 40c0 18 16 30 38 30s38-12 38-30" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <path d="M30 52c4 8 14 12 26 12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" opacity=".5"/></svg>`;
+}
+function stack() {
+  return `<svg viewBox="0 0 112 84" aria-hidden="true" focusable="false"><rect width="112" height="84" fill="var(--accent-subtle)"/>
+  <rect x="30" y="16" width="52" height="38" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5" transform="rotate(-8 56 35)"/>
+  <rect x="34" y="22" width="52" height="38" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5" transform="rotate(4 60 41)"/>
+  <rect x="30" y="28" width="52" height="40" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <circle cx="56" cy="48" r="10" fill="var(--accent)"/><circle cx="52" cy="46" r="2.2" fill="#ecc985"/><circle cx="58" cy="50" r="2.2" fill="#ecc985"/></svg>`;
+}
+
+function row(d) {
+  const isC = d.kind === 'collection';
+  const rating = d.r === null ? (isC ? '' : '<span class="rating"><span>No ratings yet</span></span>')
+    : `<span class="rating">${ico.star}<b>${d.r.toFixed(1)}</b><span>(${fmtNum(d.n)})</span></span>`;
+  const tags = d.diet.filter(x => x !== 'Vegetarian' || !d.diet.includes('Vegan')).slice(0, 2).map(x => `<span class="badge${x === 'Vegan' ? ' good' : ''}">${x}</span>`).join('');
+  const uses = d.u.length ? `<span class="uses">Uses <strong>${esc(d.u.slice(0, 3).join(', '))}</strong></span>` : '';
+  const side = isC ? `<b>${d.srv}</b><span>recipes</span>` : `<b>${fmtTime(d.m)}</b><span>Serves ${d.srv}</span>`;
+  const inline = isC ? `${d.srv} recipes` : `${fmtTime(d.m)}`;
+  return `<li class="res"><div class="thumb">${isC ? stack() : bowl(d.tone)}</div>
+   <div class="body"><p class="kicker">${isC ? 'Collection' : 'Recipe'} by ${esc(d.by)}</p>
+   <h2 class="title"><a href="#"><span>${hi(d.t, S.q)}</span></a></h2>
+   <p class="snip">${hi(d.s, S.q)}</p>
+   <div class="meta">${rating}<span class="inline-meta">${inline}</span>${tags}${uses}</div></div>
+   <div class="side">${side}</div></li>`;
+}
+
+function facetGroup(name, legend, opts, type) {
+  return `<div class="group"><fieldset><legend>${legend}</legend>${opts.map(([val, label, n, checked]) =>
+    `<label class="opt${n === 0 && !checked ? ' zero' : ''}"><input type="${type}" name="${name}" value="${esc(val)}"${checked ? ' checked' : ''} data-facet="${name}"><span>${label}</span><span class="n">${n}</span></label>`).join('')}</fieldset></div>`;
+}
+function drawFacets(n) {
+  const methods = ['One pot', 'Slow cooker', 'Oven', 'Instant Pot'];
+  const dietOpts = ['Vegan', 'Vegetarian', 'Gluten-free', 'Dairy-free'];
+  $('#facets').innerHTML = `<div class="facets-head"><h2>Filters</h2><button class="icon-btn" type="button" id="closeSheet" aria-label="Close filters">${ico.x}</button></div>
+  <div class="scroll">
+  ${facetGroup('type', 'Type', [['recipe', 'Recipes', countFor('type', d => d.kind === 'recipe'), S.type.has('recipe')], ['collection', 'Collections', countFor('type', d => d.kind === 'collection'), S.type.has('collection')]], 'checkbox')}
+  ${facetGroup('diet', 'Diet', dietOpts.map(v => [v, v, countFor('diet', d => d.diet.includes(v)), S.diet.has(v)]), 'checkbox')}
+  ${facetGroup('time', 'Total time', [[0, 'Any time', countFor('time', () => true), !S.time], ...TIMES.map(([v, l]) => [v, l, countFor('time', d => d.m !== null && d.m <= v), S.time === v])], 'radio')}
+  ${facetGroup('rating', 'Rating', [[0, 'Any rating', countFor('rating', () => true), !S.rating], ...RATINGS.map(([v, l]) => [v, l, countFor('rating', d => d.r !== null && d.r >= v), S.rating === v])], 'radio')}
+  ${facetGroup('meth', 'Method', methods.map(v => [v, v, countFor('meth', d => d.meth === v), S.meth.has(v)]), 'checkbox')}
+  </div>
+  <div class="sheet-foot"><button class="btn btn-primary" type="button" id="showBtn">${n ? `Show ${plural(n, 'result', 'results')}` : 'No results, change filters'}</button></div>`;
+}
+
+function render() {
+  const q = S.q.trim();
+  const res = q ? results() : [];
+  const total = res.length;
+  const pages = Math.max(1, Math.ceil(total / PER));
+  S.page = Math.min(S.page, pages);
+  const start = (S.page - 1) * PER;
+  const shown = res.slice(start, start + PER);
+  const ap = applied();
+  $('#q').value = S.q;
+  $('#clearBtn').hidden = !S.q;
+  document.title = q ? `${q} - Saltbox Kitchen` : 'Search - Saltbox Kitchen';
+  let html = '';
+
+  if (MODE === 'error') {
+    $('#title').textContent = 'Search';
+    $('#sub').textContent = '';
+    $('#facets').innerHTML = '';
+    $('#layout').style.display = 'block';
+    $('#results').innerHTML = `<div class="state"><div class="banner" role="alert">${ico.alert}<div><b>Search isn't working right now</b>Your saved recipes are safe. Check your connection and try again.</div></div>
+      <div class="acts"><button class="btn" type="button" onclick="location.search=''">Try again</button><a class="btn" href="#">Browse the recipe index</a></div></div>`;
+    return;
+  }
+  $('#layout').style.display = '';
+
+  if (!q) {
+    $('#title').textContent = 'Search Saltbox';
+    $('#sub').textContent = 'Find a tested recipe by dish, ingredient or collection.';
+    $('#facets').innerHTML = '';
+    $('#layout').style.display = 'block';
+    $('#results').innerHTML = `<div class="group-h"><h2>Recent searches</h2><div class="recents">${RECENTS.map(r => `<a href="?q=${encodeURIComponent(r)}" data-q="${esc(r)}">${ico.clock}&nbsp;&nbsp;${esc(r)}</a>`).join('')}</div></div>
+      <div class="group-h"><h2>Popular this week</h2><div class="recents">${['chickpea curry', 'chana masala', 'sheet pan gnocchi', 'lemon drizzle cake', 'miso aubergine'].map(r => `<a href="?q=${encodeURIComponent(r)}" data-q="${esc(r)}">${esc(r)}</a>`).join('')}</div></div>`;
+    return;
+  }
+
+  $('#title').textContent = `${fmtNum(total)} ${total === 1 ? 'result' : 'results'} for “${q}”`;
+  $('#sub').textContent = total ? 'Tested recipes and collections from Saltbox Kitchen.' : 'Nothing matches this search.';
+  drawFacets(total);
+
+  const chips = ap.length ? `<div class="chips" aria-label="Applied filters">${ap.map(([f, v, l]) => `<span class="chip">${esc(l)}<button type="button" data-rm="${f}" data-v="${esc(v)}" aria-label="Remove filter ${esc(l)}">${ico.x}</button></span>`).join('')}<button class="clear-all" type="button" id="clearAll">Clear all</button></div>` : '';
+  const bar = `<div class="bar"><span class="range">Showing ${start + 1} to ${start + shown.length} of ${fmtNum(total)}</span><button class="btn filters-btn" type="button" id="openSheet" aria-haspopup="dialog">${ico.sliders}Filters${ap.length ? ` (${ap.length})` : ''}</button>
+    <div class="sort"><label><span>Sort by</span> <select id="sort" aria-label="Sort by"><option value="rel"${S.sort === 'rel' ? ' selected' : ''}>Relevance</option><option value="rating"${S.sort === 'rating' ? ' selected' : ''}>Highest rated</option><option value="quick"${S.sort === 'quick' ? ' selected' : ''}>Quickest</option></select></label></div></div>${chips}`;
+
+  if (!total) {
+    const fix = didYouMean(q);
+    let hint = '';
+    if (ap.length && pool().length) {
+      const best = ap.map(a => { const keep = { type: new Set(S.type), diet: new Set(S.diet), meth: new Set(S.meth), time: S.time, rating: S.rating };
+        removeFilter(a[0], a[1]); const n = pool().filter(d => passes(d)).length; Object.assign(S, keep); return [n, a]; }).sort((a, b) => b[0] - a[0])[0];
+      hint = `<p>Removing <strong>${esc(best[1][2])}</strong> would show ${plural(best[0], 'result', 'results')}.</p>`;
+    }
+    const bare = !ap.length;
+    if (bare) { $('#facets').innerHTML = ''; $('#layout').style.display = 'block'; }
+    html = `${bare ? '' : bar}<div class="state"><svg class="art" width="120" height="90" viewBox="0 0 112 84" aria-hidden="true"><rect width="112" height="84" rx="12" fill="var(--accent-subtle)"/><ellipse cx="56" cy="40" rx="30" ry="9" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/><path d="M26 40c0 16 13 26 30 26s30-10 30-26" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/><path d="M48 24c0-4 4-4 4-8M60 24c0-4 4-4 4-8" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <h2>No results for “${esc(q)}”</h2>
+      ${fix ? `<p>Did you mean <a class="link" href="?q=${encodeURIComponent(fix)}" data-q="${esc(fix)}">${esc(fix)}</a>?</p>` : '<p>Check the spelling, or try a broader word such as the main ingredient.</p>'}${hint}
+      <div class="acts">${ap.length ? '<button class="btn" type="button" id="clearAll">Clear all filters</button>' : ''}<a class="btn" href="?q=chickpea%20curry" data-q="chickpea curry">Search chickpea curry</a></div></div>`;
+  } else {
+    let pager = '';
+    if (pages > 1) {
+      pager = `<nav class="pager" aria-label="Pagination"><span class="count">Showing ${start + 1} to ${start + shown.length} of ${fmtNum(total)}</span>
+       <button type="button" data-page="${S.page - 1}" ${S.page === 1 ? 'disabled' : ''}>Previous</button>
+       ${Array.from({ length: pages }, (_, i) => `<button type="button" data-page="${i + 1}" ${i + 1 === S.page ? 'aria-current="page"' : ''} aria-label="Page ${i + 1}">${i + 1}</button>`).join('')}
+       <button type="button" data-page="${S.page + 1}" ${S.page === pages ? 'disabled' : ''}>Next</button></nav>`;
+    }
+    html = `${bar}<ul class="list">${shown.map(row).join('')}</ul>${pager}`;
+  }
+  $('#results').innerHTML = html;
+  syncSheet();
+}
+
+/* ---------- sheet (phone) ---------- */
+const mq = matchMedia('(max-width: 900px)');
+function syncSheet() {
+  const f = $('#facets');
+  f.classList.toggle('open', S.sheet);
+  $('#scrim').classList.toggle('open', S.sheet && mq.matches);
+  if (mq.matches) { f.inert = !S.sheet; f.setAttribute('role', 'dialog'); f.setAttribute('aria-modal', 'true'); f.setAttribute('aria-label', 'Filters'); }
+  else { f.inert = false; f.removeAttribute('role'); f.removeAttribute('aria-modal'); }
+}
+mq.addEventListener('change', () => { S.sheet = false; syncSheet(); });
+function openSheet(on) { S.sheet = on; syncSheet(); if (on) $('#facets .icon-btn')?.focus(); else $('#openSheet')?.focus(); }
+
+/* ---------- events ---------- */
+function go(q) { S.q = q; S.page = 1; S.type.clear(); S.diet.clear(); S.meth.clear(); S.time = 0; S.rating = 0; hideSuggest(); render(); history.replaceState(null, '', MODE ? `?q=${encodeURIComponent(q)}` : q === 'chickpea curry' ? location.pathname : `?q=${encodeURIComponent(q)}`); }
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.id === 'sort') { S.sort = t.value; S.page = 1; render(); $('#sort').focus(); return; }
+  const f = t.dataset.facet; if (!f) return;
+  if (f === 'time') S.time = Number(t.value); else if (f === 'rating') S.rating = Number(t.value);
+  else t.checked ? S[f].add(t.value) : S[f].delete(t.value);
+  S.page = 1; const keep = S.sheet; render();
+  document.querySelector(`[data-facet="${f}"][value="${CSS.escape(t.value)}"]`)?.focus();
+  S.sheet = keep; syncSheet();
+});
+document.addEventListener('click', (e) => {
+  const c = (s) => e.target.closest(s);
+  let el;
+  if ((el = c('[data-rm]'))) { removeFilter(el.dataset.rm, el.dataset.rm === 'time' || el.dataset.rm === 'rating' ? Number(el.dataset.v) : el.dataset.v); render(); }
+  else if (c('#clearAll')) { S.type.clear(); S.diet.clear(); S.meth.clear(); S.time = 0; S.rating = 0; S.page = 1; render(); }
+  else if ((el = c('[data-page]'))) { S.page = Number(el.dataset.page); render(); $('#title').scrollIntoView({ block: 'start' }); }
+  else if (c('#openSheet')) openSheet(true);
+  else if (c('#closeSheet') || c('#showBtn') || c('#scrim')) openSheet(false);
+  else if ((el = c('[data-q]'))) { e.preventDefault(); $('#q').value = el.dataset.q; go(el.dataset.q); }
+  else if (c('#clearBtn')) { $('#q').value = ''; $('#clearBtn').hidden = true; $('#q').focus(); showSuggest(); }
+  else if (!c('#searchForm')) hideSuggest();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && S.sheet) openSheet(false); });
+
+/* suggestions: combobox with aria-activedescendant */
+const input = $('#q'), box = $('#suggest');
+let items = [], active = -1;
+function showSuggest() {
+  const v = input.value.trim().toLowerCase();
+  let html = '';
+  items = [];
+  if (!v) { items = RECENTS.map(r => ({ t: r, c: 'Recent searches' })); }
+  else if (v.length >= 2) { items = SUGGESTIONS.filter(s => s.includes(v) && s !== v).slice(0, 5).map(s => ({ t: s, c: 'Suggestions' })); }
+  if (!items.length) { hideSuggest(); return; }
+  let last = '';
+  items.forEach((it, i) => { if (it.c !== last) { html += `<div class="gh" role="presentation">${it.c}</div>`; last = it.c; }
+    html += `<div role="option" id="opt${i}" aria-selected="false" data-q="${esc(it.t)}">${ico.search}<span>${esc(it.t)}</span></div>`; });
+  box.innerHTML = html; box.hidden = false; active = -1;
+  input.setAttribute('aria-expanded', 'true'); input.removeAttribute('aria-activedescendant');
+}
+function hideSuggest() { box.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); active = -1; }
+function setActive(i) {
+  active = (i + items.length) % items.length;
+  box.querySelectorAll('[role=option]').forEach((o, k) => o.setAttribute('aria-selected', k === active));
+  input.setAttribute('aria-activedescendant', `opt${active}`);
+}
+input.addEventListener('focus', showSuggest);
+input.addEventListener('input', () => { $('#clearBtn').hidden = !input.value; showSuggest(); });
+input.addEventListener('keydown', (e) => {
+  if (box.hidden && e.key === 'ArrowDown') { showSuggest(); }
+  if (!items.length || box.hidden) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+  else if (e.key === 'Escape') hideSuggest();
+  else if (e.key === 'Enter' && active > -1) { e.preventDefault(); input.value = items[active].t; go(items[active].t); }
+});
+box.addEventListener('mousedown', (e) => { const o = e.target.closest('[role=option]'); if (o) { e.preventDefault(); input.value = o.dataset.q; go(o.dataset.q); } });
+$('#searchForm').addEventListener('submit', (e) => { e.preventDefault(); go(input.value.trim()); input.blur(); });
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "seed": "101",
+  "conditions": [
+    "baseline",
+    "prompt",
+    "anthropic",
+    "skill"
+  ],
+  "tasks": {
+    "09-team-members": {
+      "A": "prompt",
+      "B": "baseline",
+      "C": "skill",
+      "D": "anthropic"
+    },
+    "10-notifications": {
+      "A": "prompt",
+      "B": "anthropic",
+      "C": "baseline",
+      "D": "skill"
+    },
+    "11-search-results": {
+      "A": "prompt",
+      "B": "baseline",
+      "C": "anthropic",
+      "D": "skill"
+    },
+    "12-mobile-product": {
+      "A": "prompt",
+      "B": "baseline",
+      "C": "skill",
+      "D": "anthropic"
+    }
+  }
+}

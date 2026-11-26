@@ -1,0 +1,402 @@
+{
+  "01-settings": {
+    "baseline": {
+      "hierarchy": 6.5,
+      "layout": 6.5,
+      "typography": 6.5,
+      "colour": 6.5,
+      "craft": 5.5,
+      "realism": 6.5,
+      "mobile": 6,
+      "dark": 8,
+      "overall": 5,
+      "notes": "opusA: desktop.png: notification row dividers stop short of the toggle columns and leave stub lines beside bare '-' placeholders, so the grid looks broken | sonnetA: desktop.png: the unsaved-changes bar sits over the Notifications heading, and the notification matrix has stray dash cells and a generic purple look"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 7,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusA: desktop-fold.png: the sticky bar says 'All changes saved' while Discard and a filled Save changes button stay active, a contradictory state | sonnetA: dark.png: no dark mode, the light page is shown unchanged; the sticky bar also says All changes saved beside an active Save button"
+    },
+    "anthropic": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusA: desktop.png: the Profile form has no Save button anywhere, so the primary job of editing your profile cannot be completed | sonnetA: dark.png: no dark mode, it renders the light page unchanged; the Profile form also has no Save button anywhere"
+    },
+    "skill": {
+      "hierarchy": 7.5,
+      "layout": 8,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 8,
+      "dark": 8,
+      "overall": 8,
+      "notes": "opusA: desktop-fold.png: the in-page section nav sits beside the app sidebar, so two nav columns take about 490px before any content starts | sonnetA: desktop-fold.png: the page is a plain one-column stack of rows with little visual emphasis, so Profile, Notifications and Billing look equally weighted"
+    }
+  },
+  "02-invoices-table": {
+    "baseline": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6.5,
+      "realism": 7,
+      "mobile": 7.5,
+      "dark": 8,
+      "overall": 6.5,
+      "notes": "opusA: desktop-fold.png: the Actions column is a ragged mix of one or two green text links per row with no shared alignment, so the right edge reads as noise | sonnetA: desktop.png: the sidebar background stops at 900 px while the page continues, and the native selects look unstyled"
+    },
+    "prompt": {
+      "hierarchy": 6,
+      "layout": 7,
+      "typography": 6,
+      "colour": 6,
+      "craft": 5.5,
+      "realism": 5,
+      "mobile": 6,
+      "dark": 1.5,
+      "overall": 5,
+      "notes": "opusA: desktop.png: the 'All invoices' card says 11 while the footer says 'Showing 12 of 12 invoices', and the '11 - $34,993.65' label is cryptic | sonnetA: desktop-fold.png: the first KPI reads 11 - $34,993.65 (odd count and amount joined by a dash), and it wraps badly on mobile-fold.png"
+    },
+    "anthropic": {
+      "hierarchy": 7,
+      "layout": 7.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7.5,
+      "realism": 8.5,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusA: desktop-fold.png: up to five filled green row buttons (Send invoice, Send reminder) compete with the New invoice primary button | sonnetA: mobile-fold.png: the summary card and two stacked selects fill the screen, so no invoice row is visible above the fold; many identical green row buttons add noise on desktop"
+    },
+    "skill": {
+      "hierarchy": 8.5,
+      "layout": 8.5,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 8.5,
+      "realism": 9,
+      "mobile": 8,
+      "dark": 8.5,
+      "overall": 8.5,
+      "notes": "opusA: desktop-fold.png: status tags are tiny low-contrast square chips, so overdue rows do not stand out when scanning the list | sonnetA: mobile-fold.png: the Export and New invoice buttons crowd the title and the subtitle wraps beneath them"
+    }
+  },
+  "03-sign-in": {
+    "baseline": {
+      "hierarchy": 7.5,
+      "layout": 6.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 7.5,
+      "dark": 7,
+      "overall": 6,
+      "notes": "opusA: desktop-fold.png: horizontal ruled lines run across the whole right panel behind the cards and quote, so they read as stray table borders | sonnetA: desktop-fold.png: the right panel floats two offset cards and a small quote in a large empty green area, which feels unanchored"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 6,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 6.5,
+      "realism": 7,
+      "mobile": 7.5,
+      "dark": 1.5,
+      "overall": 6,
+      "notes": "opusA: desktop-fold.png: the right panel stacks three cards against the top edge and the quote at the bottom, leaving a 450px dead zone between them | sonnetA: dark.png: no dark mode, the light page is shown unchanged; the hero panel also has a large empty middle between the cards and the quote"
+    },
+    "anthropic": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 8,
+      "colour": 8,
+      "craft": 8,
+      "realism": 8.5,
+      "mobile": 8,
+      "dark": 1.5,
+      "overall": 8,
+      "notes": "opusA: desktop-fold.png: the expense rows show a space before each comma ('Mon 16 Nov , receipt matched'), a visible text glitch on the hero card | sonnetA: dark.png: no dark mode; the tagline on the right sits on the ruled lines and is crossed by one"
+    },
+    "skill": {
+      "hierarchy": 7.5,
+      "layout": 6.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7.5,
+      "mobile": 7,
+      "dark": 7.5,
+      "overall": 6,
+      "notes": "opusA: desktop-fold.png: the footer links are left-aligned while the links above them are centred, and the form column floats in empty white space | sonnetA: desktop-fold.png: it reads as a generic navy and blue SaaS sign-in with no distinctive idea"
+    }
+  },
+  "04-empty-onboarding": {
+    "baseline": {
+      "hierarchy": 7,
+      "layout": 6.5,
+      "typography": 6,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 7,
+      "dark": 7.5,
+      "overall": 5.5,
+      "notes": "opusA: desktop-fold.png: the headline wraps so that 'it.' sits alone on the second line, a widow in the largest text on the page | sonnetA: desktop-fold.png: the headline wraps to leave the single word it. alone on the second line"
+    },
+    "prompt": {
+      "hierarchy": 6.5,
+      "layout": 7,
+      "typography": 7.5,
+      "colour": 7.5,
+      "craft": 7.5,
+      "realism": 7.5,
+      "mobile": 7,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opusA: desktop.png: six CTAs (Create a note, three card buttons, two Start links, Send invite) compete, so the empty state has no clear single next step | sonnetA: dark.png: no dark mode, the light page is shown unchanged; the page also carries about seven competing actions, and the headline leaves in it. on its own line"
+    },
+    "anthropic": {
+      "hierarchy": 7,
+      "layout": 6,
+      "typography": 7.5,
+      "colour": 6.5,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 6.5,
+      "dark": 1.5,
+      "overall": 6,
+      "notes": "opusA: mobile.png: the phone layout has no menu and drops the getting-started checklist, and the invite field truncates its placeholder | sonnetA: desktop-fold.png: the very heavy headline, template tiles, dashed preview and button compete, and the dot grid ends in a strip below the page in desktop.png"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 8,
+      "colour": 8,
+      "craft": 7.5,
+      "realism": 8,
+      "mobile": 8,
+      "dark": 8.5,
+      "overall": 8,
+      "notes": "opusA: desktop-fold.png: the checklist's 'Write a note first' is styled as a button but is a precondition hint, so it reads as an action that does nothing | sonnetA: desktop-fold.png: the setup panel repeats three outline buttons whose actions overlap the empty-state buttons"
+    }
+  },
+  "05-pricing": {
+    "baseline": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 5.5,
+      "dark": 7.5,
+      "overall": 6,
+      "notes": "opusB: mobile.png: the compare table shows only the Hobby column with no visible plan switcher, so on a phone it compares nothing | sonnetB: mobile.png: the compare table shows only the Hobby column with no way to see Team or Scale"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 6.5,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 6.5,
+      "realism": 7,
+      "mobile": 5,
+      "dark": 7.5,
+      "overall": 5.5,
+      "notes": "opusB: mobile.png: the compare table section labels (MON, AL, DATA AI, SECURIT) are clipped at the right edge | sonnetB: mobile.png: the compare table is clipped on the right and its section labels are cut off (MON, AL, SECURIT)"
+    },
+    "anthropic": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 8,
+      "colour": 7.5,
+      "craft": 7.5,
+      "realism": 8.5,
+      "mobile": 7.5,
+      "dark": 2,
+      "overall": 7,
+      "notes": "opusB: dark.png: there is no dark mode, the page renders identical to light | sonnetB: desktop-fold.png: the tall hero and uptime strip push the plan cards below the fold, so no price is readable on the first screen"
+    },
+    "skill": {
+      "hierarchy": 7.5,
+      "layout": 8,
+      "typography": 7,
+      "colour": 7.5,
+      "craft": 8,
+      "realism": 8.5,
+      "mobile": 8,
+      "dark": 7.5,
+      "overall": 7.5,
+      "notes": "opusB: desktop-fold.png: the small detached dollar sign before each price ('$ 29') reads like a spacing bug | sonnetB: desktop.png: the Starter card leaves a dead gap under its feature list and the blue-on-white palette is generic"
+    }
+  },
+  "06-checkout": {
+    "baseline": {
+      "hierarchy": 6,
+      "layout": 6.5,
+      "typography": 6.5,
+      "colour": 7,
+      "craft": 5,
+      "realism": 6.5,
+      "mobile": 5.5,
+      "dark": 6.5,
+      "overall": 5.5,
+      "notes": "opusB: desktop.png: the quantity steppers collide with the variant text ('bean[- 2 +]', 'filter[- 1 +]') | sonnetB: desktop-fold.png: the quantity stepper collides with the wrapped product description (bean, ground for filter)"
+    },
+    "prompt": {
+      "hierarchy": 6.5,
+      "layout": 6.5,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6,
+      "realism": 7,
+      "mobile": 5,
+      "dark": 2,
+      "overall": 5.5,
+      "notes": "opusB: dark.png: there is no dark mode, the page renders identical to light | sonnetB: mobile-fold.png: the full order summary sits above the form, so the first screen has no form field, and the stepper wraps badly"
+    },
+    "anthropic": {
+      "hierarchy": 7,
+      "layout": 6.5,
+      "typography": 8,
+      "colour": 7,
+      "craft": 7,
+      "realism": 7,
+      "mobile": 7,
+      "dark": 2,
+      "overall": 7,
+      "notes": "opusB: dark.png: there is no dark mode, the page renders identical to light | sonnetB: dark.png: identical to the light page, so dark mode is not supported"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 8.5,
+      "realism": 9,
+      "mobile": 8.5,
+      "dark": 8,
+      "overall": 8.5,
+      "notes": "opusB: desktop.png: the order summary is not sticky, so the right column sits empty for the lower 1000 px of the form | sonnetB: desktop.png: the total is shown twice, in the summary card and again above the Pay button"
+    }
+  },
+  "07-dashboard": {
+    "baseline": {
+      "hierarchy": 7,
+      "layout": 6,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6,
+      "realism": 7.5,
+      "mobile": 5.5,
+      "dark": 7.5,
+      "overall": 5.5,
+      "notes": "opusB: desktop.png: the sidebar background ends at 900 px and leaves a bare strip below it | sonnetB: mobile-fold.png: the Orders KPI delta breaks into three misaligned pieces (triangle, 6, more than last week)"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 8,
+      "mobile": 5.5,
+      "dark": 2,
+      "overall": 6.5,
+      "notes": "opusB: mobile-fold.png: the nav collapses to a lone 'Today' pill with no way to reach Orders, Products or Customers | sonnetB: mobile-fold.png: the navigation collapses to a lone Today pill, so Orders, Products and Customers are unreachable"
+    },
+    "anthropic": {
+      "hierarchy": 9,
+      "layout": 8,
+      "typography": 8,
+      "colour": 8,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 7,
+      "dark": 2,
+      "overall": 7.5,
+      "notes": "opusB: mobile-fold.png: the navigation disappears on a phone, with no menu button or tab bar | sonnetB: desktop.png: the Selling most today card ends with a large empty area while its neighbour is full"
+    },
+    "skill": {
+      "hierarchy": 8.5,
+      "layout": 8.5,
+      "typography": 8,
+      "colour": 8,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 8,
+      "dark": 8.5,
+      "overall": 8.5,
+      "notes": "opusB: mobile-fold.png: the conversion delta wraps to two lines with its arrow orphaned to the left | sonnetB: mobile-fold.png: the Conversion delta wraps and leaves the red triangle detached from its text"
+    }
+  },
+  "08-mobile-banking": {
+    "baseline": {
+      "hierarchy": 6,
+      "layout": 6.5,
+      "typography": 6.5,
+      "colour": 6.5,
+      "craft": 5.5,
+      "realism": 6,
+      "mobile": 6.5,
+      "dark": 6.5,
+      "overall": 5,
+      "notes": "opusB: mobile.png: home holds only a balance and six transactions, with no spending view or upcoming payments | sonnetB: desktop-fold.png: the Salary icon uses a tiny text arrow glyph that looks unfinished next to the other icons"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 7,
+      "realism": 6,
+      "mobile": 6,
+      "dark": 2,
+      "overall": 6,
+      "notes": "opusB: dark.png: there is no dark mode, the page renders identical to light | sonnetB: mobile-fold.png: the decorative ring on the balance card runs through the cents and muddies the main number"
+    },
+    "anthropic": {
+      "hierarchy": 7.5,
+      "layout": 7,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 7.5,
+      "realism": 6.5,
+      "mobile": 6,
+      "dark": 2,
+      "overall": 7,
+      "notes": "opusB: desktop-fold.png: the header sparkline runs past the card's right edge into the phone bezel | sonnetB: mobile.png: the full-page shot is the same as the fold, so only three transactions are visible and the rest of the list is not shown"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.5,
+      "colour": 8,
+      "craft": 7.5,
+      "realism": 9,
+      "mobile": 8,
+      "dark": 7,
+      "overall": 8,
+      "notes": "opusB: dark.png: the navy header barely separates from the near-black body | sonnetB: desktop.png: the app is a bare 400px strip on a huge empty canvas with no device frame"
+    }
+  }
+}

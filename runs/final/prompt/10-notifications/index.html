@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notifications - Gigwell</title>
+<style>
+  :root {
+    --bg: #f7f6f3; --surface: #ffffff; --surface-2: #f1efe9; --line: #e6e3da; --line-strong: #cdc9bd;
+    --text: #1b1d1a; --muted: #5d625a; --accent: #0c6b4f; --accent-hover: #095740; --accent-soft: #dff3ea; --unread: #f2faf6;
+    --pay: #8a5300; --pay-bg: #fff0d1; --msg: #1c4fb0; --msg-bg: #e5edff; --prop: #0c6b4f; --prop-bg: #dff3ea; --rev: #8a2a63; --rev-bg: #fbe6f2; --sys: #4a4f47; --sys-bg: #ebeae5;
+    --r: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#10120f; --surface:#181b17; --surface-2:#20241f; --line:#2b3029; --line-strong:#3c423a; --text:#eef0ea; --muted:#a4aa9e; --accent:#5fd4a4; --accent-hover:#86e2bc; --accent-soft:#17382b; --unread:#16221c;
+      --pay:#f3c26b; --pay-bg:#352a10; --msg:#8fb0ff; --msg-bg:#1c2745; --prop:#5fd4a4; --prop-bg:#17382b; --rev:#f29bcc; --rev-bg:#3a1c2e; --sys:#c3c8bc; --sys-bg:#262a24; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .topbar-in { max-width: 960px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 20px; }
+  .brand { font-weight: 800; font-size: 20px; letter-spacing: -.03em; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+  .brand svg { width: 22px; height: 22px; }
+  .topnav { display: flex; gap: 4px; flex: 1; }
+  .topnav a { padding: 6px 12px; color: var(--muted); text-decoration: none; font-weight: 500; border-radius: 8px; }
+  .topnav a:hover { background: var(--surface-2); }
+  .topnav a[aria-current] { color: var(--text); }
+  .av { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 12px; flex: none; }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; display: grid; grid-template-columns: 1fr 260px; gap: 32px; align-items: start; }
+  .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  h1 { margin: 0; font-size: 26px; letter-spacing: -.02em; line-height: 1.2; }
+  .btn { font: inherit; font-weight: 600; border-radius: 8px; padding: 8px 14px; min-height: 40px; cursor: pointer; border: 1px solid var(--line-strong); background: transparent; color: var(--text); }
+  .btn:hover:not(:disabled) { background: var(--surface-2); }
+  .btn:disabled { color: var(--muted); cursor: default; opacity: .7; }
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 20px; overflow-x: auto; }
+  .tab { font: inherit; background: none; border: 0; padding: 10px 12px; min-height: 44px; color: var(--muted); font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; display: flex; gap: 6px; align-items: center; }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  .tab .n { background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 0 7px; line-height: 18px; min-width: 18px; text-align: center; }
+  @media (prefers-color-scheme: dark) { .tab .n { color: #0b2a1e; } }
+  .group h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 24px 0 8px; font-weight: 700; }
+  .group:first-child h2 { margin-top: 0; }
+  ul.feed { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  .item { display: grid; grid-template-columns: 40px 1fr auto; gap: 14px; padding: 16px; border-bottom: 1px solid var(--line); position: relative; }
+  .item:last-child { border-bottom: 0; }
+  .item.unread { background: var(--unread); }
+  .item.unread::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+  .ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; }
+  .ic svg { width: 20px; height: 20px; }
+  .ic.payment { background: var(--pay-bg); color: var(--pay); } .ic.message { background: var(--msg-bg); color: var(--msg); }
+  .ic.proposal { background: var(--prop-bg); color: var(--prop); } .ic.review { background: var(--rev-bg); color: var(--rev); } .ic.system { background: var(--sys-bg); color: var(--sys); }
+  .t { margin: 0; font-weight: 600; }
+  .d { margin: 2px 0 0; color: var(--muted); overflow-wrap: anywhere; }
+  .acts { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .acts a { font-weight: 600; font-size: 14px; color: var(--accent); text-decoration: none; padding: 6px 0; }
+  .acts a:hover { text-decoration: underline; }
+  .acts .primary { background: var(--accent); color: #fff; padding: 6px 14px; border-radius: 8px; min-height: 36px; display: inline-flex; align-items: center; }
+  @media (prefers-color-scheme: dark) { .acts .primary { color: #0b2a1e; } }
+  .acts .primary:hover { background: var(--accent-hover); text-decoration: none; }
+  .meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  time { color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .read-btn { background: none; border: 0; min-width: 32px; min-height: 32px; border-radius: 8px; color: var(--muted); cursor: pointer; display: grid; place-items: center; }
+  .read-btn:hover { background: var(--surface-2); color: var(--accent); }
+  .read-btn svg { width: 18px; height: 18px; }
+  .empty { background: var(--surface); border: 1px dashed var(--line-strong); border-radius: var(--r); padding: 48px 20px; text-align: center; color: var(--muted); }
+  .empty svg { width: 40px; height: 40px; color: var(--accent); margin-bottom: 8px; }
+  .empty b { display: block; color: var(--text); font-size: 17px; margin-bottom: 4px; }
+  aside .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; }
+  aside h2 { margin: 0 0 4px; font-size: 15px; }
+  aside p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+  .sw { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; min-height: 44px; }
+  .sw input { appearance: none; width: 38px; height: 22px; border-radius: 999px; background: var(--line-strong); position: relative; cursor: pointer; flex: none; margin: 0; transition: background .15s; }
+  .sw input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .15s; }
+  .sw input:checked { background: var(--accent); }
+  .sw input:checked::after { transform: translateX(16px); }
+  @media (prefers-color-scheme: dark) { .sw input:checked { background: var(--accent); } .sw input:checked::after { background: #0b2a1e; } }
+  @media (prefers-reduced-motion: reduce) { .sw input, .sw input::after { transition: none; } }
+  @media (max-width: 800px) {
+    main { grid-template-columns: 1fr; padding: 24px 16px 48px; gap: 24px; }
+    .topbar-in { padding: 0 16px; } .topnav { display: none; } .brand { flex: 1; }
+    .item { grid-template-columns: 40px 1fr; padding: 14px; }
+    .meta { grid-column: 2; flex-direction: row-reverse; justify-content: space-between; align-items: center; margin-top: -6px; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 13l3 3 7-8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Gigwell</div>
+    <nav class="topnav" aria-label="Main"><a href="#">Find work</a><a href="#">Proposals</a><a href="#">Contracts</a><a href="#">Earnings</a></nav>
+    <div class="av" aria-label="Signed in as Maya Chen">MC</div>
+  </div>
+</header>
+
+<main>
+  <section aria-labelledby="h">
+    <div class="head">
+      <h1 id="h">Notifications</h1>
+      <button class="btn" id="markAll" type="button">Mark all as read</button>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Filter notifications" id="tabs"></div>
+    <div id="feed" role="tabpanel" aria-live="polite"></div>
+  </section>
+
+  <aside aria-label="Notification settings">
+    <div class="card">
+      <h2>Email me about</h2>
+      <p>Choose what reaches your inbox.</p>
+      <label class="sw">New messages <input type="checkbox" checked></label>
+      <label class="sw">Proposal updates <input type="checkbox" checked></label>
+      <label class="sw">Payments <input type="checkbox" checked></label>
+      <label class="sw">Weekly job digest <input type="checkbox"></label>
+    </div>
+  </aside>
+</main>
+
+<script>
+  const ICONS = {
+    payment: '<path d="M3 6h14v9H3zM3 9h14M13 12.5h2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    message: '<path d="M4 5h12v8H9l-4 3v-3H4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+    proposal: '<path d="M6 3h6l3 3v11H6zM12 3v3h3M8.5 10h4M8.5 13h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>',
+    review: '<path d="m10 3 2 4.3 4.7.6-3.4 3.2.9 4.7L10 13.500 5.800 15.800l.9-4.700L3.300 7.900 8 7.300z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>',
+    system: '<path d="M10 3a5 5 0 0 0-5 5v3l-1.500 3h13L15 11V8a5 5 0 0 0-5-5zM8.500 16.500a1.500 1.500 0 0 0 3 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>'
+  };
+  const items = [
+    { id: 1, type: "payment", day: "Today", title: "Payment received: $1,200.00", desc: "Fieldnote released the final milestone for \"Brand identity refresh\".", time: "10 min ago", unread: true, act: ["View earnings"] },
+    { id: 2, type: "message", day: "Today", title: "Jonas Weber sent a message", desc: "\"Can we move Thursday's call to 3pm? I want to walk through the revised logo options.\"", time: "1 hr ago", unread: true, act: ["Reply"] },
+    { id: 3, type: "proposal", day: "Today", title: "Fieldnote viewed your proposal", desc: "\"Mobile app onboarding illustrations\" - 4 of 12 applicants have been viewed.", time: "3 hr ago", unread: true, act: ["View proposal"] },
+    { id: 4, type: "proposal", day: "Yesterday", title: "Invitation from Northbeam Labs", desc: "You are invited to apply for \"Landing page redesign\". Budget $2,500, closes in 3 days.", time: "Yesterday, 4:12 pm", unread: false, act: ["Apply now", "Decline"] },
+    { id: 5, type: "payment", day: "Yesterday", title: "Milestone 2 funded", desc: "$450.00 is held in escrow for \"Podcast cover art\".", time: "Yesterday, 9:40 am", unread: false, act: ["View contract"] },
+    { id: 6, type: "review", day: "Earlier this week", title: "Sara Okoye left you a 5-star review", desc: "\"Maya was fast, communicative and the animation exceeded what we asked for.\"", time: "Mon, 2:05 pm", unread: false, act: ["Read review"] },
+    { id: 7, type: "proposal", day: "Earlier this week", title: "Proposal declined", desc: "Your proposal for \"Packaging design\" was not selected. The client chose another freelancer.", time: "Mon, 11:30 am", unread: false, act: [] },
+    { id: 8, type: "system", day: "Earlier this week", title: "Verify your payout method", desc: "Add a bank account so your next payment can be transferred.", time: "Sun, 8:00 am", unread: false, act: ["Add bank account"] }
+  ];
+  const TABS = [["all","All"],["unread","Unread"],["proposal","Proposals"],["message","Messages"],["payment","Payments"]];
+  let filter = "all";
+  const $ = s => document.querySelector(s);
+  const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  function renderTabs() {
+    const unread = items.filter(i => i.unread).length;
+    $("#tabs").innerHTML = TABS.map(([k, l]) => `<button class="tab" role="tab" data-f="${k}" aria-selected="${k === filter}">${l}${k === "unread" && unread ? `<span class="n">${unread}</span>` : ""}</button>`).join("");
+    $("#markAll").disabled = unread === 0;
+  }
+  function render() {
+    renderTabs();
+    const shown = items.filter(i => filter === "all" || (filter === "unread" ? i.unread : i.type === filter));
+    if (!shown.length) {
+      $("#feed").innerHTML = `<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><b>You are all caught up</b>New activity on your gigs will show up here.</div>`;
+      return;
+    }
+    const days = [...new Set(shown.map(i => i.day))];
+    $("#feed").innerHTML = days.map(d => `<div class="group"><h2>${d}</h2><ul class="feed">${shown.filter(i => i.day === d).map(i => `
+      <li class="item ${i.unread ? "unread" : ""}">
+        <div class="ic ${i.type}"><svg viewBox="0 0 20 20" aria-hidden="true">${ICONS[i.type]}</svg></div>
+        <div><p class="t">${i.unread ? '<span style="position:absolute;left:-9999px">Unread: </span>' : ""}${esc(i.title)}</p><p class="d">${esc(i.desc)}</p>
+          ${i.act.length ? `<div class="acts">${i.act.map((a, n) => `<a href="#" class="${n === 0 ? "primary" : ""}">${a}</a>`).join("")}</div>` : ""}</div>
+        <div class="meta"><time>${i.time}</time>${i.unread ? `<button class="read-btn" data-read="${i.id}" aria-label="Mark as read: ${esc(i.title)}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></button>` : ""}</div>
+      </li>`).join("")}</ul></div>`).join("");
+  }
+  $("#tabs").addEventListener("click", e => { const b = e.target.closest("[data-f]"); if (b) { filter = b.dataset.f; render(); } });
+  $("#feed").addEventListener("click", e => {
+    const b = e.target.closest("[data-read]");
+    if (b) { items.find(i => i.id == b.dataset.read).unread = false; render(); }
+    if (e.target.closest(".acts a")) e.preventDefault();
+  });
+  $("#markAll").onclick = () => { items.forEach(i => i.unread = false); render(); };
+  render();
+</script>
+</body>
+</html>

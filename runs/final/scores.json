@@ -1,0 +1,202 @@
+{
+  "09-team-members": {
+    "baseline": {
+      "hierarchy": 4.75,
+      "layout": 5.25,
+      "typography": 4.5,
+      "colour": 5,
+      "craft": 4.25,
+      "realism": 4.5,
+      "mobile": 4,
+      "dark": 2.75,
+      "overall": 4,
+      "notes": "opus1: desktop.png: a red Remove button on every row, the signed-in Admin included, makes the destructive action the loudest thing on the page | opus2: desktop-fold.png: a red-outlined Remove button on every row, the owner included, makes the destructive action the loudest thing on the page | sonnet1: dark.png: identical to the light page, so there is no dark mode at all; the mobile cards are also an unstyled stack of plain 'Active' text and default selects | sonnet2: mobile-fold.png: the Team nav tab is clipped to Tea beside the avatar"
+    },
+    "prompt": {
+      "hierarchy": 6.5,
+      "layout": 6.75,
+      "typography": 6.25,
+      "colour": 6.5,
+      "craft": 6.25,
+      "realism": 6,
+      "mobile": 5.25,
+      "dark": 6.5,
+      "overall": 5.75,
+      "notes": "opus1: mobile-fold.png: the top nav overflows, the active Team tab is clipped to 'Tea' and Settings is gone, and Last active is dropped from the cards | opus2: mobile-fold.png: the active nav tab is clipped to Tea by the avatar, and Last active disappears from the member cards | sonnet1: mobile-fold.png: the Team nav tab is clipped to 'Tea' at the right edge, and each member card stacks a full-width role select, trash icon and status badge into a tall, loose block | sonnet2: mobile-fold.png: each person stacks name, email, select, status and a red Remove button, about 370px per member; dark.png has no dark mode"
+    },
+    "anthropic": {
+      "hierarchy": 7,
+      "layout": 6.75,
+      "typography": 7,
+      "colour": 6.25,
+      "craft": 7,
+      "realism": 8,
+      "mobile": 5.75,
+      "dark": 1.5,
+      "overall": 6.5,
+      "notes": "opus1: desktop.png: the white sidebar background stops at 900px and leaves the rest of the left column bare grey | opus2: desktop.png: the white sidebar background ends at 900 px, leaving a grey block below it | sonnet1: dark.png: identical to the light page, so no dark mode; the saturated blue invite banner also outweighs the member list it sits above, and on mobile its stacked 'Invite / as' labels fill the whole first screen | sonnet2: desktop-fold.png: the oversized Invite ... as ... Send invite banner dominates the page and pushes the member list down; dark.png is identical to light"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.75,
+      "colour": 7.5,
+      "craft": 8.25,
+      "realism": 9,
+      "mobile": 7.5,
+      "dark": 8.5,
+      "overall": 8,
+      "notes": "opus1: desktop-fold.png: the seat meter text is tiny (about 11px) and floats mid-air beside the Invite button instead of aligning with the header | opus2: desktop-fold.png: rows are tight and every avatar has the same blue tint, so 25 rows read as an undifferentiated wall | sonnet1: mobile-fold.png: the role, status and last-active row is loosely aligned, with the timestamp floating at an arbitrary offset and the three items not on a shared grid | sonnet2: mobile-fold.png: role, status and last active wrap onto one unlabeled line per member, so the values lose their column meaning"
+    }
+  },
+  "10-notifications": {
+    "baseline": {
+      "hierarchy": 3.75,
+      "layout": 4.25,
+      "typography": 3.75,
+      "colour": 4.25,
+      "craft": 3,
+      "realism": 3.75,
+      "mobile": 5,
+      "dark": 1.5,
+      "overall": 3.25,
+      "notes": "opus1: desktop-fold.png: rows have no actions, the grey letter avatars ($, M, P) are placeholders, and the default system font gives a wireframe look | opus2: desktop-fold.png: every icon is a grey circle with one letter (M, P, $) and no row has an action, so nothing tells the user what to do | sonnet1: dark.png: identical to the light page, so no dark mode; the page itself is a generic list of grey letter avatars with no actions, no grouping and no state beyond a dot | sonnet2: desktop.png: only seven one-line rows and two thirds of the screen empty; grey circle letters carry no meaning and no row has an action"
+    },
+    "prompt": {
+      "hierarchy": 6.25,
+      "layout": 6.75,
+      "typography": 6.75,
+      "colour": 7,
+      "craft": 6.25,
+      "realism": 6.75,
+      "mobile": 2,
+      "dark": 7.25,
+      "overall": 5,
+      "notes": "opus1: mobile-fold.png: the page overflows sideways, so Mark all as read, the tabs, body text, timestamps and the email toggles are cut off at the right edge | opus2: mobile-fold.png: the page overflows horizontally, so cards, timestamps, tabs and Mark all as read are cut off at the right edge | sonnet1: mobile-fold.png: content overflows the right edge, so 'Mark all as read' is cut off, the filter tabs are clipped, card text is truncated and the timestamps are off-screen | sonnet2: mobile-fold.png: the page overflows horizontally, so Mark all as read, timestamps and toggles are clipped at the right edge"
+    },
+    "anthropic": {
+      "hierarchy": 8,
+      "layout": 7.5,
+      "typography": 8,
+      "colour": 6.5,
+      "craft": 7.75,
+      "realism": 9,
+      "mobile": 7,
+      "dark": 1.5,
+      "overall": 7.25,
+      "notes": "opus1: mobile.png: the wave graphic in the earnings card runs over the 'Two milestones clear on Friday, 28 November' text, and every unread timestamp is alarm-red | opus2: desktop-fold.png: orange rails, red timestamps and orange buttons on every unread card make all items look urgent, so the urgency signal means nothing | sonnet1: dark.png: identical to the light page, so no dark mode; the red timestamps on every unread card are also loud and compete with the primary action buttons | sonnet2: mobile.png: the Needs your answer deadline panel lands at the very bottom, after every notification, burying the 5-hour offer"
+    },
+    "skill": {
+      "hierarchy": 7.75,
+      "layout": 8,
+      "typography": 8,
+      "colour": 7.75,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 7.5,
+      "dark": 8.5,
+      "overall": 7.75,
+      "notes": "opus1: desktop-fold.png: Mark all as read is the only filled primary button, while the failed payout gets the same row styling as a chat message | opus2: desktop-fold.png: the Mark all as read button floats between the title row and the settings card, aligned to neither | sonnet1: mobile-fold.png: the fixed bottom nav covers the first card's text and leaves the email settings as a long collapsed block at the very bottom of the page | sonnet2: mobile-fold.png: oversized type and padding show only two and a half notifications, and the pink unread wash covers most of the list"
+    }
+  },
+  "11-search-results": {
+    "baseline": {
+      "hierarchy": 4.25,
+      "layout": 4.75,
+      "typography": 3.75,
+      "colour": 4.75,
+      "craft": 3,
+      "realism": 4.25,
+      "mobile": 5.25,
+      "dark": 1.5,
+      "overall": 3.5,
+      "notes": "opus1: desktop-fold.png: each card image is a tiny emoji floating in a large flat colour block, and the header search sits flush left while the results are centred | opus2: desktop-fold.png: tiny emoji float in large flat colour blocks, and the header search sits at the far left, unaligned with the results column | sonnet1: dark.png: identical to the light page, so no dark mode; the card images are emoji on flat tint blocks, which looks like a placeholder | sonnet2: desktop-fold.png: emoji on flat tinted tiles stand in for food photos, and there are no real filters, only chips"
+    },
+    "prompt": {
+      "hierarchy": 7,
+      "layout": 6.75,
+      "typography": 7.75,
+      "colour": 7,
+      "craft": 6.25,
+      "realism": 5.75,
+      "mobile": 4,
+      "dark": 7.5,
+      "overall": 6,
+      "notes": "opus1: mobile-fold.png: the Sort select overflows past the right edge and reads 'Most rele' | opus2: mobile-fold.png: the filter chips and the sort select overflow the right edge, cut to Slow and Most rele | sonnet1: mobile-fold.png: the filter chips and the 'Most relevant' sort control run off the right edge and are clipped; every card also uses the same bowl illustration, so results are hard to tell apart | sonnet2: mobile-fold.png: the filter chips and the Sort select run off the right edge and are clipped"
+    },
+    "anthropic": {
+      "hierarchy": 8.5,
+      "layout": 7.5,
+      "typography": 8.75,
+      "colour": 8,
+      "craft": 8,
+      "realism": 9,
+      "mobile": 6.75,
+      "dark": 1.5,
+      "overall": 7.5,
+      "notes": "opus1: desktop.png: the diet tags wrap onto a ragged second line under the meta row, so the cards lose a steady rhythm | opus2: mobile.png: diet tags wrap into two extra rows on every card, leaving a lone Dairy-free pill orphaned under each result | sonnet1: dark.png: identical to the light page, so no dark mode; on mobile the huge top-match hero image pushes real results well below the fold and the tag chips wrap onto orphan rows | sonnet2: mobile-fold.png: the top-match card image fills the first screen and pushes the actual result list below the fold; dark.png is identical to light"
+    },
+    "skill": {
+      "hierarchy": 8,
+      "layout": 8,
+      "typography": 7.75,
+      "colour": 7.5,
+      "craft": 7.75,
+      "realism": 8.75,
+      "mobile": 8,
+      "dark": 8,
+      "overall": 7.5,
+      "notes": "opus1: desktop-fold.png: the search-term highlight turns most of each title orange, and every thumbnail shows the same half-empty bowl glyph | opus2: desktop.png: every thumbnail is the same bowl drawing with a recoloured soup, so the images carry no information | sonnet1: desktop.png: every result uses the same bowl thumbnail, so the images carry no information and the list reads as repeated placeholders | sonnet2: desktop.png: every result uses the same bowl icon in a pink tile, so results are hard to tell apart at a glance"
+    }
+  },
+  "12-mobile-product": {
+    "baseline": {
+      "hierarchy": 4.25,
+      "layout": 4,
+      "typography": 3.5,
+      "colour": 4,
+      "craft": 2.5,
+      "realism": 3.5,
+      "mobile": 4.5,
+      "dark": 1.5,
+      "overall": 2.75,
+      "notes": "opus1: desktop.png: the sticky bar covers the last bullet of the description with no bottom padding, and the shoe is a crude red blob | opus2: mobile-fold.png: the product image is a flat red blob on a grey pill that does not read as a shoe, and a second heart button duplicates the header one | sonnet1: mobile-fold.png: the shoe is a crude flat red blob on a white bar, and dark.png is identical to the light page, so there is no dark mode | sonnet2: mobile-fold.png: the shoe is a crude red blob with a white pill sole, and the page has no price context, delivery or reviews"
+    },
+    "prompt": {
+      "hierarchy": 7.5,
+      "layout": 7,
+      "typography": 7,
+      "colour": 7,
+      "craft": 6.75,
+      "realism": 6.25,
+      "mobile": 7.25,
+      "dark": 7,
+      "overall": 6.5,
+      "notes": "opus1: mobile-fold.png: the shoe illustration is cropped at the left edge and the bag badge shows a pointless '0' | opus2: mobile-fold.png: the shoe is tilted so the upper sinks into a skewed sole, and the cart badge shows a pointless 0 | sonnet1: mobile-fold.png: the bag icon shows a '0' badge, and the sticky CTA gives no hint that a size is still needed | sonnet2: mobile-fold.png: the shoe illustration is awkwardly tilted and the cart badge shows 0"
+    },
+    "anthropic": {
+      "hierarchy": 7.5,
+      "layout": 6.25,
+      "typography": 7.5,
+      "colour": 7,
+      "craft": 6.5,
+      "realism": 5.5,
+      "mobile": 5.75,
+      "dark": 1.5,
+      "overall": 5.75,
+      "notes": "opus1: mobile.png: the full page is identical to the fold, the content sits in an inner scroller, the size grid is cut off under the bar, and the swatches render as broken half-fills | opus2: mobile.png: the full page is identical to the fold because content scrolls inside a fixed frame, so sizes, details and reviews never appear below the half-hidden size row | sonnet1: mobile.png: the full page is the same as the fold and ends at the size row under the sticky bar, so nothing below the sizes is reachable or shown; dark.png also shows no dark mode | sonnet2: dark.png: identical to the light page, no dark mode; mobile.png also shows nothing below the size picker"
+    },
+    "skill": {
+      "hierarchy": 8.25,
+      "layout": 8,
+      "typography": 7.75,
+      "colour": 8,
+      "craft": 8.5,
+      "realism": 9,
+      "mobile": 8.25,
+      "dark": 8,
+      "overall": 8.25,
+      "notes": "opus1: mobile-fold.png: the '1 of 3' counter repeats what the carousel dots already show and crowds the hero's bottom edge | opus2: mobile-fold.png: the sticky add-to-bag bar slices the second row of size chips in half, so the size grid looks broken at first glance | sonnet1: desktop-fold.png: the product sits in a narrow framed column on a wide empty canvas, so desktop gets no layout of its own | sonnet2: mobile-fold.png: the sticky bag bar crops the second row of the size grid with no scroll cue"
+    }
+  }
+}

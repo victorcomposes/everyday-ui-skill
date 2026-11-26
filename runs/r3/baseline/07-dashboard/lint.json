@@ -1,0 +1,73 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 8
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 8
+      }
+    },
+    "contrastFailures": 8
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "nav.side"
+    ]
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(47, 107, 69)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px color(srgb 0.184314 0.419608 0.270588 / 0.55)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 2,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "vs last Thursday",
+        "w": 121,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "vs yesterday",
+        "w": 100,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

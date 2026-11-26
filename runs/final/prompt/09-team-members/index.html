@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members - Cobalt</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --surface: #ffffff; --surface-2: #f0f2f5; --line: #e3e6eb; --line-strong: #cfd4dc;
+    --text: #14171f; --muted: #566072; --accent: #2548d9; --accent-hover: #1c3bb8; --accent-soft: #e8edff;
+    --danger: #b3261e; --danger-soft: #fdecea; --ok: #176b3a; --ok-soft: #e3f4ea; --warn: #8a5300; --warn-soft: #fff1d6;
+    --shadow: 0 1px 2px rgba(20,23,31,.06), 0 8px 24px rgba(20,23,31,.06);
+    --r: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0e1014; --surface:#171a21; --surface-2:#1e222b; --line:#2a2f3a; --line-strong:#3a4150; --text:#eef0f4; --muted:#a2abbb; --accent:#7b93ff; --accent-hover:#9aaeff; --accent-soft:#222a52; --danger:#ff8a80; --danger-soft:#3a1d1b; --ok:#6fd49a; --ok-soft:#173424; --warn:#f3c26b; --warn-soft:#3a2d12; --shadow:none; }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .topbar-in { max-width: 1120px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; letter-spacing: -.01em; }
+  .brand svg { width: 24px; height: 24px; }
+  nav { display: flex; gap: 4px; flex: 1; overflow-x: auto; }
+  nav a { padding: 6px 12px; border-radius: 8px; color: var(--muted); text-decoration: none; font-weight: 500; white-space: nowrap; }
+  nav a:hover { background: var(--surface-2); color: var(--text); }
+  nav a[aria-current="page"] { color: var(--text); background: var(--surface-2); }
+  .me { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: 12px; flex: none; }
+  main { max-width: 1120px; margin: 0 auto; padding: 32px 24px 64px; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  h1 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: -.02em; }
+  .sub { margin: 4px 0 0; color: var(--muted); }
+  .btn { font: inherit; font-weight: 600; border: 1px solid transparent; border-radius: 8px; padding: 9px 16px; cursor: pointer; min-height: 40px; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn-primary { color: #0e1014; } }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--text); }
+  .btn-ghost:hover { background: var(--surface-2); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn-danger { color: #1a0605; } }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); }
+  .tools { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); align-items: center; flex-wrap: wrap; }
+  .search { position: relative; flex: 1; min-width: 200px; max-width: 360px; }
+  .search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
+  .search input { width: 100%; padding-left: 34px; }
+  input, select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px 10px; min-height: 40px; }
+  input::placeholder { color: var(--muted); }
+  .count { color: var(--muted); margin-left: auto; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  .person { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 13px; flex: none; }
+  .person b { display: block; font-weight: 600; }
+  .person small { color: var(--muted); font-size: 13px; display: block; overflow-wrap: anywhere; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 500; }
+  .chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .chip.active { background: var(--ok-soft); color: var(--ok); }
+  .chip.pending { background: var(--warn-soft); color: var(--warn); }
+  .muted { color: var(--muted); }
+  .row-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .icon-btn { background: transparent; border: 1px solid transparent; border-radius: 8px; min-width: 40px; min-height: 40px; display: inline-grid; place-items: center; color: var(--muted); cursor: pointer; font: inherit; }
+  .icon-btn:hover { background: var(--danger-soft); color: var(--danger); }
+  .icon-btn svg { width: 18px; height: 18px; }
+  .empty { padding: 48px 16px; text-align: center; color: var(--muted); }
+  dialog { border: 1px solid var(--line); border-radius: 14px; padding: 0; background: var(--surface); color: var(--text); width: min(440px, calc(100vw - 32px)); box-shadow: 0 24px 64px rgba(0,0,0,.28); }
+  dialog::backdrop { background: rgba(10,12,18,.55); }
+  dialog form { padding: 24px; display: grid; gap: 16px; }
+  dialog h2 { margin: 0; font-size: 19px; letter-spacing: -.01em; }
+  dialog p { margin: 0; color: var(--muted); }
+  label { display: grid; gap: 6px; font-weight: 600; font-size: 14px; }
+  label span.hint { font-weight: 400; color: var(--muted); }
+  .dlg-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; opacity: 0; pointer-events: none; transition: .2s; font-weight: 500; max-width: calc(100vw - 32px); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+  @media (max-width: 720px) {
+    .topbar-in, main { padding-left: 16px; padding-right: 16px; }
+    main { padding-top: 24px; }
+    .head .btn { width: 100%; }
+    thead { display: none; }
+    table, tbody, tr, td { display: block; }
+    tr { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+    tr:last-child { border-bottom: 0; }
+    td { padding: 0; border: 0; }
+    td.c-person { grid-column: 1 / -1; }
+    td.c-role select { width: 100%; }
+    td.c-role { grid-column: 1 / 2; }
+    td.c-status { grid-row: 3; align-self: center; }
+    td.c-last { display: none; }
+    td.c-act { grid-column: 2; grid-row: 2; }
+    .count { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#2548d9"/><path d="M7 12a5 5 0 0 1 9-3M17 12a5 5 0 0 1-9 3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      Cobalt
+    </div>
+    <nav aria-label="Workspace">
+      <a href="#">Reviews</a><a href="#">Projects</a><a href="#" aria-current="page">Team</a><a href="#">Settings</a>
+    </nav>
+    <div class="me" aria-label="Signed in as Amara Okafor">AO</div>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <h1>Team members</h1>
+      <p class="sub">Northwind Studio &middot; <span id="seats">0</span> of 15 seats used</p>
+    </div>
+    <button class="btn btn-primary" id="openInvite" type="button">Invite member</button>
+  </div>
+
+  <section class="panel" aria-label="Members">
+    <div class="tools">
+      <div class="search">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m14 14 4 4"/></svg>
+        <input type="search" id="q" placeholder="Search by name or email" aria-label="Search members">
+      </div>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+    <table>
+      <thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Last active</th><th scope="col"><span class="sr" style="position:absolute;left:-9999px">Actions</span></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>No members match your search.</div>
+  </section>
+</main>
+
+<dialog id="inviteDlg" aria-labelledby="inviteTitle">
+  <form method="dialog" id="inviteForm">
+    <h2 id="inviteTitle">Invite a team member</h2>
+    <p>They will get an email with a link to join Northwind Studio.</p>
+    <label>Email address
+      <input type="email" id="inEmail" required placeholder="name@company.com" autocomplete="off">
+    </label>
+    <label>Role
+      <select id="inRole">
+        <option value="Reviewer">Reviewer</option>
+        <option value="Designer" selected>Designer</option>
+        <option value="Admin">Admin</option>
+      </select>
+      <span class="hint" id="roleHint"></span>
+    </label>
+    <div class="dlg-actions">
+      <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+      <button class="btn btn-primary" type="submit">Send invite</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="rmDlg" aria-labelledby="rmTitle">
+  <form method="dialog" id="rmForm">
+    <h2 id="rmTitle">Remove member?</h2>
+    <p id="rmText"></p>
+    <div class="dlg-actions">
+      <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+      <button class="btn btn-danger" type="submit">Remove</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+  const HINTS = { Admin: "Full access, billing and member management.", Designer: "Upload designs and manage their own reviews.", Reviewer: "Comment and approve. Cannot upload." };
+  const PALETTE = [["#e8edff","#2548d9"],["#fde8f1","#a3145b"],["#e3f4ea","#176b3a"],["#fff1d6","#8a5300"],["#e6f3f8","#0b6481"]];
+  let members = [
+    { id: 1, name: "Amara Okafor", email: "amara@northwind.studio", role: "Admin", status: "Active", last: "Just now" },
+    { id: 2, name: "Liam Fischer", email: "liam@northwind.studio", role: "Designer", status: "Active", last: "2 hours ago" },
+    { id: 3, name: "Priya Raman", email: "priya@northwind.studio", role: "Designer", status: "Active", last: "Yesterday" },
+    { id: 4, name: "Tomás Ibarra", email: "tomas@northwind.studio", role: "Reviewer", status: "Active", last: "3 days ago" },
+    { id: 5, name: "Hannah Lee", email: "hannah.lee@brightloop.io", role: "Reviewer", status: "Pending", last: "Invite sent 2 days ago" },
+    { id: 6, name: "Dmitri Volkov", email: "dmitri@northwind.studio", role: "Designer", status: "Active", last: "Last week" }
+  ];
+  let nextId = 7, removing = null;
+  const $ = s => document.querySelector(s);
+  const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const initials = n => n.split(/[ .@]/).filter(Boolean).slice(0,2).map(s => s[0].toUpperCase()).join("");
+
+  function render() {
+    const q = $("#q").value.trim().toLowerCase();
+    const list = members.filter(m => !q || m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q));
+    $("#rows").innerHTML = list.map(m => {
+      const [bg, fg] = PALETTE[m.id % PALETTE.length];
+      const onlyAdmin = m.role === "Admin" && members.filter(x => x.role === "Admin").length === 1;
+      return `<tr>
+        <td class="c-person"><div class="person"><span class="av" style="background:${bg};color:${fg}" aria-hidden="true">${initials(m.name)}</span><span><b>${esc(m.name)}</b><small>${esc(m.email)}</small></span></div></td>
+        <td class="c-role"><select data-id="${m.id}" aria-label="Role for ${esc(m.name)}" ${onlyAdmin ? 'title="At least one admin is required"' : ""}>
+          ${["Admin","Designer","Reviewer"].map(r => `<option ${r === m.role ? "selected" : ""} ${onlyAdmin && r !== "Admin" ? "disabled" : ""}>${r}</option>`).join("")}</select></td>
+        <td class="c-status"><span class="chip ${m.status.toLowerCase()}">${m.status}</span></td>
+        <td class="c-last muted">${esc(m.last)}</td>
+        <td class="c-act"><div class="row-actions"><button class="icon-btn" data-rm="${m.id}" aria-label="Remove ${esc(m.name)}" ${onlyAdmin ? "disabled style='opacity:.4;cursor:not-allowed'" : ""}>
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h12M8 6V4h4v2M6 6l1 10h6l1-10"/></svg></button></div></td>
+      </tr>`;
+    }).join("");
+    $("#empty").hidden = list.length > 0;
+    $("#count").textContent = list.length + (list.length === 1 ? " member" : " members");
+    $("#seats").textContent = members.length;
+  }
+  function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 3000); }
+
+  $("#q").addEventListener("input", render);
+  $("#rows").addEventListener("change", e => {
+    if (e.target.matches("select")) { const m = members.find(x => x.id == e.target.dataset.id); m.role = e.target.value; toast(m.name + " is now " + m.role); render(); }
+  });
+  $("#rows").addEventListener("click", e => {
+    const b = e.target.closest("[data-rm]"); if (!b) return;
+    removing = members.find(x => x.id == b.dataset.rm);
+    $("#rmText").textContent = removing.name + " will lose access to all reviews and projects right away. Their comments stay.";
+    $("#rmDlg").showModal();
+  });
+  $("#rmForm").addEventListener("submit", () => { members = members.filter(m => m !== removing); toast(removing.name + " was removed"); render(); });
+  $("#openInvite").onclick = () => { $("#roleHint").textContent = HINTS[$("#inRole").value]; $("#inviteDlg").showModal(); $("#inEmail").focus(); };
+  $("#inRole").onchange = e => $("#roleHint").textContent = HINTS[e.target.value];
+  document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => b.closest("dialog").close());
+  $("#inviteForm").addEventListener("submit", () => {
+    const email = $("#inEmail").value.trim(); if (!email) return;
+    const nm = email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    members.push({ id: nextId++, name: nm, email, role: $("#inRole").value, status: "Pending", last: "Invite sent just now" });
+    $("#inviteForm").reset(); toast("Invite sent to " + email); render();
+  });
+  render();
+</script>
+</body>
+</html>

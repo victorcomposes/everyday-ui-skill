@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "inter"
+  ],
+  "textColors": 8,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(86, 96, 114)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(37, 72, 217)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 17,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Reviews",
+        "w": 78,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Projects",
+        "w": 78,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Team",
+        "w": 60,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Settings",
+        "w": 79,
+        "h": 35
+      },
+      {
+        "tag": "button",
+        "text": "Invite member",
+        "w": 358,
+        "h": 43
+      },
+      {
+        "tag": "input",
+        "text": "Search members",
+        "w": 324,
+        "h": 41
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nDesigner\nReviewer",
+        "w": 272,
+        "h": 40
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nDesigner\nReviewer",
+        "w": 272,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 2
+      },
+      "landmark-one-main": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "page-has-heading-one": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 2
+      },
+      "moderate": {
+        "rules": 2,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 2
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "manrope"
+  ],
+  "textColors": 8,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(255, 200, 61)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 2,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Hide balance",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "See all",
+        "w": 57,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

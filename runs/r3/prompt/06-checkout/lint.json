@@ -1,0 +1,87 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "system-ui",
+    "ui-sans-serif"
+  ],
+  "textColors": 4,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(59, 36, 23)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 6,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Cinder & Bloom",
+        "w": 198,
+        "h": 33
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 18,
+        "h": 18
+      },
+      {
+        "tag": "button",
+        "text": "−",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "+",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "−",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "+",
+        "w": 32,
+        "h": 32
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

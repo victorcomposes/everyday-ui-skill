@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Air Runner 90 - Kicksy</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #eee; color: #111; display: flex; justify-content: center; }
+  .app { width: 100%; max-width: 430px; background: #fff; min-height: 100vh; padding-bottom: 80px; position: relative; }
+  .bar { display: flex; justify-content: space-between; padding: 14px 16px; font-size: 20px; }
+  .hero { height: 280px; background: #e8e8ea; display: flex; align-items: center; justify-content: center; }
+  .hero svg { width: 90%; }
+  .pad { padding: 16px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .price { font-size: 20px; font-weight: bold; margin: 8px 0; }
+  .rating { color: #666; font-size: 14px; }
+  h3 { margin: 20px 0 8px; font-size: 15px; }
+  .colors, .sizes { display: flex; gap: 8px; flex-wrap: wrap; }
+  .colors button { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #ccc; cursor: pointer; }
+  .colors button.on { border-color: #111; }
+  .sizes button { width: 52px; height: 40px; border: 1px solid #ccc; background: #fff; border-radius: 4px; cursor: pointer; }
+  .sizes button.on { background: #111; color: #fff; }
+  .sizes button:disabled { color: #bbb; text-decoration: line-through; }
+  p.desc { font-size: 14px; line-height: 1.5; color: #444; }
+  ul { padding-left: 18px; font-size: 14px; color: #444; }
+  .cta { position: fixed; bottom: 0; width: 100%; max-width: 430px; background: #fff; padding: 12px 16px; border-top: 1px solid #ddd; display: flex; gap: 10px; }
+  .cta button { flex: 1; padding: 14px; border: 0; border-radius: 6px; font-size: 16px; cursor: pointer; }
+  .add { background: #111; color: #fff; }
+  .fav { flex: 0 0 52px !important; background: #eee; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="bar"><span>&larr;</span><span>&#9825;</span></div>
+  <div class="hero">
+    <svg viewBox="0 0 300 140" id="shoe"><path d="M20 100c0-20 10-30 30-35l30-20 25 15 60 10c25 5 50 20 60 35v15H20z" fill="#d33" id="body"/><rect x="20" y="108" width="260" height="14" rx="7" fill="#fff" stroke="#999"/></svg>
+  </div>
+  <div class="pad">
+    <h1>Air Runner 90</h1>
+    <div class="rating">&#9733; 4.6 (312 reviews)</div>
+    <div class="price">$129.00</div>
+    <h3>Color: <span id="cname">Red</span></h3>
+    <div class="colors" id="colors"></div>
+    <h3>Size (US)</h3>
+    <div class="sizes" id="sizes"></div>
+    <h3>Description</h3>
+    <p class="desc">A modern take on the classic running silhouette. Breathable mesh upper, cushioned midsole and a durable rubber outsole for everyday wear.</p>
+    <ul><li>Mesh and synthetic leather upper</li><li>Foam midsole</li><li>Rubber outsole</li><li>Imported</li></ul>
+  </div>
+  <div class="cta"><button class="fav">&#9825;</button><button class="add" id="add">Add to bag</button></div>
+</div>
+<script>
+  const cols = [["Red","#d33"],["Black","#222"],["Blue","#2563eb"],["White","#f1f1f1"]];
+  const sizes = [6,7,7.5,8,8.5,9,9.5,10,11,12];
+  let size = null;
+  const cEl = document.getElementById("colors"), sEl = document.getElementById("sizes");
+  cols.forEach(([n, c], i) => {
+    const b = document.createElement("button");
+    b.style.background = c; b.title = n; if (!i) b.className = "on";
+    b.onclick = () => {
+      document.querySelectorAll("#colors button").forEach(x => x.classList.remove("on"));
+      b.classList.add("on");
+      document.getElementById("body").setAttribute("fill", c);
+      document.getElementById("cname").textContent = n;
+    };
+    cEl.appendChild(b);
+  });
+  sizes.forEach(s => {
+    const b = document.createElement("button");
+    b.textContent = s; if (s === 8.5 || s === 12) b.disabled = true;
+    b.onclick = () => {
+      document.querySelectorAll("#sizes button").forEach(x => x.classList.remove("on"));
+      b.classList.add("on"); size = s;
+    };
+    sEl.appendChild(b);
+  });
+  document.getElementById("add").onclick = () => alert(size ? "Added size " + size + " to your bag" : "Please pick a size");
+</script>
+</body>
+</html>

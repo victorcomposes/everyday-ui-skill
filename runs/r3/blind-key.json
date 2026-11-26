@@ -1,0 +1,59 @@
+{
+  "seed": "37",
+  "conditions": [
+    "baseline",
+    "prompt",
+    "anthropic",
+    "skill"
+  ],
+  "tasks": {
+    "01-settings": {
+      "A": "skill",
+      "B": "baseline",
+      "C": "anthropic",
+      "D": "prompt"
+    },
+    "02-invoices-table": {
+      "A": "prompt",
+      "B": "baseline",
+      "C": "skill",
+      "D": "anthropic"
+    },
+    "03-sign-in": {
+      "A": "baseline",
+      "B": "prompt",
+      "C": "anthropic",
+      "D": "skill"
+    },
+    "04-empty-onboarding": {
+      "A": "baseline",
+      "B": "prompt",
+      "C": "anthropic",
+      "D": "skill"
+    },
+    "05-pricing": {
+      "A": "baseline",
+      "B": "skill",
+      "C": "anthropic",
+      "D": "prompt"
+    },
+    "06-checkout": {
+      "A": "anthropic",
+      "B": "skill",
+      "C": "baseline",
+      "D": "prompt"
+    },
+    "07-dashboard": {
+      "A": "baseline",
+      "B": "anthropic",
+      "C": "prompt",
+      "D": "skill"
+    },
+    "08-mobile-banking": {
+      "A": "skill",
+      "B": "anthropic",
+      "C": "baseline",
+      "D": "prompt"
+    }
+  }
+}

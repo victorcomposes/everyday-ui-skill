@@ -1,0 +1,98 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "fraunces",
+    "inter"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(0, 0, 238)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(180, 65, 15)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": true,
+    "px": 73
+  },
+  "smallTapTargets": {
+    "count": 15,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to results",
+        "w": 93,
+        "h": 23
+      },
+      {
+        "tag": "a",
+        "text": "Saffron & Salt",
+        "w": 185,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Vegan",
+        "w": 69,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Under 30 min",
+        "w": 117,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Coconut milk",
+        "w": 114,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Slow cooker",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "tag": "select",
+        "text": "Most relevant\nHighest rated\nQu",
+        "w": 127,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Save Weeknight Chickpea Curry ",
+        "w": 40,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

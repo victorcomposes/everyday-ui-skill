@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home - Fieldnote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Brief: Fieldnote, first screen of an empty workspace. Crimson kit, Berry variant / standard shape / Fraunces titles + Inter.
+   Feel: warm and focused. Domain detail: a note carries its source and a highlighted quote (drawn in the empty-state art).
+   Primary action: "Write your first note", the only filled button on the screen. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #a3285f; --accent-hover: #84204c; --accent-subtle: #fcebef; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #fcf5f7; --brand-deep: #40101e;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --lh-sm: 20px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px; --w-rail: 340px; --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #f08ab5; --accent-hover: #f5aacb; --accent-subtle: #37141e; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d; --frame: #1c1417; --brand-deep: #2c0e17;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+  --text: #e9ebef; --text-muted: #a0a6b2;
+  --accent: #f08ab5; --accent-hover: #f5aacb; --accent-subtle: #37141e; --on-accent: #0b1020;
+  --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+  --placeholder: #8b919d; --frame: #1c1417; --brand-deep: #2c0e17;
+  --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 600 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+h3 { font: 500 var(--text-sm)/var(--lh-sm) var(--font); margin: 0; }
+p { margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+.muted { color: var(--text-muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.lg { min-height: 44px; padding: 0 var(--s-6); font-size: var(--text-md); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.field { display: block; width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+textarea.field { padding: var(--s-2) var(--s-3); min-height: 132px; resize: vertical; line-height: 1.5; }
+.field[aria-invalid="true"] { border: 2px solid var(--danger); padding-left: 11px; padding-right: 11px; }
+.err { display: flex; gap: 6px; margin-top: var(--s-2); color: var(--danger); }
+.err svg { margin-top: 2px; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.shell > aside > .side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); }
+.logo { display: flex; align-items: center; gap: 10px; padding: 0 var(--s-2); min-height: 44px; font: 600 20px/1 var(--font-display); letter-spacing: -0.02em; }
+.nav { display: flex; flex-direction: column; gap: 2px; margin-top: var(--s-4); }
+.nav a { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); }
+.nav a:hover { background: var(--accent-subtle); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav a[aria-current="page"] svg { color: var(--accent); }
+.nav .count { margin-left: auto; font-size: var(--text-xs); color: var(--text-muted); }
+.account { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: var(--s-3) var(--s-2); border-top: 1px solid var(--border); }
+.account .who { min-width: 0; line-height: 1.3; }
+.account .who b { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.account .who span { display: block; font-size: var(--text-xs); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.avatar { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-xs); font-weight: 600; }
+.topbar { display: none; }
+
+main { padding: var(--s-8) var(--s-10) 64px; min-width: 0; }
+.page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); max-width: 1120px; }
+.page-head p { margin-top: var(--rhythm-title); color: var(--text-muted); }
+.page-head .acts { display: flex; gap: var(--s-2); flex: none; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); gap: var(--s-10); max-width: 1120px; margin-top: var(--rhythm-content); align-items: start; }
+
+/* empty state */
+.empty { background: var(--bg-subtle); border-radius: var(--r-lg); padding: var(--s-10) var(--s-8) var(--s-10); text-align: center; }
+.art { position: relative; width: 300px; height: 150px; margin: 0 auto var(--s-6); }
+.art .n { position: absolute; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); text-align: left; }
+.art .back { left: 34px; top: 0; width: 232px; height: 96px; background: var(--bg); }
+.art .front { left: 8px; top: 24px; width: 262px; height: 118px; padding: 14px 16px; box-shadow: var(--shadow-pop); }
+.art .t { display: block; height: 8px; width: 46%; border-radius: 4px; background: var(--border-strong); opacity: .55; }
+.art .hl { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 6px 8px; border-radius: var(--r-sm); background: var(--accent-subtle); }
+.art .hl svg { width: 14px; height: 14px; fill: var(--accent); stroke: none; flex: none; }
+.art .hl i { display: block; height: 6px; border-radius: 3px; background: var(--accent); opacity: .45; }
+.art .hl .stack { flex: 1; display: grid; gap: 5px; }
+.art .ln { display: block; height: 6px; width: 78%; margin-top: 10px; border-radius: 3px; background: var(--border); }
+.art .chips { position: absolute; left: 16px; bottom: 12px; display: flex; gap: 6px; }
+.art .chips b { display: block; height: 14px; border-radius: var(--r-sm); background: var(--bg-subtle); border: 1px solid var(--border); }
+.empty h2 { font-size: 24px; line-height: 1.2; letter-spacing: -0.015em; }
+.empty p.lead { margin: var(--s-3) auto 0; max-width: 46ch; color: var(--text-muted); font-size: var(--text-md); line-height: 24px; text-wrap: pretty; }
+.empty .acts { margin-top: var(--s-6); display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: var(--s-3) var(--s-5); }
+.tl { display: inline-flex; align-items: center; min-height: 44px; }
+
+.sect { margin-top: var(--rhythm-group); }
+.sect h2 { font-size: var(--text-xl); }
+.sect > p { margin-top: var(--rhythm-tight); color: var(--text-muted); }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--rhythm-content); }
+.tile { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-1); padding: var(--s-4); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); text-align: left; cursor: pointer; min-height: 100px;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.tile:hover { background: var(--bg-subtle); border-color: var(--border-strong); }
+.tile svg { color: var(--accent); margin-bottom: var(--s-1); }
+.tile b { font-weight: 500; }
+.tile span { color: var(--text-muted); }
+
+/* rail */
+.rail { border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5) var(--s-5) var(--s-2); }
+.rail h2 { font-size: var(--text-xl); }
+.rail .prog { margin-top: var(--s-2); display: flex; align-items: center; gap: var(--s-3); color: var(--text-muted); }
+.rail .bar { flex: 1; height: 6px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+.rail .bar i { display: block; height: 100%; background: var(--accent); }
+.rail ul { list-style: none; margin: var(--s-4) 0 0; padding: 0; }
+.rail li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: var(--s-3); padding: var(--s-4) 0; border-top: 1px solid var(--border); }
+.rail .ico { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); }
+.rail li p { color: var(--text-muted); margin-top: 2px; }
+.rail li .btn { margin-top: var(--s-3); }
+.team { display: flex; align-items: center; margin-top: var(--s-3); }
+.team { gap: 6px; }
+.team .avatar { width: 28px; height: 28px; font-size: var(--text-xs); }
+.team .avatar.ghost { background: var(--bg-subtle); color: var(--text-muted); border-style: dashed; border-color: var(--border-strong); }
+.team span.t { margin-left: var(--s-1); color: var(--text-muted); }
+
+/* notes list (after the first note) */
+.notes { border: 1px solid var(--border); border-radius: var(--r-lg); }
+.note { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; padding: var(--s-4) var(--s-5); }
+.note + .note { border-top: 1px solid var(--border); }
+.note .ico { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); }
+.note b { display: block; font-weight: 500; }
+.note .ex { display: block; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.note .meta { color: var(--text-muted); text-align: right; white-space: nowrap; }
+.src { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: var(--r-sm); background: var(--bg-subtle); color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; white-space: nowrap; }
+.skel { display: block; border-radius: 4px; background: var(--bg-subtle); border: 1px solid var(--border); }
+
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50; padding: var(--s-3) var(--s-4); border-radius: var(--r-md); background: var(--text); color: var(--bg); box-shadow: var(--shadow-pop); max-width: calc(100% - 32px); }
+dialog { width: min(520px, calc(100% - 32px)); padding: var(--s-6); border: 0; border-radius: var(--r-xl); background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); }
+dialog::backdrop { background: rgb(10 14 20 / 0.5); }
+dialog .fld { margin-top: var(--s-5); }
+dialog label { display: block; font-weight: 500; margin-bottom: var(--s-2); }
+dialog .hint { color: var(--text-muted); margin-top: var(--s-1); }
+.dlg-acts { display: flex; justify-content: flex-end; gap: var(--s-2); margin-top: var(--s-6); }
+
+@media (max-width: 1100px) {
+  .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
+}
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: var(--h-topbar); padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .menu-btn { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-3); margin-right: -8px; border: 0; background: none; font-weight: 500; border-radius: var(--r-md); cursor: pointer; }
+  .sheet { position: fixed; inset: var(--h-topbar) 0 0 0; z-index: 9; background: var(--frame); padding: var(--s-4); overflow-y: auto; }
+  .sheet .nav { margin-top: 0; }
+  .sheet .nav a { min-height: 48px; }
+  main { padding: var(--s-6) var(--s-4) 48px; }
+}
+@media (max-width: 640px) {
+  .field, .btn { font-size: 16px; }
+  .page-head .acts .btn { padding: 0 var(--s-3); }
+  .empty { padding: var(--s-6) var(--s-4) var(--s-5); }
+  .art { transform: scale(.72); transform-origin: top center; height: 108px; margin-bottom: var(--s-4); }
+  .empty h2 { font-size: 22px; }
+  .empty .acts { flex-direction: column; align-items: stretch; gap: var(--s-1); }
+  .empty .acts .btn { width: 100%; }
+  .empty .acts .tl { justify-content: center; }
+  .tiles { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+  .tile { min-height: 64px; flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: var(--s-3); row-gap: 0; padding: var(--s-3) var(--s-4); }
+  .tile svg { margin: 0; }
+  .tile span { flex-basis: 100%; padding-left: 32px; }
+  .note { grid-template-columns: 32px minmax(0, 1fr); }
+  .note .meta { grid-column: 2; text-align: left; }
+  dialog .dlg-acts { flex-direction: column-reverse; }
+  dialog .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-notes" viewBox="0 0 24 24"><path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4M8.5 12h7M8.5 16h5"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.2"/></symbol>
+    <symbol id="i-quote" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.2-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.8c2 .6 3.2 2.3 3.5 5.2"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21a2 2 0 0 1 2-2h13"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0-4 4m4-4 4 4M5 20h14"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></symbol>
+  </defs>
+</svg>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <a class="logo" href="#" aria-label="Fieldnote home"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><use href="#mark"/></svg>Fieldnote</a>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sheet"><svg class="i"><use href="#i-menu"/></svg><span>Menu</span></button>
+</div>
+<div class="sheet" id="sheet" hidden><nav class="nav" aria-label="Menu" id="sheetNav"></nav></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 28 28"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M8.5 6.5h8l4 4v11a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-14a1 1 0 0 1 1-1z" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linejoin="round"/><path d="M11 15h6M11 18.5h4" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside>
+    <div class="side">
+      <a class="logo" href="#" aria-label="Fieldnote home"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><use href="#mark"/></svg>Fieldnote</a>
+      <nav class="nav" aria-label="Main" id="mainNav"></nav>
+      <div class="account">
+        <span class="avatar" aria-hidden="true">NH</span>
+        <div class="who"><b>Noor Haddad</b><span>Larkfield Research</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header class="page-head">
+      <div>
+        <h1>Home</h1>
+        <p id="sub"></p>
+      </div>
+      <div class="acts">
+        <button class="btn" type="button" id="inviteTop">Invite teammates</button>
+        <button class="btn primary" type="button" id="newTop" hidden>New note</button>
+      </div>
+    </header>
+
+    <div class="cols">
+      <div id="primary">
+        <div id="stage"></div>
+        <section class="sect" id="starts" aria-labelledby="h-starts">
+          <h2 id="h-starts">Or start from a template</h2>
+          <p>Each template opens as a note you can edit.</p>
+          <div class="tiles" id="tiles"></div>
+        </section>
+      </div>
+
+      <aside class="rail" aria-labelledby="h-rail">
+        <h2 id="h-rail">Set up your workspace</h2>
+        <div class="prog"><span id="railN"></span><div class="bar" role="img" id="railBar"><i></i></div></div>
+        <ul id="railList"></ul>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<input type="file" id="fileIn" accept=".md,.txt,text/plain,text/markdown" multiple hidden>
+
+<dialog id="noteDlg" aria-labelledby="noteTitle">
+  <form id="noteForm" method="dialog" novalidate>
+    <h2 id="noteTitle">New note</h2>
+    <div class="fld"><label for="nTitle">Title</label><input class="field" id="nTitle" autocomplete="off" aria-describedby="nTitleErr">
+      <div class="err" id="nTitleErr" hidden><svg class="i sm" aria-hidden="true"><use href="#i-alert"/></svg><span>Give the note a title so you can find it later.</span></div></div>
+    <div class="fld"><label for="nSrc">Source <span class="muted" style="font-weight:400">(optional)</span></label><input class="field" id="nSrc" autocomplete="off" placeholder="Interview with P4, 12 Nov">
+      <p class="hint">Where this came from: an interview, a paper or a link.</p></div>
+    <div class="fld"><label for="nBody">Note</label><textarea class="field" id="nBody"></textarea></div>
+    <div class="dlg-acts"><button class="btn" type="button" id="noteCancel">Cancel</button><button class="btn primary" type="submit">Save note</button></div>
+  </form>
+</dialog>
+
+<script>
+/* One data module: the screen reads everything from here. */
+const TEMPLATES = [
+  { icon: 'mic', name: 'Interview notes', desc: 'Participant, key quotes and themes.', body: 'Participant:\nRole:\nDate:\n\nKey quotes\n\nThemes\n\nFollow-ups\n' },
+  { icon: 'book', name: 'Literature review', desc: 'Summary, method and what to cite.', body: 'Reference:\n\nSummary\n\nMethod\n\nUseful for our project because\n' },
+  { icon: 'eye', name: 'Field observation', desc: 'What you saw, where and when.', body: 'Place:\nDate and time:\n\nWhat happened\n\nSurprises\n\nQuestions to ask next\n' },
+];
+const workspace = { name: 'Larkfield Research', members: [{ initials: 'NH', name: 'Noor Haddad' }], notes: [] };
+const steps = [
+  { id: 'invite', icon: 'users', title: 'Invite your team', desc: 'Notes are shared by default, so teammates see each other’s sources.', action: 'Copy invite link', done: false },
+  { id: 'import', icon: 'upload', title: 'Import notes you already have', desc: 'Markdown and plain text files, up to 5 MB each.', action: 'Choose files', done: false },
+  { id: 'tag', icon: 'tag', title: 'Add a tag to a note', desc: 'Tags group notes by theme, like “pricing” or “onboarding”.', action: 'Write a note first', done: false },
+];
+const STATE = new URLSearchParams(location.search).get('state') || '';
+const $ = (s, r = document) => r.querySelector(s);
+const icon = (n, c = '') => `<svg class="i ${c}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const plural = (n, a, b) => `${n} ${n === 1 ? a : b}`;
+
+/* navigation */
+const nav = [['home', 'Home'], ['notes', 'Notes'], ['link', 'Sources'], ['quote', 'Highlights'], ['tag', 'Tags'], ['users', 'Team'], ['gear', 'Settings']];
+const navHtml = nav.map(([i, l]) => `<a href="#" ${l === 'Home' ? 'aria-current="page"' : ''}>${icon(i)}<span>${l}</span></a>`).join('');
+$('#mainNav').innerHTML = navHtml; $('#sheetNav').innerHTML = navHtml;
+const menuBtn = $('#menuBtn'), sheet = $('#sheet');
+menuBtn.addEventListener('click', () => { const o = sheet.hidden; sheet.hidden = !o; menuBtn.setAttribute('aria-expanded', String(o)); menuBtn.querySelector('use').setAttribute('href', o ? '#i-close' : '#i-menu'); });
+
+/* rendering */
+function renderStage() {
+  const stage = $('#stage');
+  stage.removeAttribute('aria-busy');
+  if (STATE === 'loading' && !window.__ready) {
+    stage.setAttribute('aria-busy', 'true');
+    stage.innerHTML = `<div class="notes" aria-hidden="true">${Array.from({ length: 3 }, () => `<div class="note"><span class="skel" style="width:32px;height:32px"></span><div><span class="skel" style="height:12px;width:40%"></span><span class="skel" style="height:10px;width:70%;margin-top:8px"></span></div><span class="skel" style="height:10px;width:64px"></span></div>`).join('')}</div><span class="sr-only" role="status">Loading your notes</span>`;
+    return;
+  }
+  if (STATE === 'error') {
+    stage.innerHTML = `<div class="empty" role="alert"><h2>Couldn’t load your notes</h2><p class="lead">The server didn’t respond. Your notes are safe. Check your connection and try again.</p><div class="acts"><button class="btn primary lg" type="button" onclick="location.search=''">Try again</button><a class="link tl" href="#">Check service status</a></div></div>`;
+    return;
+  }
+  if (!workspace.notes.length) {
+    stage.innerHTML = `<div class="empty">
+      <div class="art" aria-hidden="true">
+        <div class="n back"></div>
+        <div class="n front"><span class="t"></span>
+          <div class="hl"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg><div class="stack"><i style="width:92%"></i><i style="width:58%"></i></div></div>
+          <span class="ln"></span>
+          <div class="chips"><b style="width:76px"></b><b style="width:40px"></b></div></div>
+      </div>
+      <h2>No notes yet</h2>
+      <p class="lead">Write down what you learn, and link it to its source. Your team can search every note, quote and tag.</p>
+      <div class="acts"><button class="btn primary lg" type="button" id="firstNote">Write your first note</button><button class="link tl" type="button" id="importLink" style="border:0;background:none;cursor:pointer;font-size:var(--text-md)">Import existing notes</button></div>
+    </div>`;
+    return;
+  }
+  stage.innerHTML = `<div class="notes">${workspace.notes.map((n) => `<article class="note"><span class="ico">${icon('notes')}</span>
+    <div><b>${esc(n.title)}</b><span class="ex">${esc(n.body || 'No text yet')}</span></div>
+    <div class="meta">${n.source ? `<span class="src">${icon('link', 'sm')}${esc(n.source)}</span>` : 'No source'}<br>Just now</div></article>`).join('')}</div>`;
+}
+function render() {
+  const has = workspace.notes.length > 0;
+  $('#sub').textContent = `${workspace.name}, ${plural(workspace.notes.length, 'note', 'notes')}, ${plural(workspace.members.length, 'member', 'members')}`;
+  $('#newTop').hidden = !has;
+  $('#starts').hidden = has || STATE === 'error';
+  renderStage();
+  $('#tiles').innerHTML = TEMPLATES.map((t, i) => `<button class="tile" type="button" data-t="${i}">${icon(t.icon)}<b>${t.name}</b><span>${t.desc}</span></button>`).join('');
+  const done = steps.filter((s) => s.done).length;
+  $('#railN').textContent = `${done} of ${steps.length} done`;
+  $('#railBar').setAttribute('aria-label', `${done} of ${steps.length} steps done`); $('#railBar').firstElementChild.style.width = Math.round(done / steps.length * 100) + '%';
+  $('#railList').innerHTML = steps.map((s) => {
+    const label = s.id === 'tag' && has ? 'Add a tag' : s.action;
+    return `<li><span class="ico">${icon(s.icon)}</span><div><h3>${s.title}</h3><p>${s.desc}</p>
+      ${s.id === 'invite' ? `<div class="team" aria-label="Team members">${workspace.members.map((m) => `<span class="avatar" title="${esc(m.name)}">${m.initials}</span>`).join('')}<span class="avatar ghost" aria-hidden="true">+</span><span class="t">You are the only member</span></div>` : ''}
+      <button class="btn sm" type="button" data-step="${s.id}">${label}</button></div></li>`;
+  }).join('');
+}
+
+/* toast */
+let toastT;
+function toast(msg) {
+  document.querySelectorAll('.toast').forEach((t) => t.remove()); clearTimeout(toastT);
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg; document.body.append(t);
+  toastT = setTimeout(() => t.remove(), 4000);
+}
+
+/* note dialog */
+const dlg = $('#noteDlg'), nTitle = $('#nTitle'), nSrc = $('#nSrc'), nBody = $('#nBody');
+function openNote(tpl) {
+  nTitle.value = tpl ? tpl.name : ''; nSrc.value = ''; nBody.value = tpl ? tpl.body : '';
+  nTitle.removeAttribute('aria-invalid'); $('#nTitleErr').hidden = true;
+  dlg.showModal(); (tpl ? nBody : nTitle).focus();
+}
+$('#noteCancel').addEventListener('click', () => dlg.close());
+$('#noteForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!nTitle.value.trim()) { nTitle.setAttribute('aria-invalid', 'true'); $('#nTitleErr').hidden = false; nTitle.focus(); return; }
+  workspace.notes.unshift({ title: nTitle.value.trim(), source: nSrc.value.trim(), body: nBody.value.trim().replace(/\s+/g, ' ').slice(0, 160) });
+  dlg.close(); render(); toast('Note saved');
+});
+nTitle.addEventListener('input', () => { if (nTitle.value.trim()) { nTitle.removeAttribute('aria-invalid'); $('#nTitleErr').hidden = true; } });
+
+/* events */
+document.addEventListener('click', (e) => {
+  if (e.target.closest('#firstNote') || e.target.closest('#newTop')) return openNote();
+  if (e.target.closest('#importLink')) return $('#fileIn').click();
+  const t = e.target.closest('[data-t]'); if (t) return openNote(TEMPLATES[+t.dataset.t]);
+  const s = e.target.closest('[data-step]');
+  if (s) {
+    if (s.dataset.step === 'import') return $('#fileIn').click();
+    if (s.dataset.step === 'invite') {
+      const link = 'https://fieldnote.example/join/larkfield-7k2q';
+      (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).catch(() => {}).finally(() => { steps[0].done = true; render(); toast('Invite link copied. It works for 7 days.'); });
+      return;
+    }
+    if (s.dataset.step === 'tag') { if (!workspace.notes.length) return openNote(); steps[2].done = true; render(); toast(`Tagged “${workspace.notes[0].title}” with research`); }
+  }
+});
+$('#inviteTop').addEventListener('click', () => $('#railList [data-step="invite"]').click());
+$('#fileIn').addEventListener('change', async (e) => {
+  const files = [...e.target.files]; if (!files.length) return;
+  for (const f of files) workspace.notes.unshift({ title: f.name.replace(/\.[^.]+$/, ''), source: f.name, body: (await f.text()).trim().replace(/\s+/g, ' ').slice(0, 160) });
+  steps[1].done = true; e.target.value = ''; render(); toast(`Imported ${plural(files.length, 'note', 'notes')}`);
+});
+render();
+if (STATE === 'loading') setTimeout(() => { window.__ready = true; render(); }, 2500);
+</script>
+</body>
+</html>

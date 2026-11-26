@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "region": {
+        "impact": "moderate",
+        "nodes": 2
+      }
+    },
+    "byImpact": {
+      "moderate": {
+        "rules": 1,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "ui-sans-serif"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(20, 32, 28)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 8,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Password",
+        "w": 172,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Email me a link",
+        "w": 172,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Forgot password?",
+        "w": 112,
+        "h": 21
+      },
+      {
+        "tag": "button",
+        "text": "Show",
+        "w": 52,
+        "h": 36
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 18,
+        "h": 18
+      },
+      {
+        "tag": "a",
+        "text": "Privacy",
+        "w": 42,
+        "h": 20
+      },
+      {
+        "tag": "a",
+        "text": "Terms",
+        "w": 35,
+        "h": 20
+      },
+      {
+        "tag": "a",
+        "text": "Status",
+        "w": 36,
+        "h": 20
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

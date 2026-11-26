@@ -1,0 +1,99 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "onest"
+  ],
+  "textColors": 14,
+  "minFontPx": 12.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(90, 97, 120)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 63, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 28,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Projects",
+        "w": 79,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Reviews",
+        "w": 79,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Library",
+        "w": 70,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Team",
+        "w": 58,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Billing",
+        "w": 62,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Settings",
+        "w": 79,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Members10",
+        "w": 173,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Waiting to join3",
+        "w": 173,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

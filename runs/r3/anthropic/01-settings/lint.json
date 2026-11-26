@@ -1,0 +1,110 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 2
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 2
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.rail"
+    ]
+  },
+  "fontFamilies": [
+    "bricolage grotesque",
+    "figtree"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(201, 208, 228)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(47, 69, 224)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 24,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Profile",
+        "w": 68,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Notifications",
+        "w": 112,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Plan and billing",
+        "w": 125,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Upload a new photo",
+        "w": 171,
+        "h": 43
+      },
+      {
+        "tag": "select",
+        "text": "(UTC-08:00) Pacific Time\n(UTC+",
+        "w": 320,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 40,
+        "h": 24
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 40,
+        "h": 24
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 40,
+        "h": 24
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aero Runner 2 - Tread</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F1B33; --paper:#fff; --muted:#5E6779; --line:#E4E7EE; --soft:#F4F5F8; --flame:#E8421B;
+  /* colourway tokens, swapped by JS */
+  --bg:#FF7448; --bg-deep:#F0602F; --upper:#FDF3E7; --accent:#0F1B33; --mid:#FFFFFF; --tongue:#0F1B33; --sole:#0F1B33;
+  font-family:'Archivo',system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg-deep);color:var(--navy);display:grid;place-items:center;overflow:hidden;transition:background .4s;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.4}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px;border-radius:8px}
+.mark{position:fixed;inset:auto 0 -4vw 0;text-align:center;font-stretch:125%;font-weight:900;font-size:24vw;line-height:.8;color:var(--bg);letter-spacing:-.04em;pointer-events:none;white-space:nowrap;overflow:hidden;transition:color .4s}
+
+.phone{position:relative;width:406px;height:min(860px,calc(100dvh - 32px));border:8px solid #0B0F1A;border-radius:52px;background:var(--paper);overflow:hidden;box-shadow:0 40px 90px rgba(15,27,51,.35)}
+.screen{height:100%;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:5;height:60px;margin-bottom:-60px;padding:12px 14px 0;display:flex;align-items:center;justify-content:space-between;transition:background .2s,box-shadow .2s}
+.top.solid{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);box-shadow:0 1px 0 var(--line)}
+.top .grp{display:flex;gap:8px}
+.top .ttl{position:absolute;left:0;right:0;text-align:center;font-weight:700;font-stretch:110%;pointer-events:none;opacity:0;transition:opacity .2s}
+.top.solid .ttl{opacity:1}
+.ib{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.9);display:grid;place-items:center;position:relative;color:var(--navy)}
+.top.solid .ib{background:var(--soft)}
+.ib svg{width:22px;height:22px}
+.ib .cnt{position:absolute;top:-2px;right:-2px;background:var(--flame);color:#fff;font-size:12px;font-weight:700;min-width:20px;height:20px;border-radius:99px;display:grid;place-items:center;padding:0 5px;border:2px solid #fff}
+.ib .cnt[hidden]{display:none}
+.heart[aria-pressed=true]{color:var(--flame)}
+.heart[aria-pressed=true] svg path{fill:currentColor}
+
+/* gallery */
+.gallery{position:relative;background:var(--bg);transition:background .4s}
+.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:none;width:100%;scroll-snap-align:center;height:372px;display:grid;place-items:center;padding-top:34px}
+.slide svg{width:100%;height:100%;display:block}
+.gtag{position:absolute;left:16px;bottom:18px;background:var(--navy);color:#fff;font-weight:700;font-size:13px;padding:6px 12px;border-radius:99px}
+.dots{position:absolute;right:16px;bottom:24px;display:flex;gap:6px}
+.dots i{width:7px;height:7px;border-radius:99px;background:rgba(15,27,51,.3);transition:.2s}
+.dots i.on{width:22px;background:var(--navy)}
+
+.info{padding:22px 20px 0}
+.brand{color:var(--muted);font-weight:500;margin:0 0 2px}
+h1{margin:0;font-stretch:125%;font-weight:800;font-size:31px;line-height:1.02;letter-spacing:-.025em}
+.pr{display:flex;align-items:baseline;gap:10px;margin:12px 0 4px}
+.pr b{font-size:26px;font-stretch:112%;font-weight:700}
+.pr s{color:var(--muted)}
+.pr .off{background:#FFE3DA;color:#A82A0D;font-weight:700;font-size:13px;padding:2px 8px;border-radius:6px}
+.klarna{margin:0;color:var(--muted);font-size:14px}
+.rate{display:flex;align-items:center;gap:6px;margin:14px 0 0;font-weight:600;font-size:14.5px}
+.rate svg{width:16px;height:16px;color:#F2A81D}
+.rate a{color:var(--muted);font-weight:500;text-underline-offset:3px}
+
+.blk{padding:26px 20px 0}
+.lbl{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 12px;font-weight:700;font-size:16px}
+.lbl span{font-weight:500;color:var(--muted)}
+.lbl button{border:0;background:none;padding:0;text-decoration:underline;text-underline-offset:3px;font-weight:600;font-size:14.5px}
+.sw{display:flex;gap:12px}
+.sw button{width:62px;height:62px;border-radius:50%;border:2px solid var(--line);background:var(--paper);padding:5px;position:relative}
+.sw button i{display:block;width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--a) 50%,var(--b) 50%)}
+.sw button[aria-checked=true]{border-color:var(--navy)}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sizes button{height:50px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);font-weight:600;font-size:16px;transition:.12s}
+.sizes button:hover{border-color:var(--navy)}
+.sizes button[aria-checked=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.sizes button:disabled{color:#A5ACBA;background:var(--soft);cursor:not-allowed;text-decoration:line-through;border-color:var(--soft)}
+.sizes.shake{animation:sh .4s}
+@keyframes sh{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.fit{margin:12px 0 0;color:var(--muted);font-size:14px;display:flex;gap:8px;align-items:center;min-height:20px}
+.fit.err{color:#B3260B;font-weight:600}
+.fit svg{width:16px;height:16px;flex:none}
+
+.perks{margin:26px 20px 0;border:1.5px solid var(--line);border-radius:16px}
+.perk{display:flex;gap:14px;align-items:center;padding:14px 16px}
+.perk+.perk{border-top:1.5px solid var(--line)}
+.perk svg{width:26px;height:26px;flex:none}
+.perk b{display:block;font-weight:600}
+.perk span{color:var(--muted);font-size:14px}
+
+.acc{margin:22px 20px 0}
+details{border-top:1.5px solid var(--line)}
+details:last-child{border-bottom:1.5px solid var(--line)}
+summary{display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-weight:700;font-size:16px;cursor:pointer;list-style:none;min-height:56px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:10px;height:10px;border-right:2.5px solid var(--navy);border-bottom:2.5px solid var(--navy);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+details p,details ul{margin:0 0 16px;color:#38425A;max-width:56ch}
+details ul{padding-left:18px}
+details li{margin-bottom:4px}
+.bars{display:grid;gap:7px;margin-bottom:16px}
+.bars div{display:grid;grid-template-columns:20px 1fr 34px;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+.bars i{display:block;height:8px;border-radius:9px;background:var(--soft);overflow:hidden}
+.bars i b{display:block;height:100%;background:var(--navy)}
+
+.more{padding:30px 0 0}
+.more h2{margin:0 20px 14px;font-stretch:115%;font-size:20px;font-weight:800;letter-spacing:-.01em}
+.rail{display:flex;gap:12px;overflow-x:auto;padding:0 20px 4px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.mini{flex:none;width:158px;scroll-snap-align:start;text-decoration:none}
+.mini .im{height:128px;border-radius:16px;display:grid;place-items:center;overflow:hidden}
+.mini svg{width:130%;height:130%;margin-top:6px}
+.mini b{display:block;margin-top:8px;font-weight:600}
+.mini span{color:var(--muted);font-size:14px}
+.spacer{height:118px}
+
+/* buy bar */
+.buy{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:12px 16px calc(14px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;gap:14px;align-items:center}
+.buy .p{line-height:1.1}
+.buy .p b{display:block;font-size:20px;font-stretch:112%}
+.buy .p span{font-size:13px;color:var(--muted)}
+.add{flex:1;height:56px;border:0;border-radius:16px;background:var(--navy);color:#fff;font-weight:700;font-size:17px;font-stretch:108%;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .15s,transform .1s}
+.add:active{transform:scale(.98)}
+.add.ok{background:#12805A}
+.add svg{width:22px;height:22px}
+.toast{position:absolute;left:16px;right:16px;bottom:96px;z-index:8;background:var(--navy);color:#fff;border-radius:14px;padding:13px 16px;font-weight:600;opacity:0;transform:translateY(10px);pointer-events:none;transition:.22s}
+.toast.on{opacity:1;transform:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+@media (max-width:480px){
+  body{display:block;background:var(--paper);overflow:hidden}
+  .mark{display:none}
+  .phone{width:100%;height:100dvh;border:0;border-radius:0;box-shadow:none}
+}
+@media (max-height:600px) and (min-width:481px){.phone{border-radius:30px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="mark" aria-hidden="true">Aero 2</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="shoe" viewBox="0 0 420 240">
+      <ellipse cx="214" cy="212" rx="186" ry="9" fill="#0F1B33" opacity=".18"/>
+      <!-- outsole and midsole -->
+      <path d="M26 178h380q2 18-18 24H50q-22-3-24-24z" fill="var(--sole)"/>
+      <path d="M22 140q2 38 34 38h330q22 0 22-24 0-10-12-12z" fill="var(--mid)"/>
+      <path d="M36 158q80 8 180 4t184-12" fill="none" stroke="#0F1B33" stroke-opacity=".12" stroke-width="3"/>
+      <rect x="64" y="150" width="78" height="17" rx="8.500" fill="var(--accent)" opacity=".85"/>
+      <!-- upper -->
+      <path d="M40 142 34 94Q32 78 50 74l44-6q18-2 30 12l12-24q8-12 24-6l12 14 62 22q58 2 96 24 36 14 40 40z" fill="var(--upper)"/>
+      <!-- toe cap -->
+      <path d="M318 108q48 6 86 34v2H312q4-22 6-36z" fill="var(--accent)" opacity=".92"/>
+      <!-- heel overlay -->
+      <path d="M40 142 34 94Q32 78 50 74l20-3 6 71z" fill="var(--accent)"/>
+      <!-- side stripe -->
+      <path d="M112 140q80-6 150-44-52 38-106 52z" fill="var(--accent)"/>
+      <!-- collar and tongue -->
+      <path d="M50 74q42-12 74 6" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/>
+      <path d="M126 80l12-26q6-10 22-4l10 16-22 22z" fill="var(--tongue)"/>
+      <!-- laces -->
+      <g stroke="#fff" stroke-width="5.500" stroke-linecap="round" opacity=".95">
+        <path d="M173 62l-7 21M194 69l-7 21M215 76l-7 21M236 83l-7 21M257 90l-7 21"/>
+      </g>
+      <g stroke="#0F1B33" stroke-opacity=".18" stroke-width="1.500" fill="none"><path d="M164 58l96 34"/></g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="phone" id="phone">
+  <div class="screen" id="screen">
+    <div class="top" id="top">
+      <button class="ib" type="button" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button>
+      <div class="ttl">Aero Runner 2</div>
+      <div class="grp">
+        <button class="ib heart" id="heart" type="button" aria-pressed="false" aria-label="Save to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linejoin="round"><path d="M12 20s-7.500-4.600-7.500-10.200A4.300 4.300 0 0 1 12 7.300a4.300 4.300 0 0 1 7.500 2.500C19.500 15.400 12 20 12 20z"/></svg></button>
+        <button class="ib" type="button" aria-label="Open bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6zM9 8V6.500a3 3 0 0 1 6 0V8"/></svg><span class="cnt" id="cnt" hidden>0</span></button>
+      </div>
+    </div>
+
+    <section class="gallery" aria-label="Product photos">
+      <div class="slides" id="slides" tabindex="0">
+        <div class="slide"><svg viewBox="0 0 420 300" role="img" aria-label="Side view"><g transform="translate(0 30)"><use href="#shoe" width="420" height="240"/></g></svg></div>
+        <div class="slide"><svg viewBox="0 0 420 300" role="img" aria-label="Close-up of the laces and toe"><g transform="translate(210 150) scale(1.6) translate(-285 -125)"><use href="#shoe" width="420" height="240"/></g></svg></div>
+        <div class="slide"><svg viewBox="0 0 420 300" role="img" aria-label="Shoe tilted in motion"><g transform="translate(210 150) rotate(-12) scale(.78) translate(-210 -120)"><use href="#shoe" width="420" height="240"/></g></svg></div>
+      </div>
+      <span class="gtag" id="gtag">New season</span>
+      <div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+    </section>
+
+    <div class="info">
+      <p class="brand">Tread Running</p>
+      <h1>Aero Runner 2</h1>
+      <div class="pr"><b>$148</b><s>$172</s><span class="off">14% off</span></div>
+      <p class="klarna">Or 4 payments of $37.00, no interest.</p>
+      <p class="rate"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.500 2.900 6.100 6.600.8-4.900 4.600 1.300 6.600L12 17.200 6.100 20.600l1.300-6.600L2.500 9.400l6.600-.8z"/></svg>4.7 <a href="#reviews" id="toRev">312 reviews</a></p>
+    </div>
+
+    <div class="blk">
+      <p class="lbl">Colour <span id="cwName">Ember</span></p>
+      <div class="sw" role="radiogroup" aria-label="Colour" id="sw"></div>
+    </div>
+
+    <div class="blk">
+      <p class="lbl">Size (US men's) <button type="button" id="guide">Size guide</button></p>
+      <div class="sizes" role="radiogroup" aria-label="Size" id="sizes"></div>
+      <p class="fit" id="fit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></svg><span id="fitT">Runs half a size small. Most people go up half a size.</span></p>
+    </div>
+
+    <div class="perks">
+      <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h12v10H2zM14 9h4l3 3v4h-7"/><circle cx="7" cy="17.500" r="2"/><circle cx="17" cy="17.500" r="2"/></svg><div><b>Free delivery by Fri 28 Nov</b><span>Order in the next 3 hours.</span></div></div>
+      <div class="perk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.500-5.800M4 4v4h4"/></svg><div><b>Free returns for 30 days</b><span>Wear them round the block first.</span></div></div>
+    </div>
+
+    <div class="acc">
+      <details open><summary>About this shoe</summary>
+        <p>A road shoe built for easy miles. The engineered mesh upper breathes on warm runs, and the foam midsole stays soft past the 300 mile mark.</p>
+        <ul><li>Weight: 248 g (US 9)</li><li>Heel to toe drop: 8 mm</li><li>Best for: daily runs, 5 to 15 km</li></ul>
+      </details>
+      <details><summary>Materials and care</summary>
+        <p>Upper: 70% recycled polyester mesh. Midsole: EVA foam. Outsole: natural rubber. Wipe clean with a damp cloth and air dry. Do not machine wash.</p>
+      </details>
+      <details id="reviews"><summary>Reviews (312)</summary>
+        <div class="bars" aria-label="Rating breakdown">
+          <div>5<i><b style="width:74%"></b></i>231</div><div>4<i><b style="width:17%"></b></i>54</div><div>3<i><b style="width:5%"></b></i>15</div><div>2<i><b style="width:2%"></b></i>7</div><div>1<i><b style="width:1%"></b></i>5</div>
+        </div>
+        <p><b>"Light, bouncy and no break-in."</b> Ran 12 km in them the day they arrived. Went up half a size as suggested and the fit is spot on. Imani K.</p>
+      </details>
+    </div>
+
+    <section class="more" aria-label="You may also like">
+      <h2>You may also like</h2>
+      <div class="rail" id="rail"></div>
+    </section>
+    <div class="spacer"></div>
+  </div>
+
+  <div class="buy">
+    <div class="p"><b>$148</b><span>Free delivery</span></div>
+    <button class="add" id="add" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6.500a3 3 0 0 1 6 0V8"/></svg><span id="addT">Add to bag</span></button>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+const CW={
+ ember:{n:'Ember',bg:'#FF7448',deep:'#F0602F',upper:'#FDF3E7',accent:'#0F1B33',mid:'#FFFFFF',tongue:'#0F1B33',sole:'#0F1B33',a:'#FDF3E7',b:'#0F1B33'},
+ glacier:{n:'Glacier',bg:'#BDD9F2',deep:'#A9CBEA',upper:'#FFFFFF',accent:'#2D62D8',mid:'#EAF3FB',tongue:'#2D62D8',sole:'#2D62D8',a:'#FFFFFF',b:'#2D62D8'},
+ moss:{n:'Moss',bg:'#B3C493',deep:'#9FB27C',upper:'#2F4A33',accent:'#F2E6C9',mid:'#F2E6C9',tongue:'#F2E6C9',sole:'#1F3322',a:'#2F4A33',b:'#F2E6C9'}
+};
+const SIZES=[7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,13], GONE=[7,8.5,10.5,13];
+let cw='ember', size=null, bag=0;
+const $=s=>document.querySelector(s);
+const root=document.documentElement.style;
+
+function paint(k){
+  const c=CW[k];cw=k;
+  root.setProperty('--bg',c.bg);root.setProperty('--bg-deep',c.deep);root.setProperty('--upper',c.upper);root.setProperty('--accent',c.accent);root.setProperty('--mid',c.mid);root.setProperty('--tongue',c.tongue);root.setProperty('--sole',c.sole);
+  $('#cwName').textContent=c.n;
+  document.querySelectorAll('#sw button').forEach(b=>b.setAttribute('aria-checked',b.dataset.k===k));
+  const rail=Object.keys(CW).filter(x=>x!==k);
+  $('#rail').innerHTML=[['Aero Runner 2 Trail',158,rail[0]],['Aero Racer',164,rail[1]],['Aero Runner 1',119,k]].map(([n,p,x])=>{const d=CW[x];return `<a class="mini" href="#"><div class="im" style="background:${d.bg};--upper:${d.upper};--accent:${d.accent};--mid:${d.mid};--tongue:${d.tongue};--sole:${d.sole}"><svg viewBox="0 0 420 300"><g transform="translate(0 30)"><use href="#shoe" width="420" height="240"/></g></svg></div><b>${n}</b><span>$${p}</span></a>`}).join('');
+}
+$('#sw').innerHTML=Object.entries(CW).map(([k,c])=>`<button type="button" role="radio" data-k="${k}" aria-checked="false" aria-label="${c.n}"><i style="--a:${c.a};--b:${c.b}"></i></button>`).join('');
+$('#sw').onclick=e=>{const b=e.target.closest('button');if(b)paint(b.dataset.k)};
+
+$('#sizes').innerHTML=SIZES.map(s=>`<button type="button" role="radio" aria-checked="false" data-s="${s}" ${GONE.includes(s)?'disabled aria-label="'+s+', sold out"':''}>${s}</button>`).join('');
+$('#sizes').onclick=e=>{
+  const b=e.target.closest('button');if(!b||b.disabled)return;
+  size=+b.dataset.s;
+  document.querySelectorAll('#sizes button').forEach(x=>x.setAttribute('aria-checked',x===b));
+  $('#fit').classList.remove('err');$('#fitT').textContent=`US ${size} selected. Only ${size<9?'3':'5'} pairs left in this size.`;
+};
+
+let tt;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2600)}
+$('#add').onclick=()=>{
+  if(!size){
+    const g=$('#sizes');g.classList.remove('shake');void g.offsetWidth;g.classList.add('shake');
+    $('#fit').classList.add('err');$('#fitT').textContent='Choose a size to add this to your bag.';
+    $('#sizes').scrollIntoView({block:'center'});return;
+  }
+  bag++;const c=$('#cnt');c.hidden=false;c.textContent=bag;
+  const a=$('#add');a.classList.add('ok');$('#addT').textContent='Added to bag';setTimeout(()=>{a.classList.remove('ok');$('#addT').textContent='Add to bag'},1600);
+  toast(`Aero Runner 2, ${CW[cw].n}, US ${size} added to your bag.`);
+};
+$('#heart').onclick=e=>{const b=e.currentTarget,on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Remove from wishlist':'Save to wishlist');toast(on?'Saved to your wishlist.':'Removed from your wishlist.')};
+$('#guide').onclick=()=>toast('US 9 fits a foot 27.0 cm long.');
+$('#toRev').onclick=e=>{e.preventDefault();const d=$('#reviews');d.open=true;d.scrollIntoView({block:'center'})};
+
+const sl=$('#slides');
+sl.addEventListener('scroll',()=>{const i=Math.round(sl.scrollLeft/sl.clientWidth);document.querySelectorAll('#dots i').forEach((d,j)=>d.classList.toggle('on',i===j))},{passive:true});
+const sc=$('#screen');
+sc.addEventListener('scroll',()=>$('#top').classList.toggle('solid',sc.scrollTop>300),{passive:true});
+paint('ember');
+</script>
+</body>
+</html>

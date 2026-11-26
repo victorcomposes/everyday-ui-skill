@@ -1,0 +1,85 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "albert sans"
+  ],
+  "textColors": 4,
+  "minFontPx": 13,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(31, 40, 160)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(43, 53, 196)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 6,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "I'll look around first",
+        "w": 152,
+        "h": 26
+      },
+      {
+        "tag": "button",
+        "text": "Markdown files",
+        "w": 141,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Notion export",
+        "w": 131,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Google Docs",
+        "w": 126,
+        "h": 40
+      },
+      {
+        "tag": "input",
+        "text": "Teammate email",
+        "w": 191,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Send invite",
+        "w": 113,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

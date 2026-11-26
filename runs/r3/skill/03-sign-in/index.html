@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - Ledgerline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@600;700&display=swap">
+<style>
+/* Brief: Ledgerline sign-in. Harbour kit / soft shape / Schibsted Grotesk 700 + Inter. Feel: precise.
+   Domain detail: month-close progress ("41 of 44 expenses approved") on the brand panel. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #2754c5; --accent-hover: #1f45a6; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a;
+  --on-deep: #ffffff; --on-deep-muted: #b9c8ee; --accent-on-deep: #7a9cff;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Schibsted Grotesk", var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --lh-md: 24px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+  --control-h: 44px;
+  --w-auth: 400px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d; --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef; --accent-on-deep: #7a9cff;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25; --border: #2b2f38; --border-strong: #6f7685;
+  --text: #e9ebef; --text-muted: #a0a6b2;
+  --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+  --success: #4cc38a; --success-subtle: #13261d; --warning: #e6a23c; --warning-subtle: #2a2112; --danger: #ff7a72; --danger-subtle: #2d1715;
+  --placeholder: #8b919d; --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef; --accent-on-deep: #7a9cff;
+  --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+h1:focus { outline: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+.num { font-variant-numeric: tabular-nums; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: 16px; font-weight: 500; }
+.badge.success { background: var(--success-subtle); color: var(--success); }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+
+.page { display: grid; grid-template-columns: minmax(480px, 44%) minmax(0, 1fr); min-height: 100dvh; }
+
+/* brand panel */
+.panel { background: var(--brand-deep); color: var(--on-deep); padding: var(--s-10) var(--s-12) var(--s-12); display: flex; flex-direction: column; }
+.logo { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font: 700 20px/1 var(--font-display); letter-spacing: -0.02em; }
+.panel .logo { align-self: flex-start; }
+.pitch { margin-top: auto; padding-top: var(--s-12); }
+.headline { font: 700 40px/1.1 var(--font-display); letter-spacing: -0.025em; max-width: 14em; text-wrap: balance; }
+.lede { margin-top: var(--s-4); color: var(--on-deep-muted); max-width: 30em; }
+.glimpse { margin-top: var(--s-10); max-width: 460px; padding: var(--s-4) var(--s-5) var(--s-5); border-radius: var(--r-xl); background: var(--surface); color: var(--text); border: 1px solid var(--border); box-shadow: var(--shadow-pop); }
+.glimpse .g-head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: var(--s-3); font-size: var(--text-sm); }
+.glimpse .g-head b { font-weight: 600; }
+.glimpse .g-head span { color: var(--text-muted); }
+.g-row { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 0 var(--s-3); align-items: center; padding: var(--s-3) 0; border-top: 1px solid var(--border); }
+.g-ico { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-md); background: var(--accent-subtle); color: var(--accent); }
+.g-main { min-width: 0; font-size: var(--text-sm); line-height: 20px; }
+.g-main b { display: block; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-main span { display: block; font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); }
+.g-amt { text-align: right; font-size: var(--text-sm); line-height: 20px; }
+.g-amt .badge { margin-top: 2px; }
+.close { margin-top: var(--s-2); padding-top: var(--s-4); border-top: 1px solid var(--border); font-size: var(--text-sm); }
+.close .l { display: flex; justify-content: space-between; gap: var(--s-3); }
+.close .l span:last-child { color: var(--text-muted); }
+.bar { margin-top: var(--s-2); height: 8px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: var(--r-full); }
+
+/* form column */
+.col { display: flex; flex-direction: column; min-height: 100dvh; padding: var(--s-8) var(--s-10) var(--s-6); min-width: 0; }
+.stage { flex: 1; display: grid; place-items: center; }
+.box { width: 100%; max-width: var(--w-auth); }
+.sub { margin-top: var(--rhythm-title); color: var(--text-muted); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 600; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn[aria-busy="true"] { cursor: progress; }
+.btn.google { background: #ffffff; border-color: #747775; color: #1f1f1f; font-weight: 500; }
+.btn.google:hover { background: #f4f4f4; }
+.btn.google:focus-visible { outline-color: var(--focus); }
+.or { display: flex; align-items: center; gap: var(--s-3); margin: var(--s-6) 0; color: var(--text-muted); font-size: var(--text-sm); }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.fld { margin-top: var(--s-4); }
+.fld:first-of-type { margin-top: 0; }
+.lab-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-2); }
+label, .lab { font-weight: 500; font-size: var(--text-sm); line-height: 20px; }
+.tl { display: inline-flex; align-items: center; min-height: 44px; }
+.lab-row .tl { margin: -12px 0; font-size: var(--text-sm); }
+.field { display: block; width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+.field[aria-invalid="true"] { border: 2px solid var(--danger); padding: 0 calc(var(--s-3) - 1px); }
+.field[readonly] { background: var(--bg-subtle); }
+.pw { position: relative; }
+.pw .field { padding-right: 76px; }
+.pw .show { position: absolute; right: 0; top: 0; height: 100%; min-width: 64px; padding: 0 var(--s-4) 0 var(--s-2); border: 0; background: none; color: var(--accent); font-weight: 500; font-size: var(--text-sm); cursor: pointer; border-radius: 0 var(--r-md) var(--r-md) 0; }
+.err { display: flex; gap: 6px; margin-top: var(--s-2); color: var(--danger); font-size: var(--text-sm); line-height: 20px; }
+.err svg { margin-top: 2px; }
+.banner { display: flex; gap: var(--s-3); margin-bottom: var(--s-5); padding: var(--s-3) var(--s-4); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); border-radius: var(--r-md); background: var(--danger-subtle); font-size: var(--text-sm); line-height: 20px; }
+.banner svg { color: var(--danger); margin-top: 0; }
+.banner b { display: block; font-weight: 600; }
+.cta { margin-top: var(--s-6); }
+.alt { margin-top: var(--s-2); display: flex; justify-content: center; }
+.switch { margin-top: var(--s-6); text-align: center; color: var(--text-muted); font-size: var(--text-sm); }
+.switch .tl { margin-left: 4px; }
+.footer { display: flex; flex-wrap: wrap; gap: 0 var(--s-2); width: 100%; max-width: var(--w-auth); margin: 0 auto; padding-top: var(--s-4); color: var(--text-muted); font-size: var(--text-sm); }
+.footer a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding-right: var(--s-3); }
+.footer a:hover { color: var(--text); text-decoration: underline; }
+
+.sent .mail { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: var(--s-5); border-radius: var(--r-lg); background: var(--accent-subtle); color: var(--accent); }
+.sent .mail svg { width: 24px; height: 24px; }
+.sent .to { margin-top: var(--s-1); overflow-wrap: anywhere; }
+.sent strong { font-weight: 600; overflow-wrap: anywhere; }
+.sent .acts { margin-top: var(--s-6); display: grid; gap: var(--s-2); }
+
+@media (max-width: 900px) {
+  .page { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; min-height: 100dvh; }
+  .panel { padding: 0 var(--s-4); min-height: 64px; flex-direction: row; align-items: center; }
+  .pitch { display: none; }
+  .col { min-height: 0; padding: var(--s-8) var(--s-4) var(--s-4); }
+  .stage { display: block; flex: 0 0 auto; }
+  .box { max-width: 480px; margin: 0 auto; }
+  h1 { font-size: 28px; }
+  .footer { max-width: 480px; margin-top: var(--s-6); }
+}
+@media (max-height: 760px) and (min-width: 901px) { .glimpse { margin-top: var(--s-6); } .headline { font-size: 36px; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+    <symbol id="i-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4M9 7h.01M15 7h.01"/></symbol>
+    <symbol id="i-desk" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="11" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  </defs>
+</svg>
+<a class="skip-link" href="#main">Skip to sign-in form</a>
+
+<div class="page">
+  <aside class="panel" aria-label="About Ledgerline">
+    <a class="logo" href="#" aria-label="Ledgerline home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent-on-deep)"/><path d="M8 9h12M8 14h8M8 19h4" stroke="#0b1020" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>
+      Ledgerline
+    </a>
+    <div class="pitch">
+      <p class="headline">Close the month without chasing receipts</p>
+      <p class="lede">Snap a receipt, match it to the card payment and send it for approval. Finance sees what is missing before month end.</p>
+      <div class="glimpse" aria-hidden="true">
+        <div class="g-head"><b>November expenses</b><span class="num" id="gTotal"></span></div>
+        <div id="gRows"></div>
+        <div class="close">
+          <div class="l"><span id="gCloseL"></span><span class="num" id="gCloseR"></span></div>
+          <div class="bar"><i id="gBar"></i></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="col">
+    <main class="stage" id="main">
+      <div class="box">
+        <!-- sign-in view -->
+        <section id="signin" aria-labelledby="h-signin">
+          <h1 id="h-signin">Sign in to Ledgerline</h1>
+          <p class="sub">Submit and approve expenses.</p>
+
+          <div class="cta">
+            <button class="btn google" type="button" id="googleBtn">
+              <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.5 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+              <span>Continue with Google</span>
+            </button>
+          </div>
+          <div class="or" aria-hidden="true">or</div>
+
+          <form id="form" novalidate>
+            <div class="banner" id="banner" role="alert" hidden>
+              <svg class="i" aria-hidden="true"><use href="#i-alert"/></svg>
+              <div><b>Email or password is incorrect</b>Check them and try again, or <a class="link" href="#">reset your password</a>.</div>
+            </div>
+            <div class="fld">
+              <div class="lab-row"><label for="email">Work email</label></div>
+              <input class="field" id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@company.com" aria-describedby="email-err">
+              <div class="err" id="email-err" hidden><svg class="i sm" aria-hidden="true"><use href="#i-alert"/></svg><span></span></div>
+            </div>
+            <div class="fld">
+              <div class="lab-row"><label for="password">Password</label><a class="link tl" href="#">Forgot password?</a></div>
+              <div class="pw">
+                <input class="field" id="password" name="password" type="password" autocomplete="current-password" aria-describedby="pw-err">
+                <button class="show" type="button" id="showBtn" aria-pressed="false" aria-controls="password">Show</button>
+              </div>
+              <div class="err" id="pw-err" hidden><svg class="i sm" aria-hidden="true"><use href="#i-alert"/></svg><span></span></div>
+            </div>
+            <div class="cta"><button class="btn primary" type="submit" id="submitBtn">Sign in</button></div>
+          </form>
+          <div class="alt"><button class="link tl" type="button" id="magicBtn" style="border:0;background:none;cursor:pointer;padding:0 var(--s-2)">Email me a sign-in link</button></div>
+          <p class="switch">New to Ledgerline?<a class="link tl" href="#">Create a workspace</a></p>
+        </section>
+
+        <!-- check your email -->
+        <section id="sent" class="sent" aria-labelledby="h-sent" hidden>
+          <div class="mail" aria-hidden="true"><svg class="i"><use href="#i-mail"/></svg></div>
+          <h1 id="h-sent">Check your email</h1>
+          <div role="status"><p class="sub">We sent a sign-in link to</p><p class="to"><strong id="sentTo"></strong></p><p class="sub" style="margin-top:var(--s-2)">It expires in 15 minutes.</p></div>
+          <div class="acts">
+            <button class="btn" type="button" id="resendBtn" aria-disabled="true">Resend link</button>
+            <button class="link tl" type="button" id="diffBtn" style="border:0;background:none;cursor:pointer;justify-content:center">Use a different email</button>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      <a href="#">Terms</a><a href="#">Privacy</a><a href="#">Help</a>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* Fixture: the brand-panel glimpse derives its numbers from one array. */
+const EXPENSES = [
+  { who: 'Skyline Catering', note: 'Team lunch, 14 Nov', amount: 186.40, status: 'Approved', icon: 'receipt' },
+  { who: 'Northern Rail', note: 'Leeds to London, 18 Nov', amount: 74.20, status: 'Matched', icon: 'train' },
+  { who: 'Lumen Coworking', note: 'Desk hire, November', amount: 420.00, status: 'Approved', icon: 'desk' },
+];
+const CLOSE = { approved: 41, total: 44 };
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const $ = (s) => document.querySelector(s);
+$('#gTotal').textContent = gbp.format(EXPENSES.reduce((s, e) => s + e.amount, 0));
+$('#gRows').innerHTML = EXPENSES.map((e) => `<div class="g-row"><span class="g-ico"><svg class="i sm"><use href="#i-${e.icon}"/></svg></span>
+  <div class="g-main"><b>${e.who}</b><span>${e.note}</span></div>
+  <div class="g-amt num">${gbp.format(e.amount)}<br><span class="badge ${e.status === 'Approved' ? 'success' : 'accent'}">${e.status}</span></div></div>`).join('');
+$('#gCloseL').textContent = 'Month close';
+$('#gCloseR').textContent = `${CLOSE.approved} of ${CLOSE.total} expenses approved`;
+$('#gBar').style.width = Math.round(CLOSE.approved / CLOSE.total * 100) + '%';
+
+/* Form */
+const email = $('#email'), pw = $('#password'), banner = $('#banner'), submitBtn = $('#submitBtn');
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function setErr(input, errId, msg) {
+  const box = $('#' + errId);
+  if (msg) { box.hidden = false; box.querySelector('span').textContent = msg; input.setAttribute('aria-invalid', 'true'); }
+  else { box.hidden = true; input.removeAttribute('aria-invalid'); }
+}
+function checkEmail() {
+  const v = email.value.trim();
+  const msg = !v ? 'Enter your work email, like name@company.com.' : !EMAIL_RE.test(v) ? 'Enter an email address in the correct format, like name@company.com.' : '';
+  setErr(email, 'email-err', msg); return !msg;
+}
+email.addEventListener('input', () => { if (email.getAttribute('aria-invalid')) checkEmail(); });
+pw.addEventListener('input', () => { if (pw.getAttribute('aria-invalid') && pw.value) setErr(pw, 'pw-err', ''); });
+
+$('#showBtn').addEventListener('click', (e) => {
+  const on = pw.type === 'password'; pw.type = on ? 'text' : 'password';
+  e.currentTarget.textContent = on ? 'Hide' : 'Show'; e.currentTarget.setAttribute('aria-pressed', String(on));
+});
+
+function setSubmitting(on) {
+  submitBtn.setAttribute('aria-busy', String(on)); submitBtn.textContent = on ? 'Signing in…' : 'Sign in';
+  email.readOnly = pw.readOnly = on;
+}
+function wrongCredentials() {
+  setSubmitting(false); banner.hidden = false; pw.value = ''; pw.focus();
+}
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (submitBtn.getAttribute('aria-busy') === 'true') return;
+  banner.hidden = true;
+  const okE = checkEmail(); const okP = !!pw.value; setErr(pw, 'pw-err', okP ? '' : 'Enter your password.');
+  if (!okE) return email.focus(); if (!okP) return pw.focus();
+  setSubmitting(true); setTimeout(wrongCredentials, 900);
+});
+
+$('#googleBtn').addEventListener('click', (e) => {
+  const b = e.currentTarget, l = b.querySelector('span'); b.setAttribute('aria-busy', 'true'); l.textContent = 'Opening Google…';
+  setTimeout(() => { b.removeAttribute('aria-busy'); l.textContent = 'Continue with Google'; }, 1600);
+});
+
+/* Magic link */
+let resendT;
+function showSent() {
+  $('#sentTo').textContent = email.value.trim();
+  $('#signin').hidden = true; $('#sent').hidden = false; $('#h-sent').tabIndex = -1; $('#h-sent').focus();
+  const btn = $('#resendBtn'); let n = 30;
+  btn.setAttribute('aria-disabled', 'true'); btn.textContent = `Resend link in ${n}s`;
+  clearInterval(resendT);
+  resendT = setInterval(() => { n -= 1; if (n <= 0) { clearInterval(resendT); btn.removeAttribute('aria-disabled'); btn.textContent = 'Resend link'; } else btn.textContent = `Resend link in ${n}s`; }, 1000);
+}
+$('#magicBtn').addEventListener('click', () => { banner.hidden = true; if (checkEmail()) showSent(); else email.focus(); });
+$('#resendBtn').addEventListener('click', (e) => { if (e.currentTarget.getAttribute('aria-disabled') === 'true') return; showSent(); });
+$('#diffBtn').addEventListener('click', () => { clearInterval(resendT); $('#sent').hidden = true; $('#signin').hidden = false; email.focus(); email.select(); });
+
+/* Demo states: ?state=error | submitting | link */
+const st = new URLSearchParams(location.search).get('state');
+if (st === 'error') { email.value = 'amara.osei@northwind.example'; banner.hidden = false; }
+if (st === 'submitting') { email.value = 'amara.osei@northwind.example'; pw.value = 'hunter2-hunter2'; setSubmitting(true); }
+if (st === 'link') { email.value = 'amara.osei@northwind.example'; showSent(); }
+</script>
+</body>
+</html>

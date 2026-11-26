@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Air Runner 90 - Stride</title>
+<style>
+  :root {
+    --bg: #f4f3f0; --surface: #ffffff; --surface-2: #ecebe6; --line: #e2e0d9; --line-strong: #bdbab0;
+    --text: #15161a; --muted: #5f6168; --accent: #d9400b; --accent-hover: #b53409; --on-accent: #ffffff; --ok: #1f7a43; --warn: #8a5300;
+    --shoe-bg: #e6e4dd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1012; --surface:#181a1d; --surface-2:#22252a; --line:#2c2f35; --line-strong:#555a63; --text:#f2f1ed; --muted:#a9acb4; --accent:#ff7a45; --accent-hover:#ff9468; --on-accent:#1a0b04; --ok:#6fd49a; --warn:#f3c26b; --shoe-bg:#23252a; }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  .app { max-width: 480px; margin: 0 auto; background: var(--surface); min-height: 100vh; padding-bottom: calc(96px + env(safe-area-inset-bottom)); position: relative; }
+  .nav { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 12px 12px; z-index: 3; }
+  .round { width: 44px; height: 44px; border-radius: 50%; border: 0; background: color-mix(in srgb, var(--surface) 88%, transparent); color: var(--text); display: grid; place-items: center; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.12); position: relative; }
+  .round svg { width: 22px; height: 22px; }
+  .round .badge { position: absolute; top: 4px; right: 4px; background: var(--accent); color: var(--on-accent); font-size: 11px; font-weight: 700; min-width: 17px; height: 17px; border-radius: 9px; display: grid; place-items: center; padding: 0 4px; }
+  .nav .right { display: flex; gap: 8px; }
+  .fav[aria-pressed="true"] { color: var(--accent); } .fav[aria-pressed="true"] svg { fill: currentColor; }
+  .stage { background: var(--shoe-bg); aspect-ratio: 1 / 0.92; display: grid; place-items: center; position: relative; overflow: hidden; }
+  .stage svg.shoe { width: 108%; max-width: none; transform: rotate(-6deg) translateY(4%); transition: transform .3s; filter: drop-shadow(0 18px 14px rgba(0,0,0,.22)); }
+  @media (prefers-reduced-motion: reduce) { .stage svg.shoe { transition: none; } }
+  .tag { position: absolute; left: 16px; bottom: 16px; background: var(--text); color: var(--bg); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+  .dots { position: absolute; bottom: 20px; right: 16px; display: flex; gap: 6px; }
+  .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--line-strong); } .dots i:first-child { background: var(--text); width: 18px; border-radius: 3px; }
+  .info { padding: 20px 20px 0; }
+  .brand { color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  h1 { margin: 2px 0 8px; font-size: 26px; line-height: 1.15; letter-spacing: -.02em; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .price { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+  .price s { font-size: 15px; font-weight: 400; color: var(--muted); margin-left: 6px; }
+  .rate { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); background: none; border: 0; min-height: 44px; font: inherit; cursor: pointer; }
+  .rate b { color: var(--text); } .rate svg { width: 16px; height: 16px; color: #b36a00; fill: currentColor; }
+  @media (prefers-color-scheme: dark) { .rate svg { color: #f0b45c; } }
+  section.opt { padding: 20px 20px 0; }
+  .lab { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .lab h2 { font-size: 15px; margin: 0; } .lab span { color: var(--muted); font-weight: 400; }
+  .lab button { background: none; border: 0; color: var(--accent); font: inherit; font-weight: 600; text-decoration: underline; min-height: 44px; padding: 0 4px; cursor: pointer; margin: -12px 0; }
+  .sw { display: flex; gap: 12px; }
+  .sw label { cursor: pointer; }
+  .sw input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .sw span { display: block; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--line); padding: 3px; }
+  .sw span i { display: block; width: 100%; height: 100%; border-radius: 50%; border: 1px solid rgba(0,0,0,.15); }
+  .sw input:checked + span { border-color: var(--text); }
+  .sw input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .sizes label { position: relative; }
+  .sizes input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .sizes span { display: grid; place-items: center; min-height: 48px; border: 1px solid var(--line-strong); border-radius: 10px; font-weight: 600; background: var(--surface); }
+  .sizes input:checked + span { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .sizes input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sizes input:disabled { cursor: not-allowed; }
+  .sizes input:disabled + span { color: var(--muted); background: var(--surface-2); border-style: dashed; text-decoration: line-through; }
+  .stock { margin: 10px 0 0; font-size: 14px; color: var(--warn); min-height: 21px; }
+  .err { color: #b3261e; font-weight: 600; } @media (prefers-color-scheme: dark) { .err { color: #ff8a80; } }
+  .perks { margin: 20px 20px 0; padding: 14px 16px; background: var(--bg); border-radius: 12px; display: grid; gap: 10px; font-size: 14px; }
+  .perks div { display: flex; gap: 12px; align-items: center; } .perks svg { width: 20px; height: 20px; flex: none; color: var(--ok); }
+  details { margin: 20px 20px 0; border-top: 1px solid var(--line); }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 52px; font-weight: 600; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary svg { width: 18px; height: 18px; transition: transform .2s; } details[open] summary svg { transform: rotate(180deg); }
+  details p, details ul { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+  details ul { padding-left: 18px; }
+  details + details { margin-top: 0; }
+  .bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); display: flex; gap: 12px; z-index: 5; }
+  .add { flex: 1; min-height: 52px; border: 0; border-radius: 14px; background: var(--accent); color: var(--on-accent); font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .add:hover { background: var(--accent-hover); } .add:active { transform: scale(.98); }
+  .add .p { opacity: .9; font-weight: 500; margin-left: 6px; }
+  .toast { position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom)); transform: translate(-50%, 12px); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 600; opacity: 0; pointer-events: none; transition: .2s; width: max-content; max-width: calc(100vw - 32px); z-index: 6; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  @media (prefers-reduced-motion: reduce) { .toast, summary svg { transition: none; } }
+  .sr { position: absolute; left: -9999px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="nav">
+    <button class="round" type="button" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+    <div class="right">
+      <button class="round fav" id="fav" type="button" aria-pressed="false" aria-label="Save to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-8-4.800-8-11a4.500 4.500 0 0 1 8-2.800A4.500 4.500 0 0 1 20 9c0 6.200-8 11-8 11z"/></svg></button>
+      <button class="round" type="button" aria-label="Bag, 0 items"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="bagN" hidden>0</span></button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <svg class="shoe" viewBox="0 0 400 220" role="img" aria-label="Air Runner 90 sneaker in the selected colour" id="shoe">
+      <ellipse cx="200" cy="196" rx="170" ry="12" fill="rgba(0,0,0,.12)"/>
+      <path d="M30 150c0-30 14-42 38-48l36-34 34 20 70 12c36 6 74 28 90 54l8 20H30z" id="upper" fill="#d9400b"/>
+      <path d="M104 68l34 20 6-22-18-12z" id="tongue" fill="#b53409"/>
+      <path d="M150 90l60 10M158 104l56 10M168 118l50 8" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+      <path d="M52 132c40 4 90-4 130-30l30 8c-20 22-70 40-160 34z" id="swoosh" fill="#fff" opacity=".9"/>
+      <path d="M26 156h330c8 0 14 6 14 14v6c0 8-6 14-14 14H44c-10 0-18-8-18-18z" fill="#f6f4ee" stroke="#cfcabd" stroke-width="2"/>
+      <path d="M40 176h318" stroke="#d9d4c6" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+    </svg>
+    <span class="tag">New season</span>
+    <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="info">
+    <div class="brand">Stride Originals</div>
+    <h1>Air Runner 90</h1>
+    <div class="row">
+      <div class="price">$129<s>$149</s></div>
+      <button class="rate" type="button" aria-label="4.6 out of 5, 312 reviews">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.500 2 4.200 4.500.6-3.300 3.100.8 4.500L8 11.700l-4 2.200.8-4.500L1.500 6.300 6 5.700z"/></svg><b>4.6</b> (312)
+      </button>
+    </div>
+  </div>
+
+  <section class="opt" aria-labelledby="cl">
+    <div class="lab"><h2 id="cl">Colour <span id="cn">Ember</span></h2></div>
+    <div class="sw" role="radiogroup" aria-labelledby="cl" id="sw"></div>
+  </section>
+
+  <section class="opt" aria-labelledby="sl">
+    <div class="lab"><h2 id="sl">Size <span>US men's</span></h2><button type="button">Size guide</button></div>
+    <div class="sizes" role="radiogroup" aria-labelledby="sl" id="sizes"></div>
+    <p class="stock" id="stock" role="status"></p>
+  </section>
+
+  <div class="perks">
+    <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h10v8H2zM12 8h4l2 3v2h-6zM5 15.500a1.500 1.500 0 1 0 0 .1M14 15.500a1.500 1.500 0 1 0 0 .1"/></svg>Free delivery over $100, arrives Thu 4 Dec</div>
+    <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10a6 6 0 0 1 10-4.500L16 8M16 4v4h-4M16 10a6 6 0 0 1-10 4.500L4 12M4 16v-4h4"/></svg>Free returns within 30 days</div>
+  </div>
+
+  <details open>
+    <summary>Details <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg></summary>
+    <p>A modern take on the 1990 running silhouette. Breathable mesh upper, cushioned foam midsole and a grippy rubber outsole built for city miles.</p>
+  </details>
+  <details>
+    <summary>Materials and care <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg></summary>
+    <ul><li>Upper: recycled mesh and synthetic leather</li><li>Sole: EVA foam with rubber outsole</li><li>Wipe clean with a damp cloth</li></ul>
+  </details>
+  <details>
+    <summary>Reviews (312) <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg></summary>
+    <p>"Comfortable from the first wear. Runs true to size." - Jordan T.<br>"Great colour, light on the foot." - Priya N.</p>
+  </details>
+
+  <div class="bar">
+    <button class="add" id="add" type="button">Add to bag<span class="p">&middot; $129</span></button>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+  const COLORS = [["Ember","#d9400b","#b53409"],["Midnight","#1f2430","#11141b"],["Cobalt","#2c52d6","#1f3ca8"],["Sand","#d8c7a4","#bba885"]];
+  const SIZES = [[7,1],[7.5,1],[8,1],[8.5,0],[9,1],[9.5,2],[10,1],[10.5,2],[11,0],[12,1]]; // 0 sold out, 2 low stock
+  const $ = s => document.querySelector(s);
+  let size = null, bag = 0;
+  $("#sw").innerHTML = COLORS.map(([n, c], i) => `<label><input type="radio" name="c" value="${i}" aria-label="${n}" ${i === 0 ? "checked" : ""}><span><i style="background:${c}"></i></span></label>`).join("");
+  $("#sizes").innerHTML = SIZES.map(([s, st]) => `<label><input type="radio" name="s" value="${s}" ${st === 0 ? "disabled" : ""} aria-label="Size ${s}${st === 0 ? ", sold out" : ""}"><span>${s}</span></label>`).join("");
+  $("#sw").addEventListener("change", e => {
+    const [n, c, d] = COLORS[e.target.value];
+    $("#upper").setAttribute("fill", c); $("#tongue").setAttribute("fill", d); $("#cn").textContent = n;
+  });
+  $("#sizes").addEventListener("change", e => {
+    size = +e.target.value;
+    const st = SIZES.find(x => x[0] === size)[1];
+    $("#stock").className = "stock"; $("#stock").textContent = st === 2 ? "Only 2 left in size " + size : "";
+  });
+  $("#fav").onclick = e => { const b = e.currentTarget; const on = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", on); toast(on ? "Saved to wishlist" : "Removed from wishlist"); };
+  $("#add").onclick = () => {
+    if (!size) { $("#stock").className = "stock err"; $("#stock").textContent = "Select a size to continue"; $("#sizes").querySelector("input:not(:disabled)").focus(); return; }
+    bag++; $("#bagN").hidden = false; $("#bagN").textContent = bag;
+    toast("Added: Air Runner 90, size " + size);
+  };
+  function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 2500); }
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(15, 22, 48)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 3,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Relay",
+        "w": 86,
+        "h": 29
+      },
+      {
+        "tag": "button",
+        "text": "Monthly",
+        "w": 85,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Annual save 20%",
+        "w": 134,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

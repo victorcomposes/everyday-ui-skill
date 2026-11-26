@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "inter"
+  ],
+  "textColors": 4,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(93, 98, 90)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(12, 107, 79)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": true,
+    "px": 54
+  },
+  "smallTapTargets": {
+    "count": 13,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 138,
+        "h": 41
+      },
+      {
+        "tag": "button",
+        "text": "All",
+        "w": 42,
+        "h": 45
+      },
+      {
+        "tag": "a",
+        "text": "View earnings",
+        "w": 117,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Mark as read: Payment received",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "a",
+        "text": "Reply",
+        "w": 63,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Mark as read: Jonas Weber sent",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "a",
+        "text": "View proposal",
+        "w": 118,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Mark as read: Fieldnote viewed",
+        "w": 32,
+        "h": 32
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

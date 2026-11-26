@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chickpea curry - Saffron &amp; Salt recipes</title>
+<style>
+  :root {
+    --bg: #fbf8f3; --surface: #ffffff; --surface-2: #f4efe6; --line: #e8e1d3; --line-strong: #cfc6b3;
+    --text: #231f1a; --muted: #64594b; --accent: #b4410f; --accent-hover: #93340b; --accent-soft: #fbe6d8; --star: #b36a00; --ok: #2d6a3e;
+    --serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16130f; --surface:#1e1a15; --surface-2:#27221b; --line:#332d24; --line-strong:#463e31; --text:#f3ece0; --muted:#b4a994; --accent:#ee9467; --accent-hover:#f5ac86; --accent-soft:#3c2417; --star:#f0b45c; --ok:#8fd09f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 var(--sans); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .skip { position: absolute; left: -9999px; } .skip:focus { left: 8px; top: 8px; background: var(--surface); padding: 8px 12px; z-index: 10; }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .topbar-in { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 24px; letter-spacing: -.02em; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+  .brand svg { width: 26px; height: 26px; }
+  .sf { flex: 1; min-width: 260px; max-width: 560px; position: relative; display: flex; }
+  .sf input { flex: 1; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line-strong); border-radius: 999px 0 0 999px; padding: 10px 16px 10px 42px; min-height: 44px; }
+  .sf svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--muted); }
+  .sf button { font: inherit; font-weight: 600; background: var(--accent); color: #fff; border: 0; border-radius: 0 999px 999px 0; padding: 0 20px; cursor: pointer; min-height: 44px; }
+  .sf button:hover { background: var(--accent-hover); }
+  @media (prefers-color-scheme: dark) { .sf button { color: #241008; } }
+  .links { display: flex; gap: 20px; margin-left: auto; }
+  .links a { color: var(--muted); text-decoration: none; font-weight: 500; }
+  .links a:hover { color: var(--text); }
+  main { max-width: 1200px; margin: 0 auto; padding: 28px 24px 64px; }
+  .crumb { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  .crumb a { color: inherit; }
+  h1 { font-family: var(--serif); font-size: 34px; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 6px; font-weight: 600; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .count { color: var(--muted); margin: 0 0 20px; }
+  .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+  .chip { font: inherit; font-size: 14px; font-weight: 500; padding: 7px 14px; min-height: 40px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--text); cursor: pointer; }
+  .chip:hover { background: var(--surface-2); }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .chip[aria-pressed="true"] { color: #241008; } }
+  .sort { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; }
+  select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 8px 10px; min-height: 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; list-style: none; margin: 0; padding: 0; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: box-shadow .15s, transform .15s; position: relative; }
+  .card:hover { box-shadow: 0 10px 28px rgba(60,40,20,.12); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
+  .art { aspect-ratio: 4/3; display: block; width: 100%; }
+  .fav { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: #3b2f22; display: grid; place-items: center; cursor: pointer; z-index: 2; }
+  .fav svg { width: 20px; height: 20px; }
+  .fav[aria-pressed="true"] { color: #c1272d; }
+  .fav[aria-pressed="true"] svg { fill: currentColor; }
+  .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .tag { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .card h2 { font-family: var(--serif); font-size: 19px; line-height: 1.25; margin: 0; font-weight: 600; }
+  .card h2 a { color: inherit; text-decoration: none; }
+  .card h2 a::after { content: ""; position: absolute; inset: 0; }
+  .card h2 a:hover { text-decoration: underline; }
+  .desc { color: var(--muted); margin: 0; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .foot { margin-top: auto; padding-top: 10px; display: flex; gap: 14px; align-items: center; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
+  .foot span { display: inline-flex; align-items: center; gap: 4px; }
+  .foot svg { width: 14px; height: 14px; }
+  .rating { color: var(--text); font-weight: 600; } .rating svg { color: var(--star); fill: currentColor; }
+  .empty { text-align: center; padding: 56px 16px; color: var(--muted); }
+  .empty b { display: block; font-family: var(--serif); font-size: 22px; color: var(--text); margin-bottom: 6px; }
+  .more { display: flex; justify-content: center; margin-top: 36px; }
+  .more button { font: inherit; font-weight: 600; padding: 10px 24px; min-height: 44px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--text); cursor: pointer; }
+  .more button:hover { background: var(--surface-2); }
+  @media (max-width: 640px) {
+    .topbar-in { padding: 12px 16px; gap: 12px; } .links { display: none; } .sf { min-width: 0; flex-basis: 100%; order: 3; }
+    main { padding: 20px 16px 48px; } h1 { font-size: 27px; }
+    .bar { flex-direction: column; align-items: stretch; }
+    .chips { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; }
+    .chip { white-space: nowrap; }
+    .sort { justify-content: space-between; }
+    .grid { grid-template-columns: 1fr; gap: 16px; }
+    .card { flex-direction: row; } .art { width: 124px; aspect-ratio: 1; flex: none; height: auto; object-fit: cover; }
+    .body { padding: 12px; } .desc { display: none; } .card h2 { font-size: 17px; }
+    .fav { top: 6px; right: 6px; left: auto; width: 40px; height: 40px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#results">Skip to results</a>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#"><svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="13" fill="currentColor"/><path d="M7 14h12a6 6 0 0 1-12 0zM10 10c0-2 2-2 2-4M14 10c0-2 2-2 2-4" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>Saffron &amp; Salt</a>
+    <form class="sf" role="search" onsubmit="return false">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m14 14 4 4"/></svg>
+      <input type="search" value="chickpea curry" aria-label="Search recipes">
+      <button type="submit">Search</button>
+    </form>
+    <nav class="links" aria-label="Main"><a href="#">Recipes</a><a href="#">Collections</a><a href="#">Saved</a></nav>
+  </div>
+</header>
+
+<main id="results">
+  <div class="crumb"><a href="#">Home</a> / Search</div>
+  <h1>Results for <em>&ldquo;chickpea curry&rdquo;</em></h1>
+  <p class="count" id="count" aria-live="polite"></p>
+
+  <div class="bar">
+    <div class="chips" role="group" aria-label="Filter recipes" id="chips"></div>
+    <label class="sort">Sort by
+      <select id="sort"><option value="rel">Most relevant</option><option value="rating">Highest rated</option><option value="time">Quickest</option></select>
+    </label>
+  </div>
+
+  <ul class="grid" id="grid"></ul>
+</main>
+
+<script>
+  const R = [
+    { id: 1, t: "Weeknight Chickpea Curry with Spinach", by: "Anika Rao", d: "One pot, 30 minutes. Tomatoes, garam masala and a handful of spinach stirred in at the end.", time: 30, rating: 4.8, n: 1243, tags: ["vegan","quick"], bg: ["#f2b45a","#c8501a"], kind: "Vegan" },
+    { id: 2, t: "Creamy Coconut Chickpea Curry", by: "Marcus Bell", d: "Coconut milk, fresh ginger and a squeeze of lime, served over basmati rice.", time: 35, rating: 4.7, n: 876, tags: ["vegan","coconut"], bg: ["#f6d58e","#d9822b"], kind: "Coconut" },
+    { id: 3, t: "Chana Masala", by: "Meera Joshi", d: "Punjabi-style chickpeas in a tangy tomato and onion gravy with amchur and kasuri methi.", time: 40, rating: 4.9, n: 2210, tags: ["vegan"], bg: ["#e0793c","#8f2f12"], kind: "Classic" },
+    { id: 4, t: "Slow Cooker Chickpea Curry", by: "Dana Whitfield", d: "Ten minutes of prep in the morning and dinner is ready when you walk in.", time: 250, rating: 4.6, n: 412, tags: ["vegan","slow"], bg: ["#d9a066","#7a4a1e"], kind: "Slow cooker" },
+    { id: 5, t: "15-Minute Pantry Chickpea Curry", by: "Sam Okoro", d: "Canned chickpeas, curry paste and a splash of cream. No fresh produce needed.", time: 15, rating: 4.4, n: 590, tags: ["quick"], bg: ["#f4c95d","#e0852a"], kind: "Quick" },
+    { id: 6, t: "Sweet Potato and Chickpea Curry", by: "Anika Rao", d: "Roasted sweet potato melts into a coconut and cumin base. Great for meal prep.", time: 45, rating: 4.7, n: 934, tags: ["vegan","coconut"], bg: ["#e9965a","#a9441c"], kind: "Coconut" },
+    { id: 7, t: "Thai Red Chickpea Curry", by: "Lena Park", d: "Red curry paste, coconut milk and green beans with plenty of fresh basil.", time: 30, rating: 4.6, n: 388, tags: ["vegan","coconut","quick"], bg: ["#ef8a5f","#b32d1a"], kind: "Thai" },
+    { id: 8, t: "Chickpea Tikka Masala", by: "Dana Whitfield", d: "Mild, creamy and deeply spiced. Ready in the slow cooker or on the hob.", time: 300, rating: 4.5, n: 267, tags: ["slow"], bg: ["#e8a25d","#9b3b17"], kind: "Slow cooker" }
+  ];
+  const FILTERS = [["vegan","Vegan"],["quick","Under 30 min"],["coconut","Coconut milk"],["slow","Slow cooker"]];
+  const on = new Set(), saved = new Set();
+  const $ = s => document.querySelector(s);
+  const fmt = m => m >= 60 ? Math.floor(m / 60) + " hr" + (m % 60 ? " " + (m % 60) + " min" : "") : m + " min";
+  const quick = r => r.time <= 30;
+
+  function art(r) {
+    const [a, b] = r.bg;
+    return `<svg class="art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of ${r.t}"><defs><radialGradient id="g${r.id}" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></radialGradient></defs>
+      <rect width="400" height="300" fill="url(#g${r.id})"/>
+      <ellipse cx="200" cy="165" rx="130" ry="90" fill="#f7efe2"/><ellipse cx="200" cy="160" rx="110" ry="74" fill="${b}" opacity=".85"/>
+      <g fill="#f3d58a"><circle cx="165" cy="150" r="14"/><circle cx="205" cy="170" r="14"/><circle cx="235" cy="140" r="13"/><circle cx="180" cy="185" r="12"/><circle cx="150" cy="172" r="11"/></g>
+      <g fill="#4f7a3a"><ellipse cx="215" cy="150" rx="12" ry="5" transform="rotate(-30 215 150)"/><ellipse cx="190" cy="132" rx="11" ry="5" transform="rotate(20 190 132)"/></g></svg>`;
+  }
+  const heart = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M10 17s-6.500-4-6.500-9A3.500 3.500 0 0 1 10 6.200 3.500 3.500 0 0 1 16.500 8c0 5-6.500 9-6.500 9z"/></svg>';
+  const clock = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 4.500V8l2.500 1.500"/></svg>';
+  const star = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 1.500 2 4.200 4.500.6-3.300 3.100.8 4.500L8 11.700l-4 2.200.8-4.500L1.500 6.300 6 5.700z"/></svg>';
+
+  function render() {
+    const sort = $("#sort").value;
+    let list = R.filter(r => [...on].every(f => f === "quick" ? quick(r) : r.tags.includes(f)));
+    if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
+    if (sort === "time") list.sort((a, b) => a.time - b.time);
+    $("#count").textContent = list.length + (list.length === 1 ? " recipe" : " recipes") + " found";
+    $("#chips").innerHTML = FILTERS.map(([k, l]) => `<button class="chip" type="button" data-f="${k}" aria-pressed="${on.has(k)}">${l}</button>`).join("");
+    $("#grid").innerHTML = list.length ? list.map(r => `<li><article class="card">
+      ${art(r)}
+      <button class="fav" type="button" data-s="${r.id}" aria-pressed="${saved.has(r.id)}" aria-label="Save ${r.t}">${heart}</button>
+      <div class="body"><span class="tag">${r.kind}</span><h2><a href="#">${r.t}</a></h2><p class="desc">${r.d}</p>
+      <div class="foot"><span class="rating">${star}${r.rating.toFixed(1)}<span style="font-weight:400;color:var(--muted)">(${r.n.toLocaleString("en-US")})</span></span><span>${clock}${fmt(r.time)}</span><span>by ${r.by}</span></div></div>
+    </article></li>`).join("") : `<li class="empty" style="grid-column:1/-1"><b>No chickpea curries match</b>Try removing a filter to see more recipes.</li>`;
+  }
+  $("#chips").addEventListener("click", e => { const b = e.target.closest("[data-f]"); if (!b) return; on.has(b.dataset.f) ? on.delete(b.dataset.f) : on.add(b.dataset.f); render(); document.querySelector(`[data-f="${b.dataset.f}"]`).focus(); });
+  $("#grid").addEventListener("click", e => { const b = e.target.closest("[data-s]"); if (!b) return; const id = +b.dataset.s; saved.has(id) ? saved.delete(id) : saved.add(id); b.setAttribute("aria-pressed", saved.has(id)); });
+  $("#sort").addEventListener("change", render);
+  render();
+</script>
+</body>
+</html>

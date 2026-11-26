@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account settings - Tallyo</title>
+<style>
+:root{
+  --bg:#f4f3ef; --surface:#fff; --ink:#1c1b18; --muted:#5f5d56; --line:#e2dfd7;
+  --brand:#1d6b57; --brand-ink:#fff; --brand-soft:#e3f1ec; --warn:#8a4b00; --warn-soft:#fdf0dc;
+  --radius:12px; --focus:#1d4ed8;
+  font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+a{color:var(--brand)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top-in{max-width:1120px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em;text-decoration:none;color:var(--ink)}
+.logo svg{flex:none}
+.top .sp{flex:1}
+.avatar{width:32px;height:32px;border-radius:50%;background:#2f2a24;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 24px 120px;display:grid;grid-template-columns:200px 1fr;gap:40px}
+h1{font-size:28px;letter-spacing:-.02em;margin:0 0 4px}
+.lede{color:var(--muted);margin:0 0 28px}
+nav.side{position:sticky;top:84px;align-self:start}
+nav.side ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+nav.side a{display:block;padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:500}
+nav.side a:hover{background:#ebe9e2;color:var(--ink)}
+nav.side a[aria-current=true]{background:var(--brand-soft);color:var(--brand);font-weight:600}
+section.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:24px;scroll-margin-top:90px}
+.card>header{padding:20px 24px 0}
+.card h2{font-size:18px;margin:0 0 2px;letter-spacing:-.01em}
+.card header p{margin:0;color:var(--muted);font-size:14px}
+.body{padding:20px 24px 24px}
+.profile-top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.big{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#1d6b57,#0f3d33);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label,.lbl{font-weight:600;font-size:14px}
+input[type=text],input[type=email],select,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid #8c8a82;border-radius:8px;padding:9px 12px;min-height:40px;width:100%}
+input:disabled{background:#f0eee8;color:var(--muted);border-color:var(--line)}
+textarea{resize:vertical;min-height:84px}
+.hint{font-size:13px;color:var(--muted)}
+.btn{font:inherit;font-weight:600;border-radius:8px;padding:9px 16px;min-height:40px;border:1px solid #8c8a82;background:#fff;color:var(--ink);cursor:pointer}
+.btn:hover{background:#f4f3ef}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.primary:hover{background:#175646}
+.btn.sm{min-height:34px;padding:5px 12px;font-size:14px}
+table.prefs{width:100%;border-collapse:collapse}
+.prefs th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:center;font-weight:600;padding:0 0 10px}
+.prefs th:first-child{text-align:left}
+.prefs td{padding:14px 0;border-top:1px solid var(--line);text-align:center;vertical-align:middle}
+.prefs td:first-child{text-align:left;padding-right:16px}
+.prefs td strong{display:block;font-weight:600}
+.prefs td span{color:var(--muted);font-size:13px}
+.sw{position:relative;display:inline-block;width:42px;height:24px}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;width:100%;height:100%;cursor:pointer;z-index:1}
+.sw i{position:absolute;inset:0;background:#8c8a82;border-radius:99px;transition:background .15s}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .15s}
+.sw input:checked+i{background:var(--brand)}
+.sw input:checked+i::after{transform:translateX(18px)}
+.sw input:focus-visible+i{outline:3px solid var(--focus);outline-offset:2px}
+.plan{display:flex;gap:20px;justify-content:space-between;flex-wrap:wrap;padding:20px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,#f7fbf9,#fff)}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--brand-soft);color:var(--brand)}
+.badge.warn{background:var(--warn-soft);color:var(--warn)}
+.price{font-size:28px;font-weight:700;letter-spacing:-.02em}
+.price small{font-size:14px;color:var(--muted);font-weight:500}
+.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+.meter .row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+.bar{height:8px;background:#ebe9e2;border-radius:99px;overflow:hidden}
+.bar b{display:block;height:100%;background:var(--brand);border-radius:99px}
+.bar.hot b{background:#b45309}
+.pay{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.card-ico{width:44px;height:30px;border-radius:5px;background:#1c1b18;color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;letter-spacing:.05em}
+.pay .grow{flex:1;min-width:160px}
+table.inv{width:100%;border-collapse:collapse;font-size:14px}
+.inv th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 0;font-weight:600}
+.inv td{padding:11px 0;border-top:1px solid var(--line)}
+.inv td:last-child,.inv th:last-child{text-align:right}
+.danger{border-color:#e8c9c4}
+.danger h2{color:#9b1c1c}
+.btn.del{color:#9b1c1c;border-color:#9b1c1c}
+.savebar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);z-index:6}
+.savebar div{max-width:1120px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:flex-end;gap:12px}
+.savebar p{margin:0 auto 0 0;color:var(--muted);font-size:14px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:820px){
+  .wrap{grid-template-columns:1fr;gap:16px;padding:20px 16px 130px}
+  .top-in{padding:12px 16px}
+  nav.side{position:static;overflow-x:auto;margin:0 -16px;padding:0 16px}
+  nav.side ul{display:flex;gap:6px}
+  nav.side a{white-space:nowrap;border:1px solid var(--line);background:#fff}
+  .grid,.meters{grid-template-columns:1fr}
+  .body,.card>header{padding-left:18px;padding-right:18px}
+  .prefs th:not(:first-child),.prefs td:not(:first-child){width:58px}
+  .prefs td{padding:12px 0}
+  .savebar div{padding:10px 16px}
+  .savebar p{display:none}
+  .savebar .btn{flex:1}
+  .inv .hide-sm{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="7" fill="#1d6b57"/><path d="M7 8h12M13 8v11M8.5 14.5l4.5 4.5 4.5-6" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Tallyo</a>
+    <span class="sp"></span>
+    <span class="avatar" role="img" aria-label="Signed in as Priya Raman">PR</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div style="grid-column:1/-1">
+    <h1>Account settings</h1>
+    <p class="lede">Manage your profile, how Tallyo reaches you, and your workspace plan.</p>
+  </div>
+
+  <nav class="side" aria-label="Settings sections">
+    <ul>
+      <li><a href="#profile" aria-current="true">Profile</a></li>
+      <li><a href="#notifications">Notifications</a></li>
+      <li><a href="#billing">Plan &amp; billing</a></li>
+      <li><a href="#danger">Danger zone</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <form id="f" onsubmit="return false">
+    <section class="card" id="profile" aria-labelledby="h-profile">
+      <header><h2 id="h-profile">Profile</h2><p>Visible to people in your Tallyo workspaces.</p></header>
+      <div class="body">
+        <div class="profile-top">
+          <span class="big" aria-hidden="true">PR</span>
+          <div><button type="button" class="btn sm">Change photo</button><p class="hint" style="margin:6px 0 0">JPG or PNG, up to 2 MB.</p></div>
+        </div>
+        <div class="grid">
+          <div class="field"><label for="fn">First name</label><input id="fn" type="text" value="Priya" autocomplete="given-name"></div>
+          <div class="field"><label for="ln">Last name</label><input id="ln" type="text" value="Raman" autocomplete="family-name"></div>
+          <div class="field full"><label for="em">Email</label><input id="em" type="email" value="priya@harborstudio.co" autocomplete="email" aria-describedby="em-h"><span class="hint" id="em-h">Used for sign-in and receipts. Changing it needs a confirmation link.</span></div>
+          <div class="field"><label for="ro">Job title</label><input id="ro" type="text" value="Operations lead"></div>
+          <div class="field"><label for="tz">Time zone</label>
+            <select id="tz"><option>(UTC-08:00) Pacific Time</option><option selected>(UTC+00:00) London</option><option>(UTC+01:00) Berlin</option><option>(UTC+05:30) Mumbai</option></select></div>
+          <div class="field full"><label for="bio">Short bio</label><textarea id="bio">Keeps the studio's client projects on schedule. Ask me about resourcing.</textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="notifications" aria-labelledby="h-n">
+      <header><h2 id="h-n">Notifications</h2><p>Choose where each kind of update reaches you.</p></header>
+      <div class="body">
+        <table class="prefs">
+          <thead><tr><th scope="col">Activity</th><th scope="col">Email</th><th scope="col">In-app</th><th scope="col">Slack</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Assigned to you</strong><span>A task or review is handed to you</span></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Assigned to you by email</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Assigned to you in-app</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Assigned to you on Slack</span></label></td></tr>
+            <tr><td><strong>Mentions and comments</strong><span>Someone replies to or @mentions you</span></td>
+              <td><label class="sw"><input type="checkbox" role="switch"><i></i><span class="sr">Mentions by email</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Mentions in-app</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Mentions on Slack</span></label></td></tr>
+            <tr><td><strong>Due dates</strong><span>Reminders the day before and on the day</span></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Due dates by email</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Due dates in-app</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch"><i></i><span class="sr">Due dates on Slack</span></label></td></tr>
+            <tr><td><strong>Weekly summary</strong><span>Mondays at 08:00 in your time zone</span></td>
+              <td><label class="sw"><input type="checkbox" role="switch" checked><i></i><span class="sr">Weekly summary by email</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch"><i></i><span class="sr">Weekly summary in-app</span></label></td>
+              <td><label class="sw"><input type="checkbox" role="switch"><i></i><span class="sr">Weekly summary on Slack</span></label></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" id="billing" aria-labelledby="h-b">
+      <header><h2 id="h-b">Plan &amp; billing</h2><p>Billed to Harbor Studio Ltd. Seats are shared across the workspace.</p></header>
+      <div class="body">
+        <div class="plan">
+          <div>
+            <span class="badge">Current plan</span>
+            <p style="font-size:20px;font-weight:700;margin:8px 0 2px">Team</p>
+            <p class="hint" style="margin:0">Renews 14 Dec 2026. Annual billing saves 17%.</p>
+          </div>
+          <div style="text-align:right"><div class="price">$96 <small>/ month</small></div><p class="hint" style="margin:0">8 seats at $12</p>
+            <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end"><button type="button" class="btn sm">Change plan</button></div></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><div class="row"><span id="m1">Seats</span><span>8 of 10</span></div><div class="bar" role="progressbar" aria-labelledby="m1" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"><b style="width:80%"></b></div></div>
+          <div class="meter"><div class="row"><span id="m2">Active projects</span><span>41 of 50</span></div><div class="bar" role="progressbar" aria-labelledby="m2" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"><b style="width:82%"></b></div></div>
+          <div class="meter"><div class="row"><span id="m3">File storage</span><span>46 of 50 GB <span class="badge warn">Almost full</span></span></div><div class="bar hot" role="progressbar" aria-labelledby="m3" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"><b style="width:92%"></b></div></div>
+        </div>
+        <div class="pay">
+          <span class="card-ico" aria-hidden="true">VISA</span>
+          <div class="grow"><strong>Visa ending 4417</strong><br><span class="hint">Expires 08/2028</span></div>
+          <button type="button" class="btn sm">Update card</button>
+        </div>
+        <h3 style="font-size:14px;margin:20px 0 4px">Recent invoices</h3>
+        <table class="inv">
+          <thead><tr><th scope="col">Date</th><th scope="col" class="hide-sm">Description</th><th scope="col">Amount</th><th scope="col"><span class="sr">Download</span></th></tr></thead>
+          <tbody>
+            <tr><td>14 Nov 2026</td><td class="hide-sm">Team plan, 8 seats</td><td>$96.00</td><td><a href="#" aria-label="Download invoice 14 Nov 2026">PDF</a></td></tr>
+            <tr><td>14 Oct 2026</td><td class="hide-sm">Team plan, 8 seats</td><td>$96.00</td><td><a href="#" aria-label="Download invoice 14 Oct 2026">PDF</a></td></tr>
+            <tr><td>14 Sep 2026</td><td class="hide-sm">Team plan, 7 seats</td><td>$84.00</td><td><a href="#" aria-label="Download invoice 14 Sep 2026">PDF</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card danger" id="danger" aria-labelledby="h-d">
+      <header><h2 id="h-d">Danger zone</h2><p>Deleting your account removes your profile. Projects you own move to the workspace admin.</p></header>
+      <div class="body"><button type="button" class="btn del">Delete my account</button></div>
+    </section>
+    </form>
+  </main>
+</div>
+
+<div class="savebar" role="region" aria-label="Save changes"><div>
+  <p id="status" role="status" aria-live="polite">All changes saved.</p>
+  <button type="button" class="btn" id="reset">Discard</button>
+  <button type="submit" form="f" class="btn primary" id="save">Save changes</button>
+</div></div>
+
+<script>
+const f=document.getElementById('f'),s=document.getElementById('status');
+const mark=()=>{s.textContent='You have unsaved changes.';};
+f.addEventListener('input',mark);
+document.getElementById('save').addEventListener('click',()=>{s.textContent='Changes saved just now.';});
+document.getElementById('reset').addEventListener('click',()=>{f.reset();s.textContent='All changes saved.';});
+const links=[...document.querySelectorAll('nav.side a')];
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.removeAttribute('aria-current'));links.find(l=>l.hash==='#'+e.target.id)?.setAttribute('aria-current','true');}})},{rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('section.card').forEach(x=>io.observe(x));
+</script>
+</body>
+</html>

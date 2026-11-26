@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay pricing - API monitoring plans</title>
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap">
+<style>
+/* Signature: Harbour kit, Steel variant / crisp / Geist (technical) */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #1f5f9e; --accent-hover: #174b7d; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a; --on-deep: #ffffff; --on-deep-muted: #b9c8ee; --accent-on-deep: #7a9cff;
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 2px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px; --r-full: 999px;
+  --control-h: 36px; --control-h-touch: 44px;
+  --w-content: 1200px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef; --accent-on-deep: #7a9cff;
+  }
+}
+@media (max-width: 640px) { :root { --control-h: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 600 32px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+h3 { font: 600 var(--text-sm)/1.4 var(--font); margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 20; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; font-size: var(--text-xs); line-height: 16px; font-weight: 500; padding: 2px 8px; border-radius: var(--r-sm); }
+svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); height: var(--control-h); min-height: var(--control-h); padding: 0 var(--s-4);
+  border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-block { width: 100%; height: 44px; min-height: 44px; }
+.btn-text { border-color: transparent; background: transparent; }
+.btn-text:hover { background: var(--bg-subtle); }
+
+/* site header: brand frame */
+.site-header { background: var(--frame); border-bottom: 1px solid var(--border); }
+.site-header .bar { max-width: var(--w-content); margin: 0 auto; padding: 0 var(--s-8); height: 64px; display: flex; align-items: center; gap: var(--s-8); }
+.logo { display: inline-flex; align-items: center; gap: 10px; font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; min-height: 44px; }
+.site-nav { display: flex; gap: var(--s-1); margin: 0; padding: 0; list-style: none; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; color: var(--text-muted); }
+.site-nav a:hover { background: var(--accent-subtle); color: var(--text); }
+.site-nav a[aria-current="page"] { color: var(--text); background: var(--accent-subtle); }
+.header-end { margin-left: auto; display: flex; align-items: center; gap: var(--s-2); }
+.header-end .signin { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); font-weight: 500; }
+.menu-btn { display: none; width: 44px; height: 44px; align-items: center; justify-content: center; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); cursor: pointer; }
+.menu-btn svg { width: 20px; height: 20px; }
+.mobile-nav { display: none; }
+
+/* page */
+main { max-width: var(--w-content); margin: 0 auto; padding: var(--s-10) var(--s-8) var(--s-16); }
+.page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-8); margin-bottom: var(--rhythm-content); }
+.page-head p { margin: var(--rhythm-title) 0 0; max-width: 56ch; color: var(--text-muted); font-size: 16px; line-height: 24px; }
+.billing { display: flex; flex-direction: column; align-items: flex-end; gap: var(--s-2); flex: none; }
+.seg { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--border-strong); border-radius: var(--r-lg); background: var(--bg-subtle); }
+.seg button { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-4); border: 0; border-radius: var(--r-md); background: transparent; color: var(--text-muted); font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 0 0 1px var(--border); }
+.seg .badge { background: var(--success-subtle); color: var(--success); }
+.note { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+
+/* plans */
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); }
+.plan { display: grid; grid-template-rows: subgrid; grid-row: span 6; row-gap: 0; padding: var(--s-6); border: 1px solid var(--border); border-radius: var(--r-xl); background: var(--surface); }
+.plan.rec { border: 2px solid var(--accent); padding: calc(var(--s-6) - 1px); }
+.plan-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); min-height: 24px; }
+.plan-head h2 { font-size: var(--text-lg); }
+.plan-head .badge { background: var(--accent); color: var(--on-accent); }
+.aud { margin: var(--s-1) 0 0; color: var(--text-muted); }
+.price { padding-top: var(--s-5); }
+.amount { display: flex; align-items: baseline; gap: var(--s-1); font: 600 36px/1.1 var(--font-display); letter-spacing: -0.02em; }
+.amount .cur { font-size: 20px; color: var(--text-muted); font-weight: 500; }
+.unit { margin: var(--s-1) 0 0; color: var(--text-muted); }
+.sub { margin: 2px 0 0; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); min-height: 16px; }
+.sub strong { color: var(--success); font-weight: 500; }
+.plan .act { padding-top: var(--s-5); }
+.glance { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); margin-top: var(--s-5); padding: var(--s-4) 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); align-content: start; }
+.glance div { min-width: 0; }
+.glance dt { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.glance dd { margin: 2px 0 0; font: 600 18px/1.2 var(--font-display); letter-spacing: -0.01em; }
+.feat { list-style: none; margin: 0; padding: var(--s-4) 0 0; display: grid; gap: var(--s-3); align-content: start; }
+.feat li { display: flex; gap: var(--s-2); align-items: flex-start; }
+.feat li.lead { color: var(--text-muted); font-weight: 500; }
+.feat svg { margin-top: 2px; color: var(--accent); }
+
+/* comparison */
+.section { margin-top: var(--rhythm-group); }
+.section > header { margin-bottom: var(--rhythm-content); }
+.section > header p { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); max-width: 65ch; }
+.cmp-seg { display: none; }
+table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+.cmp col.feature { width: 34%; }
+.cmp th, .cmp td { padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--border); text-align: center; vertical-align: middle; height: 48px; }
+.cmp th[scope="row"] { text-align: left; font-weight: 400; padding-left: 0; }
+.cmp thead th { position: sticky; top: 0; z-index: 2; background: var(--bg); height: 64px; border-bottom: 1px solid var(--border-strong); vertical-align: bottom; padding-bottom: var(--s-3); }
+.cmp thead th:first-child { text-align: left; padding-left: 0; font-weight: 500; color: var(--text-muted); }
+.cmp thead .pn { display: block; font-weight: 600; font-size: 16px; }
+.cmp thead .pp { display: block; font-weight: 400; color: var(--text-muted); font-size: var(--text-xs); }
+.cmp thead th.rec .pn { color: var(--accent); }
+.cmp tbody th.grp { padding-top: var(--s-8); height: 56px; border-bottom: 1px solid var(--border); font: 600 var(--text-md)/1.3 var(--font-display); letter-spacing: -0.01em; text-align: left; padding-left: 0; vertical-align: bottom; }
+.cmp tbody tr.grp-row td { border-bottom: 1px solid var(--border); }
+.cmp td.rec, .cmp th.rec:not(thead th) { background: color-mix(in srgb, var(--accent-subtle) 55%, transparent); }
+.cmp .yes { color: var(--accent); display: inline-flex; vertical-align: middle; }
+.cmp .no { color: var(--text-muted); }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+
+/* faq */
+.faq { max-width: 760px; border-top: 1px solid var(--border); }
+.faq details { border-bottom: 1px solid var(--border); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); min-height: 56px; padding: var(--s-3) 0; cursor: pointer; font-weight: 600; font-size: 16px; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary svg { transition: transform var(--t-base) var(--ease); color: var(--text-muted); }
+.faq details[open] summary svg { transform: rotate(180deg); }
+.faq p { margin: 0 0 var(--s-4); color: var(--text-muted); max-width: 65ch; font-size: 16px; line-height: 24px; }
+
+footer { border-top: 1px solid var(--border); background: var(--bg-subtle); }
+footer .in { max-width: var(--w-content); margin: 0 auto; padding: var(--s-6) var(--s-8); display: flex; justify-content: space-between; gap: var(--s-4); color: var(--text-muted); font-size: 14px; flex-wrap: wrap; }
+.flinks { display: flex; gap: var(--s-2); }
+footer a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; justify-content: center; padding: 0 var(--s-2); }
+
+/* tablet */
+@media (max-width: 1023px) {
+  .plans { grid-template-columns: 1fr; max-width: 560px; }
+  .plan { grid-template-rows: none; grid-row: auto; grid-template-columns: 1fr; }
+  .plan.rec { order: -1; }
+  .site-nav { display: none; }
+}
+@media (max-width: 860px) {
+  .page-head { flex-direction: column; align-items: flex-start; gap: var(--s-4); }
+  .billing { align-items: flex-start; }
+}
+/* phone */
+@media (max-width: 720px) {
+  .site-header .bar { padding: 0 var(--s-4); gap: var(--s-2); }
+  .header-end .signin { display: none; }
+  .menu-btn { display: inline-flex; }
+  .mobile-nav { background: var(--frame); border-bottom: 1px solid var(--border); padding: var(--s-2) var(--s-4); }
+  .mobile-nav:not([hidden]) { display: block; }
+  .mobile-nav a { display: flex; align-items: center; min-height: 44px; font-weight: 500; }
+  main { padding: var(--s-6) var(--s-4) var(--s-12); }
+  .plans { max-width: none; }
+  .plan { padding: var(--s-5); }
+  .plan.rec { padding: calc(var(--s-5) - 1px); }
+  .cmp-seg { display: flex; width: 100%; margin-bottom: var(--s-4); }
+  .seg button { min-height: 44px; }
+  .cmp-seg button { flex: 1; justify-content: center; padding: 0 var(--s-2); }
+  table.cmp { table-layout: auto; }
+  .cmp col.feature { width: 58%; }
+  .cmp td, .cmp thead th:not(:first-child) { white-space: normal; }
+  table.cmp[data-show="starter"] [data-col]:not([data-col="starter"]),
+  table.cmp[data-show="team"] [data-col]:not([data-col="team"]),
+  table.cmp[data-show="business"] [data-col]:not([data-col="business"]) { display: none; }
+  .cmp th, .cmp td { padding: var(--s-3) 0; }
+  .cmp td { text-align: right; padding-left: var(--s-3); }
+  .cmp thead th:not(:first-child) { text-align: right; }
+  .cmp thead th { position: static; }
+  .cmp td.rec { background: none; }
+  footer .in { padding: var(--s-4); }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#plans">Skip to plans</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 20 20"><path d="M3 6h14M3 10h14M3 14h14"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="logo" href="#" aria-label="Relay home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M5 15h4l2.5-7 4 12 2.5-5H23" fill="none" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Relay
+    </a>
+    <nav aria-label="Main">
+      <ul class="site-nav">
+        <li><a href="#">Product</a></li>
+        <li><a href="#" aria-current="page">Pricing</a></li>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Status</a></li>
+        <li><a href="#">Changelog</a></li>
+      </ul>
+    </nav>
+    <div class="header-end">
+      <a class="signin" href="#">Sign in</a>
+      <a class="btn" href="#plans">Start free trial</a>
+      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mnav" aria-label="Main mobile" hidden>
+    <a href="#">Product</a><a href="#" aria-current="page">Pricing</a><a href="#">Docs</a><a href="#">Status</a><a href="#">Changelog</a><a href="#">Sign in</a>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="page-head">
+    <div>
+      <h1>Plans and pricing</h1>
+      <p>Relay checks your APIs from around the world and alerts you before customers notice. Pay for monitors, not seats.</p>
+    </div>
+    <div class="billing">
+      <div class="seg" role="group" aria-label="Billing period">
+        <button type="button" data-period="monthly" aria-pressed="false">Monthly</button>
+        <button type="button" data-period="yearly" aria-pressed="true">Yearly <span class="badge" id="save-badge">Save 17%</span></button>
+      </div>
+      <span class="note">Prices in USD, excluding sales tax and VAT.</span>
+    </div>
+  </div>
+
+  <div class="plans" id="plans"></div>
+
+  <section class="section" aria-labelledby="cmp-h">
+    <header>
+      <h2 id="cmp-h">Compare all features</h2>
+      <p>Every plan includes uptime and latency monitoring for HTTP, TCP and DNS targets.</p>
+    </header>
+    <div class="seg cmp-seg" role="group" aria-label="Plan to compare" id="cmp-seg"></div>
+    <table class="cmp" id="cmp" data-matrix data-show="team">
+      <caption class="sr-only">Feature comparison of Relay plans</caption>
+    </table>
+  </section>
+
+  <section class="section" aria-labelledby="faq-h">
+    <header><h2 id="faq-h">Questions about billing</h2></header>
+    <div class="faq" id="faq"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="in">
+    <span>Relay Monitoring Ltd. Prices in USD, excluding tax.</span>
+    <span class="flinks"><a href="#" class="link">Terms</a><a href="#" class="link">Privacy</a><a href="#" class="link">Contact sales</a></span>
+  </div>
+</footer>
+
+<script>
+const PLANS = [
+  { id: 'starter', name: 'Starter', aud: 'For side projects and early products.', monthly: 0, yearly: 0,
+    glance: [['Monitors', '10'], ['Interval', '5 min'], ['Regions', '3']],
+    lead: null,
+    features: ['Email and webhook alerts', '1 public status page', '7-day check history', '1 team member', 'Community support'],
+    cta: 'Start free' },
+  { id: 'team', name: 'Team', aud: 'For teams running production APIs.', monthly: 35, yearly: 29, rec: true,
+    glance: [['Monitors', '50'], ['Interval', '1 min'], ['Regions', '12']],
+    lead: 'Everything in Starter, plus:',
+    features: ['Slack, Teams and PagerDuty alerts', 'Multi-step API checks', 'Assertions on headers and JSON body', '3 status pages on your own domain', '90-day check history', 'Up to 10 team members'],
+    cta: 'Start 14-day trial' },
+  { id: 'business', name: 'Business', aud: 'For platform teams with uptime commitments.', monthly: 119, yearly: 99,
+    glance: [['Monitors', '250'], ['Interval', '15 sec'], ['Regions', '24']],
+    lead: 'Everything in Team, plus:',
+    features: ['SAML single sign-on', 'Audit log and role-based access', 'Private locations inside your VPC', '13-month check history', '99.95% uptime SLA', 'Priority support, 1-hour response'],
+    cta: 'Contact sales' },
+];
+const Y = true, N = false;
+const COMPARE = [
+  ['Monitoring', [
+    ['Monitors', '10', '50', '250'],
+    ['Check interval', '5 min', '1 min', '15 sec'],
+    ['Regions', '3', '12', '24'],
+    ['Multi-step API checks', N, Y, Y],
+    ['Assertions on headers and JSON body', 'Status code only', Y, Y],
+    ['Private locations', N, N, Y],
+  ]],
+  ['Alerting', [
+    ['Email and webhook alerts', Y, Y, Y],
+    ['Slack and Microsoft Teams', N, Y, Y],
+    ['PagerDuty and Opsgenie', N, Y, Y],
+    ['Escalation policies', N, Y, Y],
+    ['Maintenance windows', N, Y, Y],
+  ]],
+  ['Data and reporting', [
+    ['Check history', '7 days', '90 days', '13 months'],
+    ['Public status pages', '1', '3', 'Unlimited'],
+    ['Status page on your own domain', N, Y, Y],
+    ['Team members', '1', '10', 'Unlimited'],
+    ['Scheduled uptime reports (PDF)', N, Y, Y],
+  ]],
+  ['Security and support', [
+    ['SAML single sign-on', N, N, Y],
+    ['Audit log', N, N, Y],
+    ['Role-based access', N, N, Y],
+    ['Uptime SLA', 'None', 'None', '99.95%'],
+    ['Support', 'Community', 'Email, 1 business day', 'Priority, 1 hour'],
+  ]],
+];
+const FAQ = [
+  ['What counts as a monitor?', 'One monitor is one endpoint checked on one schedule, such as GET /v1/health. A multi-step check counts as one monitor, however many requests it makes.'],
+  ['Do you charge per team member?', 'No. Prices are per workspace. Each plan has a member limit, and Business has none. You never pay extra to give a colleague read access.'],
+  ['Can I change plans or cancel at any time?', 'Yes. An upgrade applies at once and we prorate the difference. A downgrade starts at your next renewal. Monitors over the new limit pause, and we never delete them.'],
+  ['How does the 14-day Team trial work?', 'You get every Team feature for 14 days with no card. On day 15 the workspace moves to Starter unless you add a payment method. Your monitors and history stay.'],
+  ['Is tax included in the price?', 'No. We add sales tax or VAT at checkout based on your billing address, and show the exact amount before you pay. Valid VAT numbers are exempt where the law allows.'],
+];
+const fmt = (n) => '$' + n.toLocaleString('en-US');
+const check = '<span class="yes"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><span class="sr-only">Included</span></span>';
+let period = 'yearly';
+
+// Saving shown on the toggle is derived from the paid plans.
+const paid = PLANS.filter((p) => p.monthly > 0);
+const savePct = Math.round(100 * (1 - paid.reduce((s, p) => s + p.yearly, 0) / paid.reduce((s, p) => s + p.monthly, 0)));
+document.getElementById('save-badge').textContent = 'Save ' + savePct + '%';
+
+function renderPlans() {
+  document.getElementById('plans').innerHTML = PLANS.map((p) => {
+    const price = p[period];
+    const free = p.monthly === 0;
+    const unit = free ? 'free forever' : period === 'yearly' ? 'per month, billed yearly' : 'per month, billed monthly';
+    const sub = free ? 'No card needed' : period === 'yearly'
+      ? fmt(p.yearly * 12) + ' a year. <strong>You save ' + fmt((p.monthly - p.yearly) * 12) + '.</strong>'
+      : 'Or ' + fmt(p.yearly) + ' a month billed yearly';
+    const btnClass = p.rec ? 'btn btn-block btn-primary' : 'btn btn-block';
+    return `<article class="plan${p.rec ? ' rec' : ''}" aria-labelledby="p-${p.id}">
+      <div class="plan-head"><h2 id="p-${p.id}">${p.name}</h2>${p.rec ? '<span class="badge">Recommended</span>' : ''}</div>
+      <p class="aud">${p.aud}</p>
+      <div class="price"><div class="amount"><span class="cur">$</span><span>${price}</span></div>
+        <p class="unit">${unit}</p><p class="sub">${sub}</p></div>
+      <div class="act"><a class="${btnClass}" href="#">${p.cta}</a></div>
+      <dl class="glance">${p.glance.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+      <ul class="feat">${p.lead ? `<li class="lead">${p.lead}</li>` : ''}${p.features.map((f) => `<li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg><span>${f}</span></li>`).join('')}</ul>
+    </article>`;
+  }).join('');
+  document.querySelectorAll('.seg [data-period]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.period === period)));
+  renderTable();
+}
+
+function cell(v) { return v === true ? check : v === false ? '<span class="no" aria-label="Not included">&ndash;</span>' : v; }
+function renderTable() {
+  const head = PLANS.map((p) => {
+    const price = p.monthly === 0 ? 'Free' : fmt(p[period]) + ' per month';
+    return `<th scope="col" data-col="${p.id}" class="${p.rec ? 'rec' : ''}"><span class="pn">${p.name}</span><span class="pp">${price}</span></th>`;
+  }).join('');
+  let body = '';
+  for (const [group, rows] of COMPARE) {
+    body += `<tr class="grp-row"><th scope="colgroup" class="grp" colspan="${PLANS.length + 1}">${group}</th></tr>`;
+    for (const [label, ...vals] of rows) {
+      body += `<tr><th scope="row">${label}</th>${vals.map((v, i) => `<td data-col="${PLANS[i].id}" class="${PLANS[i].rec ? 'rec' : ''}">${cell(v)}</td>`).join('')}</tr>`;
+    }
+  }
+  document.getElementById('cmp').innerHTML = `<caption class="sr-only">Feature comparison of Relay plans</caption><colgroup><col class="feature"><col data-col="starter"><col data-col="team"><col data-col="business"></colgroup>
+    <thead><tr><th scope="col">Feature</th>${head}</tr></thead><tbody>${body}</tbody>`;
+}
+
+document.querySelectorAll('.seg [data-period]').forEach((b) => b.addEventListener('click', () => { period = b.dataset.period; renderPlans(); }));
+
+// Phone: pick one plan to compare. The table keeps its two columns (feature, plan).
+const segEl = document.getElementById('cmp-seg');
+segEl.innerHTML = PLANS.map((p) => `<button type="button" data-plan="${p.id}" aria-pressed="${p.id === 'team'}">${p.name}</button>`).join('');
+segEl.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-plan]'); if (!b) return;
+  document.getElementById('cmp').dataset.show = b.dataset.plan;
+  segEl.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+});
+
+document.getElementById('faq').innerHTML = FAQ.map(([q, a]) => `<details><summary>${q}<svg class="i" aria-hidden="true"><use href="#i-chev"/></svg></summary><p>${a}</p></details>`).join('');
+
+const menuBtn = document.querySelector('.menu-btn'), mnav = document.getElementById('mnav');
+menuBtn.addEventListener('click', () => { const open = mnav.hidden; mnav.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); });
+
+renderPlans();
+</script>
+</body>
+</html>
