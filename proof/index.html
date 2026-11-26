@@ -29,8 +29,8 @@ section.block{padding:40px 0 8px;border-top:1px solid var(--line);margin-top:32p
 .name{font-weight:650}
 .name.skill{color:var(--skill)}.name.anthropic{color:var(--anthropic)}.name.prompt{color:var(--prompt)}.name.baseline{color:var(--baseline)}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
-.tile .label{display:flex;flex-direction:column;gap:2px;font-size:14px;color:var(--muted);min-height:44px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column}
+.tile .label{display:flex;flex-direction:column;gap:2px;font-size:14px;color:var(--muted);min-height:44px;flex:1}
 .tile .big{font-size:44px;font-weight:700;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums;margin:6px 0 8px}
 .tile .bar{height:6px;background:var(--soft);border-radius:3px;overflow:hidden}
 .tile .bar i{display:block;height:100%;background:var(--baseline)}
