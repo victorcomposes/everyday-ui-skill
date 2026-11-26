@@ -59,6 +59,7 @@ writeFileSync(join(runDir, 'scores.json'), JSON.stringify(scores, null, 2));
 
 // results.md
 const avg = (cond, k) => mean(tasks.map((t) => scores[t][cond][k]).filter((v) => v != null));
+const lightMean = (cond) => mean(keys.filter((k) => k !== 'dark').map((k) => avg(cond, k)).filter((v) => v != null));
 const row = (cells) => `| ${cells.join(' | ')} |`;
 const head = (cells) => [row(cells), row(cells.map(() => '---'))];
 const wins = Object.fromEntries(conditions.map((c) => [c, { win: 0, tie: 0 }]));
@@ -72,8 +73,9 @@ const taskRows = tasks.map((t) => {
 
 const L = [`# Results: ${runDir.replace(/[\/]+$/, '').split(/[\/]/).pop()}`, '',
   `Judges: ${judges.join(', ')}. Conditions: ${conditions.join(', ')}. Scores are 1 to 10, averaged across judges.`, '',
-  '## Mean overall per condition', '', ...head(['condition', 'mean overall', 'wins', 'ties']),
-  ...conditions.map((c) => row([c, fmt(avg(c, 'overall')), wins[c].win, wins[c].tie])), '',
+  '## Mean overall per condition', '', ...head(['condition', 'mean overall', 'light mean', 'wins', 'ties']),
+  ...conditions.map((c) => row([c, fmt(avg(c, 'overall')), fmt(lightMean(c)), wins[c].win, wins[c].tie])), '',
+  'Light mean: the mean of every criterion except dark mode, overall included.', '',
   '## Mean per criterion', '', ...head(['criterion', ...conditions]),
   ...CRITERIA.map(([k, text]) => row([text, ...conditions.map((c) => fmt(avg(c, k)))])), '',
   '## Overall per task', '', ...head(['task', ...conditions, 'winner']), ...taskRows, '',

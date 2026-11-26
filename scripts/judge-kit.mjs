@@ -16,7 +16,7 @@ if (!tasks.length) { console.error(`${blind} holds no task folders.`); process.e
 
 const example = `{
   "${tasks[0].task}": {
-    "${tasks[0].labels[0]}": { ${CRITERIA.map(([k]) => `"${k}": 7`).join(', ')}, "worst": "mobile-fold.png: the primary button is cut off at the right edge" }
+    "${tasks[0].labels[0]}": { ${CRITERIA.map(([k]) => `"${k}": 7`).join(', ')}, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the primary button is cut off at the right edge" }
   }
 }`;
 
@@ -44,7 +44,8 @@ Each \`<task>/<label>/\` folder holds up to five images:
 | \`dark.png\` | Desktop full page with the system set to dark mode. |
 
 Look at the fold shots first. A fixed or sticky bar appears mid-page in a full-page shot but sits at the edge in a real fold, so judge such bars on the fold shots.
-If a file is missing, score what you can see and say so in \`worst\`.
+Open every one of the 5 images for every label before you score that label. Do not skip \`mobile.png\` or any other file.
+If a file is truly missing from the folder, score what you can see, say so in \`worst\`, and leave it out of \`seen\`.
 
 ## Tasks and labels
 
@@ -56,6 +57,8 @@ For each task, score every label from 1 to 10 on each criterion. Use whole numbe
 
 ${CRITERIA.map(([k, text]) => `- \`${k}\`: ${text}.`).join('\n')}
 
+**Light mode only for \`overall\`.** Judge \`overall\` on the light-mode design only: \`desktop-fold.png\`, \`desktop.png\`, \`mobile-fold.png\` and \`mobile.png\`. Dark mode has its own criterion, \`dark\`. Look at \`dark.png\` only for \`dark\`. Dark mode must not change \`overall\` or any other criterion.
+
 Score the labels of one task against each other, and keep your scale steady across tasks. Do not give two labels the same \`overall\` unless you truly cannot separate them.
 
 For each label, name its single worst defect in \`worst\`. Write the screenshot file where you saw it, a colon, then the defect. Example: \`desktop.png: the sidebar background ends halfway down the page\`.
@@ -65,7 +68,7 @@ For each label, name its single worst defect in \`worst\`. Write the screenshot 
 Pick a judge name with letters, digits and dashes only, such as \`judge-1\`. Write \`blind/scores-<judgeName>.json\` in this shape:
 
 \`\`\`json
-{ "<task>": { "<label>": { "<criterion>": n, "overall": n, "worst": "<file>: <defect>" } } }
+{ "<task>": { "<label>": { "<criterion>": n, "overall": n, "seen": ["<file name>", ...], "worst": "<file>: <defect>" } } }
 \`\`\`
 
 Example, with the criterion keys exactly as written above:
@@ -74,7 +77,7 @@ Example, with the criterion keys exactly as written above:
 ${example}
 \`\`\`
 
-Every task and every label above needs an entry. Every criterion needs a whole number from 1 to 10. Write only that file.
+Every task and every label above needs an entry. Every criterion needs a whole number from 1 to 10. Every label needs \`"seen"\`: the list of image file names you opened for that label. Write only that file.
 `;
 
 writeFileSync(join(blind, 'JUDGE.md'), md);
