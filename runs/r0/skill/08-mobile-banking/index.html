@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home - Marlow Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Brief: mobile.md (+ lists.md). User: Marlow customer, several times a day, one-handed, on a phone.
+   Job: check what is in my account and what just happened, then send money. Primary: "Send money" (filled circle in the quick actions).
+   Data: balance £3,284.17, £7.70 pending, 14 transactions over 5 days (credit, refund, declined, pending, very long merchant).
+   States: ?state=loading, ?state=empty (new account), ?state=error (refresh failed). Not in scope: other tabs, transaction detail. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #2754c5; --accent-hover: #1f45a6; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --text-2xl: 24px; --lh-2xl: 32px;
+  --text-3xl: 36px; --lh-3xl: 44px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 44px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg-subtle); }
+body { margin: 0; min-height: 100dvh; background: var(--bg-subtle); color: var(--text);
+  font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+a { color: var(--accent); text-underline-offset: 3px; }
+h1, h2, p, ul, dl, dd { margin: 0; padding: 0; }
+ul { list-style: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.icon-sm { width: 20px; height: 20px; }
+
+/* the app column: full width on a phone, a centred 430px column on larger screens */
+.app { max-width: 430px; min-height: 100dvh; margin: 0 auto; background: var(--bg); display: flex; flex-direction: column; border-inline: 1px solid var(--border); }
+@media (max-width: 430px) { .app { border-inline: 0; } }
+
+.top { position: sticky; top: 0; z-index: 10; height: 56px; padding: 0 var(--s-2) 0 var(--s-4); display: flex; align-items: center; justify-content: space-between; background: var(--bg); border-bottom: 1px solid transparent; transition: border-color var(--t-base) var(--ease); }
+.top.scrolled { border-bottom-color: var(--border); }
+.avatar { width: 40px; height: 40px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-sm); border: 0; cursor: pointer; }
+.avatar-wrap { width: 44px; height: 44px; display: grid; place-items: center; margin-left: calc(var(--s-2) * -1); background: none; border: 0; cursor: pointer; padding: 0; border-radius: var(--r-full); }
+.ibtn { width: 44px; height: 44px; display: inline-grid; place-items: center; border-radius: var(--r-full); border: 0; background: none; color: var(--text); cursor: pointer; position: relative; transition: background-color var(--t-fast) var(--ease); }
+.ibtn:active, .ibtn:hover { background: var(--bg-subtle); }
+.dot { position: absolute; top: 10px; right: 11px; width: 8px; height: 8px; border-radius: var(--r-full); background: var(--accent); border: 2px solid var(--bg); box-sizing: content-box; }
+
+main { flex: 1; padding: 0 var(--s-4) var(--s-8); }
+.bal { padding-top: var(--s-2); }
+.bal-label { display: flex; align-items: center; justify-content: space-between; color: var(--text-muted); font-size: var(--text-sm); }
+h1 { font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; color: var(--text-muted); }
+.bal-label .ibtn { width: 44px; height: 44px; margin: -10px -10px -10px 0; color: var(--text-muted); }
+.amount { font-size: var(--text-3xl); line-height: var(--lh-3xl); font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin-top: var(--s-1); }
+.amount .p { font-size: var(--text-xl); font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+.avail { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--s-1); font-variant-numeric: tabular-nums; }
+
+.actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-2); margin-top: var(--s-6); }
+.act { display: grid; justify-items: center; gap: var(--s-2); padding: var(--s-1) 0; min-height: 44px; border: 0; background: none; color: var(--text); font-size: var(--text-sm); line-height: var(--lh-sm); cursor: pointer; border-radius: var(--r-lg); text-decoration: none; text-align: center; }
+.act .c { width: 52px; height: 52px; border-radius: var(--r-full); display: grid; place-items: center; background: var(--bg-subtle); border: 1px solid var(--border); transition: background-color var(--t-fast) var(--ease); }
+.act:active .c { background: var(--border); }
+.act.primary .c { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.act.primary:active .c { background: var(--accent-hover); }
+.act span.l { font-weight: 500; }
+
+.sec-h { display: flex; justify-content: space-between; align-items: baseline; margin-top: var(--s-8); }
+h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; letter-spacing: -0.01em; }
+.linkbtn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-1); font-size: var(--text-sm); font-weight: 500; color: var(--accent); }
+.sec-h .linkbtn { margin-bottom: -10px; margin-right: calc(var(--s-1) * -1); }
+.day { margin-top: var(--s-4); }
+.day h3 { font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; color: var(--text-muted); margin: 0 0 var(--s-1); }
+.tx { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; min-height: 64px; padding: var(--s-2) 0; border-top: 1px solid var(--border); color: inherit; text-decoration: none; }
+.day ul li:first-child .tx { border-top-color: var(--border); }
+.tx:active { background: var(--bg-subtle); }
+.ini { width: 40px; height: 40px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); display: grid; place-items: center; font-size: var(--text-sm); font-weight: 600; color: var(--text-muted); }
+.tx .n { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.tx .s { color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); display: flex; align-items: center; gap: var(--s-2); white-space: nowrap; overflow: hidden; }
+.tx .a { font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.tx .a.in { color: var(--success); }
+.tx .a.void { color: var(--text-muted); text-decoration: line-through; font-weight: 400; }
+.badge { font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; padding: 0 var(--s-2); border-radius: var(--r-sm); flex: none; }
+.b-pend { background: var(--warning-subtle); color: var(--warning); }
+.b-fail { background: var(--danger-subtle); color: var(--danger); }
+.more { margin-top: var(--s-4); display: flex; }
+.more .btn { width: 100%; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; text-decoration: none; color: var(--text); transition: background-color var(--t-fast) var(--ease); }
+.btn:active { background: var(--bg-subtle); }
+
+.tabs { position: sticky; bottom: 0; z-index: 10; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--bg); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
+.tabs a { display: grid; justify-items: center; align-content: center; gap: 2px; min-height: 56px; color: var(--text-muted); text-decoration: none; font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; }
+.tabs a[aria-current="page"] { color: var(--accent); }
+.tabs a:focus-visible { outline-offset: -4px; }
+
+.banner { display: flex; gap: var(--s-3); padding: var(--s-4); border-radius: var(--r-lg); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); margin-top: var(--s-4); }
+.banner .icon { color: var(--danger); width: 20px; height: 20px; margin-top: 2px; }
+.banner b { font-weight: 600; display: block; }
+.banner p { font-size: var(--text-sm); line-height: var(--lh-sm); }
+.banner button { margin-top: var(--s-2); min-height: 44px; padding: 0; border: 0; background: none; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; color: var(--text); }
+.empty { text-align: center; padding: var(--s-10) var(--s-4); display: grid; justify-items: center; gap: var(--s-3); color: var(--text-muted); border-top: 1px solid var(--border); margin-top: var(--s-2); }
+.empty b { color: var(--text); font-size: var(--text-md); font-weight: 600; display: block; }
+.empty p { max-width: 30ch; font-size: var(--text-sm); }
+.sk { display: block; background: var(--bg-subtle); border-radius: var(--r-sm); position: relative; overflow: hidden; }
+.sk::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--border), transparent); transform: translateX(-100%); animation: sh 1.4s infinite; }
+@keyframes sh { to { transform: translateX(100%); } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.500-7 10-7 10 7 10 7-3.500 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18M10.600 5.100A9.700 9.700 0 0 1 12 5c6.500 0 10 7 10 7a17 17 0 0 1-3 3.900M6.600 6.600C3.800 8.400 2 12 2 12s3.500 7 10 7a9.600 9.600 0 0 0 4.400-1M9.900 9.900a3 3 0 0 0 4.200 4.200"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-bill" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-pay" viewBox="0 0 24 24"><path d="M4 8h16M4 8l3-4M20 8l-3-4M4 16h16M4 16l3 4M20 16l-3 4"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.200"/><circle cx="12" cy="12" r="1.200"/><circle cx="19" cy="12" r="1.200"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+</svg>
+
+<div class="app">
+  <header class="top" id="top">
+    <button class="avatar-wrap" aria-label="HB, your profile"><span class="avatar" aria-hidden="true">HB</span></button>
+    <button class="ibtn" aria-label="Notifications, 2 unread"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg><span class="dot"></span></button>
+  </header>
+
+  <main id="main">
+    <section class="bal" aria-labelledby="h-bal">
+      <div class="bal-label">
+        <h1 id="h-bal">Current account, ending 4821</h1>
+        <button class="ibtn" id="eye" aria-pressed="false" aria-label="Hide balance"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-eye"/></svg></button>
+      </div>
+      <p class="amount" id="amount"></p>
+      <p class="avail" id="avail"></p>
+    </section>
+
+    <nav class="actions" aria-label="Quick actions" id="actions">
+      <a class="act primary" href="#"><span class="c"><svg class="icon" aria-hidden="true"><use href="#i-send"/></svg></span><span class="l">Send money</span></a>
+      <a class="act" href="#"><span class="c"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span><span class="l">Add money</span></a>
+      <a class="act" href="#"><span class="c"><svg class="icon" aria-hidden="true"><use href="#i-bill"/></svg></span><span class="l">Pay a bill</span></a>
+      <a class="act" href="#"><span class="c"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span><span class="l">Statements</span></a>
+    </nav>
+
+    <div id="notice"></div>
+
+    <section aria-labelledby="h-tx">
+      <div class="sec-h"><h2 id="h-tx">Recent transactions</h2><a class="linkbtn" href="#" id="see-all">See all</a></div>
+      <div id="tx"></div>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="Main">
+    <a href="#" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
+    <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-pay"/></svg>Payments</a>
+    <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-card"/></svg>Cards</a>
+    <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-more"/></svg>More</a>
+  </nav>
+</div>
+
+<script>
+// All sample data lives here. Today is Thursday 26 November 2026. Amounts in GBP; negative = money out.
+const BALANCE = 3284.17;
+const DAYS = [
+  ['Today', [
+    ['Northside Bakehouse', 'Eating out', -4.80, 'pending'],
+    ['Metro Transit', 'Transport', -2.90, 'pending'],
+  ]],
+  ['Yesterday', [
+    ['Kestrel Analytics Ltd', 'Salary', 2845.60],
+    ['Greenfield Grocers', 'Groceries', -43.18],
+    ['Streamline Fitness', 'Membership', -29.00, 'declined'],
+  ]],
+  ['Tue 24 Nov', [
+    ['Société Générale des Transports Maritimes et Fluviaux S.A.', 'Travel', -212.40],
+    ['Everyday Rewards', 'Cashback', 0.40],
+    ['Brightwater Energy', 'Direct debit', -86.50],
+  ]],
+  ['Mon 23 Nov', [
+    ['Fernhill Outdoor', 'Refund', 64.99],
+    ['Mei Lin Tan', 'Dinner split', 25.00],
+    ['Little Fern Plant Co.', 'Shopping', -34.00],
+  ]],
+  ['Sun 22 Nov', [
+    ['Maltings Lettings', 'Rent', -950.00],
+    ['Daniel Reyes', 'Transfer', -120.00],
+    ['Tomasz Wójcik', 'Cinema tickets', 18.50],
+  ]],
+];
+const q = new URLSearchParams(location.search).get('state');
+const loading = q === 'loading', empty = q === 'empty', failed = q === 'error';
+const $ = (id) => document.getElementById(id);
+const fmt = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const abs = (n) => fmt.format(Math.abs(n));
+const initials = (n) => n.replace(/[^\p{L} ]/gu, '').split(' ').filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('');
+const skel = (w, h, r) => `<span class="sk" style="width:${w};height:${h};${r ? 'border-radius:' + r : ''}" aria-hidden="true"></span>`;
+
+const all = empty ? [] : DAYS.flatMap(([, rows]) => rows);
+const pending = all.filter((r) => r[3] === 'pending').reduce((s, r) => s - r[2], 0);
+const balance = empty ? 0 : BALANCE;
+let hidden = false;
+
+function renderBalance() {
+  const [pounds, pence] = fmt.format(balance).slice(1).split('.');
+  $('amount').innerHTML = loading ? skel('200px', '36px')
+    : hidden ? '<span aria-hidden="true">••••••</span><span class="sr">Balance hidden</span>'
+    : `£${pounds}<span class="p">.${pence}</span>`;
+  $('avail').innerHTML = loading ? skel('170px', '16px')
+    : hidden ? '&nbsp;' : empty ? 'Add money to start using your account.'
+    : `${fmt.format(pending)} pending, ${fmt.format(balance - pending)} available`;
+}
+function row([name, cat, amt, st]) {
+  const credit = amt > 0, void_ = st === 'declined';
+  const badge = st === 'pending' ? '<span class="badge b-pend">Pending</span>' : st === 'declined' ? '<span class="badge b-fail">Declined</span>' : '';
+  const sign = credit ? '+' : '−';
+  return `<li><a class="tx" href="#"><span class="ini" aria-hidden="true">${initials(name)}</span>
+    <span style="min-width:0"><span class="n" title="${name}">${name}</span><span class="s">${badge}<span style="overflow:hidden;text-overflow:ellipsis">${cat}</span></span></span>
+    <span class="a${credit ? ' in' : ''}${void_ ? ' void' : ''}">${sign}${abs(amt)}</span></a></li>`;
+}
+function renderTx() {
+  const el = $('tx');
+  if (loading) { el.innerHTML = `<div class="day">${skel('60px', '14px')}${[1,2,3,4,5,6].map(() => `<div class="tx" aria-hidden="true">${skel('40px', '40px', '999px')}<span>${skel('60%', '16px')}<span style="display:block;margin-top:6px">${skel('35%', '12px')}</span></span>${skel('56px', '16px')}</div>`).join('')}</div>`; return; }
+  if (empty) { el.innerHTML = `<div class="empty"><b>No transactions yet</b><p>Payments in and out of this account show up here.</p><a class="btn" href="#">Add money</a></div>`; return; }
+  el.innerHTML = DAYS.map(([d, rows]) => `<div class="day"><h3>${d}</h3><ul>${rows.map(row).join('')}</ul></div>`).join('')
+    + `<div class="more"><a class="btn" href="#">See all transactions</a></div>`;
+}
+function renderNotice() {
+  $('notice').innerHTML = failed ? `<div class="banner" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><b>We could not refresh your transactions</b><p>Your balance and money are safe. Showing what we had at 10:42.</p><button type="button" onclick="location.reload()">Try again</button></div></div>` : '';
+}
+renderBalance(); renderTx(); renderNotice();
+if (loading || empty) $('see-all').hidden = true;
+
+$('eye').addEventListener('click', () => {
+  hidden = !hidden;
+  $('eye').setAttribute('aria-pressed', hidden); $('eye').setAttribute('aria-label', hidden ? 'Show balance' : 'Hide balance');
+  $('eye').querySelector('use').setAttribute('href', hidden ? '#i-eye-off' : '#i-eye');
+  renderBalance();
+});
+const bar = $('top');
+const onScroll = () => bar.classList.toggle('scrolled', scrollY > 8);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - Ledgerline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16231D;--ink2:#58675F;--line:#CBD5CD;--paper:#EDF1EA;--rule:#BFD0D6;--margin:#D8412F;--green:#17402F;--green-d:#0F2E22;--err:#B3261E;}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.5 'Schibsted Grotesk',system-ui,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #2C7A5A;outline-offset:2px;border-radius:6px}
+.split{display:grid;grid-template-columns:minmax(420px,5fr) 6fr;min-height:100vh}
+.left{display:flex;flex-direction:column;padding:32px 56px;min-width:0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.logo svg{width:28px;height:28px}
+.form{margin:auto 0;width:100%;max-width:400px;padding:40px 0}
+h1{font-size:32px;line-height:1.15;font-weight:800;letter-spacing:-.025em}
+.sub{color:var(--ink2);margin:8px 0 28px}
+.btn{width:100%;min-height:48px;border-radius:10px;border:1.5px solid #9FAEA4;background:#fff;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn:hover{border-color:var(--ink);background:#F7F9F6}
+.btn.pri{background:var(--green);border-color:var(--green);color:#fff}
+.btn.pri:hover{background:var(--green-d)}
+.btn:disabled{opacity:.6;cursor:default}
+.or{display:flex;align-items:center;gap:14px;color:var(--ink2);font-size:14px;margin:22px 0}
+.or::before,.or::after{content:"";flex:1;border-top:1px solid var(--line)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#E6EBE5;border-radius:10px;padding:4px;margin-bottom:22px}
+.seg button{all:unset;box-sizing:border-box;text-align:center;padding:9px 8px;border-radius:7px;font-weight:600;color:var(--ink2);cursor:pointer}
+.seg button[aria-selected=true]{background:#fff;color:var(--ink);box-shadow:0 1px 3px #16231D26}
+.seg button:focus-visible{outline:3px solid #2C7A5A}
+.field{margin-bottom:18px}
+.field label,.lab{display:flex;justify-content:space-between;font-weight:600;font-size:15px;margin-bottom:6px}
+.field label a{font-weight:500;color:var(--green)}
+.inp{position:relative}
+.inp input[type=email],.inp input[type=password],.inp input[type=text]{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid #9FAEA4;border-radius:10px;background:#fff}
+.inp input:hover{border-color:var(--ink)}
+.inp input[aria-invalid=true]{border-color:var(--err)}
+.show{position:absolute;right:6px;top:6px;height:36px;padding:0 10px;border:0;background:transparent;font-weight:600;color:var(--green);cursor:pointer;border-radius:6px}
+.err{color:var(--err);font-size:14px;margin-top:6px;display:none}
+.err.on{display:block}
+.chk{display:flex;gap:10px;align-items:center;margin:4px 0 22px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--green)}
+.hint{color:var(--ink2);font-size:14px;margin-top:14px}
+.sent{display:none}
+.sent.on{display:block}
+.sent .ic{width:52px;height:52px;border-radius:50%;background:#DDEBDD;display:grid;place-items:center;margin-bottom:16px}
+.sent h2{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.sent p{color:var(--ink2)}
+.sent p b{color:var(--ink);overflow-wrap:anywhere}
+.links{display:flex;gap:18px;margin-top:20px;flex-wrap:wrap}
+.links button{all:unset;color:var(--green);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.links button:disabled{color:var(--ink2);cursor:default;text-decoration:none}
+.links button:focus-visible{outline:3px solid #2C7A5A}
+.foot{color:var(--ink2);font-size:14px;display:flex;gap:20px;flex-wrap:wrap}
+.foot a{color:inherit}
+/* ledger */
+.right{background:var(--paper);position:relative;display:grid;place-items:center;padding:48px;overflow:hidden;
+ background-image:repeating-linear-gradient(to bottom,transparent 0 35px,var(--rule) 35px 36px);background-position:0 20px}
+.right::before{content:"";position:absolute;top:0;bottom:0;left:56px;width:2px;background:var(--margin);opacity:.8}
+.sheet{position:relative;width:min(500px,100%);background:#fff;border-radius:6px;box-shadow:0 2px 0 #C4CDC4,0 20px 40px -14px #16231D44;padding:28px 30px 26px}
+.sheet h2{font-size:15px;font-weight:700;color:var(--ink2)}
+.sheet .who{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:2px 0 14px}
+.sheet table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sheet td{padding:10px 0;border-top:1px solid #E4EAE3;font-size:15px}
+.sheet td:last-child{text-align:right;font-weight:600}
+.sheet td small{display:block;color:var(--ink2);font-size:13px}
+.sheet tr.tot td{border-top:2px solid var(--ink);font-weight:800;font-size:17px;padding-top:12px}
+.stamp{position:absolute;right:26px;top:22px;transform:rotate(-7deg);border:3px solid var(--margin);color:var(--margin);font-weight:800;font-size:20px;letter-spacing:.04em;padding:2px 12px;border-radius:6px;opacity:.9;background:#fff}
+.cap{position:absolute;left:0;right:0;bottom:36px;text-align:center;font-weight:700;font-size:20px;letter-spacing:-.01em;padding:0 40px}
+@media (max-width:1000px){.split{grid-template-columns:1fr}.right{display:none}.left{padding:24px 20px}.form{margin:0 auto;padding:36px 0}}
+@media (max-width:480px){h1{font-size:28px}.left{padding:20px 16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="split">
+  <div class="left">
+    <div class="logo">
+      <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><rect x="3" y="3" width="22" height="22" rx="4" stroke="#17402F" stroke-width="2.4"/><path d="M9 3v22" stroke="#D8412F" stroke-width="2.4"/><path d="M13 11h8M13 16h8M13 21h5" stroke="#17402F" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Ledgerline
+    </div>
+
+    <main class="form">
+      <div id="signin">
+        <h1>Sign in to Ledgerline</h1>
+        <p class="sub">Use the work email your company set up for you.</p>
+
+        <button type="button" class="btn" id="google">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <div class="or">or</div>
+
+        <div class="seg" role="tablist" aria-label="Sign-in method">
+          <button type="button" role="tab" id="t-pw" aria-selected="true" aria-controls="p-pw">Email and password</button>
+          <button type="button" role="tab" id="t-ml" aria-selected="false" aria-controls="p-ml" tabindex="-1">Email me a link</button>
+        </div>
+
+        <form id="p-pw" role="tabpanel" aria-labelledby="t-pw" novalidate>
+          <div class="field"><label for="e1">Work email</label>
+            <div class="inp"><input id="e1" type="email" autocomplete="username" inputmode="email" placeholder="you@company.com"></div>
+            <p class="err" id="e1-err" role="alert"></p></div>
+          <div class="field"><label for="pw">Password <a href="#" id="forgot">Forgot password?</a></label>
+            <div class="inp"><input id="pw" type="password" autocomplete="current-password"><button type="button" class="show" id="show" aria-pressed="false">Show</button></div>
+            <p class="err" id="pw-err" role="alert"></p></div>
+          <label class="chk"><input type="checkbox" checked> Keep me signed in on this device</label>
+          <button class="btn pri" id="go">Sign in</button>
+        </form>
+
+        <form id="p-ml" role="tabpanel" aria-labelledby="t-ml" hidden novalidate>
+          <div class="field"><label for="e2">Work email</label>
+            <div class="inp"><input id="e2" type="email" autocomplete="email" inputmode="email" placeholder="you@company.com"></div>
+            <p class="err" id="e2-err" role="alert"></p></div>
+          <button class="btn pri">Email me a sign-in link</button>
+          <p class="hint">We send a one-time link that works for 15 minutes. No password needed.</p>
+        </form>
+      </div>
+
+      <div class="sent" id="sent" role="status" aria-live="polite">
+        <div class="ic"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#17402F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="20" height="16" rx="3"/><path d="m4 8 9 6 9-6"/></svg></div>
+        <h2>Check your inbox</h2>
+        <p>We sent a sign-in link to <b id="to"></b>. It expires in 15 minutes.</p>
+        <div class="links">
+          <button type="button" id="resend" disabled>Send again in 30s</button>
+          <button type="button" id="back">Use a different email</button>
+        </div>
+        <p class="hint">Nothing arrived? Check spam, or ask your admin to confirm your address.</p>
+      </div>
+    </main>
+
+    <div class="foot"><span>New here? Ask your workspace admin for an invite.</span><a href="#">Privacy</a><a href="#">Help</a></div>
+  </div>
+
+  <aside class="right" aria-hidden="true">
+    <div class="sheet">
+      <div class="stamp">APPROVED</div>
+      <h2>Expense report, week 47</h2>
+      <div class="who">Priya Nair, Sales</div>
+      <table>
+        <tr><td>Taxi to client site<small>Mon 16 Nov, receipt matched</small></td><td>$24.80</td></tr>
+        <tr><td>Team lunch, six people<small>Tue 17 Nov, receipt matched</small></td><td>$118.40</td></tr>
+        <tr><td>Design tool seats<small>Wed 18 Nov, card feed</small></td><td>$54.00</td></tr>
+        <tr><td>Train to Leeds<small>Thu 19 Nov, receipt matched</small></td><td>$63.50</td></tr>
+        <tr class="tot"><td>Total</td><td>$260.70</td></tr>
+      </table>
+    </div>
+    <div class="cap">Every receipt matched before the month closes.</div>
+  </aside>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const re=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const tabs=[$('t-pw'),$('t-ml')],panels=[$('p-pw'),$('p-ml')];
+function pick(i){tabs.forEach((t,j)=>{t.setAttribute('aria-selected',i===j);t.tabIndex=i===j?0:-1;panels[j].hidden=i!==j});}
+tabs.forEach((t,i)=>{t.onclick=()=>pick(i);t.onkeydown=e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=1-i;pick(n);tabs[n].focus()}}});
+$('show').onclick=e=>{const h=$('pw').type==='password';$('pw').type=h?'text':'password';e.target.textContent=h?'Hide':'Show';e.target.setAttribute('aria-pressed',h)};
+function bad(inp,msg){const er=$(inp.id+'-err');er.textContent=msg;er.classList.toggle('on',!!msg);inp.setAttribute('aria-invalid',!!msg);if(msg)er.id&&inp.setAttribute('aria-describedby',er.id);return !msg}
+function emailOk(inp){const v=inp.value.trim();return bad(inp,!v?'Enter your work email.':!re.test(v)?'Check the email address. It should look like you@company.com.':'')}
+$('p-pw').onsubmit=e=>{e.preventDefault();const a=emailOk($('e1'));const b=bad($('pw'),$('pw').value?'':'Enter your password.');
+  if(a&&b){$('go').disabled=true;$('go').textContent='Signing in...';setTimeout(()=>{$('go').disabled=false;$('go').textContent='Sign in';bad($('pw'),'That email and password do not match. Try again, or use an email link.')},900)}
+  else (a?$('pw'):$('e1')).focus()};
+$('forgot').onclick=e=>{e.preventDefault();pick(1);$('e2').value=$('e1').value;$('e2').focus()};
+let timer;
+function send(){const v=$('e2').value.trim();$('to').textContent=v;$('signin').style.display='none';$('sent').classList.add('on');
+  let s=30;const r=$('resend');r.disabled=true;r.textContent='Send again in '+s+'s';clearInterval(timer);
+  timer=setInterval(()=>{s--;if(s<=0){clearInterval(timer);r.disabled=false;r.textContent='Send the link again'}else r.textContent='Send again in '+s+'s'},1000)}
+$('p-ml').onsubmit=e=>{e.preventDefault();if(emailOk($('e2')))send();else $('e2').focus()};
+$('resend').onclick=()=>send();
+$('back').onclick=()=>{clearInterval(timer);$('sent').classList.remove('on');$('signin').style.display='block';$('e2').focus()};
+$('google').onclick=e=>{const b=e.currentTarget,h=b.innerHTML;b.disabled=true;b.textContent='Opening Google...';setTimeout(()=>{b.disabled=false;b.innerHTML=h},1500)};
+</script>
+</body>
+</html>

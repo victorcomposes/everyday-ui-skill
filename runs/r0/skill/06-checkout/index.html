@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout - Kettle Hill Coffee Roasters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Brief: checkout.md + forms.md. User: returning coffee drinker, one-off, mostly phone. Job: pay for 4 bags with no doubt about the total.
+   Primary: "Pay £51.45" (amount in label). Data: 3 lines (one qty 2, one long name), GBP inc. VAT, 2 delivery options.
+   States: ?state=error (summary + field errors), ?state=declined (card declined, security code cleared). Confirmation shows after a valid submit.
+   Not in scope: account creation, address lookup, 3-D Secure. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #c2410c; --accent-hover: #9a3412; --accent-subtle: #fdf1ea; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: #2754c5;
+  --font: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --text-2xl: 24px; --lh-2xl: 32px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px;
+  --control-h: 44px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #ff9a5c; --accent-hover: #ffb88a; --accent-subtle: #2c1c12; --on-accent: #1a0e06;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --focus: #7a9cff;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent-hover); }
+h1, h2, p, fieldset, legend { margin: 0; padding: 0; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.icon { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.skip { position: absolute; left: var(--s-4); top: -60px; min-height: 44px; display: inline-flex; align-items: center; background: var(--surface); padding: 0 var(--s-3); border-radius: var(--r-md); border: 1px solid var(--border); z-index: 20; }
+.skip:focus { top: var(--s-2); }
+
+/* header */
+.top { border-bottom: 1px solid var(--border); }
+.top-in { max-width: 1040px; margin: 0 auto; padding: 0 var(--s-8); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.brand { display: inline-flex; align-items: center; gap: var(--s-2); font-weight: 600; color: var(--text); text-decoration: none; min-height: 44px; }
+.brand svg { width: 24px; height: 24px; color: var(--accent); }
+.secure { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-muted); font-size: var(--text-sm); }
+
+/* layout */
+.wrap { max-width: 1040px; margin: 0 auto; padding: var(--s-10) var(--s-8) var(--s-16); display: grid; grid-template-columns: minmax(0, 580px) minmax(0, 1fr); gap: var(--s-16); align-items: start; }
+.aside { position: sticky; top: var(--s-6); order: 2; }
+form { order: 1; }
+h1 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; letter-spacing: -0.01em; }
+.sec { margin-top: var(--s-10); }
+.sec:first-of-type { margin-top: var(--s-6); }
+.sec > legend, .sec > h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; letter-spacing: -0.01em; margin-bottom: var(--s-4); float: none; width: 100%; }
+.sec > legend + * { margin-top: 0; }
+.field { display: grid; gap: var(--s-1); margin-top: var(--s-5); }
+.field:first-of-type { margin-top: 0; }
+.field label, .field .lab { font-weight: 500; }
+.hint { color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+input[type=text], input[type=email], input[type=tel], select {
+  width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md);
+  transition: border-color var(--t-fast) var(--ease); }
+select { appearance: none; padding-right: var(--s-10); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23838995' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+input:hover, select:hover { border-color: var(--text-muted); }
+input[aria-invalid="true"] { border-color: var(--danger); border-width: 2px; padding: 0 calc(var(--s-3) - 1px); }
+.row { display: flex; gap: var(--s-4); }
+.row > .field { margin-top: var(--s-5); }
+.w-postcode { width: 148px; flex: none; }
+.w-exp { width: 148px; flex: none; }
+.w-cvc { width: 120px; flex: none; }
+.err { color: var(--danger); font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; }
+.err[hidden] { display: none; }
+.opt { color: var(--text-muted); font-weight: 400; }
+
+/* choices */
+.choices { display: grid; gap: var(--s-3); }
+.choice { display: grid; grid-template-columns: auto 1fr auto; gap: var(--s-3); align-items: start; padding: var(--s-4); border: 1px solid var(--border-strong); border-radius: var(--r-lg); cursor: pointer; min-height: 64px;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.choice:hover { background: var(--bg-subtle); }
+.choice:has(input:checked) { border-color: var(--accent); background: var(--accent-subtle); box-shadow: 0 0 0 1px var(--accent); }
+.choice:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.choice input { margin: 2px 0 0; width: 20px; height: 20px; accent-color: var(--accent); }
+.choice b { font-weight: 600; display: block; }
+.choice small { display: block; color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); }
+.choice .p { font-weight: 600; font-variant-numeric: tabular-nums; }
+.check { display: flex; align-items: center; gap: var(--s-3); min-height: 44px; margin-top: var(--s-4); cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--accent); margin: 0; }
+
+/* wallets */
+.wallets { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.divider { display: flex; align-items: center; gap: var(--s-3); color: var(--text-muted); font-size: var(--text-sm); margin: var(--s-5) 0 0; }
+.divider::before, .divider::after { content: ""; height: 1px; background: var(--border); flex: 1; }
+.cardnum { position: relative; }
+.cardnum .icon { position: absolute; right: var(--s-3); top: 14px; color: var(--text-muted); }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-5); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface);
+  font-weight: 600; cursor: pointer; text-decoration: none; color: var(--text);
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); width: 100%; font-size: var(--text-md); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-primary[disabled] { opacity: 0.75; cursor: progress; }
+.linkbtn { background: none; border: 0; padding: 0; min-height: 44px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-weight: 500; }
+.linkbtn:hover { color: var(--accent-hover); }
+.paybar { margin-top: var(--s-10); }
+.trust { margin-top: var(--s-3); display: flex; align-items: flex-start; gap: var(--s-2); }
+.trust .icon { margin-top: 3px; }
+
+/* banners */
+.banner { display: flex; gap: var(--s-3); padding: var(--s-4); border-radius: var(--r-lg); border: 1px solid; margin-top: var(--s-6); }
+.banner h2 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; margin: 0; }
+.banner ul { margin: var(--s-1) 0 0; padding-left: var(--s-5); }
+.banner p, .banner li { font-size: var(--text-sm); line-height: var(--lh-sm); }
+.banner a { color: inherit; font-weight: 500; }
+.banner .icon { margin-top: 3px; width: 20px; height: 20px; }
+.banner.danger { background: var(--danger-subtle); border-color: color-mix(in srgb, var(--danger) 30%, transparent); }
+.banner.danger .icon, .banner.danger h2 { color: var(--danger); }
+.banner[hidden] { display: none; }
+
+/* summary */
+.sum { border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--bg-subtle); }
+.sum > summary { list-style: none; display: none; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 56px; padding: 0 var(--s-4); cursor: pointer; font-weight: 500; }
+.sum > summary::-webkit-details-marker { display: none; }
+.sum > summary .t { font-weight: 600; font-variant-numeric: tabular-nums; }
+.sum > summary .icon { transition: transform var(--t-base) var(--ease); }
+.sum[open] > summary .icon { transform: rotate(180deg); }
+.sum-body { padding: var(--s-6); }
+.sum h2 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; margin-bottom: var(--s-4); }
+.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-4); }
+.line { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: var(--s-3); align-items: start; }
+.thumb { width: 48px; height: 48px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--border); display: grid; place-items: center; color: var(--text-muted); }
+.thumb svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.line b { font-weight: 500; display: block; }
+.line small { color: var(--text-muted); font-size: var(--text-sm); line-height: var(--lh-sm); display: block; }
+.line .p { font-variant-numeric: tabular-nums; }
+.disc { margin-top: var(--s-4); padding-top: var(--s-2); border-top: 1px solid var(--border); }
+.disc-form { display: flex; gap: var(--s-2); margin-top: var(--s-2); }
+.disc-form input { flex: 1; min-width: 0; }
+.disc-form .btn { padding: 0 var(--s-4); }
+.tot { margin: var(--s-4) 0 0; padding: var(--s-4) 0 0; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; gap: var(--s-2) var(--s-4); font-variant-numeric: tabular-nums; }
+.tot dt { color: var(--text-muted); }
+.tot dd { margin: 0; text-align: right; }
+.tot .grand { font-weight: 600; font-size: var(--text-xl); line-height: var(--lh-xl); color: var(--text); padding-top: var(--s-3); margin-top: var(--s-1); border-top: 1px solid var(--border); }
+.tot dt.grand { font-size: var(--text-md); align-self: end; }
+.vat { text-align: right; font-size: var(--text-sm); color: var(--text-muted); margin-top: var(--s-1); font-variant-numeric: tabular-nums; }
+::placeholder { color: var(--text-muted); opacity: 1; }
+.good { color: var(--success); }
+
+/* confirmation */
+.confirm { max-width: 640px; margin: var(--s-12) auto var(--s-16); padding: 0 var(--s-8); }
+.confirm[hidden] { display: none; }
+.confirm h1 { display: flex; align-items: center; gap: var(--s-3); }
+.confirm h1 .icon { width: 28px; height: 28px; color: var(--success); }
+.confirm dl { margin: var(--s-6) 0 0; display: grid; grid-template-columns: 160px 1fr; gap: var(--s-3) var(--s-4); }
+.confirm dt { color: var(--text-muted); } .confirm dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 899px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); padding: var(--s-4) var(--s-4) 0; }
+  .aside { position: static; order: 1; }
+  form { order: 2; }
+  .sum > summary { display: flex; }
+  .sum-body { padding: 0 var(--s-4) var(--s-4); }
+  .sum h2 { display: none; }
+  .top-in { padding: 0 var(--s-4); height: 56px; }
+  .secure span { display: none; }
+  .paybar { position: sticky; bottom: 0; margin: var(--s-8) calc(var(--s-4) * -1) 0; padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--border); box-shadow: var(--shadow-pop); }
+  .confirm { padding: 0 var(--s-4); margin-top: var(--s-8); }
+  .confirm dl { grid-template-columns: 1fr; gap: 0; } .confirm dd { margin-bottom: var(--s-3); }
+  .w-postcode, .w-exp { width: 50%; flex: 1; }
+  .w-cvc { width: 50%; flex: 1; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 4h12l1 4v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8z"/><path d="M5 8h14M9 13c0-1.5 1-2.5 3-2.5s3 1 3 2.5-1 3-3 3-3-1.5-3-3z"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to checkout</a>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="6" ry="9" transform="rotate(35 12 12)"/><path d="M8 7c4 1 4 4 3 6s0 4 5 4"/></svg>Kettle Hill Coffee Roasters</a>
+    <span class="secure"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Secure checkout</span></span>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap" id="checkout">
+  <form id="form" novalidate aria-labelledby="h1">
+    <h1 id="h1">Checkout</h1>
+    <div class="banner danger" id="summary" role="alert" tabindex="-1" hidden>
+      <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
+      <div><h2>There is a problem</h2><ul id="summary-list"></ul></div>
+    </div>
+
+    <fieldset class="sec" style="border:0">
+      <legend>Contact</legend>
+      <div class="field">
+        <label for="email">Email</label>
+        <span class="hint" id="email-h">We send your order confirmation and tracking here.</span>
+        <input id="email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" autocapitalize="off" aria-describedby="email-h email-e" required value="amara.okafor@kestrel-analytics.com">
+        <p class="err" id="email-e" hidden></p>
+      </div>
+    </fieldset>
+
+    <fieldset class="sec" style="border:0">
+      <legend>Shipping address</legend>
+      <div class="field">
+        <label for="country">Country or region</label>
+        <select id="country" name="country" autocomplete="country"><option>United Kingdom</option><option>Ireland</option></select>
+      </div>
+      <div class="field">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required value="Amara Okafor" aria-describedby="name-e">
+        <p class="err" id="name-e" hidden></p>
+      </div>
+      <div class="field">
+        <label for="addr1">Address line 1</label>
+        <input id="addr1" name="addr1" type="text" autocomplete="address-line1" required value="Flat 4, The Maltings, 14 Wharf Road" aria-describedby="addr1-e">
+        <p class="err" id="addr1-e" hidden></p>
+      </div>
+      <div class="field">
+        <label for="addr2">Address line 2 <span class="opt">(optional)</span></label>
+        <input id="addr2" name="addr2" type="text" autocomplete="address-line2">
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1;min-width:0">
+          <label for="city">Town or city</label>
+          <input id="city" name="city" type="text" autocomplete="address-level2" required value="Leeds" aria-describedby="city-e">
+          <p class="err" id="city-e" hidden></p>
+        </div>
+        <div class="field w-postcode">
+          <label for="postcode">Postcode</label>
+          <input id="postcode" name="postcode" type="text" autocomplete="postal-code" required value="LS1 4BR" autocapitalize="characters" spellcheck="false" aria-describedby="postcode-e">
+        </div>
+      </div>
+      <p class="err" id="postcode-e" hidden style="margin-top:var(--s-1)"></p>
+      <div class="field">
+        <label for="tel">Phone <span class="opt">(optional)</span></label>
+        <span class="hint" id="tel-h">The courier texts you if they cannot find the address.</span>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="tel-h" value="07700 900123" style="max-width:240px">
+      </div>
+    </fieldset>
+
+    <fieldset class="sec" style="border:0">
+      <legend>Delivery</legend>
+      <div class="choices" id="delivery" role="radiogroup" aria-label="Delivery option"></div>
+    </fieldset>
+
+    <fieldset class="sec" style="border:0">
+      <legend>Payment</legend>
+      <div class="banner danger" id="declined" role="alert" tabindex="-1" hidden style="margin:0 0 var(--s-5)">
+        <svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>
+        <div><h2>Your card was declined</h2><p>Try another card or contact your bank. We kept your card number. Enter the security code again.</p></div>
+      </div>
+      <div class="wallets">
+        <button class="btn" type="button">Apple Pay</button>
+        <button class="btn" type="button">Google Pay</button>
+      </div>
+      <p class="divider">or pay by card</p>
+      <div class="field">
+        <label for="cc">Card number</label>
+        <div class="cardnum">
+          <input id="cc" name="cc" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" spellcheck="false" aria-describedby="cc-e" maxlength="23">
+          <svg class="icon" aria-hidden="true"><use href="#i-card"/></svg>
+        </div>
+        <p class="err" id="cc-e" hidden></p>
+      </div>
+      <div class="row">
+        <div class="field w-exp">
+          <label for="exp">Expiry date</label>
+          <input id="exp" name="exp" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY" maxlength="7" aria-describedby="exp-e">
+        </div>
+        <div class="field w-cvc">
+          <label for="cvc">Security code</label>
+          <input id="cvc" name="cvc" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="3 digits" maxlength="4" aria-describedby="cvc-e">
+        </div>
+      </div>
+      <p class="err" id="exp-e" hidden style="margin-top:var(--s-1)"></p>
+      <p class="err" id="cvc-e" hidden style="margin-top:var(--s-1)"></p>
+      <label class="check"><input type="checkbox" id="same" checked> Billing address is the same as shipping</label>
+      <p class="hint trust"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Payments are processed by Stripe. We never see your card number.</p>
+    </fieldset>
+
+    <div class="paybar">
+      <button class="btn btn-primary" type="submit" id="pay">Pay <span id="pay-amt">£51.45</span></button>
+    </div>
+  </form>
+
+  <aside class="aside" aria-label="Order summary">
+    <details class="sum" id="sum" open>
+      <summary><span>Show order summary <svg class="icon" aria-hidden="true" style="display:inline;vertical-align:-3px"><use href="#i-down"/></svg></span><span class="t" id="sum-total-top">£51.45</span></summary>
+      <div class="sum-body">
+        <h2>Order summary</h2>
+        <ul class="lines" id="lines"></ul>
+        <div class="disc">
+          <button class="linkbtn" type="button" id="disc-open" aria-expanded="false" aria-controls="disc-form">Add a discount code</button>
+          <div id="disc-form" hidden>
+            <div class="disc-form">
+              <input type="text" id="code" aria-label="Discount code" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="code-e">
+              <button class="btn" type="button" id="apply">Apply code</button>
+            </div>
+            <p class="err" id="code-e" hidden style="margin-top:var(--s-2)"></p>
+          </div>
+        </div>
+        <dl class="tot" id="tot"></dl>
+        <p class="vat" id="vat"></p>
+      </div>
+    </details>
+  </aside>
+</div>
+
+<section class="confirm" id="confirm" hidden tabindex="-1">
+  <h1><svg class="icon" aria-hidden="true"><use href="#i-ok"/></svg>Order confirmed</h1>
+  <p style="margin-top:var(--s-3)">Order <strong id="c-no">KH-48213</strong>. We sent the receipt to <strong id="c-mail"></strong>.</p>
+  <dl>
+    <dt>Roasting</dt><dd>Your beans are roasted on Monday 30 November, then packed the same day.</dd>
+    <dt>Delivery</dt><dd id="c-del"></dd>
+    <dt>Ship to</dt><dd id="c-addr"></dd>
+    <dt>Total paid</dt><dd id="c-tot"></dd>
+  </dl>
+</section>
+</main>
+
+<script>
+// All sample data lives here; the page renders from it. Today is Thursday 26 November 2026.
+const ITEMS = [
+  { name: 'Ethiopia Guji Natural', meta: '250g, whole bean', qty: 2, price: 9.50 },
+  { name: 'Colombia Huila Decaf, Sugarcane Process, Single Origin Micro-lot', meta: '250g, espresso grind', qty: 1, price: 10.50 },
+  { name: 'Kettle Hill House Blend', meta: '1kg, whole bean', qty: 1, price: 18.00 },
+];
+const DELIVERY = [
+  { id: 'std', name: 'Standard, Royal Mail Tracked 48', when: 'Arrives Mon 30 Nov to Wed 2 Dec', price: 3.95 },
+  { id: 'next', name: 'Next day, DPD', when: 'Arrives Fri 27 Nov if you order before 2pm', price: 6.95 },
+];
+const CODES = { BEANS10: 0.10 };
+const VAT_RATE = 0.20;
+const state = { delivery: 'std', discount: 0, code: '' };
+const $ = (id) => document.getElementById(id);
+const gbp = (n) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(n);
+const q = new URLSearchParams(location.search).get('state');
+
+function totals() {
+  const sub = ITEMS.reduce((s, i) => s + i.qty * i.price, 0);
+  const ship = DELIVERY.find((d) => d.id === state.delivery).price;
+  const disc = Math.round(sub * state.discount * 100) / 100;
+  const total = Math.round((sub - disc + ship) * 100) / 100;
+  const vat = Math.round(total * VAT_RATE / (1 + VAT_RATE) * 100) / 100;
+  return { sub, ship, disc, total, vat };
+}
+function render() {
+  const t = totals();
+  $('lines').innerHTML = ITEMS.map((i) => `<li class="line"><span class="thumb"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-bag"/></svg></span>
+    <span><b>${i.name}</b><small>${i.meta}</small><small>Quantity ${i.qty}</small></span><span class="p">${gbp(i.qty * i.price)}</span></li>`).join('');
+  $('tot').innerHTML = `<dt>Subtotal</dt><dd>${gbp(t.sub)}</dd>
+    ${t.disc ? `<dt>Discount ${state.code}</dt><dd class="good">&minus;${gbp(t.disc)}</dd>` : ''}
+    <dt>Delivery</dt><dd>${gbp(t.ship)}</dd>
+    <dt class="grand">Total</dt><dd class="grand">${gbp(t.total)}</dd>`;
+  $('vat').textContent = `Includes ${gbp(t.vat)} VAT`;
+  $('pay-amt').textContent = gbp(t.total);
+  $('sum-total-top').textContent = gbp(t.total);
+  $('delivery').innerHTML = DELIVERY.map((d) => `<label class="choice"><input type="radio" name="delivery" value="${d.id}" ${d.id === state.delivery ? 'checked' : ''}>
+    <span><b>${d.name}</b><small>${d.when}</small></span><span class="p">${gbp(d.price)}</span></label>`).join('');
+  document.querySelectorAll('input[name=delivery]').forEach((r) => r.addEventListener('change', () => { state.delivery = r.value; render(); }));
+}
+render();
+
+// Summary is always open on desktop, collapsed on phone.
+const mq = matchMedia('(min-width: 900px)');
+const syncSum = () => { $('sum').open = mq.matches; };
+syncSum(); mq.addEventListener('change', syncSum);
+$('sum').querySelector('summary').addEventListener('click', (e) => { if (mq.matches) e.preventDefault(); });
+
+// Discount code
+$('disc-open').addEventListener('click', () => { const open = $('disc-form').hidden; $('disc-form').hidden = !open; $('disc-open').setAttribute('aria-expanded', open); if (open) $('code').focus(); });
+$('apply').addEventListener('click', () => {
+  const c = $('code').value.trim().toUpperCase();
+  if (CODES[c]) { state.discount = CODES[c]; state.code = c; $('code-e').hidden = true; render(); }
+  else { $('code-e').hidden = false; $('code-e').textContent = c ? 'We do not recognise that code. Check it and try again.' : 'Enter a discount code.'; }
+});
+
+// Card input formatting
+$('cc').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 19).replace(/(.{4})/g, '$1 ').trim(); });
+$('exp').addEventListener('input', (e) => { let v = e.target.value.replace(/\D/g, '').slice(0, 4); if (v.length > 2) v = v.slice(0, 2) + ' / ' + v.slice(2); e.target.value = v; });
+$('cvc').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/\D/g, ''); });
+
+const luhn = (s) => { let sum = 0, alt = false; for (let i = s.length - 1; i >= 0; i--) { let n = +s[i]; if (alt) { n *= 2; if (n > 9) n -= 9; } sum += n; alt = !alt; } return sum % 10 === 0; };
+const CHECKS = [
+  ['email', (v) => /^\S+@\S+\.\S+$/.test(v), 'Enter an email address in the format name@example.com'],
+  ['name', (v) => v.trim().length > 1, 'Enter your full name'],
+  ['addr1', (v) => v.trim().length > 2, 'Enter the first line of your address'],
+  ['city', (v) => v.trim().length > 1, 'Enter your town or city'],
+  ['postcode', (v) => /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i.test(v.trim()), 'Enter a full UK postcode, for example LS1 4BR'],
+  ['cc', (v) => { const d = v.replace(/\s/g, ''); return d.length >= 13 && luhn(d); }, 'Enter the 16 digits on the front of your card'],
+  ['exp', (v) => { const m = v.match(/^(\d\d) \/ (\d\d)$/); if (!m) return false; const mo = +m[1], yr = 2000 + +m[2]; return mo >= 1 && mo <= 12 && (yr > 2026 || (yr === 2026 && mo >= 11)); }, 'Enter a card expiry date in the future, for example 08 / 29'],
+  ['cvc', (v) => /^\d{3,4}$/.test(v), 'Enter the 3 digits on the back of your card'],
+];
+function validate() {
+  const errs = [];
+  CHECKS.forEach(([id, ok, msg]) => {
+    const el = $(id), bad = !ok(el.value), e = $(id + '-e');
+    el.setAttribute('aria-invalid', bad);
+    if (e) { e.hidden = !bad; e.textContent = bad ? msg : ''; }
+    if (bad) errs.push([id, msg]);
+  });
+  const box = $('summary');
+  box.hidden = !errs.length;
+  $('summary-list').innerHTML = errs.map(([id, m]) => `<li><a href="#${id}">${m}</a></li>`).join('');
+  if (errs.length) { box.focus(); box.scrollIntoView({ block: 'center' }); }
+  return !errs.length;
+}
+$('summary-list').addEventListener('click', (e) => { const a = e.target.closest('a'); if (a) { e.preventDefault(); $(a.getAttribute('href').slice(1)).focus(); } });
+
+$('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  $('declined').hidden = true;
+  if (!validate()) return;
+  const b = $('pay'); b.disabled = true; b.innerHTML = 'Processing payment&hellip;';
+  document.querySelectorAll('#form input, #form select').forEach((i) => { i.readOnly = true; });
+  setTimeout(() => {
+    const t = totals(), d = DELIVERY.find((x) => x.id === state.delivery);
+    $('c-mail').textContent = $('email').value; $('c-del').textContent = d.name + '. ' + d.when + '.';
+    $('c-addr').textContent = [$('name').value, $('addr1').value, $('city').value, $('postcode').value.toUpperCase()].join(', ');
+    $('c-tot').textContent = gbp(t.total);
+    $('checkout').hidden = true; $('confirm').hidden = false; $('confirm').focus(); scrollTo(0, 0);
+  }, 1200);
+});
+
+// Demo states
+if (q === 'error') { $('postcode').value = ''; $('cc').value = '4242 4242 4242'; $('exp').value = '08 / 29'; validate(); }
+if (q === 'declined') { $('cc').value = '4000 0000 0000 0002'; $('exp').value = '08 / 29'; $('declined').hidden = false; }
+</script>
+</body>
+</html>

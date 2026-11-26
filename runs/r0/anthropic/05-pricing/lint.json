@@ -1,0 +1,120 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 10
+      },
+      "landmark-one-main": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 10
+      },
+      "moderate": {
+        "rules": 2,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 10
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "public sans",
+    "sora"
+  ],
+  "textColors": 7,
+  "minFontPx": 13,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(13, 19, 53)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(37, 64, 245)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 98,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Relay",
+        "w": 96,
+        "h": 30
+      },
+      {
+        "tag": "a",
+        "text": "Start free",
+        "w": 108,
+        "h": 38
+      },
+      {
+        "tag": "i",
+        "text": "29 Aug: No downtime",
+        "w": 3,
+        "h": 38
+      },
+      {
+        "tag": "i",
+        "text": "30 Aug: No downtime",
+        "w": 3,
+        "h": 38
+      },
+      {
+        "tag": "i",
+        "text": "31 Aug: No downtime",
+        "w": 3,
+        "h": 38
+      },
+      {
+        "tag": "i",
+        "text": "1 Sept: No downtime",
+        "w": 3,
+        "h": 38
+      },
+      {
+        "tag": "i",
+        "text": "2 Sept: No downtime",
+        "w": 3,
+        "h": 38
+      },
+      {
+        "tag": "i",
+        "text": "3 Sept: No downtime",
+        "w": 3,
+        "h": 38
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

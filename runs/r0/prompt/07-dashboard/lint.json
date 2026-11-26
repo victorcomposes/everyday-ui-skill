@@ -1,0 +1,98 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "ui-sans-serif"
+  ],
+  "textColors": 9,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 8,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Fernhaus",
+        "w": 120,
+        "h": 29
+      },
+      {
+        "tag": "a",
+        "text": "Today",
+        "w": 62,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Print labels",
+        "w": 92,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Reply",
+        "w": 59,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "View",
+        "w": 54,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Review",
+        "w": 67,
+        "h": 36
+      },
+      {
+        "tag": "a",
+        "text": "Reorder from suppliers",
+        "w": 316,
+        "h": 20
+      },
+      {
+        "tag": "a",
+        "text": "View all orders",
+        "w": 316,
+        "h": 20
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

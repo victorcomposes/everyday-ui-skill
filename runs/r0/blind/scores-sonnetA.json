@@ -1,0 +1,26 @@
+{
+  "01-settings": {
+    "A": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 6, "mobile": 6, "dark": 7, "overall": 6, "worst": "desktop.png: a full-width 'You have unsaved changes' bar sits on an untouched form and covers the Notifications heading and its first column header" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 2, "overall": 6, "worst": "dark.png: no dark mode at all, the dark screenshot is identical to the light page" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 9, "mobile": 6, "dark": 8, "overall": 8, "worst": "mobile.png: the invoices table clips its Status column at the right edge instead of reflowing" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 8, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 2, "overall": 7, "worst": "dark.png: no dark mode, the dark screenshot is the light page with a navy sidebar and a bright seats bar at 14 of 14" }
+  },
+  "02-invoices-table": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 9, "worst": "desktop-fold.png: Send invoice and Record payment links have different widths, so the kebab menu column wobbles between rows" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 7, "realism": 8, "mobile": 6, "dark": 2, "overall": 7, "worst": "dark.png: no dark mode, the dark screenshot is identical to the light page" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 6, "colour": 7, "craft": 6, "realism": 6, "mobile": 7, "dark": 8, "overall": 6, "worst": "mobile.png: row actions Remind and Mark paid are bare text links with no hit area and sit loose under the status chip" },
+    "D": { "hierarchy": 5, "layout": 6, "typography": 6, "colour": 6, "craft": 5, "realism": 6, "mobile": 5, "dark": 2, "overall": 5, "worst": "mobile-fold.png: the first summary card reads '11 - $34,993.65' and wraps onto two lines, an awkward made-up number format" }
+  },
+  "03-sign-in": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 2, "overall": 8, "worst": "dark.png: no dark mode, the screenshot is the light page unchanged" },
+    "B": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 5, "mobile": 7, "dark": 7, "overall": 6, "worst": "desktop-fold.png: generic centred form, empty fields with no placeholder, no keep-signed-in and nothing that says whose product this is" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 7, "realism": 8, "mobile": 8, "dark": 2, "overall": 8, "worst": "desktop-fold.png: three cards float at the top of the green panel and the quote sits at the bottom with a big dead gap between them" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 7, "dark": 7, "overall": 7, "worst": "mobile-fold.png: the Show toggle and the Keep me signed in label use a pale grey that is low contrast on white" }
+  },
+  "04-empty-onboarding": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 9, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 2, "overall": 8, "worst": "dark.png: no dark mode, and the desktop-fold.png headline wraps to three heavy lines that crowd the note-type cards beneath" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 6, "colour": 7, "craft": 7, "realism": 7, "mobile": 7, "dark": 8, "overall": 6, "worst": "desktop-fold.png: a generic empty-state icon and a dead gap under the Get started card leave the right column half empty" },
+    "C": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 8, "craft": 7, "realism": 7, "mobile": 7, "dark": 8, "overall": 7, "worst": "desktop-fold.png: the headline leaves an orphan 'it.' alone on the second line" },
+    "D": { "hierarchy": 7, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 2, "overall": 7, "worst": "desktop-fold.png: the serif headline ends with an orphan 'in it.' and four equal-weight blocks compete before the checklist" }
+  }
+}

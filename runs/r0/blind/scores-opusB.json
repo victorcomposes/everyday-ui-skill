@@ -1,0 +1,26 @@
+{
+  "05-pricing": {
+    "A": { "hierarchy": 6, "layout": 7, "typography": 8, "colour": 7, "craft": 8, "realism": 8, "mobile": 6, "dark": 2, "overall": 6, "worst": "dark.png: no dark mode, the page renders identically to light" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 7, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: near-monochrome palette, the recommended plan relies on a black border alone and the page feels unbranded" },
+    "C": { "hierarchy": 7, "layout": 6, "typography": 7, "colour": 7, "craft": 6, "realism": 6, "mobile": 3, "dark": 6, "overall": 5, "worst": "mobile.png: the compare table overflows horizontally, showing only the Starter column with section labels cut off (MON, AL, DATA AN, SECURIT)" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 5, "dark": 7, "overall": 7, "worst": "mobile.png: the compare table shows only the Hobby column with no visible control to switch to Team or Scale" }
+  },
+  "06-checkout": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 7, "realism": 8, "mobile": 8, "dark": 2, "overall": 7, "worst": "dark.png: no dark mode, the page renders identically to light" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 6, "colour": 7, "craft": 5, "realism": 7, "mobile": 6, "dark": 6, "overall": 6, "worst": "desktop-fold.png: the quantity stepper collides with the wrapped variant text ('whole bean[- 2 +]', 'ground for filter[- 1 +]') and 'United Kingdom' is clipped in the select" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 4, "dark": 2, "overall": 5, "worst": "mobile-fold.png: the whole expanded order summary fills the first screen and the Checkout title and breadcrumb sit below it, so no form field is visible" },
+    "D": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 9, "dark": 7, "overall": 8, "worst": "desktop.png: the narrow order summary column wraps product names to four lines, uses generic placeholder icons and offers no quantity control" }
+  },
+  "07-dashboard": {
+    "A": { "hierarchy": 9, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 9, "mobile": 7, "dark": 7, "overall": 8, "worst": "desktop.png: the sidebar background ends at 900 px and the page below it is bare" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 5, "dark": 2, "overall": 5, "worst": "dark.png: no dark mode, the page renders identically to light" },
+    "C": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 6, "dark": 2, "overall": 7, "worst": "dark.png: no dark mode, the page renders identically to light" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 6, "dark": 7, "overall": 6, "worst": "mobile-fold.png: the Orders KPI delta breaks into a column ('triangle / 6' beside 'more than last / week')" }
+  },
+  "08-mobile-banking": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 6, "mobile": 7, "dark": 2, "overall": 6, "worst": "dark.png: no dark mode, the page renders identically to light" },
+    "B": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 5, "mobile": 7, "dark": 2, "overall": 5, "worst": "dark.png: no dark mode, the page renders identically to light" },
+    "C": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 6, "craft": 7, "realism": 9, "mobile": 7, "dark": 7, "overall": 7, "worst": "mobile-fold.png: the action labels 'Send money' and 'Add money' almost touch, and the plain white page carries no brand at all" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 8, "dark": 6, "overall": 8, "worst": "dark.png: merchant avatar tiles stay pale light-mode pastels and glare against the dark list" }
+  }
+}

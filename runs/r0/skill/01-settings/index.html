@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings - Tallyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #2754c5; --accent-hover: #1f45a6; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --font: Geist, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px; --text-xl: 20px; --lh-xl: 28px; --text-2xl: 24px; --lh-2xl: 32px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2 { text-wrap: balance; letter-spacing: -0.01em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ico { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4);
+  border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); font-weight: 500; cursor: pointer; text-decoration: none; color: var(--text); white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn.danger { color: var(--danger); border-color: var(--danger); }
+.btn.danger:hover { background: var(--danger-subtle); }
+.btn[aria-disabled="true"], .btn:disabled { opacity: .6; cursor: not-allowed; }
+.field { display: grid; gap: var(--s-1); }
+.field label, .lbl { font-weight: 500; }
+.hint { color: var(--text-muted); font-size: var(--text-sm); }
+.input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md); }
+@media (max-width: 640px) { .input, select, textarea { font-size: var(--text-md); } }
+.badge { display: inline-flex; align-items: center; gap: var(--s-1); padding: 2px var(--s-2); border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; white-space: nowrap; background: var(--bg-subtle); color: var(--text-muted); }
+.badge.success { background: var(--success-subtle); color: var(--success); }
+.badge.warning { background: var(--warning-subtle); color: var(--warning); }
+.badge.danger { background: var(--danger-subtle); color: var(--danger); }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+.num { font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+:root { --sidebar-w: 240px; --topbar-h: 56px; --subnav-w: 200px; --content-w: 720px; }
+svg.sprite { position: absolute; width: 0; height: 0; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100dvh; }
+.sidebar { background: var(--bg-subtle); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: var(--s-3); gap: var(--s-4); position: sticky; top: 0; height: 100dvh; }
+.brand { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2); font-weight: 600; font-size: var(--text-md); }
+.brand-mark { width: 24px; height: 24px; border-radius: var(--r-md); background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 600; }
+.nav { display: grid; gap: 2px; }
+.nav-label { padding: var(--s-3) var(--s-2) var(--s-1); font-size: var(--text-xs); color: var(--text-muted); font-weight: 500; }
+.nav a { display: flex; align-items: center; gap: var(--s-2); min-height: var(--control-h-sm); padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text); text-decoration: none; }
+.nav a:hover { background: var(--border); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav .count { margin-left: auto; color: var(--text-muted); font-size: var(--text-xs); }
+.nav-bottom { margin-top: auto; }
+.org { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2); border-radius: var(--r-md); }
+.avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 600; flex: none; }
+.avatar.lg { width: 64px; height: 64px; font-size: var(--text-xl); }
+.org b { display: block; font-weight: 500; }
+.org span { color: var(--text-muted); font-size: var(--text-xs); }
+.main { min-width: 0; }
+.topbar { height: var(--topbar-h); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: var(--s-4); padding: 0 var(--s-8); }
+.menu-btn { display: none; }
+.search { display: flex; align-items: center; gap: var(--s-2); width: 100%; max-width: 360px; min-height: var(--control-h-sm); padding: 0 var(--s-3); border: 1px solid var(--border); border-radius: var(--r-md); color: var(--text-muted); background: var(--bg-subtle); }
+.search kbd { margin-left: auto; font: inherit; font-size: var(--text-xs); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0 var(--s-1); }
+.topbar .spacer { flex: 1; }
+
+/* page */
+.page { padding: var(--s-8); display: grid; grid-template-columns: var(--subnav-w) minmax(0, var(--content-w)); gap: var(--s-12); align-items: start; }
+.page-title { grid-column: 1 / -1; font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; margin-bottom: calc(var(--s-4) * -1); }
+.subnav { position: sticky; top: var(--s-6); display: grid; gap: 2px; }
+.subnav a { display: flex; align-items: center; min-height: var(--control-h-sm); padding: 0 var(--s-3); border-radius: var(--r-md); color: var(--text-muted); text-decoration: none; }
+.subnav a:hover { background: var(--bg-subtle); color: var(--text); }
+.subnav a[aria-current="true"] { background: var(--accent-subtle); color: var(--text); font-weight: 500; }
+.sections { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-12); min-width: 0; }
+.section { scroll-margin-top: var(--s-6); }
+.section > header { padding-bottom: var(--s-4); border-bottom: 1px solid var(--border); }
+.section h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; }
+.section > header p { color: var(--text-muted); margin-top: var(--s-1); }
+.row { display: grid; grid-template-columns: 2fr 3fr; gap: var(--s-6); padding: var(--s-5) 0; border-bottom: 1px solid var(--border); align-items: start; }
+.row .lbl { display: block; }
+.row .hint { margin-top: var(--s-1); }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-4); }
+.photo { display: flex; align-items: center; gap: var(--s-4); }
+.val { min-width: 0; }
+.error-msg { color: var(--danger); display: flex; gap: var(--s-1); align-items: center; }
+.input[aria-invalid="true"] { border-color: var(--danger); }
+textarea.input { padding: var(--s-2) var(--s-3); min-height: 88px; resize: vertical; }
+select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23838995' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right var(--s-3) center; padding-right: var(--s-8); }
+.actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--s-3); padding-top: var(--s-5); }
+.status { margin-right: auto; color: var(--text-muted); display: inline-flex; align-items: center; gap: var(--s-2); }
+.status.ok { color: var(--success); }
+.summary { border: 1px solid var(--danger); background: var(--danger-subtle); border-radius: var(--r-lg); padding: var(--s-3) var(--s-4); margin-top: var(--s-4); }
+.summary b { display: block; }
+.summary a { color: var(--danger); }
+[hidden] { display: none !important; }
+.gated { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); flex-wrap: wrap; }
+.strong { font-weight: 500; }
+
+/* notifications: instant switches */
+.n-row { display: grid; grid-template-columns: 2fr 3fr; gap: var(--s-6); padding: var(--s-4) 0; border-bottom: 1px solid var(--border); align-items: center; }
+.n-head { padding: var(--s-3) 0; color: var(--text-muted); font-weight: 500; font-size: var(--text-xs); }
+.channels { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+.switch { position: relative; display: inline-flex; align-items: center; gap: var(--s-3); cursor: pointer; min-height: var(--control-h-sm); }
+.switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.track { width: 36px; height: 20px; border-radius: var(--r-full); background: var(--border-strong); position: relative; flex: none; transition: background-color var(--t-base) var(--ease); }
+.track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: var(--r-full); background: var(--bg); transition: transform var(--t-base) var(--ease); }
+.switch input:checked + .track { background: var(--accent); }
+.switch input:checked + .track::after { transform: translateX(16px); background: var(--on-accent); }
+.switch input:focus-visible + .track { outline: 2px solid var(--focus); outline-offset: 2px; }
+.switch .t { color: var(--text-muted); }
+.saved-note { color: var(--success); display: inline-flex; align-items: center; gap: var(--s-1); opacity: 0; transition: opacity var(--t-base) var(--ease); white-space: nowrap; }
+.saved-note.on { opacity: 1; }
+.section-note { display: flex; justify-content: space-between; gap: var(--s-4); padding-top: var(--s-3); color: var(--text-muted); }
+
+/* billing */
+.plan { display: grid; grid-template-columns: 1fr auto; gap: var(--s-6); padding: var(--s-5) 0; border-bottom: 1px solid var(--border); align-items: start; }
+.plan h3 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; display: flex; align-items: center; gap: var(--s-2); }
+.plan .price { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; text-align: right; }
+.plan .price small { font-size: var(--text-sm); font-weight: 400; color: var(--text-muted); }
+.meters { display: grid; gap: var(--s-4); margin-top: var(--s-4); max-width: 420px; }
+.meter { display: grid; gap: var(--s-1); }
+.meter-top { display: flex; justify-content: space-between; gap: var(--s-3); }
+.bar { height: 6px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.bar.warn i { background: var(--warning); }
+.pay { display: flex; align-items: center; gap: var(--s-3); }
+.card-ico { width: 40px; height: 28px; border: 1px solid var(--border); border-radius: var(--r-sm); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 600; color: var(--text-muted); background: var(--bg-subtle); flex: none; }
+.table-wrap { position: relative; overflow-x: auto; margin-top: var(--s-3); }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-weight: 500; font-size: var(--text-xs); color: var(--text-muted); padding: var(--s-2) var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: var(--s-3) var(--s-3) var(--s-3) 0; border-bottom: 1px solid var(--border); white-space: nowrap; }
+th:last-child, td:last-child { padding-right: 0; text-align: right; }
+th.r, td.r { text-align: right; }
+.danger-row { display: grid; grid-template-columns: 1fr auto; gap: var(--s-6); align-items: center; padding: var(--s-5) 0; }
+.h3 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; padding-top: var(--s-6); }
+.dlg { border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s-6); width: min(400px, calc(100vw - var(--s-8))); background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); }
+.dlg form { display: grid; gap: var(--s-4); }
+.dlg h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; overflow-wrap: anywhere; }
+.dlg .foot { display: flex; gap: var(--s-3); justify-content: flex-end; }
+
+@media (max-width: 1100px) {
+  .page { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  .subnav { position: static; display: flex; overflow-x: auto; gap: var(--s-1); border-bottom: 1px solid var(--border); margin: 0 calc(var(--s-8) * -1); padding: 0 var(--s-8); scrollbar-width: none; }
+  .subnav a { white-space: nowrap; border-radius: 0; border-bottom: 2px solid transparent; }
+  .subnav a[aria-current="true"] { background: none; border-bottom-color: var(--accent); }
+  .page-title { margin-bottom: 0; }
+}
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .menu-btn { display: inline-flex; }
+  .topbar { padding: 0 var(--s-4); }
+  .search { display: none; }
+}
+@media (max-width: 640px) {
+  .page { padding: var(--s-6) var(--s-4) var(--s-12); }
+  .subnav { margin: 0 calc(var(--s-4) * -1); padding: 0 var(--s-4); }
+  .subnav a { min-height: var(--control-h-touch); }
+  .row, .n-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+  .n-head { display: none; }
+  .pair { grid-template-columns: minmax(0, 1fr); }
+  .actions { flex-direction: column-reverse; align-items: stretch; }
+  .actions .status { margin: 0; }
+  .actions .btn { width: 100%; }
+  .plan { grid-template-columns: minmax(0, 1fr); }
+  .plan .price, .plan .price + p { text-align: left !important; }
+  .danger-row { grid-template-columns: minmax(0, 1fr); }
+  .danger-row .btn { width: 100%; }
+  .switch { min-height: var(--control-h-touch); }
+  .pay { flex-wrap: wrap; }
+  .menu-btn { min-width: var(--control-h-touch); }
+  .gated a { display: inline-flex; align-items: center; min-height: var(--control-h-touch); }
+  .pay .btn { width: 100%; margin: 0 !important; }
+  .section-note { flex-direction: column; }
+  .dlg .foot { flex-direction: column-reverse; }
+  .dlg .foot .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.4c2 .8 3.5 2.6 3.5 5.6"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 13h5l1 3h6l1-3h5"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside class="sidebar" aria-label="Workspace">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">T</span> Tallyo</div>
+    <nav class="nav" aria-label="Main">
+      <a href="#"><svg class="ico"><use href="#i-home"/></svg>Home</a>
+      <a href="#"><svg class="ico"><use href="#i-inbox"/></svg>Inbox <span class="count num">7</span></a>
+      <a href="#"><svg class="ico"><use href="#i-check"/></svg>My tasks <span class="count num">12</span></a>
+      <a href="#"><svg class="ico"><use href="#i-folder"/></svg>Projects <span class="count num">23</span></a>
+      <a href="#"><svg class="ico"><use href="#i-users"/></svg>Teams</a>
+      <a href="#"><svg class="ico"><use href="#i-chart"/></svg>Reports</a>
+      <div class="nav-label">Workspace</div>
+      <a href="#"><svg class="ico"><use href="#i-users"/></svg>Members <span class="count num">18</span></a>
+      <a href="#" aria-current="page"><svg class="ico"><use href="#i-cog"/></svg>Settings</a>
+    </nav>
+    <div class="nav nav-bottom">
+      <a href="#"><svg class="ico"><use href="#i-help"/></svg>Help and docs</a>
+      <div class="org"><span class="avatar" aria-hidden="true">PR</span><div><b>Priya Raghunathan</b><span>Northwind Logistics</span></div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="btn sm menu-btn" aria-label="Open menu" type="button"><svg class="ico"><use href="#i-menu"/></svg></button>
+      <div class="search" role="search"><svg class="ico"><use href="#i-search"/></svg>Search Tallyo<kbd>Ctrl K</kbd></div>
+      <span class="spacer"></span>
+      <span class="avatar" role="img" aria-label="Priya Raghunathan">PR</span>
+    </header>
+
+    <main class="page">
+      <h1 class="page-title">Settings</h1>
+      <nav class="subnav" aria-label="Settings sections">
+        <a href="#profile" aria-current="true">Profile</a>
+        <a href="#notifications">Notifications</a>
+        <a href="#billing">Plan and billing</a>
+        <a href="#danger">Delete account</a>
+      </nav>
+
+      <div class="sections">
+        <!-- PROFILE: deferred save -->
+        <section class="section" id="profile" aria-labelledby="h-profile">
+          <header><h2 id="h-profile">Profile</h2><p>How teammates see you across Tallyo. Changes apply when you save.</p></header>
+          <div id="error-summary" class="summary" role="alert" tabindex="-1" hidden>
+            <b>Fix 1 problem before saving</b>
+            <a href="#email">Enter an email address like name@company.com</a>
+          </div>
+          <form id="profile-form" novalidate>
+            <div class="row">
+              <div><span class="lbl">Photo</span><p class="hint">Shown next to your comments and tasks.</p></div>
+              <div class="photo"><span class="avatar lg" aria-hidden="true">PR</span><div><button class="btn sm" type="button">Upload photo</button><p class="hint">PNG or JPG, up to 2 MB.</p></div></div>
+            </div>
+            <div class="row">
+              <div><span class="lbl" id="name-l">Name</span><p class="hint">Your full name appears on assigned tasks.</p></div>
+              <div class="pair" role="group" aria-labelledby="name-l">
+                <input class="input" id="fn" name="fn" autocomplete="given-name" value="Priya" aria-label="First name">
+                <input class="input" id="ln" name="ln" autocomplete="family-name" value="Raghunathan" aria-label="Last name">
+              </div>
+            </div>
+            <div class="row">
+              <div><label class="lbl" for="email">Email</label><p class="hint">We send sign-in links and receipts here.</p></div>
+              <div class="field val">
+                <input class="input" id="email" name="email" type="email" autocomplete="email" spellcheck="false" autocapitalize="off" value="priya.raghunathan@northwind-logistics.com" aria-describedby="email-err">
+                <p class="error-msg" id="email-err" hidden><svg class="ico"><use href="#i-alert"/></svg><span>Enter an email address like name@company.com</span></p>
+              </div>
+            </div>
+            <div class="row">
+              <div><label class="lbl" for="role">Job title <span class="hint">(optional)</span></label></div>
+              <div class="field"><input class="input" id="role" name="role" autocomplete="organization-title" value="Head of Operations"></div>
+            </div>
+            <div class="row">
+              <div><label class="lbl" for="tz">Time zone</label><p class="hint">Due dates and digests use this.</p></div>
+              <div class="field"><select class="input" id="tz" name="tz"><option>(UTC+00:00) London</option><option selected>(UTC+01:00) Amsterdam, Berlin</option><option>(UTC-05:00) New York</option><option>(UTC+05:30) Mumbai</option></select></div>
+            </div>
+            <div class="row">
+              <div><label class="lbl" for="bio">Bio <span class="hint">(optional)</span></label><p class="hint">Up to 160 characters.</p></div>
+              <div class="field"><textarea class="input" id="bio" name="bio" maxlength="160">Runs depot operations across 6 sites. Ask me about shift cover and carrier handovers.</textarea></div>
+            </div>
+            <div class="row" style="border-bottom:0">
+              <div><span class="lbl">Billing contact</span></div>
+              <div class="gated"><svg class="ico"><use href="#i-lock"/></svg><span>Only owners can change this. Ask Amara Okafor.</span></div>
+            </div>
+            <div class="actions" style="border-top:1px solid var(--border)">
+              <span class="status" id="p-status" role="status"></span>
+              <button class="btn" type="button" id="discard" hidden>Discard</button>
+              <button class="btn primary" type="submit" id="save">Save changes</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- NOTIFICATIONS: instant -->
+        <section class="section" id="notifications" aria-labelledby="h-notif">
+          <header><h2 id="h-notif">Notifications</h2><p>Each switch applies at once. No save needed.</p></header>
+                    <div id="notif-list"></div>
+          <div class="section-note"><span>Muted projects never notify you. 2 of 23 projects are muted.</span><span class="saved-note" id="n-saved" role="status"><svg class="ico"><use href="#i-check"/></svg>Changes saved</span></div>
+        </section>
+
+        <!-- BILLING -->
+        <section class="section" id="billing" aria-labelledby="h-billing">
+          <header><h2 id="h-billing">Plan and billing</h2><p>Billed to Northwind Logistics. Only owners can change the plan.</p></header>
+          <div class="plan">
+            <div>
+              <h3>Business plan <span class="badge success">Active</span></h3>
+              <p class="hint">Renews on 14 Apr 2026, billed monthly.</p>
+              <div class="meters">
+                <div class="meter">
+                  <div class="meter-top"><span>Seats</span><span class="num"><span class="strong">18</span> of 25 used</span></div>
+                  <div class="bar" role="img" aria-label="18 of 25 seats used"><i style="width:72%"></i></div>
+                </div>
+                <div class="meter">
+                  <div class="meter-top"><span>Storage</span><span class="num"><span class="strong">92.4 GB</span> of 100 GB used</span></div>
+                  <div class="bar warn" role="img" aria-label="92.4 of 100 gigabytes used"><i style="width:92.4%"></i></div>
+                </div>
+              </div>
+            </div>
+            <div><p class="price num">$342.00<small> / month</small></p><p class="hint" style="text-align:right">18 seats at $19.00</p></div>
+          </div>
+          <div class="row">
+            <div><span class="lbl">Payment method</span><p class="hint">Charged on the renewal date.</p></div>
+            <div class="pay"><span class="card-ico" aria-hidden="true">VISA</span><div><span class="strong">Visa ending 4242</span><p class="hint" style="margin:0">Expires 09/2028</p></div><button class="btn sm" type="button" style="margin-left:auto">Update card</button></div>
+          </div>
+          <div class="row">
+            <div><span class="lbl">Audit log export</span><p class="hint">Download every workspace event as CSV.</p></div>
+            <div class="gated"><span class="badge">Enterprise</span><span>Available on the Enterprise plan.</span><a href="#">Compare plans</a></div>
+          </div>
+          <h3 class="h3">Invoices</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col" class="r">Amount (USD)</th><th scope="col">Status</th><th scope="col"><span class="sr">Download</span></th></tr></thead>
+              <tbody id="inv"></tbody>
+            </table>
+          </div>
+          <div class="actions" style="justify-content:flex-start"><button class="btn" type="button">Change plan</button></div>
+        </section>
+
+        <!-- DANGER -->
+        <section class="section" id="danger" aria-labelledby="h-danger">
+          <header><h2 id="h-danger">Delete account</h2></header>
+          <div class="danger-row">
+            <div><span class="strong">Delete your Tallyo account</span><p class="hint">This removes your profile and 41 open task assignments from 12 projects. It cannot be undone.</p></div>
+            <button class="btn danger" type="button" id="del">Delete account</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<dialog id="dlg" class="dlg" aria-labelledby="dlg-t">
+  <form method="dialog">
+    <h2 id="dlg-t">Delete account for priya.raghunathan@northwind-logistics.com?</h2>
+    <p>This removes your profile and 41 open task assignments. You cannot undo this.</p>
+    <div class="field"><label for="conf">Type DELETE to confirm</label><input class="input" id="conf" autocomplete="off" spellcheck="false"></div>
+    <div class="foot"><button class="btn" value="cancel">Cancel</button><button class="btn danger" id="conf-go" value="ok" disabled>Delete account</button></div>
+  </form>
+</dialog>
+
+<script>
+const params = new URLSearchParams(location.search);
+const state = params.get('state');
+const notifs = [
+  ['Mentions', 'When someone @mentions you in a comment.', [1, 1]],
+  ['Assigned to you', 'When a task is assigned or reassigned to you.', [1, 1]],
+  ['Due soon', 'A reminder 24 hours before a task is due.', [1, 0]],
+  ['Weekly summary', 'A Monday email with last week’s activity.', [1, 0]],
+  ['Project status changes', 'When a project you follow moves to At risk or Done.', [0, 1]],
+];
+const nl = document.getElementById('notif-list');
+nl.innerHTML = notifs.map((n, i) => `
+  <div class="n-row"><div><span class="lbl">${n[0]}</span><p class="hint">${n[1]}</p></div>
+  <div class="channels">
+    <label class="switch"><input type="checkbox" role="switch" ${n[2][0] ? 'checked' : ''}><span class="track"></span><span class="t">Email<span class="sr"> for ${n[0].toLowerCase()}</span></span></label>
+    <label class="switch"><input type="checkbox" role="switch" ${n[2][1] ? 'checked' : ''}><span class="track"></span><span class="t">In app<span class="sr"> for ${n[0].toLowerCase()}</span></span></label>
+  </div></div>`).join('');
+let tm;
+nl.addEventListener('change', () => { const s = document.getElementById('n-saved'); s.classList.add('on'); clearTimeout(tm); tm = setTimeout(() => s.classList.remove('on'), 2500); });
+
+const fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const dt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+const invoices = [
+  ['2026-03-14', 'Business plan, 18 seats', 342.00, 'Paid'],
+  ['2026-02-14', 'Business plan, 18 seats', 342.00, 'Paid'],
+  ['2026-01-14', 'Business plan, 17 seats', 323.00, 'Paid'],
+  ['2025-12-14', 'Business plan, 17 seats', 323.00, 'Paid'],
+  ['2025-11-20', 'Storage add-on refund', -48.50, 'Refunded'],
+];
+document.getElementById('inv').innerHTML = invoices.map(r => `<tr>
+  <td>${dt.format(new Date(r[0]))}</td><td>${r[1]}</td>
+  <td class="r num">${r[2] < 0 ? '−' : ''}${fmt.format(Math.abs(r[2]))}</td>
+  <td><span class="badge ${r[3] === 'Paid' ? 'success' : ''}">${r[3]}</span></td>
+  <td><a href="#" aria-label="PDF, invoice of ${dt.format(new Date(r[0]))}">PDF</a></td></tr>`).join('');
+
+/* profile: dirty, validate, save */
+const form = document.getElementById('profile-form'), email = document.getElementById('email');
+const discard = document.getElementById('discard'), pstat = document.getElementById('p-status'), save = document.getElementById('save');
+const snap = () => JSON.stringify([...new FormData(form)]);
+const base = snap();
+function dirty() { const d = snap() !== base; discard.hidden = !d; pstat.className = 'status'; pstat.textContent = d ? 'Unsaved changes' : ''; }
+form.addEventListener('input', dirty);
+discard.addEventListener('click', () => { form.reset(); showErr(false); dirty(); });
+function showErr(on) { document.getElementById('email-err').hidden = !on; email.setAttribute('aria-invalid', on); document.getElementById('error-summary').hidden = !on; }
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  if (!/^\S+@\S+\.\S+$/.test(email.value)) { showErr(true); document.getElementById('error-summary').focus(); return; }
+  showErr(false);
+  save.style.minWidth = save.offsetWidth + 'px'; save.textContent = 'Saving…'; save.setAttribute('aria-disabled', 'true');
+  setTimeout(() => { save.textContent = 'Save changes'; save.removeAttribute('aria-disabled'); discard.hidden = true; pstat.className = 'status ok'; pstat.textContent = 'Changes saved'; }, 600);
+});
+if (state === 'error') { email.value = 'priya.raghunathan@northwind'; showErr(true); dirty(); }
+if (state === 'stress') { document.getElementById('fn').value = 'Maximilian Alexander'; document.getElementById('ln').value = 'von Hohenberg-Schwarzenau'; email.value = 'very.long.first.name.and.last.name@subdomain.example-company.co.uk'; dirty(); }
+
+/* subnav marks the section in view */
+const links = [...document.querySelectorAll('.subnav a')];
+const io = new IntersectionObserver(es => { es.forEach(en => { if (en.isIntersecting) links.forEach(l => l.setAttribute('aria-current', String(l.hash === '#' + en.target.id))); }); }, { rootMargin: '-20% 0px -70% 0px' });
+document.querySelectorAll('.section').forEach(s => io.observe(s));
+
+/* delete dialog with typed confirm */
+const dlg = document.getElementById('dlg'), conf = document.getElementById('conf'), go = document.getElementById('conf-go');
+document.getElementById('del').addEventListener('click', () => { conf.value = ''; go.disabled = true; dlg.showModal(); });
+conf.addEventListener('input', () => { go.disabled = conf.value !== 'DELETE'; });
+</script>
+</body>
+</html>

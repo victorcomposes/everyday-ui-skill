@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - Ledgerline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #2754c5; --accent-hover: #1f45a6; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px; --text-xl: 20px; --lh-xl: 28px; --text-2xl: 24px; --lh-2xl: 32px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7a9cff; --accent-hover: #9bb5ff; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2 { text-wrap: balance; letter-spacing: -0.01em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ico { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4);
+  border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); font-weight: 500; cursor: pointer; text-decoration: none; color: var(--text); white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn.danger { color: var(--danger); border-color: var(--danger); }
+.btn.danger:hover { background: var(--danger-subtle); }
+.btn[aria-disabled="true"], .btn:disabled { opacity: .6; cursor: not-allowed; }
+.field { display: grid; gap: var(--s-1); }
+.field label, .lbl { font-weight: 500; }
+.hint { color: var(--text-muted); font-size: var(--text-sm); }
+.input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md); }
+@media (max-width: 640px) { .input, select, textarea { font-size: var(--text-md); } }
+.badge { display: inline-flex; align-items: center; gap: var(--s-1); padding: 2px var(--s-2); border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; white-space: nowrap; background: var(--bg-subtle); color: var(--text-muted); }
+.badge.success { background: var(--success-subtle); color: var(--success); }
+.badge.warning { background: var(--warning-subtle); color: var(--warning); }
+.badge.danger { background: var(--danger-subtle); color: var(--danger); }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+.num { font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.input::placeholder { color: var(--text-muted); opacity: 1; }
+.touch-a { display: inline-flex; align-items: center; }
+@media (max-width: 640px) { .touch-a { min-height: var(--control-h-touch); } }
+
+:root { --box-w: 400px; --btn-h: var(--control-h-touch); }
+[hidden] { display: none !important; }
+body { font-size: var(--text-md); line-height: var(--lh-md); display: flex; flex-direction: column; }
+.top { display: flex; align-items: center; justify-content: space-between; padding: var(--s-6) var(--s-8); }
+.logo { display: inline-flex; align-items: center; gap: var(--s-2); font-weight: 600; font-size: var(--text-lg); color: var(--text); text-decoration: none; }
+.logo svg { width: 28px; height: 28px; }
+.top .help { font-size: var(--text-sm); }
+.stage { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: var(--s-12) var(--s-4) var(--s-12); }
+.box { width: 100%; max-width: var(--box-w); }
+h1:focus { outline: none; }
+h1 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; }
+.lead { color: var(--text-muted); margin-top: var(--s-2); font-size: var(--text-sm); }
+.stack { display: grid; gap: var(--s-6); margin-top: var(--s-8); }
+.field { display: grid; gap: var(--s-2); }
+.field .row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+.field label { font-weight: 500; font-size: var(--text-sm); }
+.field .row a { font-size: var(--text-sm); }
+.btn, .input { min-height: var(--btn-h); font-size: var(--text-md); }
+.btn { width: 100%; }
+.btn .g { width: 18px; height: 18px; }
+.input { padding: 0 var(--s-4); }
+.input[aria-invalid="true"] { border-color: var(--danger); }
+.pw { position: relative; }
+.pw .input { padding-right: 72px; }
+.pw .toggle { position: absolute; right: var(--s-1); top: 50%; translate: 0 -50%; min-height: var(--control-h-sm); min-width: var(--control-h-touch); border: 0; background: none; color: var(--accent); font-weight: 500; font-size: var(--text-sm); cursor: pointer; border-radius: var(--r-md); }
+.err { color: var(--danger); font-size: var(--text-sm); display: flex; gap: var(--s-1); align-items: flex-start; }
+.err .ico { margin-top: 2px; }
+.or { display: flex; align-items: center; gap: var(--s-4); color: var(--text-muted); font-size: var(--text-sm); }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.group { display: grid; gap: var(--s-4); }
+.banner { display: flex; gap: var(--s-3); border: 1px solid; border-radius: var(--r-lg); padding: var(--s-3) var(--s-4); font-size: var(--text-sm); line-height: var(--lh-sm); margin-top: var(--s-6); }
+.banner b { display: block; font-weight: 600; }
+.banner.danger { background: var(--danger-subtle); border-color: var(--danger); }
+.banner.danger .ico { color: var(--danger); }
+.banner.warning { background: var(--warning-subtle); border-color: var(--warning); }
+.banner.warning .ico { color: var(--warning); }
+.banner .ico { margin-top: 2px; width: 16px; height: 16px; }
+.alt { text-align: center; font-size: var(--text-sm); color: var(--text-muted); }
+.alt a { font-weight: 500; }
+.link { color: var(--accent); }
+.textbtn { border: 0; background: none; color: var(--accent); font-weight: 500; cursor: pointer; min-height: var(--control-h-touch); padding: 0 var(--s-2); border-radius: var(--r-md); }
+.textbtn:disabled { color: var(--text-muted); cursor: not-allowed; }
+.mail { width: 48px; height: 48px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; margin-bottom: var(--s-5); }
+.mail .ico { width: 24px; height: 24px; }
+.addr { font-weight: 600; overflow-wrap: anywhere; color: var(--text); }
+.foot { display: flex; gap: var(--s-6); justify-content: center; padding: var(--s-6) var(--s-4); font-size: var(--text-sm); color: var(--text-muted); }
+.foot a { color: var(--text-muted); display: inline-flex; align-items: center; min-height: var(--control-h-sm); }
+.spin { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: var(--r-full); animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 640px) {
+  .top { padding: var(--s-4); }
+  .stage { padding: var(--s-6) var(--s-4) var(--s-8); }
+  .input { font-size: var(--text-md); }
+  .foot { gap: var(--s-2); }
+  .foot a { min-height: var(--control-h-touch); min-width: var(--control-h-touch); justify-content: center; padding: 0 var(--s-2); }
+  .logo { min-height: var(--control-h-touch); }
+  .field .row a { display: inline-flex; align-items: center; min-height: var(--control-h-touch); }
+  .field .row { align-items: center; }
+  .top .help { display: inline-flex; align-items: center; min-height: var(--control-h-touch); }
+}
+</style>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></symbol>
+</svg>
+
+<header class="top">
+  <a class="logo" href="#" aria-label="Ledgerline home">
+    <svg viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M8 9h12M8 14h12M8 19h7" stroke="var(--on-accent)" stroke-width="2.2" stroke-linecap="round"/></svg>
+    Ledgerline
+  </a>
+  <a class="help" href="#">Need help?</a>
+</header>
+
+<main class="stage">
+  <div class="box">
+
+    <!-- Sign in -->
+    <section id="v-signin" aria-labelledby="t-signin">
+      <h1 id="t-signin">Sign in to Ledgerline</h1>
+      <p class="lead">Use your work account to approve and submit expenses.</p>
+
+      <div id="banner" class="banner danger" role="alert" hidden></div>
+
+      <div class="stack">
+        <button class="btn" type="button" id="google">
+          <svg class="g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+
+        <div class="or" role="separator">or</div>
+
+        <form id="form" class="group" novalidate>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="username" spellcheck="false" autocapitalize="off" aria-describedby="email-err">
+            <p class="err" id="email-err" hidden><svg class="ico" width="16" height="16"><use href="#i-alert"/></svg><span></span></p>
+          </div>
+          <div class="field">
+            <div class="row"><label for="pw">Password</label><a href="#">Forgot password?</a></div>
+            <div class="pw">
+              <input class="input" id="pw" name="password" type="password" autocomplete="current-password" aria-describedby="pw-err">
+              <button class="toggle" type="button" id="toggle" aria-controls="pw" aria-pressed="false">Show</button>
+            </div>
+            <p class="err" id="pw-err" hidden><svg class="ico" width="16" height="16"><use href="#i-alert"/></svg><span></span></p>
+          </div>
+          <button class="btn primary" type="submit" id="submit">Sign in</button>
+          <button class="btn" type="button" id="magic"><svg class="ico" width="16" height="16"><use href="#i-mail"/></svg>Email me a sign-in link</button>
+        </form>
+
+        <p class="alt">New to Ledgerline? <a href="#">Create an account</a></p>
+      </div>
+    </section>
+
+    <!-- Check your email -->
+    <section id="v-sent" aria-labelledby="t-sent" hidden>
+            <h1 id="t-sent" tabindex="-1">Check your email</h1>
+      <p class="lead" style="font-size:var(--text-md)">We sent a sign-in link to <span class="addr" id="sent-addr"></span>. It expires in 15 minutes and works once.</p>
+      <div class="stack" style="margin-top:var(--s-6);gap:var(--s-3)">
+        <button class="btn" type="button" id="resend" disabled>Resend link</button>
+        <p class="alt" id="resend-note" role="status"></p>
+        <button class="textbtn" type="button" id="diff">Use a different email</button>
+      </div>
+      <p class="lead" style="margin-top:var(--s-6)">No email? Check your spam folder. Messages come from no-reply@ledgerline.example.</p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="foot"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Status</a></footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = new URLSearchParams(location.search).get('state');
+const email = $('email'), pw = $('pw'), submit = $('submit'), magic = $('magic'), banner = $('banner');
+const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+let timer;
+
+function fieldErr(input, id, msg) {
+  const el = $(id); el.hidden = !msg; el.querySelector('span').textContent = msg || ''; input.setAttribute('aria-invalid', !!msg);
+}
+function clearErrors() { fieldErr(email, 'email-err'); fieldErr(pw, 'pw-err'); banner.hidden = true; }
+function showBanner(kind, title, text) {
+  banner.className = 'banner ' + kind; banner.hidden = false;
+  banner.innerHTML = `<svg class="ico"><use href="#i-alert"/></svg><div><b>${title}</b>${text}</div>`;
+}
+function pending(btn, label, on) {
+  if (on) { btn.dataset.w = btn.style.minWidth; btn.style.minWidth = btn.offsetWidth + 'px'; btn.dataset.h = btn.innerHTML; btn.innerHTML = `<span class="spin" aria-hidden="true"></span>${label}`; btn.setAttribute('aria-disabled', 'true'); }
+  else { btn.innerHTML = btn.dataset.h; btn.removeAttribute('aria-disabled'); btn.style.minWidth = btn.dataset.w || ''; }
+}
+function validEmail() {
+  if (!email.value.trim()) { fieldErr(email, 'email-err', 'Enter your work email address.'); email.focus(); return false; }
+  if (!reEmail.test(email.value.trim())) { fieldErr(email, 'email-err', 'Enter an email address like name@company.com.'); email.focus(); return false; }
+  return true;
+}
+function wrongCredentials() {
+  pw.value = ''; showBanner('danger', 'Email or password is incorrect', 'Check them and try again, or reset your password.'); pw.focus();
+}
+function locked() {
+  showBanner('warning', 'Too many attempts', 'Try again in 5 minutes or reset your password.');
+}
+
+$('toggle').addEventListener('click', e => {
+  const show = pw.type === 'password'; pw.type = show ? 'text' : 'password';
+  e.currentTarget.textContent = show ? 'Hide' : 'Show'; e.currentTarget.setAttribute('aria-pressed', show);
+});
+$('form').addEventListener('submit', e => {
+  e.preventDefault(); clearErrors();
+  if (!validEmail()) return;
+  if (!pw.value) { fieldErr(pw, 'pw-err', 'Enter your password.'); pw.focus(); return; }
+  if (submit.getAttribute('aria-disabled')) return;
+  pending(submit, 'Signing in…', true);
+  setTimeout(() => { pending(submit, '', false); wrongCredentials(); }, 900);
+});
+magic.addEventListener('click', () => {
+  clearErrors();
+  if (!validEmail()) return;
+  if (magic.getAttribute('aria-disabled')) return;
+  pending(magic, 'Sending link…', true);
+  setTimeout(() => { pending(magic, '', false); showSent(email.value.trim()); }, 700);
+});
+function showSent(addr) {
+  $('v-signin').hidden = true; $('v-sent').hidden = false; $('sent-addr').textContent = addr;
+  $('t-sent').focus();
+  let n = state === 'sent' ? 0 : 30; const b = $('resend'), note = $('resend-note');
+  clearInterval(timer);
+  const tick = () => { if (n > 0) { b.disabled = true; note.textContent = `You can resend the link in ${n} seconds.`; n--; } else { b.disabled = false; note.textContent = ''; clearInterval(timer); } };
+  tick(); timer = setInterval(tick, 1000);
+}
+$('resend').addEventListener('click', () => { $('resend-note').textContent = 'Link sent again.'; $('resend').disabled = true; setTimeout(() => showSent($('sent-addr').textContent), 1500); });
+$('diff').addEventListener('click', () => { clearInterval(timer); $('v-sent').hidden = true; $('v-signin').hidden = false; email.focus(); email.select(); });
+$('google').addEventListener('click', () => { const b = $('google'); if (b.getAttribute('aria-disabled')) return; pending(b, 'Opening Google…', true); setTimeout(() => pending(b, '', false), 1200); });
+
+/* preview states: ?state=error | locked | validation | sent | sso */
+if (state === 'error') { email.value = 'amara.okafor@kestrel-analytics.com'; wrongCredentials(); pw.blur(); }
+if (state === 'locked') { email.value = 'amara.okafor@kestrel-analytics.com'; locked(); }
+if (state === 'validation') { email.value = 'amara.okafor@kestrel'; fieldErr(email, 'email-err', 'Enter an email address like name@company.com.'); fieldErr(pw, 'pw-err', 'Enter your password.'); }
+if (state === 'sent') showSent('amara.okafor@kestrel-analytics.com');
+if (state === 'sso') { email.value = 'daniel.reyes@bramwell-dental.example'; showBanner('warning', 'Your organisation uses single sign-on', 'Continue with Google to sign in.'); }
+</script>
+</body>
+</html>

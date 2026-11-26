@@ -1,0 +1,26 @@
+{
+  "01-settings": {
+    "A": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 7, "dark": 8, "overall": 7, "worst": "desktop-fold.png: the Save changes bar is not on the first screen, it only appears mid-page in desktop.png, and the Weekly digest and Product updates rows show a stray dash with broken divider stubs in the push column" },
+    "B": { "hierarchy": 7, "layout": 8, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 6, "dark": 1, "overall": 6, "worst": "dark.png: no dark mode at all, the page renders identically to light; also the sticky bar says All changes saved next to an enabled primary Save changes button" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 6, "dark": 8, "overall": 8, "worst": "mobile.png: the invoices table overflows the screen and the Status column is cut off at the right edge" },
+    "D": { "hierarchy": 5, "layout": 6, "typography": 8, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 1, "overall": 5, "worst": "desktop.png: the Profile form has no Save button anywhere, so edits have no commit action; dark.png also ignores dark mode entirely" }
+  },
+  "02-invoices-table": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 6, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop.png: header claims 36 overdue but no row in the list is marked Overdue, and rows due 27 Mar sit as Open beside rows issued 6 Mar due 5 Apr" },
+    "B": { "hierarchy": 7, "layout": 8, "typography": 8, "colour": 8, "craft": 7, "realism": 9, "mobile": 6, "dark": 1, "overall": 6, "worst": "dark.png: no dark mode, identical to light; mobile-fold.png also drops the top navigation with no menu button" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 7, "realism": 8, "mobile": 7, "dark": 6, "overall": 7, "worst": "dark.png: row checkboxes stay bright white native boxes on the dark table, and the sidebar background ends at 900 px" },
+    "D": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 5, "mobile": 6, "dark": 1, "overall": 5, "worst": "desktop.png: the All invoices card says 11 while the footer shows 12 of 12 invoices, and dark.png ignores dark mode" }
+  },
+  "03-sign-in": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 7, "realism": 8, "mobile": 8, "dark": 1, "overall": 7, "worst": "dark.png: no dark mode, identical to light; desktop-fold.png also shows stray spaces before commas in the expense lines (Team lunch , six people)" },
+    "B": { "hierarchy": 7, "layout": 6, "typography": 6, "colour": 7, "craft": 7, "realism": 6, "mobile": 8, "dark": 8, "overall": 6, "worst": "desktop-fold.png: the form floats small in a blank 1440 px page with an undersized heading and no brand presence" },
+    "C": { "hierarchy": 7, "layout": 5, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 8, "dark": 1, "overall": 5, "worst": "dark.png: no dark mode; desktop-fold.png right panel stacks three cards at the top-left and leaves a large empty hole above the testimonial" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 7, "realism": 7, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: the testimonial is set as small body text with straight quotes and a hyphen attribution, weak next to the headline" }
+  },
+  "04-empty-onboarding": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 1, "overall": 7, "worst": "dark.png: no dark mode, identical to light; mobile-fold.png also drops navigation, help and the getting-started checklist with no menu" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 7, "dark": 8, "overall": 6, "worst": "desktop-fold.png: the Invite teammates button floats above the Get started card, detached from the page header row, and the template rows have no visible affordance" },
+    "C": { "hierarchy": 9, "layout": 8, "typography": 7, "colour": 8, "craft": 7, "realism": 7, "mobile": 7, "dark": 8, "overall": 8, "worst": "desktop-fold.png: the headline leaves a one-word widow it. on its own line, and the logo letter F does not match the workspace name Marlowe Lab" },
+    "D": { "hierarchy": 6, "layout": 7, "typography": 8, "colour": 7, "craft": 6, "realism": 7, "mobile": 7, "dark": 1, "overall": 5, "worst": "dark.png: no dark mode; desktop.png also uses grey native checkboxes in the checklist and offers six equal-weight actions below the hero" }
+  }
+}

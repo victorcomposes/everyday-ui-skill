@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plans and pricing - Relay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Brief: pricing.md. User: engineering lead choosing a plan, once, on desktop. Job: pick a plan and start it.
+   Primary: "Start 14-day trial" (Team). Data: 3 plans, 18 features, GBP excl. VAT. Not in scope: checkout, in-app current-plan state. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #1c1f25; --accent-hover: #000000; --accent-subtle: #eef0f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --focus: #2754c5;
+  --font: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --text-2xl: 24px; --lh-2xl: 32px;
+  --text-3xl: 36px; --lh-3xl: 40px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-full: 999px;
+  --control-h: 36px; --control-h-touch: 44px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #e9ebef; --accent-hover: #ffffff; --accent-subtle: #262a33; --on-accent: #111318;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --focus: #7a9cff;
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; } }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: var(--text-muted); }
+h1, h2, h3, p { margin: 0; text-wrap: balance; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: var(--s-4); top: -60px; background: var(--surface); padding: var(--s-2) var(--s-3); border-radius: var(--r-md); border: 1px solid var(--border); z-index: 10; }
+.skip:focus { top: var(--s-2); }
+.icon { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* top bar */
+.top { height: 56px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 5; }
+.top-in { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-8); height: 100%; display: flex; align-items: center; gap: var(--s-8); }
+.logo { display: inline-flex; align-items: center; gap: var(--s-2); font-weight: 600; font-size: var(--text-md); text-decoration: none; }
+.logo svg { width: 20px; height: 20px; }
+.nav { display: flex; gap: var(--s-1); margin-left: var(--s-2); }
+.nav a { text-decoration: none; padding: 6px var(--s-3); border-radius: var(--r-md); font-size: var(--text-sm); color: var(--text-muted); min-height: 32px; display: inline-flex; align-items: center; }
+.nav a:hover { background: var(--bg-subtle); color: var(--text); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text); font-weight: 500; }
+.top-right { margin-left: auto; display: flex; gap: var(--s-4); align-items: center; font-size: var(--text-sm); }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 600; font-size: var(--text-sm); text-decoration: none; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); color: var(--text); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--on-accent); }
+.btn-block { width: 100%; }
+
+main { max-width: 1200px; margin: 0 auto; padding: var(--s-12) var(--s-8) var(--s-16); }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-6); flex-wrap: wrap; }
+h1 { font-size: var(--text-3xl); line-height: var(--lh-3xl); font-weight: 600; letter-spacing: -0.01em; }
+.head p { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--s-2); }
+.seg { display: inline-flex; padding: 2px; background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--r-md); gap: 2px; }
+.seg label { display: inline-flex; align-items: center; gap: var(--s-2); min-height: calc(var(--control-h) - 6px); padding: 0 var(--s-3); border-radius: var(--r-sm); font-size: var(--text-sm); font-weight: 500; cursor: pointer; color: var(--text-muted); position: relative; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { background: var(--surface); color: var(--text); box-shadow: 0 0 0 1px var(--border-strong); }
+.seg label:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.save { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--success); font-weight: 500; }
+
+/* plans */
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); margin-top: var(--s-8); align-items: stretch; }
+.plan { border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6); display: grid; grid-template-rows: subgrid; grid-row: span 5; row-gap: 0; background: var(--surface); }
+.plan.rec { border: 2px solid var(--accent); padding: calc(var(--s-6) - 1px); }
+.plan-name { display: flex; align-items: center; gap: var(--s-2); font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; }
+.badge { font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; padding: 2px var(--s-2); border-radius: var(--r-sm); background: var(--accent); color: var(--on-accent); }
+.aud { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--s-1); }
+.price { margin-top: var(--s-6); font-size: var(--text-3xl); line-height: var(--lh-3xl); font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.unit { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--s-1); min-height: 40px; }
+.plan .btn { margin-top: var(--s-5); }
+.feat { list-style: none; margin: var(--s-6) 0 0; padding: var(--s-5) 0 0; border-top: 1px solid var(--border); display: grid; gap: var(--s-3); align-content: start; font-size: var(--text-sm); }
+.feat li { display: flex; gap: var(--s-2); align-items: flex-start; }
+.feat li .icon { margin-top: 2px; color: var(--success); }
+.feat li.lead { color: var(--text-muted); }
+
+/* comparison */
+h2 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; letter-spacing: -0.01em; }
+.plan h2 { font-size: var(--text-xl); line-height: var(--lh-xl); letter-spacing: 0; }
+.cmp-sec { margin-top: var(--s-16); scroll-margin-top: 72px; }
+.phone-switch { display: none; margin-top: var(--s-4); }
+.cmp { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: var(--s-4); font-size: var(--text-sm); }
+.cmp th, .cmp td { text-align: left; padding: var(--s-3) var(--s-4) var(--s-3) 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cmp thead th { position: sticky; top: 56px; background: var(--bg); z-index: 2; padding-top: var(--s-4); padding-bottom: var(--s-3); font-weight: 600; font-size: var(--text-md); border-bottom: 1px solid var(--border-strong); }
+.cmp thead th small { display: block; font-weight: 400; color: var(--text-muted); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+.cmp tbody th[scope="row"] { font-weight: 400; width: 34%; }
+.cmp tbody tr.grp th { padding-top: var(--s-8); font-weight: 600; font-size: var(--text-md); border-bottom-color: var(--border-strong); color: var(--text); }
+.cmp td { font-variant-numeric: tabular-nums; }
+.cmp td .icon { color: var(--success); }
+.cmp td .none { color: var(--text-muted); }
+.cmp .hl { background: var(--bg-subtle); padding-left: var(--s-3); }
+.cmp thead th.hl { background: var(--bg-subtle); }
+
+/* faq */
+.faq-sec { margin-top: var(--s-16); max-width: 760px; }
+.faq { margin-top: var(--s-4); border-top: 1px solid var(--border); }
+.faq details { border-bottom: 1px solid var(--border); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); min-height: var(--control-h-touch); padding: var(--s-3) 0; font-weight: 500; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary .icon { transition: transform var(--t-base) var(--ease); color: var(--text-muted); }
+.faq details[open] summary .icon { transform: rotate(180deg); }
+.faq p { color: var(--text-muted); padding: 0 var(--s-8) var(--s-4) 0; font-size: var(--text-sm); max-width: 65ch; text-wrap: pretty; }
+footer { max-width: 1200px; margin: 0 auto; padding: 0 var(--s-8) var(--s-10); color: var(--text-muted); font-size: var(--text-sm); }
+
+@media (max-width: 1023px) { .plans { gap: var(--s-4); } .plan { padding: var(--s-5); } .plan.rec { padding: calc(var(--s-5) - 1px); } }
+@media (max-width: 860px) {
+  .plans { grid-template-columns: 1fr; }
+  .plan { grid-template-rows: none; grid-row: auto; }
+  .plan.rec { order: -1; }
+  .unit { min-height: 0; }
+}
+@media (max-width: 640px) {
+  .top-in { padding: 0 var(--s-4); gap: var(--s-4); }
+  .nav { display: none; }
+  .logo, .top-right a, .skip { min-height: var(--control-h-touch); display: inline-flex; align-items: center; }
+  .top-right a { padding: 0 var(--s-2); }
+  main { padding: var(--s-8) var(--s-4) var(--s-12); }
+  footer { padding: 0 var(--s-4) var(--s-8); }
+  h1 { font-size: var(--text-2xl); line-height: var(--lh-2xl); }
+  h2 { font-size: var(--text-xl); line-height: var(--lh-xl); }
+  .head { align-items: flex-start; }
+  .seg { display: flex; width: 100%; } .seg label { flex: 1; justify-content: center; }
+  .phone-switch { display: flex; }
+  .cmp[data-show="hobby"] .c-team, .cmp[data-show="hobby"] .c-business,
+  .cmp[data-show="team"] .c-hobby, .cmp[data-show="team"] .c-business,
+  .cmp[data-show="business"] .c-hobby, .cmp[data-show="business"] .c-team { display: none; }
+  .cmp tbody th[scope="row"] { width: 50%; }
+  .cmp .hl { background: none; padding-left: 0; }
+  .cmp thead th.hl { background: var(--bg); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3" fill="currentColor"/><path d="M3 10a7 7 0 0 1 7-7M17 10a7 7 0 0 1-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Relay</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Monitors</a><a href="#">Status pages</a><a href="#">Docs</a><a href="#" aria-current="page">Pricing</a>
+    </nav>
+    <div class="top-right"><a href="#">Sign in</a></div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="head">
+    <div>
+      <h1>Plans and pricing</h1>
+      <p>Prices in GBP, excluding VAT. Change or cancel any time.</p>
+    </div>
+    <div class="seg" role="radiogroup" aria-label="Billing period">
+      <label><input type="radio" name="period" value="monthly" checked> Monthly</label>
+      <label><input type="radio" name="period" value="yearly"> Yearly <span class="save">save 17%</span></label>
+    </div>
+  </div>
+
+  <section class="plans" id="plans" aria-label="Plans"></section>
+
+  <section class="cmp-sec" aria-labelledby="cmp-h">
+    <h2 id="cmp-h">Compare all features</h2>
+    <div class="seg phone-switch" role="radiogroup" aria-label="Plan to show">
+      <label><input type="radio" name="show" value="hobby"> Hobby</label>
+      <label><input type="radio" name="show" value="team" checked> Team</label>
+      <label><input type="radio" name="show" value="business"> Business</label>
+    </div>
+    <table class="cmp" id="cmp" data-show="team"></table>
+  </section>
+
+  <section class="faq-sec" aria-labelledby="faq-h">
+    <h2 id="faq-h">Questions</h2>
+    <div class="faq" id="faq"></div>
+  </section>
+</main>
+<footer>Relay Monitoring Ltd. Prices exclude VAT, added at checkout for UK and EU customers.</footer>
+
+<script>
+// All sample data lives here; the page renders from it.
+const PLANS = [
+  { id: 'hobby', name: 'Hobby', aud: 'For side projects and one person', monthly: 0, yearly: 0, yearlyTotal: 0, cta: 'Start free',
+    lead: 'Includes:', feats: ['10 monitors', 'Checks every 5 minutes', '3 check locations', 'Email and Slack alerts', '1 public status page'] },
+  { id: 'team', name: 'Team', aud: 'For teams running production services', monthly: 24, yearly: 20, yearlyTotal: 240, cta: 'Start 14-day trial', rec: true,
+    lead: 'Everything in Hobby, plus:', feats: ['200 monitors', 'Checks every minute', '12 check locations', 'PagerDuty and Opsgenie alerts', '90 days of check history', '5 status pages on your domain'] },
+  { id: 'business', name: 'Business', aud: 'For larger orgs with compliance needs', monthly: 60, yearly: 50, yearlyTotal: 600, cta: 'Contact sales',
+    lead: 'Everything in Team, plus:', feats: ['Unlimited monitors', 'Checks every 15 seconds', '24 check locations', 'SAML single sign-on and audit log', '13 months of check history', '99.95% uptime SLA'] },
+];
+const Y = true, N = false;
+const FEATURES = [
+  { group: 'Monitoring', rows: [
+    ['Monitors', '10', '200', 'Unlimited'],
+    ['Shortest check interval', '5 minutes', '1 minute', '15 seconds'],
+    ['Check locations', '3', '12', '24'],
+    ['Multi-step API checks', N, Y, Y],
+    ['TLS certificate expiry checks', Y, Y, Y],
+  ]},
+  { group: 'Alerting', rows: [
+    ['Email and Slack alerts', Y, Y, Y],
+    ['PagerDuty and Opsgenie', N, Y, Y],
+    ['Alert escalation policies', N, Y, Y],
+    ['Maintenance windows', N, Y, Y],
+  ]},
+  { group: 'Reporting and data', rows: [
+    ['Check history', '7 days', '90 days', '13 months'],
+    ['Status pages', '1', '5', '25'],
+    ['Custom status page domain', N, Y, Y],
+    ['API requests per minute', '60', '600', '6,000'],
+  ]},
+  { group: 'Security and support', rows: [
+    ['Seats', '1', 'Unlimited', 'Unlimited'],
+    ['SAML single sign-on', N, N, Y],
+    ['Audit log', N, N, Y],
+    ['Uptime SLA', N, '99.9%', '99.95%'],
+    ['Support', 'Community forum', 'Email, 1 business day', 'Priority, shared Slack channel'],
+  ]},
+];
+const FAQ = [
+  ['What counts as a monitor?', 'One URL, API endpoint, port or heartbeat that Relay checks on a schedule. A multi-step API check counts as one monitor, however many requests it makes.'],
+  ['How does the 14-day trial work?', 'You get every Team feature for 14 days with no card. On day 15 the account moves to Hobby. Monitors over 10 pause and keep their history.'],
+  ['What happens when I add or remove a seat?', 'Seats are prorated to the day. Adding a seat charges the remaining part of the period. Removing one credits your next invoice.'],
+  ['Is VAT included in the prices?', 'No. We add 20% VAT for UK customers and the local rate for EU customers with no valid VAT number. Enter a VAT number at checkout to remove it.'],
+  ['Can I cancel in the middle of a yearly plan?', 'Yes. Your plan runs to the end of the paid year and does not renew. We refund the full amount within 30 days of the first payment.'],
+  ['Do you offer discounts for non-profits?', 'Registered charities and open-source projects get Team at 50% off. Email billing@relay-monitoring.example with your registration number.'],
+];
+const gbp = (n) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }).format(n);
+const icon = (id, label) => `<svg class="icon" aria-hidden="true"><use href="#${id}"/></svg>${label ? `<span class="sr">${label}</span>` : ''}`;
+let period = new URLSearchParams(location.search).get('state') === 'yearly' ? 'yearly' : 'monthly';
+
+function renderPlans() {
+  document.getElementById('plans').innerHTML = PLANS.map((p) => {
+    const price = period === 'yearly' ? p.yearly : p.monthly;
+    const unit = p.monthly === 0 ? 'free, no card needed'
+      : (period === 'yearly' ? `per user per month, billed yearly at ${gbp(p.yearlyTotal)}` : 'per user per month, billed monthly');
+    const lead = p.lead ? `<li class="lead">${p.lead}</li>` : '';
+    return `<article class="plan${p.rec ? ' rec' : ''}" aria-labelledby="p-${p.id}">
+      <div><h2 class="plan-name" id="p-${p.id}">${p.name}${p.rec ? '<span class="badge">Recommended</span>' : ''}</h2>
+      <p class="aud">${p.aud}</p></div>
+      <p class="price">${gbp(price)}</p>
+      <p class="unit">${unit}</p>
+      <a class="btn btn-block${p.rec ? ' btn-primary' : ''}" href="#">${p.cta}</a>
+      <ul class="feat">${lead}${p.feats.map((f) => `<li>${icon('i-check')}${f}</li>`).join('')}</ul>
+    </article>`;
+  }).join('');
+}
+function cell(v, cls) {
+  if (v === true) return `<td class="${cls}">${icon('i-check', 'Included')}</td>`;
+  if (v === false) return `<td class="${cls}"><span class="none" aria-hidden="true">&ndash;</span><span class="sr">Not included</span></td>`;
+  return `<td class="${cls}">${v}</td>`;
+}
+function renderTable() {
+  const ids = ['hobby', 'team', 'business'];
+  const head = `<thead><tr><th scope="col"><span class="sr">Feature</span></th>${PLANS.map((p) => {
+    const price = period === 'yearly' ? p.yearly : p.monthly;
+    return `<th scope="col" class="c-${p.id}${p.rec ? ' hl' : ''}">${p.name}<small>${p.monthly === 0 ? 'Free' : gbp(price) + ' per user per month'}</small></th>`;
+  }).join('')}</tr></thead>`;
+  const body = FEATURES.map((g) => `<tbody><tr class="grp"><th scope="colgroup" colspan="4">${g.group}</th></tr>${g.rows.map((r) =>
+    `<tr><th scope="row">${r[0]}</th>${ids.map((id, i) => cell(r[i + 1], 'c-' + id + (id === 'team' ? ' hl' : ''))).join('')}</tr>`).join('')}</tbody>`).join('');
+  document.getElementById('cmp').innerHTML = head + body;
+}
+document.getElementById('faq').innerHTML = FAQ.map(([q, a]) => `<details><summary>${q}${icon('i-down')}</summary><p>${a}</p></details>`).join('');
+function render() { renderPlans(); renderTable(); }
+document.querySelectorAll('input[name=period]').forEach((r) => {
+  r.checked = r.value === period;
+  r.addEventListener('change', () => { period = r.value; render(); });
+});
+document.querySelectorAll('input[name=show]').forEach((r) => r.addEventListener('change', () => { document.getElementById('cmp').dataset.show = r.value; }));
+render();
+</script>
+</body>
+</html>

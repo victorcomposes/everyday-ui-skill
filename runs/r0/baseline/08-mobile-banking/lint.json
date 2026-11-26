@@ -1,0 +1,81 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 2
+      },
+      "landmark-one-main": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "page-has-heading-one": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 2
+      },
+      "moderate": {
+        "rules": 3,
+        "nodes": 3
+      }
+    },
+    "contrastFailures": 2
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 8,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(16, 24, 40)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px color(srgb 0.113725 0.305882 0.847059 / 0.6)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 1,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "See all",
+        "w": 41,
+        "h": 44
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

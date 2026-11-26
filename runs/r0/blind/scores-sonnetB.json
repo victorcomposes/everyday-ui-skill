@@ -1,0 +1,26 @@
+{
+  "05-pricing": {
+    "A": { "hierarchy": 6, "layout": 8, "typography": 8, "colour": 7, "craft": 8, "realism": 8, "mobile": 8, "dark": 3, "overall": 6, "worst": "desktop-fold.png: the uptime-strip hero pushes every plan card below the fold, so the primary job (pick a plan) is not visible; dark.png is identical to light (no dark mode)" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "worst": "desktop-fold.png: near monochrome page with little brand character, only the black Team button marks the primary action" },
+    "C": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 7, "realism": 7, "mobile": 4, "dark": 8, "overall": 5, "worst": "mobile.png: the compare table is clipped to the Starter column and the section labels are cut off (MON, DATA A), so Team and Scale cannot be compared" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 7, "craft": 8, "realism": 8, "mobile": 6, "dark": 8, "overall": 7, "worst": "mobile.png: the compare table shows only the Hobby column with no switcher or scroll cue" }
+  },
+  "06-checkout": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 9, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 3, "overall": 8, "worst": "dark.png: identical to the light page, no dark mode at all" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 5, "realism": 7, "mobile": 5, "dark": 8, "overall": 6, "worst": "desktop-fold.png: the item description (whole bean, ground for filter) runs into the quantity stepper in the order summary" },
+    "C": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 5, "realism": 7, "mobile": 5, "dark": 3, "overall": 5, "worst": "mobile-fold.png: the full order summary sits above the form and pushes the address fields off the first screen, and the description meets the stepper; dark.png equals light" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 8, "dark": 8, "overall": 7, "worst": "desktop.png: the expiry and security code inputs are narrow and mismatched in width, and long item names wrap to four lines in the summary" }
+  },
+  "07-dashboard": {
+    "A": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 6, "craft": 6, "realism": 7, "mobile": 7, "dark": 8, "overall": 5, "worst": "desktop.png: the sidebar background stops at 900px halfway down the page; the 14 grey bars give no focus" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 6, "dark": 3, "overall": 6, "worst": "mobile-fold.png: the top nav collapses to a lone Today pill, so Orders, Products and Customers are unreachable; dark.png equals light" },
+    "C": { "hierarchy": 9, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 3, "overall": 8, "worst": "dark.png: identical to the light page, no dark mode" },
+    "D": { "hierarchy": 7, "layout": 8, "typography": 8, "colour": 8, "craft": 7, "realism": 8, "mobile": 6, "dark": 8, "overall": 7, "worst": "mobile-fold.png: the Orders delta wraps badly, with the arrow and the 6 split from the text" }
+  },
+  "08-mobile-banking": {
+    "A": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 3, "overall": 8, "worst": "dark.png: identical to light, no dark mode; the Spent in November line wraps awkwardly beside its delta in mobile-fold.png" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 7, "dark": 3, "overall": 6, "worst": "dark.png: identical to the light page, no dark mode" },
+    "C": { "hierarchy": 7, "layout": 8, "typography": 7, "colour": 7, "craft": 7, "realism": 9, "mobile": 8, "dark": 8, "overall": 7, "worst": "mobile-fold.png: an all white screen with little brand character, the single blue Send money button is the only accent" },
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 7, "dark": 5, "overall": 5, "worst": "dark.png: the merchant icon tiles stay light pastel chips and glare against the dark surface" }
+  }
+}

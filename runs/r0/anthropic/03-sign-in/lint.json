@@ -1,0 +1,109 @@
+{
+  "axe": {
+    "rules": {
+      "aria-allowed-role": {
+        "impact": "minor",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 2
+      }
+    },
+    "byImpact": {
+      "minor": {
+        "rules": 1,
+        "nodes": 1
+      },
+      "moderate": {
+        "rules": 1,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "schibsted grotesk"
+  ],
+  "textColors": 5,
+  "minFontPx": 13,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(22, 35, 29)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(44, 122, 90)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 7,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Email and password",
+        "w": 175,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "text": "Email me a link",
+        "w": 175,
+        "h": 42
+      },
+      {
+        "tag": "a",
+        "text": "Forgot password?",
+        "w": 126,
+        "h": 23
+      },
+      {
+        "tag": "button",
+        "text": "Show",
+        "w": 63,
+        "h": 36
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 358,
+        "h": 24
+      },
+      {
+        "tag": "a",
+        "text": "Privacy",
+        "w": 48,
+        "h": 21
+      },
+      {
+        "tag": "a",
+        "text": "Help",
+        "w": 30,
+        "h": 21
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

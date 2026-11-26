@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today - Fernhaus Plants</title>
+<style>
+:root{
+  --bg:#f2f4ee; --surface:#fff; --ink:#1b251d; --muted:#586358; --line:#dfe4d8; --green:#2d6a3f; --green-d:#1f4d2d; --green-soft:#e2f0e5; --clay:#b0502b; --clay-soft:#fbe8de; --amber:#8a5a00; --amber-soft:#fcefcf; --red:#a32424; --focus:#1d4ed8;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.top{background:var(--green-d);color:#fff}
+.tin{max-width:1280px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;gap:10px;align-items:center;font-family:var(--serif);font-weight:700;font-size:20px;color:#fff;text-decoration:none}
+.top nav{display:flex;gap:4px;margin-right:auto}
+.top nav a{color:#cfe3d3;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:500}
+.top nav a:hover{background:#2c6a40;color:#fff}
+.top nav a[aria-current=page]{background:#2c6a40;color:#fff}
+.me{width:32px;height:32px;border-radius:50%;background:#d9eadc;color:var(--green-d);font-weight:700;display:grid;place-items:center;font-size:12px}
+main{max-width:1280px;margin:0 auto;padding:28px 28px 56px}
+.head{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:22px}
+h1{font-family:var(--serif);font-size:32px;letter-spacing:-.015em;margin:0}
+.date{color:var(--muted);margin:2px 0 0}
+.live{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.live i{width:8px;height:8px;border-radius:50%;background:#2f9e55}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h2{font-size:15px;margin:0;font-weight:600}
+.kpi .lbl{color:var(--muted);font-size:13px}
+.kpi .val{font-family:var(--serif);font-size:34px;font-weight:600;letter-spacing:-.02em;margin:4px 0 6px;font-variant-numeric:tabular-nums}
+.delta{display:inline-flex;gap:4px;align-items:center;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:99px}
+.up{background:var(--green-soft);color:var(--green-d)}.down{background:var(--clay-soft);color:#8f3a19}
+.kpi small{color:var(--muted);margin-left:6px}
+.g2{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:16px}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.legend i{width:18px;height:3px;border-radius:2px;background:var(--green)}
+.legend i.d{background:repeating-linear-gradient(90deg,#7a857b 0 4px,transparent 4px 7px)}
+svg.chart{width:100%;height:auto;display:block}
+.chart text{font-size:11px;fill:#586358;font-family:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+ul.plain{list-style:none;margin:0;padding:0}
+.todo li{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.todo li:first-child{border-top:0}
+.todo .n{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:16px;flex:none}
+.todo b{display:block;font-weight:600}.todo span{color:var(--muted);font-size:13px}
+.todo .txt{flex:1;min-width:0}
+.btn{font:inherit;font-weight:600;font-size:13px;border-radius:8px;padding:6px 12px;min-height:36px;border:1px solid #7b877c;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn:hover{background:#f2f4ee}
+.btn.pri{background:var(--green);border-color:var(--green);color:#fff}.btn.pri:hover{background:var(--green-d)}
+.stock li{padding:11px 0;border-top:1px solid var(--line)}
+.stock li:first-child{border-top:0}
+.stock .r{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px}
+.stock .r b{font-weight:600}
+.tag{font-size:12px;font-weight:700;padding:1px 8px;border-radius:99px}
+.tag.red{background:#fde4e2;color:var(--red)}.tag.amb{background:var(--amber-soft);color:var(--amber)}
+.bar{height:6px;border-radius:9px;background:#e8ece2;overflow:hidden}.bar b{display:block;height:100%;background:var(--green)}.bar.red b{background:#c0392b}.bar.amb b{background:#c88a14}
+.top5 li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.top5 li:first-child{border-top:0}
+.top5 .p{width:28px;height:28px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center}
+.top5 .t b{font-weight:600;display:block}.top5 .t span{font-size:12.5px;color:var(--muted)}
+.top5 .a{font-variant-numeric:tabular-nums;font-weight:600}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:0 0 8px}
+td{padding:10px 0;border-top:1px solid var(--line)}
+.num{text-align:right;font-variant-numeric:tabular-nums}th.num{text-align:right}
+.st{font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.st.new{background:var(--clay-soft);color:#8f3a19}.st.pack{background:var(--amber-soft);color:var(--amber)}.st.sent{background:var(--green-soft);color:var(--green-d)}
+.more{display:block;margin-top:12px;color:var(--green-d);font-weight:600}
+@media (max-width:1100px){.kpis{grid-template-columns:1fr 1fr}.g2,.g3{grid-template-columns:1fr}}
+@media (max-width:640px){
+  .tin{padding:12px 16px;gap:12px}
+  .top nav a:not([aria-current]){display:none}
+  main{padding:20px 16px 48px}
+  h1{font-size:26px}
+  .kpis{gap:10px}
+  .kpi.card{padding:14px}
+  .kpi .val{font-size:26px}
+  .kpi small{display:block;margin:4px 0 0}
+  .hide-sm{display:none}
+  .todo li{flex-wrap:wrap}
+  .todo .btn{margin-left:52px}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="tin">
+  <a class="logo" href="#"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M13 24V12M13 12C13 6 8 3 3 3c0 6 4 9 10 9zM13 15c0-5 4-8 10-8 0 5-4 8-10 8z" fill="#8fd0a0"/></svg>Fernhaus</a>
+  <nav aria-label="Primary"><a href="#" aria-current="page">Today</a><a href="#">Orders</a><a href="#">Products</a><a href="#">Customers</a></nav>
+  <span class="me" role="img" aria-label="Signed in as Ines Calder">IC</span>
+</div></header>
+
+<main>
+  <div class="head">
+    <div><h1 id="greet">Good afternoon, Ines</h1><p class="date">Thursday 26 November 2026 - as of 2:00 pm</p></div>
+    <span class="live"><i aria-hidden="true"></i>Live - updated 1 minute ago</span>
+  </div>
+
+  <section class="kpis" aria-label="Key numbers for today">
+    <div class="card kpi"><div class="lbl">Revenue so far</div><div class="val" id="k-rev"></div><span class="delta" id="k-rev-d"></span><small>vs last Thursday, same hour</small></div>
+    <div class="card kpi"><div class="lbl">Orders</div><div class="val">23</div><span class="delta up"><span aria-hidden="true">&#9650;</span> 3 more <span class="sr">than last Thursday</span></span><small>vs 20</small></div>
+    <div class="card kpi"><div class="lbl">Average order</div><div class="val" id="k-aov"></div><span class="delta down"><span aria-hidden="true">&#9660;</span> $3.62 less <span class="sr">than last Thursday</span></span><small>vs $52.10</small></div>
+    <div class="card kpi"><div class="lbl">Conversion</div><div class="val">3.4%</div><span class="delta up"><span aria-hidden="true">&#9650;</span> 0.3 pts <span class="sr">more than last Thursday</span></span><small>676 visitors</small></div>
+  </section>
+
+  <div class="g2">
+    <section class="card" aria-labelledby="c1">
+      <div class="ch"><div><h2 id="c1">Revenue through the day</h2><p style="margin:2px 0 0;color:var(--muted);font-size:13px">Cumulative, Pacific time</p></div>
+        <div class="legend"><span><i></i>Today</span><span><i class="d"></i>Last Thursday</span></div></div>
+      <div id="chart"></div>
+      <table class="sr" id="chart-tbl"><caption>Cumulative revenue by hour</caption><thead><tr><th scope="col">Hour</th><th scope="col">Today</th><th scope="col">Last Thursday</th></tr></thead><tbody></tbody></table>
+    </section>
+
+    <section class="card todo" aria-labelledby="c2">
+      <div class="ch"><h2 id="c2">Needs you today</h2></div>
+      <ul class="plain">
+        <li><span class="n" style="background:var(--clay-soft);color:#8f3a19" aria-hidden="true">9</span><div class="txt"><b>Orders to pack</b><span>4 are Next-day, cut-off 4 pm</span></div><button class="btn pri" type="button">Print labels</button></li>
+        <li><span class="n" style="background:var(--amber-soft);color:var(--amber)" aria-hidden="true">2</span><div class="txt"><b>Customer messages</b><span>Oldest waiting 3 hours</span></div><button class="btn" type="button">Reply</button></li>
+        <li><span class="n" style="background:var(--green-soft);color:var(--green-d)" aria-hidden="true">1</span><div class="txt"><b>Wholesale delivery</b><span>Greenbank Nursery, 120 pots, 4 pm</span></div><button class="btn" type="button">View</button></li>
+        <li><span class="n" style="background:#e6e9f5;color:#2e3a78" aria-hidden="true">3</span><div class="txt"><b>Refund requests</b><span>2 arrived damaged, 1 wrong item</span></div><button class="btn" type="button">Review</button></li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="g3">
+    <section class="card" aria-labelledby="c3">
+      <div class="ch"><h2 id="c3">Running low</h2></div>
+      <ul class="plain stock">
+        <li><div class="r"><b>Monstera deliciosa, 17 cm</b><span class="tag red">4 left</span></div><div class="bar red" role="img" aria-label="4 of 40 remaining"><b style="width:10%"></b></div></li>
+        <li><div class="r"><b>Snake plant 'Laurentii'</b><span class="tag red">6 left</span></div><div class="bar red" role="img" aria-label="6 of 40 remaining"><b style="width:15%"></b></div></li>
+        <li><div class="r"><b>Terracotta pot, 14 cm</b><span class="tag amb">18 left</span></div><div class="bar amb" role="img" aria-label="18 of 80 remaining"><b style="width:22%"></b></div></li>
+        <li><div class="r"><b>Peace lily, 12 cm</b><span class="tag amb">11 left</span></div><div class="bar amb" role="img" aria-label="11 of 40 remaining"><b style="width:27%"></b></div></li>
+      </ul>
+      <a class="more" href="#">Reorder from suppliers</a>
+    </section>
+
+    <section class="card" aria-labelledby="c4">
+      <div class="ch"><h2 id="c4">Best sellers today</h2></div>
+      <ol class="plain top5">
+        <li><span class="p" aria-hidden="true">1</span><div class="t"><b>Pilea peperomioides</b><span>7 sold</span></div><span class="a">$154</span></li>
+        <li><span class="p" aria-hidden="true">2</span><div class="t"><b>Monstera deliciosa</b><span>5 sold</span></div><span class="a">$225</span></li>
+        <li><span class="p" aria-hidden="true">3</span><div class="t"><b>Starter herb trio</b><span>5 sold</span></div><span class="a">$95</span></li>
+        <li><span class="p" aria-hidden="true">4</span><div class="t"><b>Ceramic pot, sage</b><span>4 sold</span></div><span class="a">$112</span></li>
+        <li><span class="p" aria-hidden="true">5</span><div class="t"><b>Plant food, 250 ml</b><span>4 sold</span></div><span class="a">$36</span></li>
+      </ol>
+    </section>
+
+    <section class="card" aria-labelledby="c5">
+      <div class="ch"><h2 id="c5">Latest orders</h2></div>
+      <table>
+        <thead><tr><th scope="col">Order</th><th scope="col" class="hide-sm">Customer</th><th scope="col">Status</th><th scope="col" class="num">Total</th></tr></thead>
+        <tbody>
+          <tr><td>#4831</td><td class="hide-sm">Jonah Bell</td><td><span class="st new">New</span></td><td class="num">$62.00</td></tr>
+          <tr><td>#4830</td><td class="hide-sm">Aiko Tanaka</td><td><span class="st new">New</span></td><td class="num">$38.50</td></tr>
+          <tr><td>#4829</td><td class="hide-sm">Rosa Delgado</td><td><span class="st pack">Packing</span></td><td class="num">$117.00</td></tr>
+          <tr><td>#4828</td><td class="hide-sm">Tom Whitcombe</td><td><span class="st pack">Packing</span></td><td class="num">$24.00</td></tr>
+          <tr><td>#4827</td><td class="hide-sm">Leila Haddad</td><td><span class="st sent">Shipped</span></td><td class="num">$45.50</td></tr>
+        </tbody>
+      </table>
+      <a class="more" href="#">View all orders</a>
+    </section>
+  </div>
+</main>
+
+<script>
+const today=[0,0,0,0,0,0,34,62,118,95,140,176,210,188,92];
+const last=[0,0,0,0,0,0,28,51,96,110,122,150,181,164,140,118,132,160,205,190,142,96,40,0];
+const cum=a=>a.reduce((r,v,i)=>(r.push((r[i-1]||0)+v),r),[]);
+const T=cum(today),L=cum(last),NOW=today.length-1;
+const m=n=>n.toLocaleString("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0});
+const rev=T[NOW],prev=L[NOW],pct=Math.round((rev-prev)/prev*100);
+document.getElementById("k-rev").textContent=m(rev);
+document.getElementById("k-aov").textContent="$"+(rev/23).toFixed(2);
+const d=document.getElementById("k-rev-d");d.className="delta "+(pct>=0?"up":"down");
+d.innerHTML=`<span aria-hidden="true">${pct>=0?"&#9650;":"&#9660;"}</span> ${Math.abs(pct)}% <span class="sr">${pct>=0?"up":"down"} on last Thursday</span>`;
+// chart
+const W=720,H=300,p={l:48,r:16,t:12,b:30},iw=W-p.l-p.r,ih=H-p.t-p.b,max=2400;
+const x=i=>p.l+i/23*iw,y=v=>p.t+ih-v/max*ih;
+let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart. Today's revenue is ${m(rev)} at 2 pm, ${Math.abs(pct)} percent ${pct>=0?"ahead of":"behind"} last Thursday's ${m(prev)} at the same hour. Last Thursday finished at ${m(L[23])}.">`;
+for(let v=0;v<=max;v+=600){s+=`<line x1="${p.l}" x2="${W-p.r}" y1="${y(v)}" y2="${y(v)}" stroke="#dfe4d8"/><text x="${p.l-8}" y="${y(v)+4}" text-anchor="end">${v?"$"+v/1000+"k":"$0"}</text>`.replace("$0.6k","$600").replace("$1.2k","$1.2k");}
+for(let i=0;i<24;i+=3){s+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${i===0?"12a":i<12?i+"a":i===12?"12p":(i-12)+"p"}</text>`;}
+s+=`<polyline fill="none" stroke="#7a857b" stroke-width="2" stroke-dasharray="5 5" points="${L.map((v,i)=>x(i)+","+y(v)).join(" ")}"/>`;
+const pts=T.slice(6,NOW+1).map((v,i)=>x(i+6)+","+y(v)).join(" ");
+s+=`<polygon fill="#2d6a3f" fill-opacity=".1" points="${x(6)},${y(0)} ${pts} ${x(NOW)},${y(0)}"/><polyline fill="none" stroke="#2d6a3f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" points="${pts}"/>`;
+s+=`<circle cx="${x(NOW)}" cy="${y(rev)}" r="5" fill="#2d6a3f" stroke="#fff" stroke-width="2"/><text x="${x(NOW)}" y="${y(rev)-12}" text-anchor="middle" style="font-weight:700;fill:#1f4d2d;font-size:12px">${m(rev)}</text></svg>`;
+document.getElementById("chart").innerHTML=s;
+document.querySelector("#chart-tbl tbody").innerHTML=T.map((v,i)=>i>=6?`<tr><td>${i}:00</td><td>${m(v)}</td><td>${m(L[i])}</td></tr>`:"").join("");
+</script>
+</body>
+</html>

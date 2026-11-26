@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes - Fieldnote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e8f5f4; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --font: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  --text-xs: 12px; --lh-xs: 16px; --text-sm: 14px; --lh-sm: 20px; --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px; --text-xl: 20px; --lh-xl: 28px; --text-2xl: 24px; --lh-2xl: 32px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #10292a; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2 { text-wrap: balance; letter-spacing: -0.01em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ico { width: 16px; height: 16px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4);
+  border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); font-weight: 500; cursor: pointer; text-decoration: none; color: var(--text); white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn.danger { color: var(--danger); border-color: var(--danger); }
+.btn.danger:hover { background: var(--danger-subtle); }
+.btn[aria-disabled="true"], .btn:disabled { opacity: .6; cursor: not-allowed; }
+.field { display: grid; gap: var(--s-1); }
+.field label, .lbl { font-weight: 500; }
+.hint { color: var(--text-muted); font-size: var(--text-sm); }
+.input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md); }
+@media (max-width: 640px) { .input, select, textarea { font-size: var(--text-md); } }
+.badge { display: inline-flex; align-items: center; gap: var(--s-1); padding: 2px var(--s-2); border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; white-space: nowrap; background: var(--bg-subtle); color: var(--text-muted); }
+.badge.success { background: var(--success-subtle); color: var(--success); }
+.badge.warning { background: var(--warning-subtle); color: var(--warning); }
+.badge.danger { background: var(--danger-subtle); color: var(--danger); }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+.num { font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.input::placeholder { color: var(--text-muted); opacity: 1; }
+.touch-a { display: inline-flex; align-items: center; }
+@media (max-width: 640px) { .touch-a { min-height: var(--control-h-touch); } }
+
+:root { --sidebar-w: 248px; --topbar-h: 56px; --content-w: 1120px; --aside-w: 340px; }
+svg.sprite { position: absolute; width: 0; height: 0; }
+[hidden] { display: none !important; }
+.shell { display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr); min-height: 100dvh; }
+.sidebar { background: var(--bg-subtle); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: var(--s-3); gap: var(--s-4); position: sticky; top: 0; height: 100dvh; }
+.ws { display: flex; align-items: center; gap: var(--s-2); width: 100%; padding: var(--s-2); border: 0; background: none; border-radius: var(--r-md); cursor: pointer; text-align: left; }
+.ws:hover { background: var(--border); }
+.ws-mark { width: 28px; height: 28px; border-radius: var(--r-md); background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-sm); flex: none; }
+.ws b { display: block; font-weight: 600; line-height: var(--lh-sm); }
+.ws span.sub { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.ws .ico { margin-left: auto; color: var(--text-muted); }
+.nav { display: grid; gap: 2px; }
+.nav-label { display: flex; align-items: center; justify-content: space-between; padding: var(--s-4) var(--s-2) var(--s-1); font-size: var(--text-xs); color: var(--text-muted); font-weight: 500; }
+.nav a, .nav .plain { display: flex; align-items: center; gap: var(--s-2); min-height: var(--control-h-sm); padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text); text-decoration: none; }
+.nav a:hover { background: var(--border); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav .hintline { padding: var(--s-1) var(--s-2); color: var(--text-muted); font-size: var(--text-sm); }
+.iconbtn { display: grid; place-items: center; width: var(--control-h-sm); height: var(--control-h-sm); border: 0; background: none; border-radius: var(--r-md); color: var(--text-muted); cursor: pointer; }
+.iconbtn:hover { background: var(--border); color: var(--text); }
+.nav-bottom { margin-top: auto; }
+.org { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2); }
+.avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 600; flex: none; }
+.org b { display: block; font-weight: 500; line-height: var(--lh-sm); }
+.org span { color: var(--text-muted); font-size: var(--text-xs); }
+.main { min-width: 0; }
+.topbar { height: var(--topbar-h); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: var(--s-4); padding: 0 var(--s-8); }
+.menu-btn { display: none; }
+.gsearch { display: flex; align-items: center; gap: var(--s-2); width: 100%; max-width: 360px; min-height: var(--control-h-sm); padding: 0 var(--s-3); border: 1px solid var(--border); border-radius: var(--r-md); color: var(--text-muted); background: var(--bg-subtle); }
+.gsearch kbd { margin-left: auto; font: inherit; font-size: var(--text-xs); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0 var(--s-1); }
+.spacer { flex: 1; }
+
+.page { max-width: var(--content-w); padding: var(--s-8); }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap; }
+h1 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; }
+.head p { color: var(--text-muted); margin-top: var(--s-1); }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) var(--aside-w); gap: var(--s-12); margin-top: var(--s-6); align-items: start; }
+.tabs { display: flex; gap: var(--s-1); border-bottom: 1px solid var(--border); }
+.tab { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-3); color: var(--text-muted); font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.tab .n { font-weight: 400; font-size: var(--text-xs); background: var(--bg-subtle); border-radius: var(--r-full); padding: 0 var(--s-2); color: var(--text-muted); }
+.empty { padding: var(--s-12) var(--s-4) var(--s-10); display: grid; justify-items: center; text-align: center; gap: var(--s-2); }
+.empty .ico-lg { width: 32px; height: 32px; color: var(--text-muted); stroke-width: 1.5; margin-bottom: var(--s-2); }
+.empty h2 { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; }
+.empty p { color: var(--text-muted); max-width: 46ch; font-size: var(--text-md); line-height: var(--lh-md); text-wrap: pretty; }
+.empty .btns { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-4); flex-wrap: wrap; justify-content: center; }
+.h3 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; }
+.tpl { margin-top: var(--s-8); }
+.tpl .h3 { padding-bottom: var(--s-2); }
+.tpl ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+.tpl li { border-bottom: 1px solid var(--border); }
+.tpl button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-4); align-items: center; width: 100%; padding: var(--s-3) var(--s-2); border: 0; background: none; text-align: left; cursor: pointer; min-height: 56px; border-radius: var(--r-md); }
+.tpl button:hover { background: var(--bg-subtle); }
+.tpl b { font-weight: 500; display: block; }
+.tpl span.d { color: var(--text-muted); display: block; }
+.tpl span.t { color: var(--text-muted); font-size: var(--text-xs); white-space: nowrap; }
+
+.aside { border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5); display: grid; gap: var(--s-4); }
+.aside header { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); }
+.aside .progress { color: var(--text-muted); font-size: var(--text-sm); }
+.bar { height: 4px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--accent); }
+.tasks { list-style: none; margin: 0; padding: 0; display: grid; }
+.task { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: var(--s-3); align-items: start; padding: var(--s-3) 0; border-top: 1px solid var(--border); }
+.task:first-child { border-top: 0; }
+.dot { width: 20px; height: 20px; border-radius: var(--r-full); border: 1.5px solid var(--border-strong); margin-top: 1px; }
+.task b { font-weight: 500; display: block; }
+.task p { color: var(--text-muted); font-size: var(--text-sm); }
+.task .btn, .task .rowlink { align-self: center; }
+.rowlink { border: 0; background: none; color: var(--accent); font-weight: 500; cursor: pointer; min-height: var(--control-h-sm); padding: 0 var(--s-2); border-radius: var(--r-md); white-space: nowrap; }
+.rowlink:hover { background: var(--accent-subtle); }
+.aside footer { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: var(--text-sm); }
+.link { border: 0; background: none; color: var(--text-muted); text-decoration: underline; cursor: pointer; min-height: var(--control-h-sm); padding: 0 var(--s-1); }
+.skel { display: block; height: 12px; border-radius: var(--r-sm); background: var(--bg-subtle); border: 1px solid var(--border); }
+.skelrow { display: grid; gap: var(--s-2); padding: var(--s-4) var(--s-2); border-bottom: 1px solid var(--border); }
+.toast { position: fixed; left: var(--s-6); bottom: var(--s-6); z-index: 20; background: var(--text); color: var(--bg); border-radius: var(--r-lg); padding: var(--s-3) var(--s-4); box-shadow: var(--shadow-pop); max-width: calc(100vw - var(--s-8)); }
+.err-title { color: var(--text); }
+.touch { display: inline-flex; align-items: center; }
+
+@media (max-width: 1100px) { .cols { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); } }
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .sidebar { display: none; }
+  .menu-btn { display: inline-flex; min-width: var(--control-h-touch); }
+  .topbar { padding: 0 var(--s-4); }
+  .gsearch { display: none; }
+}
+@media (max-width: 640px) {
+  .page { padding: var(--s-5) var(--s-4) var(--s-8); }
+  .head .btn { width: 100%; }
+  .head > div:last-child { width: 100%; }
+  .empty { padding: var(--s-8) 0 var(--s-6); }
+  .empty .btns { flex-direction: column; align-items: stretch; width: 100%; gap: var(--s-1); }
+  .empty .btns .btn { width: 100%; }
+  .empty .btns a { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-h-touch); }
+  .tpl button { min-height: var(--control-h-touch); grid-template-columns: minmax(0, 1fr); }
+  .tpl span.t { display: none; }
+  .aside { padding: var(--s-4); }
+  .task .rowlink { min-height: var(--control-h-touch); padding: 0 var(--s-3); }
+  .link { min-height: var(--control-h-touch); }
+  .toast { left: var(--s-4); right: var(--s-4); bottom: var(--s-4); }
+}
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.4c2 .8 3.5 2.6 3.5 5.6"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9zM8 8h.01"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 10.8 7.6-3.6M8.2 13.2l7.6 3.6"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m7 9 5-5 5 5M7 15l5 5 5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside class="sidebar" aria-label="Workspace">
+    <button class="ws" type="button">
+      <span class="ws-mark" aria-hidden="true">K</span>
+      <span><b>Kestrel Research</b><span class="sub">1 member</span></span>
+      <svg class="ico"><use href="#i-chev"/></svg>
+    </button>
+    <nav class="nav" aria-label="Main">
+      <a href="#"><svg class="ico"><use href="#i-search"/></svg>Search</a>
+      <a href="#" aria-current="page"><svg class="ico"><use href="#i-note"/></svg>Notes</a>
+      <a href="#"><svg class="ico"><use href="#i-share"/></svg>Shared with me</a>
+      <a href="#"><svg class="ico"><use href="#i-tag"/></svg>Tags</a>
+      <div class="nav-label">Collections <button class="iconbtn" type="button" aria-label="New collection"><svg class="ico"><use href="#i-plus"/></svg></button></div>
+      <p class="hintline">No collections yet</p>
+    </nav>
+    <div class="nav nav-bottom">
+      <a href="#"><svg class="ico"><use href="#i-users"/></svg>Members</a>
+      <a href="#"><svg class="ico"><use href="#i-trash"/></svg>Trash</a>
+      <div class="org"><span class="avatar" aria-hidden="true">MT</span><div><b>Mei Lin Tan</b><span>Owner</span></div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="btn sm menu-btn" aria-label="Open menu" type="button"><svg class="ico"><use href="#i-menu"/></svg></button>
+      <div class="gsearch" role="search"><svg class="ico"><use href="#i-search"/></svg>Search notes<kbd>Ctrl K</kbd></div>
+      <span class="spacer"></span>
+      <span class="avatar" role="img" aria-label="Mei Lin Tan">MT</span>
+    </header>
+
+    <main class="page">
+      <div class="head">
+        <div><h1>Notes</h1><p>0 notes in Kestrel Research</p></div>
+        <div><button class="btn" type="button" data-act="Invite teammates"><svg class="ico"><use href="#i-users"/></svg>Invite teammates</button></div>
+      </div>
+
+      <div class="cols">
+        <div>
+          <div class="tabs" role="tablist" aria-label="Note views">
+            <span class="tab" role="tab" aria-selected="true">All notes <span class="n num">0</span></span>
+            <span class="tab" role="tab" aria-selected="false">Mine <span class="n num">0</span></span>
+            <span class="tab" role="tab" aria-selected="false">Starred <span class="n num">0</span></span>
+          </div>
+
+          <div id="area" aria-live="polite">
+            <section class="empty" aria-labelledby="empty-t" id="empty">
+              <svg class="ico ico-lg" aria-hidden="true"><use href="#i-note"/></svg>
+              <h2 id="empty-t">No notes yet</h2>
+              <p>Interviews, observations and findings live here as notes. Tag each one and your team can search across all of them later.</p>
+              <div class="btns">
+                <button class="btn primary" type="button" data-act="New note"><svg class="ico"><use href="#i-plus"/></svg>New note</button>
+                <a class="touch" href="#" data-act="Import">Import from Notion or Markdown</a>
+              </div>
+            </section>
+          </div>
+
+          <section class="tpl" aria-labelledby="tpl-t">
+            <h2 class="h3" id="tpl-t">Start from a template</h2>
+            <ul>
+              <li><button type="button" data-act="Interview notes template"><span><b>Interview notes</b><span class="d">Participant, goals, quotes and follow-ups.</span></span><span class="t">5 min to fill</span></button></li>
+              <li><button type="button" data-act="Usability test template"><span><b>Usability test</b><span class="d">Task, success, time and observed friction.</span></span><span class="t">10 min to fill</span></button></li>
+              <li><button type="button" data-act="Competitor teardown template"><span><b>Competitor teardown</b><span class="d">Pricing, positioning and what to copy or avoid.</span></span><span class="t">15 min to fill</span></button></li>
+              <li><button type="button" data-act="Weekly synthesis template"><span><b>Weekly synthesis</b><span class="d">Themes from this week&rsquo;s notes with evidence.</span></span><span class="t">10 min to fill</span></button></li>
+            </ul>
+          </section>
+        </div>
+
+        <aside class="aside" id="checklist" aria-labelledby="gs-t">
+          <header><h2 class="h3" id="gs-t">Get started</h2><span class="progress num" id="prog">0 of 4 done</span></header>
+                    <ol class="tasks">
+            <li class="task"><span class="dot" aria-hidden="true"></span><div><b>Write your first note</b><p>Capture one conversation while it is fresh.</p></div><button class="rowlink" type="button" data-act="New note">New note</button></li>
+            <li class="task"><span class="dot" aria-hidden="true"></span><div><b>Bring in existing notes</b><p>Notion, Google Docs or a folder of Markdown files.</p></div><button class="rowlink" type="button" data-act="Import">Import</button></li>
+            <li class="task"><span class="dot" aria-hidden="true"></span><div><b>Invite your team</b><p>You are the only member of Kestrel Research.</p></div><button class="rowlink" type="button" data-act="Invite teammates">Invite</button></li>
+            <li class="task"><span class="dot" aria-hidden="true"></span><div><b>Install the web clipper</b><p>Save a page with your highlights as a note.</p></div><button class="rowlink" type="button" data-act="Web clipper">Get clipper</button></li>
+          </ol>
+          <footer><span>You can reopen this from Settings.</span><button class="link" type="button" id="dismiss">Dismiss</button></footer>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = new URLSearchParams(location.search).get('state');
+const area = $('area');
+const html = area.innerHTML;
+if (state === 'loading') {
+  area.setAttribute('aria-busy', 'true');
+  area.innerHTML = Array.from({ length: 4 }, () => `<div class="skelrow"><span class="skel" style="width:40%"></span><span class="skel" style="width:75%"></span></div>`).join('') + '<span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden" role="status">Loading notes</span>';
+}
+if (state === 'error') {
+  area.innerHTML = `<section class="empty" role="alert"><svg class="ico ico-lg" style="color:var(--danger)" aria-hidden="true"><use href="#i-alert"/></svg><h2>Couldn&rsquo;t load notes</h2><p>The server didn&rsquo;t respond. Your notes are safe.</p><div class="btns"><button class="btn" id="retry" type="button">Try again</button><a class="touch" href="#">Check status</a></div></section>`;
+  $('retry')?.addEventListener('click', () => { area.innerHTML = html; });
+}
+let tm;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(tm); tm = setTimeout(() => t.hidden = true, 4000); }
+document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (!b) return; e.preventDefault(); toast('Opening ' + b.dataset.act.toLowerCase() + '…'); });
+try { if (localStorage.getItem('fn-dismiss') === '1' && state !== 'show') $('checklist').hidden = true; } catch (e) {}
+$('dismiss').addEventListener('click', () => { $('checklist').hidden = true; try { localStorage.setItem('fn-dismiss', '1'); } catch (e) {} toast('Checklist hidden. Reopen it from Settings.'); });
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{
+  "axe": {
+    "rules": {
+      "label-content-name-mismatch": {
+        "impact": "serious",
+        "nodes": 3
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 3
+      },
+      "moderate": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "ui-sans-serif"
+  ],
+  "textColors": 6,
+  "minFontPx": 10,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(28, 27, 24)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 28,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Tallyo",
+        "w": 82,
+        "h": 26
+      },
+      {
+        "tag": "a",
+        "text": "Profile",
+        "w": 70,
+        "h": 41
+      },
+      {
+        "tag": "a",
+        "text": "Notifications",
+        "w": 113,
+        "h": 41
+      },
+      {
+        "tag": "a",
+        "text": "Plan & billing",
+        "w": 117,
+        "h": 41
+      },
+      {
+        "tag": "a",
+        "text": "Danger zone",
+        "w": 113,
+        "h": 41
+      },
+      {
+        "tag": "button",
+        "text": "Change photo",
+        "w": 116,
+        "h": 34
+      },
+      {
+        "tag": "input",
+        "text": "Priya",
+        "w": 320,
+        "h": 43
+      },
+      {
+        "tag": "input",
+        "text": "Raman",
+        "w": 320,
+        "h": 43
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

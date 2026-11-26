@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today - Little Fern Plant Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Brief: dashboard.md + app-shell.md (+ data-table reflow). User: owner of a small plant shop, opens it each morning, on laptop or phone.
+   Job: see how today is going and what needs me now. Primary: "Pack 6 orders". Data: 14 orders today (£482.60), 14-day sales, 5 attention items.
+   States: ?state=loading, ?state=empty (new shop), ?state=error (chart failed). Not in scope: time-range picker (the job is today), other pages. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: #0b7671;
+  --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --text-2xl: 24px; --lh-2xl: 32px;
+  --text-3xl: 30px; --lh-3xl: 36px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #12282a; --on-accent: #07201e;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --focus: #4fc7bd;
+    --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent-hover); }
+h1, h2, h3, p, dl, dd, ul { margin: 0; padding: 0; }
+ul { list-style: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.icon { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.icon-sm { width: 16px; height: 16px; }
+.skip { position: absolute; left: var(--s-4); top: -60px; min-height: 44px; display: inline-flex; align-items: center; background: var(--surface); padding: 0 var(--s-3); border-radius: var(--r-md); border: 1px solid var(--border); z-index: 40; }
+.skip:focus { top: var(--s-2); }
+
+/* shell */
+.shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100dvh; }
+.side { background: var(--bg-subtle); border-right: 1px solid var(--border); height: 100dvh; position: sticky; top: 0; display: flex; flex-direction: column; padding: var(--s-4) var(--s-3); overflow-y: auto; }
+.brand { display: flex; align-items: center; gap: var(--s-2); font-weight: 600; font-size: var(--text-md); padding: var(--s-1) var(--s-2); margin-bottom: var(--s-6); min-height: 36px; }
+.brand svg { width: 24px; height: 24px; color: var(--accent); }
+.nav { display: grid; gap: 2px; }
+.nav a { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text-muted); text-decoration: none; font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav a:hover { background: var(--border); color: var(--text); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text); }
+.nav a[aria-current="page"] .icon { color: var(--accent); }
+.nav .count { margin-left: auto; color: var(--text-muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+.nav-sep { height: 1px; background: var(--border); margin: var(--s-3) var(--s-2); }
+.side-foot { margin-top: auto; padding-top: var(--s-4); }
+.shop { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2); border-radius: var(--r-md); }
+.avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-size: var(--text-sm); flex: none; }
+.shop small { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+
+.top { height: 56px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: var(--s-3); padding: 0 var(--s-8); position: sticky; top: 0; background: var(--bg); z-index: 10; }
+.search { position: relative; flex: 1; max-width: 420px; color: var(--text-muted); }
+.search .icon { position: absolute; left: var(--s-3); top: 50%; translate: 0 -50%; pointer-events: none; }
+.search input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-12) 0 var(--s-10); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); color: var(--text); }
+.search kbd { position: absolute; right: var(--s-3); top: 50%; translate: 0 -50%; font: inherit; font-size: var(--text-xs); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0 var(--s-1); color: var(--text-muted); pointer-events: none; }
+::placeholder { color: var(--text-muted); opacity: 1; }
+.top-r { margin-left: auto; display: flex; align-items: center; gap: var(--s-2); }
+.ibtn { width: var(--control-h-sm); height: var(--control-h-sm); display: inline-grid; place-items: center; border-radius: var(--r-md); border: 0; background: none; color: var(--text-muted); cursor: pointer; position: relative; transition: background-color var(--t-fast) var(--ease); }
+.ibtn:hover { background: var(--bg-subtle); color: var(--text); }
+.ibtn.menu-btn { display: none; }
+
+main { padding: var(--s-8) var(--s-8) var(--s-16); max-width: 1264px; width: 100%; }
+.head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-4); flex-wrap: wrap; }
+h1 { font-size: var(--text-2xl); line-height: var(--lh-2xl); font-weight: 600; letter-spacing: -0.01em; }
+.sub { color: var(--text-muted); margin-top: var(--s-1); font-size: var(--text-md); line-height: var(--lh-md); }
+.sub b { color: var(--text); font-weight: 600; }
+.stamp { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--s-1); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; text-decoration: none; color: var(--text);
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); color: var(--text); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--on-accent); }
+
+/* KPIs */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: var(--s-8); }
+.kpi { padding: 0 var(--s-6); border-left: 1px solid var(--border); min-width: 0; }
+.kpi:first-child { padding-left: 0; border-left: 0; }
+.kpi dt { color: var(--text-muted); font-size: var(--text-sm); }
+.kpi .v { font-size: var(--text-3xl); line-height: var(--lh-3xl); font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin-top: var(--s-1); }
+.kpi .d { color: var(--text-muted); font-size: var(--text-sm); font-variant-numeric: tabular-nums; margin-top: var(--s-1); }
+
+/* panels */
+.grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--s-8); margin-top: var(--s-10); align-items: stretch; }
+.panel { border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-5) var(--s-6) var(--s-6); min-width: 0; }
+.ph { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-4); }
+h2 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; }
+.ph .m { color: var(--text-muted); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+.chart { min-height: 264px; flex: 1; position: relative; }
+.chart svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#chart-panel { display: flex; flex-direction: column; }
+#chart-body { flex: 1; display: flex; flex-direction: column; }
+.chart text { fill: var(--text-muted); font-size: 12px; font-family: var(--font); font-variant-numeric: tabular-nums; }
+.chart .grid-l { stroke: var(--border); stroke-width: 1; }
+.chart .bar { fill: var(--border-strong); transition: opacity var(--t-fast) var(--ease); }
+.chart .bar.today { fill: var(--accent); }
+.chart .bar:hover { opacity: 0.8; }
+.chart .ann { fill: var(--text); font-weight: 500; }
+.legend { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--s-3); display: flex; gap: var(--s-4); flex-wrap: wrap; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: var(--s-1); vertical-align: -1px; }
+
+.attn li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-1) var(--s-3); padding: var(--s-3) 0; border-top: 1px solid var(--border); align-items: start; }
+.attn li:first-child { border-top: 0; padding-top: 0; }
+.attn b { font-weight: 600; display: block; }
+.attn span.dt { color: var(--text-muted); display: block; }
+.attn a, .ph a { font-weight: 500; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-h-sm); min-width: var(--control-h-sm); }
+.badge { display: inline-block; font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; padding: 2px var(--s-2); border-radius: var(--r-sm); white-space: nowrap; }
+.b-new { background: var(--accent-subtle); color: var(--accent); }
+.b-ok { background: var(--success-subtle); color: var(--success); }
+.b-warn { background: var(--warning-subtle); color: var(--warning); }
+.b-neutral { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+/* orders */
+.orders { margin-top: var(--s-10); }
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th { text-align: left; font-weight: 500; color: var(--text-muted); font-size: var(--text-sm); padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--border-strong); background: var(--bg-subtle); white-space: nowrap; }
+.tbl td { padding: 0 var(--s-3); height: 48px; border-bottom: 1px solid var(--border); }
+.tbl .r { text-align: right; font-variant-numeric: tabular-nums; }
+.tbl .id { font-weight: 500; }
+.tbl .cust { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tbl tbody tr:hover { background: var(--bg-subtle); }
+.tbl th:first-child, .tbl td:first-child { padding-left: var(--s-3); }
+.tbl-wrap { margin: 0 calc(var(--s-6) * -1); padding: 0 var(--s-3); }
+.tbl-foot { padding-top: var(--s-3); display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: var(--text-sm); }
+
+/* states */
+.sk { background: var(--bg-subtle); border-radius: var(--r-sm); display: block; position: relative; overflow: hidden; }
+.sk::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--border), transparent); transform: translateX(-100%); animation: sh 1.4s infinite; }
+@keyframes sh { to { transform: translateX(100%); } }
+.empty { padding: var(--s-8) var(--s-4); text-align: center; color: var(--text-muted); display: grid; gap: var(--s-3); justify-items: center; }
+.empty p { max-width: 36ch; }
+.empty b { color: var(--text); font-weight: 600; display: block; font-size: var(--text-md); }
+.errbox { border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); border-radius: var(--r-lg); padding: var(--s-4); display: flex; gap: var(--s-3); align-items: flex-start; }
+.errbox .icon { color: var(--danger); margin-top: 2px; }
+.errbox b { display: block; }
+.errbox .btn { margin-top: var(--s-3); }
+
+.scrim { display: none; }
+
+/* tablet and phone */
+@media (max-width: 1023px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .side { position: fixed; inset: 0 auto 0 0; width: 280px; z-index: 30; transform: translateX(-100%); visibility: hidden; transition: transform var(--t-slow) var(--ease), visibility var(--t-slow); box-shadow: var(--shadow-dialog); }
+  body.nav-open .side { transform: none; visibility: visible; }
+  .nav a { min-height: 44px; }
+  body.nav-open .scrim { display: block; position: fixed; inset: 0; background: rgb(0 0 0 / 0.4); z-index: 25; }
+  .ibtn.menu-btn { display: inline-grid; }
+  .top { padding: 0 var(--s-4); }
+  main { padding: var(--s-6) var(--s-4) var(--s-12); }
+}
+@media (max-width: 1023px) { .grid { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); } }
+@media (max-width: 640px) {
+  .search { display: none; }
+  .top-r { margin-left: auto; }
+  .kpis { grid-template-columns: 1fr 1fr; row-gap: var(--s-6); }
+  .kpi { padding: 0 0 0 var(--s-4); border-left: 1px solid var(--border); }
+  .kpi:nth-child(odd) { padding-left: 0; border-left: 0; padding-right: var(--s-4); }
+  .kpi .v { font-size: var(--text-2xl); line-height: var(--lh-2xl); }
+  .head .btn { width: 100%; order: 3; }
+  .panel { padding: var(--s-4); }
+  .grid .attn-panel { order: -1; }
+  .grid { margin-top: var(--s-8); }
+  .chart { min-height: 220px; flex: none; height: 220px; }
+  .tbl-wrap { margin: 0 calc(var(--s-4) * -1); padding: 0; }
+  .tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .tbl, .tbl tbody, .tbl tr, .tbl td { display: block; }
+  .tbl tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-3); padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--border); }
+  .tbl td { height: auto; padding: 0; border: 0; }
+  .tbl td.id { grid-column: 1; grid-row: 1; }
+  .tbl td.cust { grid-column: 1; grid-row: 2; color: var(--text-muted); max-width: none; }
+  .tbl td.tot { grid-column: 2; grid-row: 1; font-weight: 500; }
+  .tbl td.st { grid-column: 2; grid-row: 2; justify-self: end; }
+  .tbl td.items, .tbl td.time { display: none; }
+  .tbl th:first-child, .tbl td:first-child { padding-left: 0; }
+  .tbl-foot { padding: var(--s-3) 0 0; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="m21 8-9-5-9 5v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 10 5 20 4c0 10-5 15-13 15z"/><path d="M5 19c2-5 5-8 9-10"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .7 3.2 2.700 3.500 6"/></symbol>
+  <symbol id="i-stock" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.500" cy="8.500" r="1"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M13 16V8M18 16v-8"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.900 4.900l2.100 2.100M17 17l2.100 2.100M4.900 19.100 7 17M17 7l2.100-2.100"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.400-5.700M20 4v5h-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4zM10 21h4"/></symbol>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<div class="scrim" id="scrim"></div>
+<div class="shell">
+  <aside class="side" id="side" aria-label="Sidebar">
+    <div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8M12 13C12 8 9 5 4 5c0 5 3 8 8 8zM12 15c0-4 3-7 8-7 0 5-3 7-8 7z"/></svg>Little Fern</div>
+    <nav class="nav" aria-label="Main">
+      <a href="#" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Today</a>
+      <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-box"/></svg>Orders <span class="count" id="nav-orders">6</span></a>
+      <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg>Products</a>
+      <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-stock"/></svg>Stock <span class="count" id="nav-stock">3</span></a>
+      <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Customers</a>
+      <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg>Discounts</a>
+      <a href="#"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg>Reports</a>
+    </nav>
+    <div class="side-foot">
+      <div class="nav-sep"></div>
+      <nav class="nav" aria-label="Account"><a href="#"><svg class="icon" aria-hidden="true"><use href="#i-gear"/></svg>Settings</a></nav>
+      <div class="shop" style="margin-top:var(--s-3)"><span class="avatar" aria-hidden="true">HB</span><span>Hannah Brooks<small>Owner</small></span></div>
+    </div>
+  </aside>
+
+  <div>
+    <header class="top">
+      <button class="ibtn menu-btn" id="menu" aria-label="Open menu" aria-expanded="false" aria-controls="side"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <div class="search"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-search"/></svg><input type="search" aria-label="Search orders, products and customers" placeholder="Search orders, products, customers" autocomplete="off"><kbd aria-hidden="true">Ctrl K</kbd></div>
+      <div class="top-r"><button class="ibtn" aria-label="Notifications"><svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg></button></div>
+    </header>
+
+    <main id="main">
+      <div class="head">
+        <div>
+          <h1>Today</h1>
+          <p class="sub" id="sub"></p>
+          <p class="stamp"><span id="stamp"></span><button class="ibtn" aria-label="Refresh"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-refresh"/></svg></button></p>
+        </div>
+        <a class="btn btn-primary" id="cta" href="#"></a>
+      </div>
+
+      <dl class="kpis" id="kpis" aria-label="Today so far"></dl>
+
+      <div class="grid">
+        <section class="panel" aria-labelledby="h-chart" id="chart-panel"></section>
+        <section class="panel attn-panel" aria-labelledby="h-attn" id="attn-panel"></section>
+      </div>
+
+      <section class="panel orders" aria-labelledby="h-orders" id="orders-panel"></section>
+    </main>
+  </div>
+</div>
+
+<script>
+// All sample data lives here. Today is Thursday 26 November 2026, 10:42. Totals are derived from these rows.
+const NOW = '10:42';
+const ORDERS = [
+  { id: 'LF-10441', time: '10:31', who: 'Tomasz Wójcik',  items: 2, total: 46.50, status: 'New' },
+  { id: 'LF-10440', time: '10:12', who: 'Mei Lin Tan',    items: 1, total: 28.00, status: 'New' },
+  { id: 'LF-10439', time: '09:58', who: 'Siobhán Ní Bhriain', items: 3, total: 61.30, status: 'New' },
+  { id: 'LF-10438', time: '09:41', who: 'Daniel Reyes',   items: 1, total: 14.50, status: 'Pending payment' },
+  { id: 'LF-10437', time: '09:20', who: 'Teodora',        items: 2, total: 39.90, status: 'New' },
+  { id: 'LF-10436', time: '08:55', who: 'Priya Raghunathan', items: 1, total: 22.00, status: 'New' },
+  { id: 'LF-10435', time: '08:37', who: 'Maximilian Alexander von Hohenberg-Schwarzenau', items: 4, total: 93.20, status: 'New' },
+  { id: 'LF-10434', time: '08:12', who: 'Oluwaseun Adeyemi', items: 1, total: 18.50, status: 'Packed' },
+  { id: 'LF-10433', time: '07:49', who: 'Harbour & Finch Ltd', items: 2, total: 34.00, status: 'Packed' },
+  { id: 'LF-10432', time: '07:30', who: 'Amara Okafor',   items: 1, total: 12.50, status: 'Packed' },
+  { id: 'LF-10431', time: '07:14', who: 'Kofi Mensah',    items: 2, total: 31.20, status: 'Packed' },
+  { id: 'LF-10430', time: '06:52', who: 'Elin Sørensen',  items: 1, total: 24.00, status: 'Packed' },
+  { id: 'LF-10429', time: '06:38', who: 'Rosa Delgado',   items: 2, total: 38.00, status: 'Packed' },
+  { id: 'LF-10428', time: '06:10', who: 'Ines Carvalho',  items: 1, total: 19.00, status: 'Packed' },
+];
+const YESTERDAY_BY_NOW = { sales: 611.20, orders: 17, visitors: 4 };
+const VISITORS = { today: 412, yesterdayByNow: 436 };
+const DAILY = [ // last 14 days, oldest first; the last day is today so far
+  ['Fri 13 Nov', 1042.80], ['Sat 14 Nov', 1386.50], ['Sun 15 Nov', 1298.20], ['Mon 16 Nov', 876.40], ['Tue 17 Nov', 812.90],
+  ['Wed 18 Nov', 934.60], ['Thu 19 Nov', 988.30], ['Fri 20 Nov', 1121.70], ['Sat 21 Nov', 1512.40], ['Sun 22 Nov', 1347.90],
+  ['Mon 23 Nov', 702.10], ['Tue 24 Nov', 905.50], ['Wed 25 Nov', 1184.30], ['Thu 26 Nov', null],
+];
+const ATTN = [
+  { t: '6 orders to pack', d: 'Courier collects at 2pm. The oldest waited since 08:37.', a: 'Pack orders' },
+  { t: '3 products low on stock', d: 'Monstera deliciosa (2 left), Snake plant Laurentii (3), Terracotta pot 12cm (4).', a: 'Restock' },
+  { t: '1 refund request', d: 'LF-10419, £34.00. The customer reports a broken stem.', a: 'Review' },
+  { t: 'Black Friday starts tomorrow', d: '12 of 86 products have no sale price yet.', a: 'Set prices' },
+  { t: '2 reviews without a reply', d: 'One is 2 stars, about a late delivery.', a: 'Reply' },
+];
+
+const $ = (id) => document.getElementById(id);
+const gbp = (n, dp = 2) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', minimumFractionDigits: dp, maximumFractionDigits: dp }).format(n);
+const pct = (n, dp = 1) => (n < 0 ? '−' : '+') + Math.abs(n).toFixed(dp) + '%';
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+const q = new URLSearchParams(location.search).get('state');
+const empty = q === 'empty', loading = q === 'loading', chartError = q === 'error';
+
+const orders = empty ? [] : ORDERS;
+const sales = orders.reduce((s, o) => s + o.total, 0);
+const toPack = orders.filter((o) => o.status === 'New').length;
+DAILY[DAILY.length - 1][1] = Math.round(sales * 100) / 100;
+const avg = orders.length ? sales / orders.length : 0;
+const conv = empty ? 0 : orders.length / VISITORS.today * 100;
+const convY = YESTERDAY_BY_NOW.orders / VISITORS.yesterdayByNow * 100;
+const avgY = YESTERDAY_BY_NOW.sales / YESTERDAY_BY_NOW.orders;
+const skel = (w, h) => `<span class="sk" style="width:${w};height:${h}" aria-hidden="true"></span>`;
+
+function header() {
+  $('sub').innerHTML = loading ? skel('260px', '20px')
+    : empty ? 'No orders yet. Add your first product to open the shop.'
+    : `<b>${plural(toPack, 'order', 'orders')} to pack</b> before the 2pm courier collection, and 3 products are low on stock.`;
+  $('stamp').textContent = loading ? 'Updating' : empty ? 'Thursday 26 November' : `Thursday 26 November, updated at ${NOW}`;
+  const cta = $('cta');
+  cta.textContent = empty ? 'Add a product' : `Pack ${toPack} ${toPack === 1 ? 'order' : 'orders'}`;
+  if (loading) cta.setAttribute('aria-disabled', 'true');
+}
+function kpis() {
+  const cells = loading ? ['Sales', 'Orders', 'Average order', 'Conversion rate'].map((l) => `<div class="kpi"><dt>${l}</dt><dd class="v">${skel('110px', '32px')}</dd><dd class="d">${skel('140px', '16px')}</dd></div>`)
+  : empty ? [['Sales', gbp(0)], ['Orders', '0'], ['Average order', '–'], ['Conversion rate', '–']].map(([l, v]) => `<div class="kpi"><dt>${l}</dt><dd class="v">${v}</dd><dd class="d">No data yet today</dd></div>`)
+  : [
+    ['Sales', gbp(sales), `${pct((sales / YESTERDAY_BY_NOW.sales - 1) * 100)} vs yesterday at ${NOW}`],
+    ['Orders', String(orders.length), `${YESTERDAY_BY_NOW.orders - orders.length} fewer than yesterday at ${NOW}`],
+    ['Average order', gbp(avg), `${pct((avg / avgY - 1) * 100)} vs yesterday at ${NOW}`],
+    ['Conversion rate', conv.toFixed(1) + '%', `${convY.toFixed(1)}% yesterday at ${NOW}`],
+  ].map(([l, v, d]) => `<div class="kpi"><dt>${l}</dt><dd class="v">${v}</dd><dd class="d">${d}</dd></div>`);
+  $('kpis').innerHTML = cells.join('');
+}
+function chartPanel() {
+  const p = $('chart-panel');
+  const total = DAILY.reduce((s, d) => s + d[1], 0);
+  p.innerHTML = `<div class="ph"><h2 id="h-chart">Sales by day, last 14 days</h2><span class="m">${loading || empty || chartError ? '' : gbp(total) + ' in total'}</span></div><div id="chart-body"></div>`;
+  const body = $('chart-body');
+  if (loading) { body.innerHTML = `<div class="chart" aria-hidden="true">${skel('100%', '100%')}</div>`; return; }
+  if (chartError) { body.innerHTML = `<div class="errbox" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><div><b>Sales by day did not load</b>Your orders and totals are safe. Try again in a moment.<br><button class="btn" type="button" onclick="location.reload()">Try again</button></div></div>`; return; }
+  if (empty) { body.innerHTML = `<div class="empty"><b>No sales to show</b><p>Daily sales appear here after your first order.</p></div>`; return; }
+  body.innerHTML = '<div class="chart"></div><p class="legend"><span><i style="background:var(--border-strong)"></i>Full day</span><span><i style="background:var(--accent)"></i>Today until ' + NOW + '</span></p>';
+  drawChart();
+}
+function drawChart() {
+  const el = document.querySelector('.chart'); if (!el) return;
+  const W = el.clientWidth, H = el.clientHeight, narrow = W < 520;
+  const m = { l: 52, r: 4, t: 24, b: 28 }, iw = W - m.l - m.r, ih = H - m.t - m.b, max = 1600;
+  const step = iw / DAILY.length, bw = Math.min(28, step * 0.62);
+  const y = (v) => m.t + ih - (v / max) * ih;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Bar chart of daily sales for the last 14 days. Peak ${gbp(Math.max(...DAILY.map((d) => d[1])))}. Today so far ${gbp(sales)}.">`;
+  [0, 500, 1000, 1500].forEach((t) => { s += `<line class="grid-l" x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/><text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${gbp(t, 0)}</text>`; });
+  DAILY.forEach(([label, v], i) => {
+    const x = m.l + step * i + (step - bw) / 2, last = i === DAILY.length - 1, h = Math.max(1, ih - (y(v) - m.t));
+    s += `<rect class="bar${last ? ' today' : ''}" x="${x}" y="${y(v)}" width="${bw}" height="${h}" rx="2"><title>${label}: ${gbp(v)}${last ? ' so far' : ''}</title></rect>`;
+    if (!narrow || i % 2 === (DAILY.length - 1) % 2) {
+      const [wd, d] = label.split(' ');
+      s += `<text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${narrow ? label.split(' ')[1] : wd + ' ' + label.split(' ')[1]}</text>`;
+    }
+  });
+  el.innerHTML = s + '</svg>';
+}
+function attnPanel() {
+  const p = $('attn-panel');
+  const items = loading ? '' : empty ? '' : ATTN.map((a) => `<li><div><b>${a.t}</b><span class="dt">${a.d}</span></div><a href="#" aria-label="${a.a}: ${a.t}">${a.a}</a></li>`).join('');
+  p.innerHTML = `<div class="ph"><h2 id="h-attn">Needs attention</h2></div>` + (loading
+    ? `<ul class="attn" aria-hidden="true">${[1,2,3,4].map(() => `<li><div>${skel('70%', '18px')}<span style="display:block;margin-top:6px">${skel('95%', '14px')}</span></div></li>`).join('')}</ul>`
+    : empty ? `<p style="color:var(--text-muted)">Nothing needs your attention.</p>` : `<ul class="attn">${items}</ul>`);
+}
+function ordersPanel() {
+  const p = $('orders-panel');
+  const head = `<div class="ph"><h2 id="h-orders">Latest orders</h2><a href="#">View all orders</a></div>`;
+  if (loading) { p.innerHTML = head + [1,2,3,4,5].map(() => `<div style="margin:var(--s-3) 0">${skel('100%', '24px')}</div>`).join(''); return; }
+  if (empty) { p.innerHTML = `<div class="ph"><h2 id="h-orders">Latest orders</h2></div><div class="empty"><b>No orders yet today</b><p>New orders show up here as customers check out.</p><a class="btn" href="#">Add a product</a></div>`; return; }
+  const badge = (s) => `<span class="badge ${s === 'New' ? 'b-new' : s === 'Packed' ? 'b-ok' : 'b-warn'}">${s}</span>`;
+  const rows = orders.slice(0, 8).map((o) => `<tr><td class="id"><a href="#" style="color:var(--text);text-decoration:none">${o.id}</a></td><td class="time">${o.time}</td><td class="cust" title="${o.who}">${o.who}</td><td class="items r">${o.items}</td><td class="tot r">${gbp(o.total)}</td><td class="st">${badge(o.status)}</td></tr>`).join('');
+  p.innerHTML = head + `<div class="tbl-wrap"><table class="tbl"><caption class="sr">Latest 8 of ${orders.length} orders today</caption><thead><tr><th>Order</th><th>Time</th><th>Customer</th><th class="r">Items</th><th class="r">Total (GBP)</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="tbl-foot"><span>Showing 8 of ${orders.length} orders today</span></p>`;
+}
+function render() { header(); kpis(); chartPanel(); attnPanel(); ordersPanel();
+  $('nav-orders').textContent = empty ? '' : toPack; $('nav-stock').textContent = empty ? '' : 3; }
+render();
+new ResizeObserver(() => drawChart()).observe($('chart-panel'));
+
+// Phone navigation sheet
+const setNav = (open) => { document.body.classList.toggle('nav-open', open); $('menu').setAttribute('aria-expanded', open); $('menu').setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
+$('menu').addEventListener('click', () => setNav(!document.body.classList.contains('nav-open')));
+$('scrim').addEventListener('click', () => setNav(false));
+addEventListener('keydown', (e) => { if (e.key === 'Escape') setNav(false); });
+</script>
+</body>
+</html>
