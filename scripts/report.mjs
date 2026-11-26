@@ -1,11 +1,12 @@
 // Usage: node scripts/report.mjs [runsDir=runs]
 // Builds report/index.html: one section per round (<runsDir>/<round>), one card per task,
-// conditions side by side for desktop, mobile and dark, then lint numbers and judge scores.
+// conditions side by side: fold shots first (desktop, mobile), the full-page shot behind a click, dark, then lint numbers and judge scores.
+// Each round starts with its results.md (from scripts/unblind.mjs) when present.
 // Images are linked relative to report/, so keep report/ and runs/ together.
 // <round>/scores.json is optional: { "<task>": { "<condition>": { "<criterion>": number, "notes": "text" } } }
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { listPages } from './lib.mjs';
+import { listPages, LINT } from './lib.mjs';
 
 const runsDir = resolve(process.argv[2] ?? 'runs');
 const outDir = resolve('report');
@@ -14,28 +15,13 @@ const readJson = (p) => (existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : n
 const rel = (p) => relative(outDir, p).split('\\').join('/');
 const taskPrompt = (task) => { const p = resolve('evals/tasks', `${task}.md`); return existsSync(p) ? readFileSync(p, 'utf8').trim() : ''; };
 
-// Lint rows: label, value from lint.json.
-const LINT = [
-  ['Axe critical (nodes)', (l) => l.axe.byImpact.critical?.nodes ?? 0],
-  ['Axe serious (nodes)', (l) => l.axe.byImpact.serious?.nodes ?? 0],
-  ['Axe moderate + minor', (l) => (l.axe.byImpact.moderate?.nodes ?? 0) + (l.axe.byImpact.minor?.nodes ?? 0)],
-  ['Contrast failures', (l) => l.axe.contrastFailures],
-  ['Overflow at 390 px', (l) => (l.overflow.yes ? `yes, ${l.overflow.px}px` : 'no')],
-  ['Tap targets under 44 px', (l) => l.smallTapTargets.count],
-  ['Font families', (l) => l.fontFamilies.length],
-  ['Text colors', (l) => l.textColors],
-  ['Smallest font', (l) => (l.minFontPx == null ? 'n/a' : `${l.minFontPx}px`)],
-  ['Emoji in DOM', (l) => l.emoji.count],
-  ['Images without alt', (l) => l.imgNoAlt],
-  ['Visible focus style', (l) => (l.focus.checked ? (l.focus.visible ? 'yes' : 'no') : 'n/a')],
-];
-
 const rounds = readdirSync(runsDir).filter((n) => statSync(join(runsDir, n)).isDirectory()).sort().map((round) => {
   const dir = join(runsDir, round);
   const pages = listPages(dir);
   const conditions = [...new Set(pages.map((p) => p.condition))].sort();
   const tasks = [...new Set(pages.map((p) => p.task))].sort();
-  return { round, dir, pages, conditions, tasks, scores: readJson(join(dir, 'scores.json')) };
+  const resultsPath = join(dir, 'results.md');
+  return { round, dir, pages, conditions, tasks, scores: readJson(join(dir, 'scores.json')), results: existsSync(resultsPath) ? readFileSync(resultsPath, 'utf8') : '' };
 }).filter((r) => r.pages.length);
 
 const id = (round, task) => `${round}--${task}`.replace(/[^\w-]/g, '_');
@@ -46,9 +32,33 @@ function shot(dir, cond, task, file) {
   return `<a class="shot ${file.split('.')[0]}" href="${rel(p)}" target="_blank" rel="noopener"><img src="${rel(p)}" alt="${esc(`${cond} ${task} ${file.split('.')[0]}`)}" loading="lazy"></a>`;
 }
 
-function viewRow(r, task, label, file) {
-  const cols = r.conditions.map((c) => `<figure><figcaption>${esc(c)}</figcaption>${shot(r.dir, c, task, file)}</figure>`).join('');
-  return `<h4>${label}</h4><div class="row ${file.split('.')[0]}" style="--n:${r.conditions.length}">${cols}</div>`;
+function viewRow(r, task, label, view, hasFold = true) {
+  const grid = (file) => `<div class="row ${view}" style="--n:${r.conditions.length}">${r.conditions.map((c) => `<figure><figcaption>${esc(c)}</figcaption>${shot(r.dir, c, task, file)}</figure>`).join('')}</div>`;
+  if (!hasFold) return `<h4>${label}</h4>${grid(`${view}.png`)}`;
+  return `<h4>${label}</h4>${grid(`${view}-fold.png`)}<details><summary>Full page</summary>${grid(`${view}.png`)}</details>`;
+}
+
+/** Minimal markdown for results.md: headings, pipe tables, paragraphs, inline code. */
+function md(text) {
+  const out = [];
+  let table = [];
+  const cells = (l) => l.replace(/^\||\|$/g, '').split('|').map((c) => esc(c.trim()));
+  const flush = () => {
+    if (!table.length) return;
+    const [h, , ...rows] = table;
+    const tr = (l) => `<tr>${cells(l).map((c, i) => (i ? `<td>${c}</td>` : `<th scope="row">${c}</th>`)).join('')}</tr>`;
+    out.push(`<div class="scroll"><table><thead><tr>${cells(h).map((c) => `<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(tr).join('')}</tbody></table></div>`);
+    table = [];
+  };
+  for (const line of text.split(/\r?\n/)) {
+    if (line.startsWith('|')) { table.push(line); continue; }
+    flush();
+    const m = /^(#{1,3}) (.*)/.exec(line);
+    if (m) out.push(`<h${m[1].length + 2} class="md">${esc(m[2])}</h${m[1].length + 2}>`);
+    else if (line.trim()) out.push(`<p>${esc(line).replace(/`([^`]+)`/g, '<code>$1</code>')}</p>`);
+  }
+  flush();
+  return out.join('');
 }
 
 function lintTable(r, task) {
@@ -72,13 +82,13 @@ function scoreTable(r, task) {
 
 const nav = rounds.map((r) => `<span class="grp"><b>${esc(r.round)}</b>${r.tasks.map((t) => `<a href="#${id(r.round, t)}" title="${esc(t)}">${esc(t.slice(0, 2))}</a>`).join('')}</span>`).join('');
 
-const body = rounds.map((r) => `<section><h2>${esc(r.round)} <small>${r.conditions.map(esc).join(' vs ')}</small></h2>${r.tasks.map((t) => `
+const body = rounds.map((r) => `<section><h2>${esc(r.round)} <small>${r.conditions.map(esc).join(' vs ')}</small></h2>${r.results ? `<article class="results">${md(r.results)}</article>` : ''}${r.tasks.map((t) => `
 <article id="${id(r.round, t)}">
   <h3>${esc(t)}</h3>
   <p class="prompt">${esc(taskPrompt(t))}</p>
-  ${viewRow(r, t, 'Desktop 1440 px', 'desktop.png')}
-  ${viewRow(r, t, 'Mobile 390 px', 'mobile.png')}
-  ${viewRow(r, t, 'Dark', 'dark.png')}
+  ${viewRow(r, t, 'Desktop 1440 px', 'desktop')}
+  ${viewRow(r, t, 'Mobile 390 px', 'mobile')}
+  ${viewRow(r, t, 'Dark (full page)', 'dark', false)}
   <h4>Lint</h4>${lintTable(r, t)}
   ${scoreTable(r, t)}
 </article>`).join('')}</section>`).join('') || '<p class="muted">No runs found. Put pages in runs/&lt;round&gt;/&lt;condition&gt;/&lt;task&gt;/index.html.</p>';
@@ -107,6 +117,8 @@ figure{margin:0;min-width:0}figcaption{font-size:13px;font-weight:600;margin-bot
 .shot img{display:block;width:100%;height:auto}
 .mobile .shot{max-height:720px;max-width:300px}
 .dark .shot{max-height:720px}
+summary{cursor:pointer;color:var(--accent);font-size:13px;margin:8px 0}details>.row{margin-top:8px}
+.results h4.md{margin:16px 0 8px}.results h5.md{margin:12px 0 6px;font-size:14px}.results p{margin:4px 0;font-size:14px}
 .missing{padding:24px;color:var(--muted);font-size:13px;text-align:center}
 .scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}

@@ -7,6 +7,8 @@
     "shoot": "node scripts/shoot.mjs",
     "lint": "node scripts/lint.mjs",
     "blind": "node scripts/blind.mjs",
+    "judge-kit": "node scripts/judge-kit.mjs",
+    "unblind": "node scripts/unblind.mjs",
     "report": "node scripts/report.mjs"
   },
   "devDependencies": {
