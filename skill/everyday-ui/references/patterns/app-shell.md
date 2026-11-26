@@ -22,8 +22,10 @@ Desktop (1024px and up):
 - Sidebar 240 to 264px on `--frame` (the brand tint) with a 1px right border. The logo (mark plus wordmark) sits at its top.
 - Full height without the 100vh bug: the grid column carries the background and stretches with the page, and the inner nav is sticky. Never give a box with a background `height: 100vh`, sticky or fixed: on a long page it stops at the first screen. Code in `../craft.md`, section Composition.
 - Nav items 32 to 36px high, 16 to 20px icon, 14px label, 8px icon gap. Group with a small muted section label (sentence case) only when there are more than 7 items.
-- Workspace or account switcher at the top or bottom of the sidebar. Settings and help at the bottom.
-- Page header in the content area: title left, primary action right, on one line. Tabs or filters sit right under it.
+- Nav groups stack from the top, 16 to 24px between groups, no gap in the middle. Only the account or workspace block pins to the bottom (`margin-top: auto` on that block alone). Settings and help sit in the last group or in the account block.
+- Page header in the content area: title left, primary action right, on one line. Secondary actions (Export, Refresh) sit left of the primary as secondary buttons. Tabs or filters sit right under it.
+- On phones the page header keeps the title and its action group together: the primary, plus either one labelled secondary or a "More" menu placed directly beside the primary. Never a lone "..." away from the primary, never a secondary on its own row.
+- Public site header (marketing, pricing, docs): logo left, one nav list with each link once, then "Sign in" as text and one primary call to action ("Start free trial") at the right. On phones: logo, the primary, and a menu button.
 
 Tablet (768 to 1023px): sidebar collapses to a 56 to 64px icon rail with tooltips, or hides behind a menu button.
 

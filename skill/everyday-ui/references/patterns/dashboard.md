@@ -22,7 +22,12 @@ Revenue        Outstanding     Overdue        Avg days to pay
 +--------------------------------------------------------------+
 ```
 - Order by decision value: what needs action, then key numbers, then trend, then recent activity.
-- KPI row: 3 to 5 metrics, no more. Each: label (muted 14px), value (24 to 30px weight 600 tabular), comparison with period ("vs Feb"), not just a percentage. Separate with space or vertical dividers, not one card each.
+- KPI row: 3 to 5 metrics, no more. Each: label (muted 13 to 14px), value (28 to 32px, display face, 600, -0.02em, tabular), comparison with period ("vs Feb"), not just a percentage. The value is the loudest text in the row.
+- Charts and the text around them come from one array: the KPI, the legend total, axis labels and the last point agree to the unit.
+- Separate KPIs with space or vertical dividers, not one card each. Each delta is one short line: sign or arrow, value, period ("▲ 8.2% vs Feb"), in `--success` or `--danger` by whether the move is good, never all grey and never colour alone.
+- The grid balances: side-by-side panels end at the same height (match the chart height to the list length, or add a second module under the shorter one). Every lower module uses the same panel treatment as the upper ones.
+- Home screens show the context the user expects for the domain. Banking: balance, spent this month against usual, upcoming bills. Sales: pipeline this quarter against target. Support: open tickets and oldest waiting. Health: next appointment and recent results.
+- On phones the page header keeps the title and its action group together: the primary, plus either one labelled secondary or a "More" menu placed directly beside the primary. Never a lone "..." away from the primary, never a secondary on its own row.
 - 2-column grid below: 2/3 and 1/3, or 1/2 and 1/2. Panels with a title row (h2 16px weight 600 + "View all" link) and a 1px border or none.
 - One time-range control for the whole page, top right.
 

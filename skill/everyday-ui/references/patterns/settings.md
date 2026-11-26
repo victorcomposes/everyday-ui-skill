@@ -21,7 +21,7 @@ Settings (h1)
 |  Danger zone?  |                                             |
 +----------------+---------------------------------------------+
 ```
-- Content max 720px. Section nav 200px, sticky.
+- Content max 720px. Section nav 200px, sticky. Every section, row and input shares that one content width and right edge: text inputs fill the control column, they never stop short of the sections below.
 - Each setting row: label and hint on the left (about 40%), control on the right (about 60%), or label above control for text inputs. Rows split by 1px dividers, 16 to 24px vertical padding.
 - Groups of 3 to 7 settings under an h2 or h3. More than 7: split into another section.
 - Danger zone (delete account, transfer ownership) last, in its own group with a `--danger` outline button. No red background block.
@@ -40,7 +40,7 @@ Section nav (vertical tabs or links), section header, setting row (label, hint, 
 
 Pick one save model per page and say it once:
 - Instant: switches and selects apply on change. Show a quiet "Saved" status next to the control or a toast with Undo. No Save button.
-- Deferred: a Save button per section, at the bottom right of the section, disabled-looking only until something changes; or a sticky save bar ("Unsaved changes" + Discard + Save changes) that appears on edit.
+- Deferred: a sticky save bar ("Unsaved changes" + Discard + Save changes) that appears on the first edit, or a Save button at the bottom of each section. The Save button is never disabled: with no changes it does nothing and shows "No changes to save". One rule for every form in the product (see `forms.md`).
 Never mix both inside one section.
 
 ## States to build

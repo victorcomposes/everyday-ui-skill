@@ -48,6 +48,7 @@ Copy this block as is. It passes WCAG AA in both themes (table in section 8). Ch
   --frame: #f4f7fd;         /* sidebar or top bar tint */
   --brand-deep: #14285a;    /* sign-in and onboarding brand panel */
   --on-deep: #ffffff; --on-deep-muted: #b9c8ee;
+  --accent-on-deep: #7a9cff; /* accent used on the brand panel: 5.4:1 on brand-deep */
   /* type */
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: var(--font); /* set from the pairing in brand.md */
@@ -62,6 +63,11 @@ Copy this block as is. It passes WCAG AA in both themes (table in section 8). Ch
   /* space: 4px base */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
   --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  /* vertical rhythm: use these four the same way on every page */
+  --rhythm-title: 12px;    /* page title (28px+) to its subtitle */
+  --rhythm-tight: 8px;     /* section title to its intro; label to field */
+  --rhythm-content: 24px;  /* page header block to content; section header block to section body */
+  --rhythm-group: 40px;    /* between sections and groups */
   /* shape */
   --r-sm: 4px;   /* badges, checkboxes, tags */
   --r-md: 6px;   /* buttons, inputs, selects */
@@ -93,7 +99,7 @@ Copy this block as is. It passes WCAG AA in both themes (table in section 8). Ch
     --warning: #e6a23c; --warning-subtle: #2a2112;
     --danger: #ff7a72;  --danger-subtle: #2d1715;
     --placeholder: #8b919d;
-    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef; --accent-on-deep: #7a9cff;
     --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
   }
 }
@@ -109,10 +115,17 @@ Base rules that go with it:
 body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
   font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }  /* a display: flex class must never re-show hidden content */
+a { color: inherit; text-decoration: none; }  /* nav, logo, row links */
+.link, p a, td a.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }  /* links in text */
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 ::placeholder { color: var(--placeholder); opacity: 1; }
-h1 { font-family: var(--font-display); }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+h1 { font: 600 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 26px; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
+/* The parent of any .sr-only element needs position: relative (cells, scroll containers), or the 1px box escapes it and widens the page. */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 .skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
   background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
 .skip-link:focus { transform: none; }
@@ -125,16 +138,16 @@ Body text is 14px in dense tools (tables, admin, dashboards) and 16px for forms,
 
 - One body family, plus one display family from the pairing in `brand.md`. Add a mono only for code, IDs people copy, and keys.
 - Weights: 400 body, 500 labels and table headers, 600 titles and buttons, 700 for a display face that needs it. No 300.
-- At most 6 sizes on one screen. A typical product screen uses 12, 14, 16, 20 and 28. `--text-lg` (18/28) is for dialog titles and lead lines.
-- Headings: line-height 1.15 to 1.25, `letter-spacing` -0.01em to -0.02em from 20px up. Body: 1.4 to 1.6. Never track out small text.
+- At most 5 text sizes of 20px or less, and 8 sizes in total with display sizes (logo, title, key numbers). A typical product screen uses 12, 14, 16, 20, plus 30 for the title and 32 for a key number. `--text-lg` (18/28) is for dialog titles and lead lines.
+- The full role scale (title, key number, section, body, label, meta) is in `brand.md` section 3. The title is at least twice the body size.
+- Headings: line-height 1.15 to 1.3, `letter-spacing` -0.01em to -0.02em from 20px up. Body: 1.4 to 1.6. Never track out small text.
+- Vertical rhythm: the four `--rhythm-*` tokens, applied the same way on every page. A page title and its subtitle sit 12px apart, a section title and its intro 8px, a label and its hint 4px. The header block sits 24px above content. Groups sit 40px apart. Never a subtitle glued to its heading, never a random big gap.
 - Line length 45 to 75 characters for paragraphs: `max-width: 65ch`.
 - Font choice: the project's font always wins. Otherwise use the pairing table in `brand.md`, loaded from Google Fonts when the contract allows network, and the system stack in the token block when it does not.
 
 ## 4. Accent
 
 Pick a kit from `brand.md`. The token block above holds the Harbour kit. Use the accent for the primary button, links, focus, selection, the active nav item and the mark. Use its tints for the frame and selected states. Never use it on data cells, as a gradient, or as a second hue.
-
-With the Ink kit, links need an underline, because colour alone no longer marks them.
 
 ## 5. Status colours
 

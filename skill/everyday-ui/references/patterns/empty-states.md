@@ -44,7 +44,7 @@ The server didn't respond. Your data is safe.
 [ Try again ]   Check status
 ```
 
-Phone: same content, full width, 16px side padding, action full width.
+Phone: same content, full width, 16px side padding, action full width. Any example or preview that explains the state sits directly after the action and stays short (2 or 3 lines or ghost rows), so the action and its explanation share the first screen.
 
 ## Density
 
@@ -64,6 +64,7 @@ If the page header already has the same create action as a filled button, the em
 
 A first-use empty state on a 1440px screen is not a lone message in a blank canvas:
 - Keep the app shell, the page header with its actions, and the tabs or filters, so the page has its real frame.
+- One first action, visually dominant and above the fold at 1440 x 900 and 390 x 844. Everything else (templates, imports, guides) is grouped under it and visibly secondary.
 - Give the empty state body content: the art from `brand.md` (ghost rows of what will appear), a title, one sentence, the action, and a short row of 2 or 3 "ways to start" (Import a CSV, Connect Xero, Read the guide) as secondary links or small tiles.
 - Or show a preview: the real table header with 3 ghost rows at 40% opacity, and the message over the first row.
 - A full-page empty state (404, a new workspace) gets the logo, the art and a two-column composition: message and actions left, a product glimpse or help links right.

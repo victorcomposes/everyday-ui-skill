@@ -129,21 +129,35 @@ function pageChecks(mode) {
   // Visually hidden (.sr-only and friends): a 1-2px clipped box, clip-path inset, or clip rect, on the element or an ancestor.
   const hiddenVisually = (el) => {
     for (let e = el; e && e !== document.body; e = e.parentElement) {
-      const s = getComputedStyle(e), r = e.getBoundingClientRect();
+      const s = getComputedStyle(e); if (s.display === 'contents') continue; // no box of its own
+      const r = e.getBoundingClientRect();
       if (r.width <= 2 && r.height <= 2 && /hidden|clip/.test(s.overflow)) return true;
       if (/inset\(\s*50%/.test(s.clipPath) || /rect\(\s*0/.test(s.clip)) return true;
     }
     return false;
   };
   // Off screen: fully left or right of the viewport, or above the top of the document.
-  const offscreen = (el, W = innerWidth) => { const r = el.getBoundingClientRect(); return r.right <= 0 || r.left >= W || r.bottom + scrollY <= 0; };
+  const offscreen = (el, W = innerWidth) => { if (getComputedStyle(el).display === 'contents') return false; const r = el.getBoundingClientRect(); return r.right <= 0 || r.left >= W || r.bottom + scrollY <= 0; };
+  // Rendered lines of an element's own text nodes: distinct line tops of their rects.
+  const linesOf = (el) => { const tops = new Set(); for (const n of el.childNodes) { if (n.nodeType !== 3 || !n.textContent.trim()) continue; const rg = document.createRange(); rg.selectNodeContents(n); for (const q of rg.getClientRects()) if (q.width > 1) tops.add(Math.round(q.top)); } return tops.size; };
   // Short text (a name, a label) squeezed into 3 or more lines.
   const squeezed = (els) => els.filter((el) => {
     const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join('').trim();
     if (!own || own.length > 60 || hiddenVisually(el) || offscreen(el)) return false;
-    const s = getComputedStyle(el), lh = parseFloat(s.lineHeight) || parseFloat(s.fontSize) * 1.2;
-    return el.getBoundingClientRect().height / lh >= 2.8 && own.split(/\s+/).length >= 3;
+    if (own.split(/\s+/).length < 3) return false;
+    return linesOf(el) >= 3;
   }).map((el) => `${label(el)} ${Math.round(el.getBoundingClientRect().width)}px wide`);
+  // Badge-like: short text, small type, a fill or border, rounded. Wrapped when its text spans more than one line.
+  const badgeWraps = () => [...document.querySelectorAll('body *')].filter((el) => {
+    const txt = [...el.childNodes].filter((n) => n.nodeType === 3);
+    const own = txt.map((n) => n.textContent).join('').trim();
+    if (!own || own.length > 24 || !visible(el) || hiddenVisually(el)) return false;
+    const s = getComputedStyle(el);
+    if (parseFloat(s.fontSize) > 14 || parseFloat(s.borderTopLeftRadius) < 3) return false;
+    if (!(rgba(s.backgroundColor)[3] > 0.05 || parseFloat(s.borderTopWidth) > 0)) return false;
+    const tops = new Set(); for (const n of txt) { const rg = document.createRange(); rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 0) tops.add(Math.round(r.top)); }
+    return tops.size > 1;
+  }).map(label);
   const opacityOf = (el) => { let o = 1; for (let e = el; e; e = e.parentElement) o *= parseFloat(getComputedStyle(e).opacity); return o; };
   const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'SVG', 'TITLE']);
   const textEls = [...document.body.querySelectorAll('*')].filter((el) => !SKIP.has(el.tagName.toUpperCase()) && visible(el) &&
@@ -198,15 +212,26 @@ function pageChecks(mode) {
   }
 
   function phoneChecks() {
-    const W = 390, over_ = document.documentElement.scrollWidth - W; // not innerWidth: mobile emulation widens it to fit overflow
+    const inFixed = (el) => { for (let e = el; e && e !== document.body; e = e.parentElement) if (getComputedStyle(e).position === 'fixed') return true; return false; };
+    const W = 390, H = 844, over_ = document.documentElement.scrollWidth - W; // not innerWidth: mobile emulation widens it to fit overflow
     if (over_ > 0) {
       const clipped = (el) => { for (let e = el.parentElement; e && e !== document.body; e = e.parentElement) { if (/(auto|scroll|hidden|clip)/.test(getComputedStyle(e).overflowX)) return true; } return false; };
-      const all = [...document.body.querySelectorAll('*')].filter((el) => el.getClientRects().length && el.getBoundingClientRect().right > W + 1);
+      const all = [...document.body.querySelectorAll('*')].filter((el) => el.getClientRects().length && el.getBoundingClientRect().right > W + 1 && !inFixed(el)); // fixed bars stretch with the widened viewport: effects, not causes
       let wide = all.filter((el) => visible(el) && !clipped(el)), note = '';
       // Fallback: an absolutely positioned element can escape an overflow parent that is not its containing block.
       if (!wide.length) { wide = all; note = ' (escapes its clipped parent)'; }
       const outer = wide.filter((el) => !wide.includes(el.parentElement));
-      add('FAIL', 'overflow-phone', `Page scrolls sideways by ${over_}px at ${W}px wide. Culprits:`, outer.map((el) => `${label(el)}${hiddenVisually(el) ? ' [visually hidden: use the .sr-only pattern, not an offset]' : ''} in ${el.parentElement ? label(el.parentElement) : 'html'}, right edge ${Math.round(el.getBoundingClientRect().right)}px${note}`));
+      // Cause: an absolutely positioned element whose overflow container is not its containing block escapes it.
+      const escapes = (el) => {
+        if (getComputedStyle(el).position !== 'absolute') return '';
+        for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+          const s = getComputedStyle(p);
+          if (s.position !== 'static') return '';
+          if (s.overflowX !== 'visible') return ` [absolutely positioned inside ${label(p)}, which has overflow but no position: relative, so it escapes: add position: relative to it]`;
+        }
+        return ' [absolutely positioned with no positioned parent: give its container position: relative]';
+      };
+      add('FAIL', 'overflow-phone', `Page scrolls sideways by ${over_}px at ${W}px wide. Culprits:`, outer.map((el) => `${label(el)}${hiddenVisually(el) ? ' [visually hidden]' : ''} in ${el.parentElement ? label(el.parentElement) : 'html'}, right edge ${Math.round(el.getBoundingClientRect().right)}px${note}${escapes(el)}`));
     }
     // Tables: reflow, or scroll inside their own container with a cue. Never widen or clip.
     for (const t of document.querySelectorAll('table')) {
@@ -249,6 +274,9 @@ function pageChecks(mode) {
     const touching = [];
     for (const c of document.querySelectorAll('body *')) {
       if (!/flex|grid/.test(getComputedStyle(c).display) || !visible(c)) continue;
+      if (/^(tablist|radiogroup|group|toolbar|menubar|navigation)$/.test(c.getAttribute('role') || '') || c.tagName === 'NAV') continue; // segmented controls, tab bars
+      if ([...c.children].length > 1 && [...c.children].every((k) => k.matches('button,a,label,input,[role=tab],[role=radio]'))) continue;
+      if ([...c.children].some((k) => { const s = getComputedStyle(k); return parseFloat(s.borderLeftWidth) > 0 || parseFloat(s.borderRightWidth) > 0; })) continue; // divided rows
       const kids = [...c.children].filter((k) => visible(k) && k.innerText?.trim() && !hiddenVisually(k) && !offscreen(k, W));
       for (let i = 1; i < kids.length; i++) {
         const a = kids[i - 1].getBoundingClientRect(), b = kids[i].getBoundingClientRect();
@@ -259,8 +287,15 @@ function pageChecks(mode) {
     }
     if (touching.length) add('WARN', 'touching-phone', 'Adjacent labels or values touch on the phone. Keep a gap of 8px or more and let them wrap.', touching);
     const pinned = [...document.querySelectorAll('body *')].filter((el) => /fixed|sticky/.test(getComputedStyle(el).position) && visible(el) && !offscreen(el, W) && !hiddenVisually(el));
-    const pinnedH = pinned.filter((el) => !pinned.some((p) => p !== el && p.contains(el))).reduce((h, el) => { const r = el.getBoundingClientRect(); return h + Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)); }, 0);
-    if (pinnedH > innerHeight * 0.3) add('WARN', 'pinned-bars', `Fixed or sticky bars cover ${Math.round(pinnedH)}px of the ${innerHeight}px phone screen.`);
+    const pinnedH = pinned.filter((el) => !pinned.some((p) => p !== el && p.contains(el))).reduce((h, el) => { const r = el.getBoundingClientRect(); return h + Math.max(0, Math.min(r.bottom, H) - Math.max(r.top, 0)); }, 0);
+    if (pinnedH > H * 0.3) add('WARN', 'pinned-bars', `Fixed or sticky bars cover ${Math.round(pinnedH)}px of the ${H}px phone screen.`);
+    const tallBars = pinned.filter((el) => !pinned.some((p) => p !== el && p.contains(el))).filter((el) => {
+      const r = el.getBoundingClientRect(); // own height: mobile emulation can push a bottom bar below 844px
+      return r.bottom > 0 && r.top < innerHeight && r.height > H * 0.12 && r.height < H * 0.6;
+    }).map((el) => `${label(el)} ${Math.round(el.getBoundingClientRect().height)}px`);
+    if (tallBars.length) add('WARN', 'sticky-bar-tall', `A sticky or fixed bar is taller than 12% of the phone screen (${Math.round(H * 0.12)}px). Keep one line plus the button; move footnotes into the page.`, tallBars);
+    const bw = badgeWraps();
+    if (bw.length) add('WARN', 'badge-wrap', 'Badges or pills wrap onto two lines on the phone. Use white-space: nowrap and give them room.', bw);
     return out;
   }
 
@@ -298,7 +333,22 @@ function pageChecks(mode) {
   const families = [...new Set([...styles, ...controls.map((c) => getComputedStyle(c))].map((s) => s.fontFamily.split(',')[0].trim().replace(/["']/g, '').toLowerCase()))];
   if (families.length > 2) add('WARN', 'font-families', `${families.length} font families. Use a body face and at most one display face (a mono only for code). Set font: inherit on inputs and buttons.`, families);
   const sizes = [...new Set(styles.map((s) => Math.round(parseFloat(s.fontSize))))].sort((a, b) => a - b);
-  if (sizes.length > 6) add('WARN', 'font-sizes', `${sizes.length} font sizes (${sizes.join(', ')}). Keep to the type scale, 6 or fewer.`);
+  const bodySizes = sizes.filter((s) => s <= 20);
+  if (bodySizes.length > 6 || sizes.length > 8) add('WARN', 'font-sizes', `${bodySizes.length} text sizes of 20px or less and ${sizes.length} in total (${sizes.join(', ')}). Keep to 6 sizes of 20px or less and 8 in all.`);
+  // Hierarchy: the title clearly above body text, tight and heavy.
+  const h1 = [...document.querySelectorAll('h1')].find((h) => visible(h) && !hiddenVisually(h));
+  const appBar = h1 && (h1.closest('header,[role=banner]')?.getBoundingClientRect().height ?? 999) <= 64;
+  const phoneColumn = h1 && (h1.closest('main') ?? h1.parentElement).getBoundingClientRect().width <= 480;
+  if (h1 && !appBar && !phoneColumn) {
+    const weightOf = {}; for (const el of textEls) { const fs = Math.round(parseFloat(getComputedStyle(el).fontSize)); weightOf[fs] = (weightOf[fs] ?? 0) + [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent.trim()).join('').length; }
+    const body = +Object.entries(weightOf).sort((a, b) => b[1] - a[1])[0][0]; // the size carrying the most text
+    const hs = getComputedStyle(h1), size = parseFloat(hs.fontSize), track = hs.letterSpacing === 'normal' ? 0 : parseFloat(hs.letterSpacing);
+    const issues = [];
+    if (size / body < 1.8) issues.push(`title ${size}px is ${(size / body).toFixed(1)}x the ${body}px body text; aim for 2x (28-32px on 14-15px)`);
+    if (size >= 24 && track >= 0) issues.push(`title tracking ${hs.letterSpacing}; use -0.02em`);
+    if (parseInt(hs.fontWeight) < 600) issues.push(`title weight ${hs.fontWeight}; use 600 or 700`);
+    if (issues.length) add('WARN', 'type-hierarchy', 'The page title does not lead the hierarchy.', issues);
+  }
   const minPx = Math.min(...sizes);
   if (minPx < 11) add('FAIL', 'min-font', `Smallest text is ${minPx}px. Keep 12px or more.`);
   else if (minPx < 12) add('WARN', 'min-font', `Smallest text is ${minPx}px. Keep 12px or more.`);
@@ -353,6 +403,7 @@ function pageChecks(mode) {
   if (nested.length) add('WARN', 'nested-cards', `${nested.length} card(s) inside another card. Flatten to one surface with dividers or spacing.`, nested.map(label));
   const pageBg = bgOf(document.body) ?? canvasColor;
   const filled = [...document.querySelectorAll('button,a[href],input[type=submit],[role=button]')].filter((el) => {
+    if (/(apple|google|samsung|shop)[ ]*pay|paypal|continue with|sign in with/i.test(`${el.textContent} ${el.getAttribute('aria-label') ?? ''}`) || el.closest('[data-third-party]')) return false;
     if (!visible(el) || el.getAttribute('aria-pressed') === 'true' || el.getAttribute('aria-selected') === 'true' || el.getAttribute('aria-current')) return false;
     const r = el.getBoundingClientRect(); if (r.top > innerHeight || r.bottom < 0) return false;
     const c = rgba(getComputedStyle(el).backgroundColor); return c[3] >= 0.9 && ratio(c, pageBg) >= 3;
@@ -362,7 +413,7 @@ function pageChecks(mode) {
   const centred = blocks.filter((el) => getComputedStyle(el).textAlign === 'center');
   if (blocks.length >= 4 && centred.length / blocks.length > 0.5) add('WARN', 'centred', `${centred.length} of ${blocks.length} headings and paragraphs are centred. Align product UI to the left edge.`);
   const numRe = /^[(+\-−]?[$€£¥]?\s?\d{1,3}([,.\s ]\d{3})*([.,]\d+)?\s?(%|[kKMB]|USD|EUR|GBP)?\)?$/;
-  const numCells = [...document.querySelectorAll('td,th[scope=row]')].filter((td) => visible(td) && numRe.test(td.innerText.trim()));
+  const numCells = [...document.querySelectorAll('td,th[scope=row]')].filter((td) => visible(td) && !td.closest('[data-matrix]') && numRe.test(td.innerText.trim())); // data-matrix: comparison grids opt out
   const leftNums = numCells.filter((td) => !/right|end/.test(getComputedStyle(td).textAlign)).map(label);
   const propNums = numCells.filter((td) => { const s = getComputedStyle(td); return !/tabular-nums/.test(s.fontVariantNumeric) && !/tnum/.test(s.fontFeatureSettings); }).map(label);
   if (leftNums.length) add('WARN', 'numbers-align', 'Numeric table cells not right-aligned. Right-align numbers and their headers.', leftNums);
@@ -402,24 +453,33 @@ async function axeCheck(page) {
   } catch (e) { add('INFO', 'axe', `axe-core did not run: ${e.message.split('\n')[0]}`); }
 }
 
+const runChecks = (page, name) => page.evaluate(pageChecks, name).catch((e) => [{ level: 'WARN', id: `checks-${name}`, msg: `Checks crashed: ${e.message.split('\n')[0]}`, examples: [] }]);
 const errors = [];
 for (const name of ['desktop', 'phone', 'dark']) {
   const { context, page } = await openView(name, url, name === 'desktop' ? errors : null);
   await shoot(page, name);
-  const found = await page.evaluate(pageChecks, name).catch((e) => [{ level: 'WARN', id: `checks-${name}`, msg: `Checks crashed: ${e.message.split('\n')[0]}`, examples: [] }]);
-  results.push(...found);
+  results.push(...await runChecks(page, name));
   if (name === 'desktop' && axeSource) await axeCheck(page);
-  if (name === 'desktop') await focusCheck(page);
+  if (name === 'desktop') {
+    await focusCheck(page);
+    // Arm's-length view: a blurred fold. Title, key number and primary action should read first.
+    await page.keyboard.press('Escape'); await page.evaluate(() => { document.activeElement?.blur?.(); scrollTo(0, 0); });
+    await page.addStyleTag({ content: 'html{filter:blur(5px)}' });
+    await page.screenshot({ path: join(outDir, 'desktop-squint.png') }); shots.push('desktop-squint.png');
+  }
   await context.close();
 }
 if (errors.length) add('FAIL', 'errors', `${errors.length} error(s) while loading.`, [...new Set(errors)].slice(0, 6));
+for (const r of results) r.state ??= 'default';
 
+// States: screenshots plus desktop and phone checks. Issues already reported for the default view are not repeated.
+const seen = new Set(results.map((r) => r.id));
 for (const state of (flags.state ?? '').split(',').filter(Boolean)) {
   const u = new URL(url); u.searchParams.set('state', state);
   for (const name of ['desktop', 'phone']) {
     const { context, page } = await openView(name, u.href);
     await shoot(page, `${state}-${name}`, false);
-    if (name === 'phone') for (const r of await page.evaluate(pageChecks, 'phone')) if (r.level === 'FAIL') results.push({ ...r, id: `${r.id}@${state}` });
+    for (const r of await runChecks(page, name)) if (r.level !== 'INFO' && !seen.has(r.id)) results.push({ ...r, state });
     await context.close();
   }
 }
@@ -431,12 +491,12 @@ const fails = results.filter((r) => r.level === 'FAIL').length, warns = results.
 writeFileSync(join(outDir, 'report.json'), JSON.stringify({ url, fails, warns, results, shots }, null, 2));
 console.log(`ui-check ${url}\nBrowser: ${browserName}\nScreenshots in ${outDir}:\n  ${shots.join('\n  ')}\n`);
 for (const r of results) {
-  console.log(`${r.level.padEnd(4)} ${r.id}: ${r.msg}`);
+  console.log(`${r.level.padEnd(4)} [${r.state}] ${r.id}: ${r.msg}`);
   for (const e of r.examples) console.log(`       - ${e}`);
 }
 const checked = ['contrast-light', 'contrast-dark', 'overflow-phone', 'short-background', 'table-overflow', 'table-clipped', 'tap-targets', 'input-zoom', 'focus-ring', 'labels', 'button-names', 'img-alt', 'viewport-meta', 'errors'];
-const passed = checked.filter((id) => !results.some((r) => r.id === id || r.id.startsWith(`${id}@`)));
-if (passed.length) console.log(`PASS ${passed.join(', ')}`);
+const passed = checked.filter((id) => !results.some((r) => r.id === id));
+if (passed.length) console.log(`PASS [all views] ${passed.join(', ')}`);
 if (!axeSource) console.log('INFO axe-core not found, so axe rules were skipped. Optional: npm i -D axe-core');
 console.log(`\nScore: ${fails} FAIL, ${warns} WARN. Now open the screenshots and run the critique checklist.`);
 process.exit(fails ? 1 : 0);

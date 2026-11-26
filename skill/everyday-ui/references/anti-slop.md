@@ -48,7 +48,8 @@ Avoiding slop must not produce an unbranded page. Judges punish both.
 | Grey text on a coloured background | Text tinted from that background's hue, or `--text` on a subtle tint. |
 | Saturated colour on decoration (section backgrounds, icon tiles, dividers) | Colour only on actions, links, selection, focus and status. |
 | Several accents (blue buttons, purple badges, teal links) | One accent. Status colours only for status. |
-| Warm cream background with a high-contrast serif and a terracotta accent | The product's own tokens, or the default neutral tokens. |
+| The cream-and-terracotta look: a cream or beige page, a high-contrast serif display, a clay or terracotta accent, together | A neutral page and frame, sans type, one accent. The Ember kit in `brand.md` is built this way and is allowed. |
+| A serif display over a sans body in product or finance UI | One sans family, or a sans display with a sans body (`brand.md` section 3). Serif display only for editorial, craft and education brands. |
 | Near-black page with one acid-green or vermilion accent | Same: the product's tokens. Dark mode is a token swap of a calm theme. |
 | Broadsheet layout: hairline rules, zero radius, newspaper columns | Product layout: sidebar or top bar, one content column, standard radii. |
 | The same soft grey shadow under every box | Flat by default. Shadows only on layers that float. |
@@ -57,10 +58,12 @@ Avoiding slop must not produce an unbranded page. Judges punish both.
 
 | Banned | Use instead |
 |---|---|
+| A timid title: 20 to 24px over 14px body, no tracking, weight 500 | The title at twice the body size (28 to 32px), display face, 600 to 700, -0.02em. See `brand.md` section 3. |
 | One weight and one size everywhere, hierarchy from size alone | Size, weight and colour together: title 24/600, section 16 to 20/600, label 14/500 muted, value 14/400. |
 | Accenting one word of a heading in colour or italics | A plain heading. |
 | ALL CAPS labels and buttons | Sentence case. |
-| Monospace for small labels and numbers as a "tech" look | The UI font with `tabular-nums`. Mono only for code, keys and IDs people copy. |
+| Monospace for small labels and numbers as a "tech" look | The UI font with `tabular-nums`. Mono only for codes people copy. |
+| A monochrome page with no accent at all | A kit accent in at least four roles: primary, active nav, links or selection, the mark. |
 | Light grey 12px meta text that fails contrast | `--text-muted`, 12px minimum, 4.5:1. |
 | Meta strings joined with middle dots ("Admin · 3 seats · Active") as a default | Separate fields, labels, or a badge. Middle dots only in a dense one-line meta row that already has labels elsewhere. |
 | Labels built as "WORD - fragment" with a spaced dash | A label and a value. |
@@ -71,6 +74,12 @@ Avoiding slop must not produce an unbranded page. Judges punish both.
 | Banned | Use instead |
 |---|---|
 | Every button styled primary | One primary per view. Secondary and tertiary for the rest. |
+| Several first actions competing on an empty state or onboarding ("New note", "Write a note", three templates, a checklist) | One first action, filled, above the fold. Templates and imports grouped under it as secondary. |
+| IDs as boxed monospace chips that out-shout the row | Muted plain text with `tabular-nums`. Mono only for codes people copy. |
+| Initial tiles on tasks, notes and products ("OP", "CO") | Initials for people and merchants only. Icons for tasks, product glyphs for products. |
+| Wallet and SSO buttons as generic outlined text | The provider's mark in inline SVG and its standard colours. |
+| A count badge covering the bell icon | The badge on the icon's top-right corner, offset, with a ring in the surface colour. |
+| A second full-width button for an alternative sign-in method | SSO above one "or" divider, the magic link as a text link. |
 | Emoji as icons or status ("✅ Done", "🚀 Launch") | SVG icons from one set, status badges with text. |
 | A KPI row of four identical cards, each with a big number, a green "+12.5%" and a sparkline | Fewer KPIs, chosen by the job. Each with a label, value, period and honest comparison. Sparklines only where trend matters. |
 | Toggle switches that wait for a Save button | Checkboxes for deferred settings, switches for instant ones. |

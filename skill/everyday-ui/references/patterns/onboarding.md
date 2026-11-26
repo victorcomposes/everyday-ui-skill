@@ -39,6 +39,7 @@ Get started  2 of 4 done                                [Dismiss]
 (the real home screen below, with its own empty states)
 ```
 - A checklist of 3 to 5 real tasks, each completing when done in the product. Dismissable, and it remembers.
+- One first action, visually dominant and above the fold: the next open task's button is the only filled button on the screen and the largest control. Templates, imports and other entry points are grouped under it as secondary links or small tiles. If the checklist pushes the empty state below the fold, collapse the done tasks into one line ("2 of 4 done").
 
 Phone: one step per screen, primary button in a sticky bottom bar, "Skip" in the top bar.
 

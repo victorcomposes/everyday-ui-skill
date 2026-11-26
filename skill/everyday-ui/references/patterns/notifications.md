@@ -32,7 +32,8 @@ Yesterday
 ---------------------------------------------------------
 View all notifications
 ```
-- Row: 32px avatar or icon, actor in weight 600, action in plain words, object as text, time right. Unread: accent dot and a `--accent-subtle` tint or bolder text.
+- Bell: a 20px icon in a 36 to 44px button. The unread count sits on the top-right corner, offset outward, 16 to 18px high, `--danger` or `--accent` fill, with a 2px ring in the surface colour. It never covers the centre of the glyph. Over 9 shows "9+".
+- Row: 32px avatar (people) or icon (system events), actor in weight 600, action in plain words, object as text, time right. Unread: accent dot and a `--accent-subtle` tint or bolder text.
 - Inline action only when it is the obvious next step.
 - A full page version of the same list for history, with filters.
 

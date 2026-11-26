@@ -32,7 +32,18 @@ Phone (390 x 844):
 
 Tablet and larger: list-detail side by side (see `lists.md`).
 
-Phone-only screens shown at desktop width (the task is an app screen, but it renders at 1440): one centred column 390 to 430px wide on a `--bg-subtle` page, the column on `--bg` with a 1px `--border` and `--r-xl` corners. No fake device frame, notch or status bar art. The tab bar and sticky buttons stay inside the column (`position: sticky` in the column, not `fixed` to the window).
+Phone-only screens shown at desktop width (the task is an app screen, but it renders at 1440): one centred column 390 to 430px wide on a tinted page (`--bg-subtle` or `--frame`), the column on `--surface` with `--r-xl` corners, a 1px `--border` and `--shadow-pop`, so it reads as a finished screen, not a strip on white. No fake device frame, notch or status bar art. The tab bar and sticky buttons stay inside the column (`position: sticky` in the column, not `fixed` to the window).
+
+## Home screen context
+
+A phone home screen answers "where do I stand?" for its domain before anything else:
+
+| Domain | Expected context |
+|---|---|
+| Banking | Balance, spent this month against your usual, upcoming bills and payday |
+| Fitness | Today against goal, streak, next session |
+| Delivery, travel | The active order or trip with its next step and time |
+| Tasks, work | Due today, overdue count, next meeting |
 
 ## Density
 

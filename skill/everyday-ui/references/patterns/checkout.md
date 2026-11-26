@@ -28,14 +28,14 @@ Logo                                          Secure checkout (lock icon)
 | [ Pay £146.95 ]                      |                             |
 +--------------------------------------+-----------------------------+
 ```
-- Form column about 560px, summary column 360 to 400px, sticky. Product names in the summary wrap to 2 lines at most; each item has a 40 to 48px thumbnail or a tinted initial tile, never a generic image icon.
+- Form column about 560px, summary column 360 to 400px, sticky. Product names in the summary wrap to 2 lines at most; each item has a 40 to 48px thumbnail-like tile with a product glyph, never initials and never a generic image icon.
 - Card row: expiry and security code share one row at equal widths (8ch each, or 50/50), same height, labels aligned. Single page with sections, or 3 steps (Details, Delivery, Payment) with a review step.
 - Guest checkout by default. Offer account creation after purchase, on the confirmation page.
 - Ask only for fields needed: average checkouts show about 11 fields where 8 would do (Baymard).
 - Address lookup by postcode is optional; manual entry is always available.
-- Payment: card fields grouped, card type detected from the number, wallet buttons (Apple Pay, Google Pay) above the form as secondary options.
+- Payment: card fields grouped, card type detected from the number, wallet buttons (Apple Pay, Google Pay) above the form as express options, in their brand form: Apple Pay black with the white Apple mark and "Pay", Google Pay black with the four-colour G and "Pay", both as inline SVG, 44 to 48px high, side by side, then one "or pay by card" divider.
 
-Phone: summary collapses to a bar at the top ("Show order summary  £146.95") that expands. One column. Pay button in a sticky bottom bar with the total.
+Phone: summary collapses to a bar at the top ("Show order summary  £146.95") that expands. One column. Pay button in a sticky bottom bar: one line with the total, then the button, under 100px including the safe area. Trust lines and footnotes stay in the page, not in the bar.
 
 ## Density
 
@@ -47,7 +47,7 @@ Contact, address and payment fieldsets, delivery option radios with price and da
 
 ## Primary action placement
 
-One button at the end of the form: "Pay £146.95" (amount in the label) or "Place order". On phone, sticky at the bottom. No other filled button on the page.
+One button at the end of the form, where people finish: "Pay £146.95" (amount in the label) or "Place order". It may also be mirrored at the foot of the order summary on desktop, and in a sticky bottom bar on phones, but never lives only in the summary or the bar. The sticky bar adds `scroll-padding-bottom` equal to its height, so focused fields are never hidden. Wallet buttons are express options in brand form, not a second primary.
 
 ## States to build
 

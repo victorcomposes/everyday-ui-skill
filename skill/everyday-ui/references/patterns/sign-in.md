@@ -15,19 +15,22 @@ Desktop (split layout, the default):
 | Get paid 9 days sooner           |  [ Continue with Google ]   (secondary)  |
 | (display face, 36-44px, white)   |  ---------- or ----------                |
 | One line, --on-deep-muted        |  Email                                   |
-|                                  |  [ amara@kestrel-analytics.com ]         |
+|                                  |  [ name@company.com      (placeholder) ] |
 | +----------------------------+   |  Password            Forgot password?    |
 | | Product glimpse: a real    |   |  [ ••••••••••            Show ]          |
 | | invoice row turning "Paid" |   |  [ Sign in ]          (full width)       |
-| | built from your components |   |  New to Kestrel? Create an account       |
+| | built from your components |   |  Email me a sign-in link   (text link)   |
+|                                  |  New to Kestrel? Create an account       |
 | +----------------------------+   |                                          |
 |                                  |  Terms   Privacy   (small, muted, bottom)|
 +----------------------------------+------------------------------------------+
 ```
 - The brand panel carries the logo, one concrete headline about the outcome, one supporting line and a product glimpse (`brand.md` section 4). No stock photos, no testimonials, no gradient blobs.
-- The form column is `--bg`, form max 400px. No card around the form is needed.
+- The form column is `--bg`, form max 400px, and the form block is centred vertically in its half at desktop (`display: grid; place-items: center` on the column, the form left-aligned inside). No card around the form is needed.
 - Without a brand to show (an internal tool inside someone's product), use a centred 400px column with the logo above it, and a quiet `--bg-subtle` page. Never a lone card in a blank 1440px canvas with no logo.
-- SSO buttons are secondary style, full width, with the provider's logo at 16 to 20px.
+- One primary job: "Sign in" is the only filled button. Alternatives are grouped once: SSO buttons above a single "or" divider, the magic link as a text link under the primary button (or a quiet secondary). Never a second full-width button under Sign in, never two dividers.
+- SSO buttons are secondary style, full width, in the provider's brand form: its mark in inline SVG at 18 to 20px, its standard label ("Continue with Google").
+- The email field has an example placeholder, `name@company.com`, as well as its visible label.
 - Email first, password second. Or email only, then a second step for password or magic link (identifier first).
 
 Phone: the brand panel shrinks to a 56 to 64px header strip with the logo (or disappears), then the form in one column with 16px side padding, 44px controls, keyboard-safe (the button is not hidden under the keyboard).
@@ -68,6 +71,7 @@ Must for a one-page brief: default; wrong credentials; submitting. Build the oth
 ## Common AI mistakes
 
 - Purple gradient background with a glass card.
+- A magic-link button as a second full-width button under Sign in, splitting the primary job; two "or" dividers.
 - Floating labels and placeholder-only fields.
 - A confirm-password field instead of a Show toggle.
 - "Remember me" checkbox at 16px with no label target.

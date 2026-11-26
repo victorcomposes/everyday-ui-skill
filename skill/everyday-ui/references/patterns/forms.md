@@ -63,7 +63,7 @@ Must for a one-page brief: default (empty or prefilled); error after submit with
 - Submitting: button "Creating…", inputs read-only, no double submit.
 - Success: redirect to the new object with a toast "Customer created", or a confirmation page for big outcomes.
 - Server error: banner at the top, data kept, "Try again".
-- Edit form: prefilled, Save disabled-looking until a change, "Unsaved changes" warning on leave.
+- Edit form: prefilled. Save stays enabled; with no changes it shows "No changes to save". "Unsaved changes" warning on leave.
 
 ## Copy rules
 

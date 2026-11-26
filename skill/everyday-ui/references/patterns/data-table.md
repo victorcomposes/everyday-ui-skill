@@ -19,10 +19,13 @@ Invoices (h1)  1,284 invoices ...................... [Export] [New invoice]
 1-25 of 1,284                                   Rows 25 v   < 1 2 3 ... 52 >
 ```
 - Toolbar on one line: search (240 to 320px), filter dropdowns or chips, "Clear filters". View tabs or a segmented control above it for saved views with counts.
-- Columns: checkbox 40px, identifier (link, weight 500), 3 to 6 data columns, actions column at a fixed width (48px for a menu, or the width of the widest text action). Widest column gets the most text, not equal widths. Entity names carry a 24px tinted initial tile when a mark helps scanning.
+- IDs are secondary: muted plain text with `tabular-nums`, no chip, no box, no mono, never truncated mid-string. The row's name (customer, person, title) is the link in weight 500.
+- Columns: checkbox 40px, name or identifier (link, weight 500), 3 to 6 data columns, a fixed-width trailing actions column (48px for an icon menu, or one short label of the same width on every row). Row actions never sit inside data cells. Widest column gets the most text, not equal widths. People and merchants may carry a 24px initials mark when it helps scanning; other entities get an icon or nothing.
 - Header row: 12 to 14px weight 500 `--text-muted`, `--bg-subtle` background or none, sticky on scroll.
 - Row: 40px compact or 48px regular, 1px bottom divider, hover `--bg-subtle`, selected `--accent-subtle`.
 - The table sits directly on the page, full content width. A 1px border with `--r-lg` around it is fine. No card with a shadow, no card around the toolbar.
+
+View tabs on phones: all tabs fit, or become a select or segmented control, or scroll with a visible edge fade and end padding.
 
 Phone (mandatory under 640px, `ui-check` tests it):
 - Default: each row becomes a list item: line 1 identifier and the key number right-aligned, line 2 customer and status badge, full row tappable (min 56px).

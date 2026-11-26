@@ -35,7 +35,9 @@ Questions (h2)
 
 In-app upgrade: highlight the current plan ("Current plan" badge, button "Current plan" disabled-looking), show usage against limits ("2,840 of 3,000 invoices this month").
 
-Phone: plans stack vertically, recommended first or current plan first. Billing toggle stays at top. The comparison table becomes one plan at a time with a plan switcher, or a horizontally scrolling table with a sticky feature column.
+Public pricing pages use the public site header from `app-shell.md`: one nav list, one primary call to action at the right.
+
+Phone: plans stack vertically, recommended first or current plan first. Billing toggle stays at top. The comparison table becomes one plan at a time: a segmented control or tabs with the plan names, and a two-column list of features and values for the chosen plan. Never a clipped table with a "scroll for more" hint. Badges such as "Save 17%" never wrap: `white-space: nowrap`, and the toggle row makes room for them.
 
 ## Density
 
