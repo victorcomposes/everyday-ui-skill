@@ -1,0 +1,1 @@
+Build the product detail screen of a mobile sneaker shop app (phone width).

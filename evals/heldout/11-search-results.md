@@ -1,0 +1,1 @@
+Build the search results page for a recipe site. Users searched for 'chickpea curry'.
