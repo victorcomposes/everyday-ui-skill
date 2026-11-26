@@ -1,0 +1,1 @@
+Build the first screen a new user sees after signing up to Fieldnote, a team research-notes app, when their workspace is empty.

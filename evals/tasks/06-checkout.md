@@ -1,0 +1,1 @@
+Build the checkout page for an online coffee-bean shop: shipping address, delivery option, payment and order summary.

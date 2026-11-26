@@ -1,0 +1,1 @@
+Build the account settings page for a project-management SaaS called Tallyo. Users edit their profile, notification preferences and see their plan and billing.

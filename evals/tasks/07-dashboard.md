@@ -1,0 +1,1 @@
+Build the home dashboard for the owner of a small online plant shop. They want to know how the business is doing today.

@@ -1,0 +1,1 @@
+Build the home screen of a mobile banking app (phone width). Show balance, recent transactions and quick actions.

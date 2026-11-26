@@ -1,0 +1,1 @@
+Build the invoices list screen for a small-business accounting app. Users need to find, filter and act on invoices.

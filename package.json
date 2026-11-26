@@ -1,0 +1,16 @@
+{
+  "name": "everyday-ui-skill",
+  "private": true,
+  "type": "module",
+  "description": "Eval harness that tests whether a Claude Code design skill improves AI-built frontends.",
+  "scripts": {
+    "shoot": "node scripts/shoot.mjs",
+    "lint": "node scripts/lint.mjs",
+    "blind": "node scripts/blind.mjs",
+    "report": "node scripts/report.mjs"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.1",
+    "playwright": "^1.65.1"
+  }
+}
