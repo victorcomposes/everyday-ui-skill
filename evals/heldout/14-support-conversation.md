@@ -1,0 +1,1 @@
+Build the support conversation view for Harborline, a help desk for online shops. An agent reads a customer's thread about a late order and writes a reply.

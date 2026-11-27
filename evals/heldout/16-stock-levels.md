@@ -1,0 +1,1 @@
+Build the stock levels page for Larderly, an inventory tool for small restaurants. A kitchen manager checks which ingredients are running low and reorders them.

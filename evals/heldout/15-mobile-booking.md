@@ -1,0 +1,1 @@
+Build the appointment booking screen of Fernlea, a dental clinic's mobile app (phone width). A patient picks a dentist, a date and a time slot for a check-up.

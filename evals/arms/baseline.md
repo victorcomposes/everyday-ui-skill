@@ -1,0 +1,1 @@
+Read evals/RULES.md in C:\Projects\everyday-ui-skill and follow it. Build the page for this task: {TASK_PROMPT}. Write it to {OUT_DIR}/index.html. Do not read any other file under runs/, evals/ or docs/. Do not read skill/.

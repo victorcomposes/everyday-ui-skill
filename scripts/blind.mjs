@@ -3,6 +3,8 @@
 // Per task, shuffles the conditions to labels by seed and copies each one's fold and full screenshots
 // (desktop, mobile, dark) to <runDir>/blind/<task>/<label>/. Writes the answer to <runDir>/blind-key.json.
 // The judge must never read that file. Re-running wipes <runDir>/blind, including any scores-*.json in it.
+// A task folder may be <task>-s<n>: every such folder is its own group, with its own shuffle and labels.
+// Only the five BLIND_FILES are copied: peek-*.png and other stray files in a page folder are ignored.
 import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { listPages, BLIND_FILES } from './lib.mjs';

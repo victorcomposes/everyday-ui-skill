@@ -1,0 +1,1 @@
+Build the expense report form for Outlay, a company spend tool. An employee itemises a three-day client trip, attaches receipts and submits it for approval.
