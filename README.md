@@ -49,7 +49,7 @@ Left is `baseline`, right is `skill`. Same prompt, same generator (Claude Sonnet
 <td><img src="runs/final/skill/12-mobile-product/mobile-fold.png" alt="skill: sneaker product screen" width="260"></td>
 </tr></table>
 
-All four arms, both widths and the losses are on the proof page: `proof/index.html`. Open it from a clone, because it links to `runs/`.
+All four arms, both widths and the losses are on the proof page: `proof/index.html`. Open it from a clone, because it links to `runs/`. `proof/proof-standalone.html` is the same page with the images inlined, for viewers that cannot load local files. `node scripts/inline-proof.mjs` regenerates it.
 
 ## Install the skill
 
