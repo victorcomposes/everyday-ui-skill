@@ -37,6 +37,8 @@ Postcode                     [ 8ch ]
 - Related fields in a `fieldset` with a `legend` styled as an h2.
 - Buttons at the bottom left, aligned with the fields: primary, then Cancel as a link or secondary.
 
+Forms with a running total (expense report, order, quote): a 320 to 360px summary rail on the right, sticky, with the total as the key number, the breakdown, the checks still open ("1 receipt missing") and the submit button. The end of the form repeats the submit. On the phone the total and submit sit in a sticky bottom bar. (proof2: 7 of 12 judge notes on the expense report faulted a submit that sat only at the bottom.)
+
 Long forms (more than about 12 fields): split into steps of one topic each, with "Step 2 of 4", Back and Continue, and a "Check your answers" page before submit.
 
 Phone: same single column, 16px inputs, 44px controls. Primary button full width; in long forms, a sticky bottom bar.
@@ -51,7 +53,7 @@ Label, hint, text input, textarea, select, radio group, checkbox, date input (th
 
 ## Primary action placement
 
-One primary button at the end of the form, labelled with the outcome: "Create customer", "Send request", "Save changes". Cancel beside it as secondary. In a stepped form, "Continue" on each step and the outcome label on the last.
+One primary button at the end of the form, and in the summary rail when there is one, labelled with the outcome: "Create customer", "Send request", "Save changes". Cancel beside it as secondary. In a stepped form, "Continue" on each step and the outcome label on the last.
 
 ## States to build
 

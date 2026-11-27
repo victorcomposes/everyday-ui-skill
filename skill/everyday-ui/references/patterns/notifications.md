@@ -34,7 +34,8 @@ View all notifications
 ```
 - Bell: a 20px icon in a 36 to 44px button. The unread count sits on the top-right corner, offset outward, 16 to 18px high, `--danger` or `--accent` fill, with a 2px ring in the surface colour. It never covers the centre of the glyph. Over 9 shows "9+".
 - Row: 32px avatar (people) or icon (system events), actor in weight 600, action in plain words, object as text, time right. Unread: accent dot and a `--accent-subtle` tint or bolder text.
-- Inline action only when it is the obvious next step.
+- Inline action only when it is the obvious next step. The one urgent item (a failed payout, an offer about to expire) leads: a type icon in its status colour, its action as the only filled button in the list, and an expiry or amount in the row. Routine rows get a text action or none. (proof2: "every row action is the same outline button, so Withdraw or Update payout details gets no primary weight".)
+- Titles are not underlined links. The row is the link, with a hover tint. Each row has a 32px type icon or avatar, so the list scans.
 - A full page version of the same list for history, with filters.
 
 Toast: bottom left (or bottom centre on phones), 360px max, `--surface`, `--shadow-pop`, icon, one line of text, one action (Undo or View), close button. Stack at most 3.
@@ -53,7 +54,7 @@ Bell with unread count, popover list, tabs or filter, notification row, group he
 
 ## Primary action placement
 
-In the centre: the inline action on each actionable row. In a toast: one text action. In a banner: one button or link. No filled primary buttons inside notification rows.
+In the centre: the inline action on each actionable row. In a toast: one text action. In a banner: one button or link. One filled button in the whole list at most, on the urgent row.
 
 ## States to build
 

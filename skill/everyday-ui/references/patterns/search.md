@@ -37,7 +37,9 @@ Command palette (Ctrl or Cmd K):
 ```
 - 560 to 640px wide, near the top of the viewport, keyboard-first, results grouped, shortcut hints right-aligned.
 
-Phone: search is a full-screen view; filters open in a bottom sheet with "Show 23 results" as its button; applied filters as a horizontal chip row.
+Consumer results (recipes, products, places, listings): every result has its own drawn picture (`../art.md`), never the same icon on every row. The best match leads as a featured card: a large picture, the title in the display face, the key facts, one action. Then a grid or list of 6 to 9 results with pictures of 160px or more. Matched words in bold or a soft tinted `mark`, never a wavy or red underline, never splitting a word. (proof2: all four judges called the skill's repeated pot icons "placeholders", and a red wavy underline "reads as a spelling error".)
+
+Phone: search is a full-screen view; the first result starts in the first screen, so the query, filters and suggestions fit in about 300px and the featured picture is at most 200px tall; filters open in a bottom sheet with "Show 23 results" as its button; applied filters as a horizontal chip row.
 
 ## Density
 

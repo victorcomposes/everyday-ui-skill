@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orders - Pantrybox</title>
+<style>
+:root {
+  color-scheme: light dark;
+  /* Pantry kit */
+  --bg:#f7f3ec; --bg-subtle:#efe9df; --surface:#ffffff; --border:#e6dfd3; --border-strong:#8a8378; --text:#1d1b18; --text-muted:#5f5a52; --accent:#1f5c45; --accent-hover:#174a37; --accent-subtle:#e3eee7; --on-accent:#ffffff; --deep:#163d2f;
+  --success:#126c3e; --success-subtle:#e8f5ee; --warning:#8a5100; --warning-subtle:#fbf1df; --danger:#b3261f; --danger-subtle:#fcecea;
+  --placeholder:#6b6760; --focus:var(--accent);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:20px; --s-6:24px; --s-8:32px; --s-10:40px; --s-12:48px; --s-16:64px;
+  --r-sm:4px; --r-md:6px; --r-lg:8px; --r-xl:12px; --r-full:999px;
+  --control-h:40px; --control-h-touch:44px;
+  --w-content:1200px; --h-topbar:64px;
+  --shadow-card:0 1px 2px rgb(40 30 20 / .05);
+  --shadow-pop:0 6px 20px rgb(40 30 20 / .12), 0 1px 3px rgb(40 30 20 / .08);
+  --ease:cubic-bezier(.2,0,0,1); --t-fast:120ms; --t-base:160ms;
+  --map-land:#ece8df; --map-road:#ffffff; --map-park:#d5e3c8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#141412; --bg-subtle:#22221e; --surface:#1c1c19; --border:#302f2a; --border-strong:#78746a; --text:#ecebe6; --text-muted:#a9a59b; --accent:#7cc4a2; --accent-hover:#9dd5bb; --accent-subtle:#1b2e25; --on-accent:#0d1a14; --deep:#10261e;
+    --success:#4cc38a; --success-subtle:#13261d; --warning:#e6a23c; --warning-subtle:#2a2112; --danger:#ff7a72; --danger-subtle:#2d1715;
+    --placeholder:#8d8a83;
+    --shadow-card:none; --shadow-pop:0 6px 20px rgb(0 0 0 / .5);
+    --map-land:#2a2b27; --map-road:#3b3c37; --map-park:#2d3a2c;
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h:44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-bottom: 88px; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 15px/1.5 var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 600 40px/1.1 var(--font-display); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+h2 { font: 600 20px/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+h3 { margin: 0; font: 600 13px/1.4 var(--font); color: var(--text-muted); }
+.num { font-variant-numeric: tabular-nums; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: var(--shadow-card); }
+.badge { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0; padding: 2px 10px; border-radius: var(--r-full); font-size: 13px; font-weight: 600; background: var(--accent-subtle); color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: 8px; top: 8px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; z-index: 30;
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+.ico { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--control-h); padding: 0 18px; border-radius: var(--r-lg);
+  border: 1px solid transparent; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-quiet { background: transparent; border-color: var(--border-strong); color: var(--text); min-width: 112px; }
+.btn-quiet:hover { background: var(--bg-subtle); }
+.btn-quiet[aria-disabled="true"] { border-color: var(--border); color: var(--success); background: var(--success-subtle); cursor: default; }
+.btn .chev { transition: transform var(--t-base) var(--ease); }
+.btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+/* top bar */
+.topbar { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--border); }
+.wrap { max-width: calc(var(--w-content) + 64px); margin: 0 auto; padding: 0 32px; }
+.topbar .wrap { height: var(--h-topbar); display: flex; align-items: center; gap: 32px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font: 700 20px/1 var(--font-display); letter-spacing: -0.01em; }
+.logo-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; }
+.logo-mark svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.nav { display: flex; gap: 4px; }
+.nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: var(--r-lg); font-weight: 500; color: var(--text-muted); }
+.nav a:hover { background: var(--bg-subtle); color: var(--text); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--accent); font-weight: 600; }
+.top-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.icon-btn { position: relative; display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-full); background: transparent; cursor: pointer; }
+.icon-btn:hover { background: var(--bg-subtle); }
+.count { position: absolute; top: 2px; right: 0; min-width: 20px; height: 20px; padding: 0 5px; border-radius: var(--r-full); background: var(--accent); color: var(--on-accent); font-size: 12px; font-weight: 700; line-height: 20px; text-align: center; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-subtle); color: var(--text); display: grid; place-items: center; font-size: 13px; font-weight: 700; border: 1px solid var(--border); }
+
+/* page */
+main { padding: 28px 0 64px; }
+.title-row { margin-bottom: 20px; }
+.title-row p { margin: 6px 0 0; color: var(--text-muted); }
+
+/* featured delivery */
+.today { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); overflow: hidden; }
+.today-map { position: relative; min-height: 280px; background: var(--map-land); }
+.today-map svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.today-body { padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; }
+.today-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.order-no { color: var(--text-muted); font-size: 13px; }
+.eta { font: 600 38px/1.1 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+.eta-sub { margin: 6px 0 0; color: var(--text-muted); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.steps li { position: relative; display: flex; flex-direction: column; gap: 6px; }
+.steps li:not(:last-child)::after { content: ""; position: absolute; top: 9px; left: 28px; right: -2px; height: 2px; background: var(--border); }
+.steps li.link-done:not(:last-child)::after { background: var(--accent); }
+.dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); display: grid; place-items: center; color: var(--on-accent); }
+.done .dot { background: var(--accent); border-color: var(--accent); }
+.done .dot svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.now .dot { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-subtle); }
+.now .dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.step-name { font-size: 13px; font-weight: 600; }
+.step-time { font-size: 12px; color: var(--text-muted); margin-top: -4px; }
+.today-foot { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+.today-foot .facts { color: var(--text-muted); font-size: 13px; margin-right: auto; }
+.today-foot .facts strong { display: block; color: var(--text); font-size: 15px; }
+.detail { grid-column: 1 / -1; border-top: 1px solid var(--border); padding: 24px 32px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; background: var(--bg-subtle); }
+.detail h3 { margin-bottom: 6px; }
+.detail p { margin: 0; }
+.detail ul { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 20px; font-size: 14px; }
+.detail li { break-inside: avoid; padding: 2px 0; }
+.detail .btn { margin-top: 12px; }
+
+/* art */
+.art { display: block; }
+.a-t { fill: var(--a-tile); } .a-m { fill: var(--a-main); } .a-2 { fill: var(--a-2); }
+.a-3 { fill: var(--a-3); } .a-k { fill: var(--a-ink); } .a-sh { fill: #000; opacity: .1; }
+.a-ln { fill: none; stroke: var(--a-ink); stroke-width: 3; stroke-linecap: round; }
+.a-st { fill: none; stroke: var(--a-3); stroke-width: 6; stroke-linecap: round; }
+.p1 { --a-tile: #f4dfae; --a-main: #d9861c; --a-2: #fffaf0; --a-3: #f7e7bd; --a-ink: #3f7a46; }
+.p2 { --a-tile: #f3d3c6; --a-main: #c2412b; --a-2: #fff7f2; --a-3: #f4c9a0; --a-ink: #45773e; }
+.p3 { --a-tile: #dde7cf; --a-main: #6f9b3c; --a-2: #fbfaf2; --a-3: #e9d27a; --a-ink: #2f5130; }
+.p4 { --a-tile: #e8dccb; --a-main: #8a5a35; --a-2: #fdf8f0; --a-3: #d9b98b; --a-ink: #4b3424; }
+.p5 { --a-tile: #d6e2ea; --a-main: #2f5f8a; --a-2: #f8fbfd; --a-3: #e8eef3; --a-ink: #1f3448; }
+.p6 { --a-tile: #ead5df; --a-main: #9a3c62; --a-2: #fdf6f9; --a-3: #f0c3d3; --a-ink: #4a2233; }
+.p7 { --a-tile: #f6ddd3; --a-main: #e5775a; --a-2: #fff3ee; --a-3: #f2b8a2; --a-ink: #5a3a2d; }
+.p9 { --a-tile: #ece3d0; --a-main: #b9843f; --a-2: #fdf8ee; --a-3: #e6c98f; --a-ink: #5b3f1c; }
+.p8 { --a-tile: #f6ecc0; --a-main: #e6b82a; --a-2: #fffbea; --a-3: #f1d46a; --a-ink: #6a5320; }
+@media (prefers-color-scheme: dark) {
+  .p1 { --a-tile: #3a3020; } .p2 { --a-tile: #3b2722; } .p3 { --a-tile: #2b3424; }
+  .p4 { --a-tile: #342b22; } .p5 { --a-tile: #233039; } .p6 { --a-tile: #36252d; }
+  .p7 { --a-tile: #3b2822; } .p8 { --a-tile: #38321c; } .p9 { --a-tile: #342d20; }
+}
+.stack { display: inline-flex; align-items: center; flex-shrink: 0; }
+.tile { width: 72px; height: 72px; border-radius: var(--r-lg); box-shadow: 0 0 0 2px var(--surface); }
+.tile + .tile { margin-left: 6px; }
+.stack .more { margin-left: 10px; min-width: 36px; height: 28px; padding: 0 8px; display: inline-grid; place-items: center; border-radius: var(--r-full); background: var(--bg-subtle); color: var(--text-muted); font-size: 13px; font-weight: 600; }
+.today-foot .tile { width: 64px; height: 64px; border-radius: var(--r-lg); }
+
+/* history */
+.history { margin-top: 32px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 4px; }
+.section-head span { color: var(--text-muted); font-size: 13px; }
+.month { margin-top: 12px; }
+.month h3 { margin-bottom: 8px; }
+.orders { list-style: none; margin: 0; padding: 0; overflow: hidden; }
+.order { position: relative; display: grid; grid-template-columns: 290px minmax(0, 1fr) 96px 132px; align-items: center; column-gap: 20px; padding: 12px 20px; }
+.order + .order { border-top: 1px solid var(--border); }
+.order:hover { background: var(--bg-subtle); }
+.o-title { grid-column: 2; align-self: end; font-weight: 600; font-size: 16px; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; margin-bottom: -6px; justify-self: start; }
+.o-title::after { content: ""; position: absolute; inset: 0; }
+.o-meta { grid-column: 2; align-self: start; color: var(--text-muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0; }
+.o-art { grid-column: 1; grid-row: 1 / span 2; }
+.o-total { grid-column: 3; grid-row: 1 / span 2; text-align: right; font-weight: 600; font-size: 16px; }
+.o-act { grid-column: 4; grid-row: 1 / span 2; justify-self: end; position: relative; z-index: 1; }
+.m-total { display: none; }
+.o-note { grid-column: 2 / -1; font-size: 13px; color: var(--warning); margin-top: 2px; }
+
+/* toast */
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 40; display: flex; align-items: center; gap: 8px; max-width: calc(100vw - 32px);
+  background: var(--text); color: var(--bg); border-radius: var(--r-lg); padding: 4px 4px 4px 16px; box-shadow: var(--shadow-pop); }
+.toast button { min-height: 44px; padding: 0 14px; border: 0; background: transparent; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+/* mobile tab bar */
+.tabbar { display: none; }
+
+@media (max-width: 900px) {
+  .today { grid-template-columns: 1fr; }
+  .today-map { min-height: 0; height: 220px; }
+  .detail { grid-template-columns: 1fr; gap: 20px; }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px; }
+  .topbar .wrap { height: 56px; }
+  .nav, .avatar-link { display: none; }
+  main { padding: 20px 0 24px; }
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
+  h1 { font-size: 28px; }
+  .title-row { margin-bottom: 16px; }
+  .title-row p { margin-top: 2px; font-size: 14px; }
+  .today-body { padding: 16px; gap: 16px; }
+  .eta { font-size: 26px; }
+  .eta-sub { font-size: 14px; margin-top: 4px; }
+  .today-foot .facts { display: none; }
+  .today-foot .stack { display: none; }
+  .today-foot .btn { width: 100%; }
+  .detail { padding: 16px; }
+  .detail ul { columns: 1; }
+  .history { margin-top: 24px; }
+  .month { margin-top: 8px; }
+  .order { grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 12px; padding: 12px 14px; }
+  .o-art { grid-column: 1; grid-row: 1 / span 2; }
+  .o-note { grid-column: 1 / -1; margin-top: 6px; }
+  .o-title { grid-column: 2; grid-row: 1; margin-bottom: -6px; align-self: end; min-height: 44px; }
+  .o-meta { grid-column: 2; grid-row: 2; align-self: start; font-size: 13px; white-space: normal; overflow: visible; }
+  .o-total { display: none; }
+  .m-total { display: inline; }
+  .o-act { grid-column: 3; grid-row: 1 / span 2; }
+  .o-meta .names { display: none; }
+  .tile { width: 48px; height: 48px; border-radius: var(--r-md); }
+  .tile + .tile { margin-left: -12px; }
+  .btn-quiet .ico { display: none; }
+  .today-map { height: 140px; }
+  #sub .slot { display: none; }
+  .btn-quiet { min-width: 0; padding: 0 14px; }
+  .stack .more { display: none; }
+  .toast { bottom: calc(76px + env(safe-area-inset-bottom)); }
+  .tabbar { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; font-size: 12px; color: var(--text-muted); }
+  .tabbar a[aria-current="page"] { color: var(--accent); font-weight: 700; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to orders</a>
+
+<!-- art symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="art-carton" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="84" cy="106" rx="34" ry="5"/>
+    <path class="a-2" d="M56 40 L80 16 L104 40 V104 H56 Z"/><path class="a-m" d="M56 56 H104 V86 H56 Z"/>
+    <path class="a-3" d="M56 40 L80 16 L104 40 Z"/></symbol>
+  <symbol id="art-fruit" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="104" rx="38" ry="6"/>
+    <circle class="a-m" cx="80" cy="66" r="38"/><ellipse class="a-2" cx="66" cy="50" rx="9" ry="5" opacity=".5"/>
+    <path class="a-ln" d="M80 30 q2 -8 7 -14"/><ellipse class="a-k" cx="94" cy="24" rx="11" ry="5" transform="rotate(-25 94 24)"/></symbol>
+  <symbol id="art-loaf" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="94" rx="40" ry="5"/>
+    <rect class="a-m" x="40" y="50" width="80" height="42" rx="21"/>
+    <path class="a-ln" d="M58 58 l8 12 M76 56 l8 12 M94 56 l8 12" style="stroke:var(--a-3)"/></symbol>
+  <symbol id="art-bottle" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="108" rx="26" ry="4"/>
+    <path class="a-m" d="M73 16 h14 v18 q15 7 15 24 v44 q0 6 -6 6 h-32 q-6 0 -6 -6 v-44 q0 -17 15 -24 z"/>
+    <rect class="a-2" x="64" y="62" width="32" height="26" rx="2"/><rect class="a-k" x="72" y="9" width="16" height="9" rx="2"/></symbol>
+  <symbol id="art-eggs" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="100" rx="52" ry="5"/>
+    <rect class="a-m" x="30" y="64" width="100" height="34" rx="9"/>
+    <ellipse class="a-2" cx="54" cy="58" rx="14" ry="18"/><ellipse class="a-2" cx="80" cy="52" rx="14" ry="18"/><ellipse class="a-2" cx="106" cy="58" rx="14" ry="18"/>
+    <ellipse class="a-3" cx="50" cy="52" rx="4" ry="6" opacity=".7"/><ellipse class="a-3" cx="76" cy="46" rx="4" ry="6" opacity=".7"/><ellipse class="a-3" cx="102" cy="52" rx="4" ry="6" opacity=".7"/>
+    <rect class="a-m" x="30" y="76" width="100" height="22" rx="7"/></symbol>
+  <symbol id="art-carrot" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="84" cy="100" rx="56" ry="5"/>
+    <path class="a-m" d="M44 52 Q44 40 56 44 L132 70 Q142 74 132 80 L56 102 Q44 104 44 92 Z"/>
+    <path class="a-ln" d="M70 58 l-4 14 M92 66 l-4 14 M112 72 l-3 9" style="stroke:var(--a-3)"/>
+    <ellipse class="a-k" cx="34" cy="50" rx="16" ry="6" transform="rotate(-30 34 50)"/><ellipse class="a-k" cx="30" cy="66" rx="16" ry="6"/><ellipse class="a-k" cx="34" cy="82" rx="16" ry="6" transform="rotate(30 34 82)"/></symbol>
+  <symbol id="art-fish" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="84" cy="100" rx="56" ry="5"/>
+    <path class="a-m" d="M24 68 Q28 42 70 40 Q120 38 138 60 Q144 68 134 78 Q100 98 54 94 Q26 92 24 68 Z"/>
+    <path class="a-ln" d="M48 54 Q56 68 48 84 M70 48 Q78 66 70 88 M92 48 Q100 66 92 88 M114 52 Q120 66 114 80" style="stroke:var(--a-2); stroke-width:4; opacity:.75"/>
+    <circle class="a-3" cx="128" cy="34" r="12"/><path class="a-ln" d="M120 34 h16 M128 26 v16" style="stroke:var(--a-2); stroke-width:2"/></symbol>
+  <symbol id="art-cheese" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="98" rx="56" ry="5"/>
+    <path class="a-m" d="M26 92 H134 V62 L26 46 Z"/><path class="a-3" d="M26 46 L134 62 L112 40 L52 34 Z"/>
+    <circle class="a-3" cx="52" cy="74" r="6"/><circle class="a-3" cx="86" cy="80" r="5"/><circle class="a-3" cx="110" cy="72" r="4"/></symbol>
+  <symbol id="art-tub" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="106" rx="38" ry="5"/>
+    <path class="a-2" d="M46 52 H114 L108 102 Q107 106 102 106 H58 Q53 106 52 102 Z"/>
+    <rect class="a-m" x="42" y="40" width="76" height="15" rx="5"/>
+    <rect class="a-m" x="56" y="66" width="48" height="24" rx="4"/><circle class="a-3" cx="80" cy="78" r="6"/></symbol>
+  <symbol id="art-jar" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="106" rx="36" ry="5"/>
+    <rect class="a-2" x="52" y="36" width="56" height="68" rx="9"/><rect class="a-k" x="48" y="22" width="64" height="18" rx="5"/>
+    <rect class="a-m" x="52" y="54" width="56" height="30"/><circle class="a-3" cx="80" cy="69" r="7"/></symbol>
+  <symbol id="art-bag" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="108" rx="40" ry="5"/>
+    <path class="a-2" d="M44 34 H116 L122 100 Q122 106 116 106 H44 Q38 106 38 100 Z"/>
+    <rect class="a-m" x="42" y="26" width="76" height="13" rx="3"/>
+    <rect class="a-m" x="38" y="62" width="84" height="28"/><circle class="a-3" cx="80" cy="76" r="8"/></symbol>
+  <symbol id="art-greens" viewBox="0 0 160 120"><rect class="a-t" width="160" height="120"/>
+    <ellipse class="a-sh" cx="82" cy="104" rx="34" ry="5"/>
+    <path class="a-3" d="M68 100 L72 66 H92 L96 100 Z"/>
+    <circle class="a-m" cx="56" cy="58" r="20"/><circle class="a-m" cx="106" cy="58" r="20"/><circle class="a-m" cx="80" cy="42" r="24"/><circle class="a-m" cx="80" cy="64" r="18"/>
+    <circle class="a-k" cx="68" cy="38" r="3" opacity=".3"/><circle class="a-k" cx="92" cy="48" r="3" opacity=".3"/><circle class="a-k" cx="52" cy="62" r="3" opacity=".3"/><circle class="a-k" cx="108" cy="64" r="3" opacity=".3"/></symbol>
+  <symbol id="i-basket" viewBox="0 0 24 24"><path d="M3 9h18l-2 11H5z"/><path d="M8 9l3-5M16 9l-3-5"/></symbol>
+  <symbol id="i-shop" viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9v11h16V9"/><path d="M4 9c0 2 3 2 4 0 1 2 3 2 4 0 1 2 3 2 4 0 1 2 4 2 4 0"/></symbol>
+  <symbol id="i-orders" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+  <symbol id="i-lists" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 11V9a3 3 0 0 1 3-3h12l-3-3M20 13v2a3 3 0 0 1-3 3H5l3 3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+</defs></svg>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Pantrybox home">
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M4 12h16M12 8v4M8 8c0-3 4-3 4 0 0-3 4-3 4 0"/></svg></span>
+      Pantrybox
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Shop</a>
+      <a href="#" aria-current="page">Orders</a>
+      <a href="#">Lists</a>
+      <a href="#">Account</a>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="basket" type="button" aria-label="Basket, empty">
+        <svg class="ico" aria-hidden="true"><use href="#i-basket"/></svg>
+        <span class="count num" id="basket-count" hidden>0</span>
+      </button>
+      <a class="icon-btn avatar-link" href="#" aria-label="Account"><span class="avatar" aria-hidden="true"><svg class="ico" style="width:18px;height:18px"><use href="#i-user"/></svg></span></a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <div class="title-row">
+      <h1>Orders</h1>
+      <p id="sub"></p>
+    </div>
+
+    <section class="card today" id="today" aria-labelledby="eta"></section>
+
+    <section class="history" aria-labelledby="past-h">
+      <div class="section-head"><h2 id="past-h">Past orders</h2><span id="past-count"></span></div>
+      <div id="months"></div>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>
+  <span id="toast-text"></span>
+  <button type="button" id="undo">Undo</button>
+</div>
+
+<nav class="tabbar" aria-label="Mobile">
+  <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-shop"/></svg>Shop</a>
+  <a href="#" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#i-orders"/></svg>Orders</a>
+  <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-lists"/></svg>Lists</a>
+  <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg>Account</a>
+</nav>
+
+<script>
+/* ---- data ---- */
+const TODAY = '2026-11-27', NOW = '13:52';
+const FREE_DELIVERY_FROM = 40, DELIVERY_FEE = 3.5;
+const P = {
+  salm:  { name: 'Salmon fillets',     art: 'fish',   pal: 'p7', price: 6.50 },
+  sour:  { name: 'Sourdough loaf',     art: 'loaf',   pal: 'p4', price: 3.20 },
+  tom:   { name: 'Vine tomatoes',      art: 'fruit',  pal: 'p2', price: 2.40 },
+  egg:   { name: 'Free-range eggs',    art: 'eggs',   pal: 'p1', price: 3.10 },
+  carr:  { name: 'Carrots',      art: 'carrot', pal: 'p1', price: 0.95 },
+  broc:  { name: 'Broccoli',           art: 'greens', pal: 'p3', price: 1.20 },
+  chee:  { name: 'Mature cheddar',     art: 'cheese', pal: 'p1', price: 3.80 },
+  yog:   { name: 'Greek yoghurt',      art: 'tub',    pal: 'p6', price: 2.30 },
+  milk:  { name: 'Oat milk',           art: 'carton', pal: 'p5', price: 1.85 },
+  apple: { name: 'Gala apples',        art: 'fruit',  pal: 'p3', price: 2.10 },
+  rice:  { name: 'Basmati rice', art: 'bag',    pal: 'p5', price: 3.90 },
+  oil:   { name: 'Olive oil',          art: 'bottle', pal: 'p3', price: 5.50 },
+  juice: { name: 'Orange juice',       art: 'bottle', pal: 'p1', price: 2.40 },
+  coffee:{ name: 'Ground coffee',      art: 'jar',    pal: 'p4', price: 4.80 },
+  pasta: { name: 'Fusilli',            art: 'bag',    pal: 'p1', price: 1.10 },
+  seed:  { name: 'Seeded loaf',        art: 'loaf',   pal: 'p9', price: 3.60 },
+  orange:{ name: 'Oranges',            art: 'fruit',  pal: 'p1', price: 2.00 },
+  passata:{name: 'Passata',            art: 'bottle', pal: 'p2', price: 1.45 },
+  hummus:{ name: 'Hummus',             art: 'tub',    pal: 'p4', price: 1.90 },
+  water: { name: 'Sparkling water',    art: 'bottle', pal: 'p5', price: 0.95 },
+  flour: { name: 'Plain flour',        art: 'bag',    pal: 'p2', price: 1.35 },
+  banana:{ name: 'Bananas',            art: 'fruit',  pal: 'p8', price: 1.30 },
+};
+const TODAY_ORDER = {
+  id: 'PB-48213', slot: ['14:00', '15:00'], placed: 'Thu 26 Nov, 21:14',
+  driver: 'Tomasz', stopsBefore: 2, km: 1.8,
+  lines: [['salm',2],['sour',1],['tom',2],['egg',1],['carr',1],['broc',2],['chee',1],['yog',3],['milk',2],['apple',1],['rice',1],['oil',1],['juice',1]],
+  steps: [['Confirmed','21:14'],['Packed','12:48'],['On the way','13:31'],['Delivered','by 15:00']], at: 2,
+};
+const ORDERS = [
+  { id: 'PB-47902', date: '2026-11-22', lines: [['coffee',1],['pasta',2],['apple',1],['milk',2],['egg',1],['chee',1]] },
+  { id: 'PB-47611', date: '2026-11-15', lines: [['rice',1],['oil',1],['broc',2],['carr',1],['salm',1],['yog',2],['juice',1]], missing: ['carr'] },
+  { id: 'PB-47340', date: '2026-11-08', lines: [['seed',1],['orange',3],['egg',1],['milk',1],['chee',1],['tom',1]] },
+  { id: 'PB-46988', date: '2026-10-31', lines: [['milk',2],['chee',1],['passata',2],['pasta',2],['yog',1],['carr',2]] },
+  { id: 'PB-46702', date: '2026-10-17', lines: [['hummus',1],['water',6],['flour',1],['seed',1],['apple',2]] },
+  { id: 'PB-46415', date: '2026-10-03', lines: [['yog',2],['banana',2],['carr',1],['sour',1],['egg',1],['broc',1]] },
+];
+
+/* ---- helpers ---- */
+const gbp = n => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(n);
+const qtySum = ls => ls.reduce((n, [, q]) => n + q, 0);
+const mins = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+const hhmm = n => String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
+const utc = d => new Date(d + 'T00:00:00Z');
+const fmt = (d, o) => new Intl.DateTimeFormat('en-GB', { timeZone: 'UTC', ...o }).format(utc(d));
+const dateLabel = d => {
+  const diff = Math.round((utc(TODAY) - utc(d)) / 864e5);
+  return diff <= 7 ? fmt(d, { weekday: 'short', day: 'numeric', month: 'short' }) : fmt(d, { day: 'numeric', month: 'short' });
+};
+function summarise(o) {
+  const kept = o.lines.filter(([id]) => !(o.missing || []).includes(id));
+  const sub = kept.reduce((s, [id, q]) => s + P[id].price * q, 0);
+  const fee = sub >= FREE_DELIVERY_FROM ? 0 : DELIVERY_FEE;
+  return { kept, sub, fee, total: sub + fee, items: qtySum(kept) };
+}
+const art = (id, size) => {
+  const p = P[id];
+  return `<svg class="art tile ${p.pal}" viewBox="0 0 160 120" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${p.name}"><use href="#art-${p.art}"/></svg>`;
+};
+const icon = n => `<svg class="ico" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+
+/* ---- today's delivery ---- */
+(function renderToday() {
+  const o = TODAY_ORDER, s = summarise(o);
+  const eta = mins(NOW) + o.stopsBefore * 6 + 8;
+  const win = `${hhmm(eta - 5)} to ${hhmm(eta + 5)}`;
+  const names = o.lines.map(([id, q]) => `<li><span class="num">${q} &times;</span> ${P[id].name}</li>`).join('');
+  const thumbs = o.lines.slice(0, 3).map(([id]) => art(id)).join('');
+  const steps = o.steps.map(([n, t], i) => {
+    const cls = i < o.at ? 'done' : i === o.at ? 'now' : '';
+    const link = i < o.at ? ' link-done' : '';
+    const dot = i < o.at ? `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"/></svg>` : '';
+    return `<li class="${cls}${link}"${i === o.at ? ' aria-current="step"' : ''}><span class="dot">${dot}</span><span class="step-name">${n}</span><span class="step-time num">${t}</span></li>`;
+  }).join('');
+  document.getElementById('today').innerHTML = `
+    <div class="today-map">
+      <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Route from the Hackney store to your address. ${o.driver} is ${o.km} km away.">
+        <rect width="320" height="180" fill="var(--map-land)"/>
+        <rect x="196" y="14" width="96" height="58" rx="22" fill="var(--map-park)"/>
+        <g fill="none" stroke="var(--map-road)" stroke-width="10" stroke-linecap="round">
+          <path d="M-10 120 L330 96"/><path d="M90 -10 L120 190"/><path d="M220 -10 L200 190"/><path d="M-10 40 L330 30"/></g>
+        <path d="M60 140 L112 124" fill="none" stroke="var(--accent)" stroke-opacity=".4" stroke-width="4" stroke-linecap="round"/>
+        <path d="M112 124 L118 70 L208 62" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="1 9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="60" cy="140" r="7" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/>
+        <path d="M208 62 c-8 -9 -13 -15 -13 -22 a13 13 0 0 1 26 0 c0 7 -5 13 -13 22 z" fill="var(--accent)"/>
+        <circle cx="208" cy="40" r="5" fill="var(--surface)"/>
+        <circle cx="112" cy="124" r="13" fill="var(--accent)" stroke="var(--surface)" stroke-width="3"/>
+        <rect x="105" y="119" width="11" height="8" rx="1.5" fill="var(--on-accent)"/><path d="M116 121h4l2.5 3v3h-6.5z" fill="var(--on-accent)"/>
+      </svg>
+    </div>
+    <div class="today-body">
+      <div class="today-top">
+        <span class="badge">Today, ${o.slot[0]} to ${o.slot[1]} slot</span>
+        <span class="order-no">Order ${o.id}</span>
+      </div>
+      <div>
+        <h2 class="eta num" id="eta">Arriving ${win}</h2>
+        <p class="eta-sub">${o.driver} is ${plural(o.stopsBefore, 'stop')} away, ${o.km} km from you.</p>
+      </div>
+      <ol class="steps" aria-label="Delivery progress">${steps}</ol>
+      <div class="today-foot">
+        <span class="stack">${thumbs}<span class="more num" aria-label="and ${o.lines.length - 3} more products">+${o.lines.length - 3}</span></span>
+        <span class="facts"><strong class="num">${plural(s.items, 'item')}</strong><span class="num">${gbp(s.total)}${s.fee === 0 ? ', free delivery' : ''}</span></span>
+        <button class="btn btn-primary" id="track" type="button" aria-expanded="false" aria-controls="track-detail"><span id="track-label">Track delivery</span><svg class="ico chev" aria-hidden="true"><use href="#i-chev"/></svg></button>
+      </div>
+    </div>
+    <div class="detail" id="track-detail" hidden>
+      <div><h3>Your driver</h3><p><strong>${o.driver}</strong> in a white Pantrybox van</p>
+        <a class="btn btn-quiet" href="tel:+442079460312">${icon('phone')}Call ${o.driver}</a></div>
+      <div><h3>Delivery instructions</h3><p>Leave with a neighbour at number 16 if no one answers.</p><p class="order-no" style="margin-top:8px">Placed ${o.placed}</p></div>
+      <div><h3>In this order</h3><ul>${names}</ul></div>
+    </div>`;
+  const phone = matchMedia('(max-width: 640px)'), mapSvg = document.querySelector('.today-map svg');
+  const fitMap = () => mapSvg.setAttribute('viewBox', phone.matches ? '0 24 320 125' : '0 0 320 180');
+  fitMap(); phone.addEventListener('change', fitMap);
+  document.getElementById('sub').textContent = 'Delivering to 14 Ridley Road, London E8';
+  const btn = document.getElementById('track');
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', open);
+    document.getElementById('track-detail').hidden = !open;
+    document.getElementById('track-label').textContent = open ? 'Hide tracking' : 'Track delivery';
+  });
+})();
+
+/* ---- past orders ---- */
+const basket = { n: 0, added: {} };
+function renderBasket() {
+  const c = document.getElementById('basket-count'), b = document.getElementById('basket');
+  c.hidden = basket.n === 0; c.textContent = basket.n;
+  b.setAttribute('aria-label', basket.n ? `Basket, ${plural(basket.n, 'item')}` : 'Basket, empty');
+}
+(function renderHistory() {
+  const groups = {};
+  ORDERS.forEach(o => (groups[fmt(o.date, { month: 'long' })] ||= []).push(o));
+  document.getElementById('past-count').textContent = `${ORDERS.length} orders since ${fmt(ORDERS[ORDERS.length - 1].date, { day: 'numeric', month: 'long' })}`;
+  document.getElementById('months').innerHTML = Object.entries(groups).map(([m, os]) => `
+    <section class="month" aria-labelledby="m-${m}">
+      <h3 id="m-${m}">${m}</h3>
+      <ul class="card orders">${os.map(o => {
+        const s = summarise(o), label = dateLabel(o.date);
+        const refund = (o.missing || []).reduce((r, id) => r + P[id].price * o.lines.find(l => l[0] === id)[1], 0);
+        const heroes = s.kept.slice(0, 3), rest = s.kept.length - heroes.length;
+        const nm = heroes.map(([id]) => P[id].name);
+        return `<li class="order">
+          <span class="stack o-art">${heroes.map(([id]) => art(id)).join('')}<span class="more num" aria-label="and ${rest} more products">+${rest}</span></span>
+          <a class="o-title" href="#${o.id}"><time datetime="${o.date}">${label}</time></a>
+          <span class="o-meta"><span class="num">${plural(s.items, 'item')}<span class="m-total"> &middot; ${gbp(s.total)}</span></span><span class="names"> &middot; ${nm.join(', ')} and ${rest} more</span></span>
+          <span class="o-total num">${gbp(s.total)}</span>
+          <button class="btn btn-quiet o-act" type="button" data-id="${o.id}" aria-label="Reorder the order from ${label}">${icon('repeat')}<span>Reorder</span></button>
+          ${refund ? `<span class="o-note num">${P[o.missing[0]].name} not delivered, ${gbp(refund)} refunded</span>` : ''}
+        </li>`; }).join('')}</ul>
+    </section>`).join('');
+})();
+
+/* ---- reorder in one tap ---- */
+let last = null, timer;
+const toast = document.getElementById('toast');
+function setBtn(btn, added) {
+  btn.setAttribute('aria-disabled', added);
+  btn.querySelector('span').textContent = added ? 'Added' : 'Reorder';
+  btn.querySelector('svg use').setAttribute('href', added ? '#i-check' : '#i-repeat');
+}
+document.getElementById('months').addEventListener('click', e => {
+  const btn = e.target.closest('.o-act');
+  if (!btn || btn.getAttribute('aria-disabled') === 'true') return;
+  const o = ORDERS.find(x => x.id === btn.dataset.id), s = summarise(o);
+  basket.n += s.items; basket.added[o.id] = s.items; last = { o, s, btn };
+  setBtn(btn, true); renderBasket();
+  document.getElementById('toast-text').textContent = `${plural(s.items, 'item')} from ${dateLabel(o.date)} added to your basket.`;
+  toast.hidden = false; clearTimeout(timer); timer = setTimeout(() => toast.hidden = true, 6000);
+});
+document.getElementById('undo').addEventListener('click', () => {
+  if (!last) return;
+  basket.n -= last.s.items; delete basket.added[last.o.id];
+  setBtn(last.btn, false); renderBasket(); toast.hidden = true; last.btn.focus(); last = null;
+});
+</script>
+</body>
+</html>

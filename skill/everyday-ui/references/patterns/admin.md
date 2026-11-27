@@ -25,7 +25,8 @@ Table (60%)                         | Detail panel (40%), opens on row click
                                     | Actions: Edit, Suspend (secondary), Delete (danger, in menu)
                                     | Activity: who changed what, when
 ```
-- Member cell: 32px avatar (initials), name weight 500, email muted on line 2, a "You" tag on the current user.
+- Member cell: 32px avatar (drawn person from `../art.md`, or initials in a dense table), name weight 500, email muted on line 2, a "You" tag on the current user.
+- Invite inline when inviting is the job: an invite card above the list (emails, role select, "Send invites"), and seat usage as a meter in the header ("31 of 40 seats"). Members and pending invites as two tabs with counts. (proof2: the winning team pages did this; judges faulted the skill page for "no seat usage anywhere" and "the invite action has no form on the page".)
 - Role is an inline select only where the viewer may change it; otherwise plain text.
 - Audit log: a table of time (absolute, with seconds on hover), actor, action, target, IP or source; filters for actor, action, date range; export.
 - Roles page: a table of roles with member counts, and a permission matrix (permissions as rows grouped by area, roles as columns, checkboxes). Built-in roles read-only.

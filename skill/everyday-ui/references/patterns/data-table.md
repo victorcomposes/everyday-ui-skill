@@ -20,9 +20,9 @@ Invoices (h1)  1,284 invoices ...................... [Export] [New invoice]
 ```
 - Toolbar on one line: search (240 to 320px), filter dropdowns or chips, "Clear filters". View tabs or a segmented control above it for saved views with counts.
 - IDs are secondary: muted plain text with `tabular-nums`, no chip, no box, no mono, never truncated mid-string. The row's name (customer, person, title) is the link in weight 500.
-- Columns: checkbox 40px, name or identifier (link, weight 500), 3 to 6 data columns, a fixed-width trailing actions column (48px for an icon menu, or one short label of the same width on every row). Row actions never sit inside data cells. Widest column gets the most text, not equal widths. People and merchants may carry a 24px initials mark when it helps scanning; other entities get an icon or nothing.
+- Columns: at most 6 in all. Checkbox 40px, then a two-line first cell (name as the link in weight 500, then muted meta: category, supplier, ID), 3 to 4 data columns, a fixed-width trailing actions column (48px for an icon menu, or one short label of the same width on every row). Row actions never sit inside data cells. Widest column gets the most text, not equal widths. People and merchants may carry a 24px initials mark when it helps scanning; other entities get an icon or nothing.
 - Header row: 12 to 14px weight 500 `--text-muted`, `--bg-subtle` background or none, sticky on scroll.
-- Row: 40px compact or 48px regular, 1px bottom divider, hover `--bg-subtle`, selected `--accent-subtle`.
+- Row: 56 to 64px with the two-line first cell (40px only for single-line logs), 1px bottom divider, hover `--bg-subtle`, selected `--accent-subtle`.
 - The table sits directly on the page, full content width. A 1px border with `--r-lg` around it is fine. No card with a shadow, no card around the toolbar.
 
 View tabs on phones: all tabs fit, or become a select or segmented control, or scroll with a visible edge fade and end padding.
@@ -41,9 +41,11 @@ Compact to regular. Body 14px. At 1440 x 900 show at least 12 to 15 rows above t
 
 Page header with count, view tabs, search input, filter menus or chips, active-filter chips with remove, table with sortable headers, row checkbox, status badge, row action menu, bulk action bar, pagination with page size, column visibility menu (optional), empty and no-results states, skeleton rows.
 
+A summary strip above the table, when the job is to act on some rows (reorder, chase, approve): 3 or 4 numbers that fill the width, each with a sentence ("7 below par, 2 out of stock"). The rows that need action sort first and carry a status badge.
+
 ## Primary action placement
 
-"New <object>" at the right of the page header. Row actions in a kebab menu at the row end, or one text action. Bulk actions appear in a bar that replaces the toolbar when rows are selected: "3 selected", actions, "Clear selection".
+"New <object>" at the right of the page header. When the job is to act on several rows (reorder stock, send reminders), the page primary is the bulk action ("Reorder 7 items"), preselected from the rows that need it, not a filled button on every row. Row actions in a kebab menu at the row end, or one text action. Bulk actions appear in a bar that replaces the toolbar when rows are selected: "3 selected", actions, "Clear selection".
 
 ## States to build
 

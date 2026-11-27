@@ -28,7 +28,7 @@ Logo                                          Secure checkout (lock icon)
 | [ Pay £146.95 ]                      |                             |
 +--------------------------------------+-----------------------------+
 ```
-- Form column about 560px, summary column 360 to 400px, sticky. Product names in the summary wrap to 2 lines at most; each item has a 40 to 48px thumbnail-like tile with a product glyph, never initials and never a generic image icon.
+- Form column about 560px, summary column 360 to 400px, sticky. Product names in the summary wrap to 2 lines at most; each item has a 48 to 56px drawn product picture (`../art.md`), never initials and never a generic image icon.
 - Card row: expiry and security code share one row at equal widths (8ch each, or 50/50), same height, labels aligned. Single page with sections, or 3 steps (Details, Delivery, Payment) with a review step.
 - Guest checkout by default. Offer account creation after purchase, on the confirmation page.
 - Ask only for fields needed: average checkouts show about 11 fields where 8 would do (Baymard).
@@ -36,6 +36,17 @@ Logo                                          Secure checkout (lock icon)
 - Payment: card fields grouped, card type detected from the number, wallet buttons (Apple Pay, Google Pay) above the form as express options, in their brand form: Apple Pay black with the white Apple mark and "Pay", Google Pay black with the four-colour G and "Pay", both as inline SVG, 44 to 48px high, side by side, then one "or pay by card" divider.
 
 Phone: summary collapses to a bar at the top ("Show order summary  £146.95") that expands. One column. Pay button in a sticky bottom bar: one line with the total, then the button, under 100px including the safe area. Trust lines and footnotes stay in the page, not in the bar.
+
+## Product page and booking: choose, then commit
+
+The same flow in one screen: a product with sizes, an appointment with times, a seat, a delivery slot.
+- The picture leads: a large drawn product image or a featured card (`../art.md`). On the phone it takes at most 40% of the first screen, so the choice (sizes, days and times) starts in the first screen.
+- The choice is a grid of 44px chips: available, selected (accent fill), and unavailable (struck through, muted, still readable). Say what is free: "7 free on Tue 1 Dec".
+- The primary action names the missing choice until it is made ("Select a size", "Choose a time") and looks inactive (`../craft.md`). Then it states the outcome and the price: "Add to bag, £129.00", "Book 10:30, £58".
+- Phone: a sticky bottom bar with one line (the choice so far and the price) and the button, under 100px. Content ends above it, nothing sits under it.
+- Desktop for a phone-only task: the centred phone column. Desktop for a web page: picture left, choice and action right, both in the fold.
+
+(proof2: on the booking task 7 of 12 judge notes faulted a "Book" button that looked enabled before a time was chosen, and on the booking and product tasks judges found the size picker or time slots under the sticky bar on 5 of 6 skill pages.)
 
 ## Density
 
@@ -47,7 +58,7 @@ Contact, address and payment fieldsets, delivery option radios with price and da
 
 ## Primary action placement
 
-One button at the end of the form, where people finish: "Pay £146.95" (amount in the label) or "Place order". It may also be mirrored at the foot of the order summary on desktop, and in a sticky bottom bar on phones, but never lives only in the summary or the bar. The sticky bar adds `scroll-padding-bottom` equal to its height, so focused fields are never hidden. Wallet buttons are express options in brand form, not a second primary.
+One button at the end of the form, where people finish: "Pay £146.95" (amount in the label) or "Place order". Mirror it at the foot of the order summary on desktop, and in a sticky bottom bar on phones, but never lives only in the summary or the bar. The sticky bar adds `scroll-padding-bottom` equal to its height, so focused fields are never hidden. Wallet buttons are express options in brand form, not a second primary.
 
 ## States to build
 

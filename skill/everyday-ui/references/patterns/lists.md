@@ -27,6 +27,10 @@ List-detail (desktop, 1024px and up):
 
 Simple list (single column): rows 48 to 56px, leading icon or avatar, title, meta right, chevron only if the row navigates.
 
+Order history and activity lists (consumer): the current or next item leads as a featured card (today's delivery with its slot and progress, the next appointment). Past items follow as rows grouped by month, each with a picture of what it held (3 item pictures in a row, `../art.md`), the date, the total and one quiet action ("Reorder"). Phone row: 2 item pictures of 48px, then the date over a muted line with the count and total, then the action as a 44px secondary button at the right. The first two rows sit in the first screen above any tab bar.
+
+Conversation (support thread, chat): the thread and the reply box are the job. On the phone the header stays under about 140px, the order or customer details fold into one summary line that expands, and the reply box is reachable from the first screen (sticky at the bottom, or one tap away). Side panels move below the composer, never between the thread and the composer. (proof2: on 2 of 3 skill pages for the support task, judges found the composer below the fold or after the side panels.)
+
 Phone: the list is a full screen; the detail opens as a new screen with a back button. Swipe actions (archive, mark read) are a shortcut, never the only way.
 
 ## Density

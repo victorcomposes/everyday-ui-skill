@@ -27,12 +27,14 @@ Phone (390 x 844):
 - Top bar: large title on root screens, compact title with back button on pushed screens. At most 2 actions, as 44px icon buttons with `aria-label`.
 - Bottom tab bar: 3 to 5 destinations, icon plus label, active in accent. Never 6 or more.
 - Lists: rows 48 to 72px, full-width tap target, chevron only when the row pushes a new screen. Inset grouped sections for settings-like screens.
+- The first screen holds the job. Write down what fills 844px: top bar, title, then the picker, slots, reply box or first item. A hero image is at most 40% of it. A sticky bar covers nothing: the content ends above it.
+- A primary that needs a choice names it until it is made ("Select a size") and looks inactive (`../craft.md`).
 - Primary action: a sticky bottom button for forms and checkout, a top-bar action for "Add" on lists, or a floating button only if the product already uses one.
 - Sheets for filters, pickers and short tasks: rounded top corners 12 to 16px, a grab handle, a title row with Cancel and Done or a bottom primary button.
 
 Tablet and larger: list-detail side by side (see `lists.md`).
 
-Phone-only screens shown at desktop width (the task is an app screen, but it renders at 1440): one centred column 390 to 430px wide on a tinted page (`--bg-subtle` or `--frame`), the column on `--surface` with `--r-xl` corners, a 1px `--border` and `--shadow-pop`, so it reads as a finished screen, not a strip on white. No fake device frame, notch or status bar art. The tab bar and sticky buttons stay inside the column (`position: sticky` in the column, not `fixed` to the window).
+Phone-only screens shown at desktop width (the task is an app screen, but it renders at 1440): one centred column 390 to 430px wide on the tinted `--bg` page, the column on `--surface` with `--r-xl` corners, a 1px `--border` and `--shadow-pop`, so it reads as a finished screen, not a strip on white. No fake device frame, notch or status bar art. The tab bar and sticky buttons stay inside the column (`position: sticky` in the column, not `fixed` to the window).
 
 ## Home screen context
 

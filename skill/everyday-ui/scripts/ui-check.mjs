@@ -7,6 +7,7 @@
 // Exit code: 0 when no FAIL, 1 when any FAIL, 2 when the page or Playwright could not load.
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
@@ -15,6 +16,15 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const args = process.argv.slice(2);
 const flags = Object.fromEntries(args.filter((a) => a.startsWith('--')).map((a) => { const [k, v = 'true'] = a.slice(2).split('='); return [k, v]; }));
 const [target, outArg] = args.filter((a) => !a.startsWith('--'));
+if (flags.help || flags.h) {
+  console.log(`Usage: node ui-check.mjs <path-or-url> [outDir] [--state=empty,error]
+  <path-or-url>  an .html file, a folder with index.html, or an http(s) URL
+  outDir         screenshots and report.json. Default: <tmp>/ui-check/<page name>
+  --state=a,b    also shoot <url>?state=a and check it on desktop and phone
+Writes desktop, phone and dark screenshots (fold and full) and desktop-squint.png.
+Exit code: 0 no FAIL, 1 any FAIL, 2 the page or Playwright could not load.`);
+  process.exit(0);
+}
 if (!target) { console.error('Usage: node ui-check.mjs <path-or-url> [outDir] [--state=empty,error]'); process.exit(2); }
 
 // Resolve the page URL.
@@ -317,6 +327,24 @@ function pageChecks(mode) {
     });
     const outerShort = short.filter((el) => !short.some((p) => p !== el && p.contains(el)));
     if (outerShort.length) add('FAIL', 'short-background', `A column background or border stops at the first screen (${innerHeight}px) while the page is ${docH}px tall: the 100vh sidebar bug. Put the background on the full-height grid column; make only the inner nav sticky with height: 100dvh.`, outerShort.map(label));
+    // The same bug lower down: a painted, square-cornered column ends while a side-by-side sibling runs on.
+    const early = [];
+    for (const c of document.querySelectorAll('body *')) {
+      const cs = getComputedStyle(c);
+      if (!(cs.display.includes('grid') || (cs.display.includes('flex') && !cs.flexDirection.startsWith('column'))) || !visible(c)) continue;
+      const kids = [...c.children].filter(visible), rects = kids.map((k) => k.getBoundingClientRect());
+      if (kids.length < 2) continue;
+      const top = Math.min(...rects.map((q) => q.top));
+      kids.forEach((k, i) => {
+        const r = rects[i], ks = getComputedStyle(k);
+        if (r.height < innerHeight * 0.5 || r.width < 120 || r.width > innerWidth * 0.6 || r.top - top > 100 || parseFloat(ks.borderTopLeftRadius) > 2) return;
+        const bgc = rgba(ks.backgroundColor);
+        const paints = (bgc[3] > 0.05 && ratio(over(bgc, pageBg), pageBg) > 1.02) || ['Left', 'Right'].some((d) => parseFloat(ks[`border${d}Width`]) > 0 && rgba(ks[`border${d}Color`])[3] > 0);
+        const runsOn = rects.some((q, j) => j !== i && q.bottom > r.bottom + 80 && (q.left >= r.right - 1 || q.right <= r.left + 1));
+        if (paints && runsOn && !outerShort.includes(k)) early.push(`${label(k)} ends at ${Math.round(r.bottom + scrollY)}px`);
+      });
+    }
+    if (early.length) add('WARN', 'column-ends-early', 'A column background or edge ends while the column beside it runs on, leaving a bare band. Let the columns stretch (align-items: stretch) or move the background to the grid.', early);
   }
   const placed = [...textEls, ...controls].filter((el) => !hiddenVisually(el) && !offscreen(el)).map((el) => el.getBoundingClientRect());
   if (placed.length) {
@@ -326,7 +354,7 @@ function pageChecks(mode) {
   const sqd = squeezed(textEls);
   if (sqd.length) add('WARN', 'squeezed-text', 'Short text wraps to 3 or more lines on desktop. Size the column for its content.', sqd);
   const probe = (txt) => { const s = document.createElement('span'); s.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:20px;font-variant-numeric:tabular-nums'; s.style.fontFamily = getComputedStyle(document.body).fontFamily; s.textContent = txt; document.body.appendChild(s); const w = s.getBoundingClientRect().width; s.remove(); return w; };
-  if (Math.abs(probe('1111111111') - probe('0000000000')) > 1) add('WARN', 'no-tabular-figures', `The body font (${getComputedStyle(document.body).fontFamily.split(',')[0]}) has no tabular figures, so numbers will not line up. Pick a body face from brand.md.`);
+  if (Math.abs(probe('1111111111') - probe('0000000000')) > 1) add('WARN', 'no-tabular-figures', `The body font (${getComputedStyle(document.body).fontFamily.split(',')[0]}) has no tabular figures, so numbers will not line up. Use the system-ui body stack from look.md.`);
 
   // Desktop, light: structure and style counts.
   const styles = textEls.map((el) => getComputedStyle(el));
@@ -334,7 +362,7 @@ function pageChecks(mode) {
   if (families.length > 2) add('WARN', 'font-families', `${families.length} font families. Use a body face and at most one display face (a mono only for code). Set font: inherit on inputs and buttons.`, families);
   const sizes = [...new Set(styles.map((s) => Math.round(parseFloat(s.fontSize))))].sort((a, b) => a - b);
   const bodySizes = sizes.filter((s) => s <= 20);
-  if (bodySizes.length > 6 || sizes.length > 8) add('WARN', 'font-sizes', `${bodySizes.length} text sizes of 20px or less and ${sizes.length} in total (${sizes.join(', ')}). Keep to 6 sizes of 20px or less and 8 in all.`);
+  if (bodySizes.length > 6 || sizes.length > 10) add('WARN', 'font-sizes', `${bodySizes.length} text sizes of 20px or less and ${sizes.length} in total (${sizes.join(', ')}). Keep to 6 sizes of 20px or less and 10 in all.`);
   // Hierarchy: the title clearly above body text, tight and heavy.
   const h1 = [...document.querySelectorAll('h1')].find((h) => visible(h) && !hiddenVisually(h));
   const appBar = h1 && (h1.closest('header,[role=banner]')?.getBoundingClientRect().height ?? 999) <= 64;
@@ -392,6 +420,13 @@ function pageChecks(mode) {
   // Banned patterns that code can see.
   const gradText = [...document.querySelectorAll('body *')].filter((el) => visible(el) && /text/.test(getComputedStyle(el).backgroundClip || getComputedStyle(el).webkitBackgroundClip)).map(label);
   if (gradText.length) add('WARN', 'gradient-text', 'Gradient or clipped text. Use a solid token colour.', gradText);
+  // Underlined links that stand alone (titles, rows, cards), not inside a sentence.
+  const lone = [...document.querySelectorAll('a[href]')].filter((a) => {
+    if (!visible(a) || !a.textContent.trim() || !/underline/.test(getComputedStyle(a).textDecorationLine)) return false;
+    const block = a.parentElement.closest('p,li,h1,h2,h3,h4,h5,h6,td,div') ?? a.parentElement;
+    return block.innerText.trim().length < 120; // a title line, not a paragraph
+  });
+  if (lone.length >= 4) add('WARN', 'underlined-titles', `${lone.length} stand-alone links are underlined, which reads as noise. Underline links inside sentences only; titles and rows get a hover tint.`, lone.map(label));
   const isCard = (el) => {
     if (/^(INPUT|TEXTAREA|SELECT|BUTTON|IMG|svg|A|LABEL|TD|TH|TR)$/i.test(el.tagName)) return false;
     const s = getComputedStyle(el), r = el.getBoundingClientRect();
@@ -453,6 +488,30 @@ async function axeCheck(page) {
   } catch (e) { add('INFO', 'axe', `axe-core did not run: ${e.message.split('\n')[0]}`); }
 }
 
+// Repeated art: pictures and icon tiles of 48px or more that render pixel for pixel the same.
+async function artCheck(page) {
+  const n = await page.evaluate(() => {
+    const big = (el) => { const r = el.getBoundingClientRect(); return r.width >= 48 && r.height >= 48 && r.width <= 640; };
+    const skip = (el) => el.closest('header,nav,[role=banner],[aria-hidden="true"][style*="position:absolute"]') || el.parentElement?.closest('svg');
+    const pics = [...document.querySelectorAll('svg,img,canvas')].filter((el) => !skip(el) && el.checkVisibility?.() !== false && big(el));
+    // An icon tile: a 48px+ box whose only child is a small icon.
+    const tiles = [...document.querySelectorAll('body *')].filter((el) => el.children.length === 1 && el.children[0].matches('svg,img') && !el.textContent.trim() && !skip(el) && big(el) && !big(el.children[0]));
+    const all = [...pics, ...tiles].slice(0, 30);
+    all.forEach((el, i) => el.setAttribute('data-uicheck-art', i));
+    return all.length;
+  });
+  const seen = new Map();
+  for (let i = 0; i < n; i++) {
+    const el = await page.$(`[data-uicheck-art="${i}"]`);
+    const buf = await el?.screenshot({ animations: 'disabled', timeout: 3000 }).catch(() => null);
+    if (!buf) continue;
+    const box = await el.boundingBox(), key = createHash('sha1').update(buf).digest('hex');
+    seen.set(key, [...(seen.get(key) ?? []), `${Math.round(box.width)}x${Math.round(box.height)} at y ${Math.round(box.y)}`]);
+  }
+  const reps = [...seen.values()].filter((v) => v.length >= 3);
+  if (reps.length) add('WARN', 'repeated-art', `${reps.reduce((s, v) => s + v.length, 0)} pictures or icon tiles render identically (${reps.map((v) => v.length).join(', ')} copies). Repeated art reads as a placeholder: draw each item, or vary palette and shape (art.md).`, reps.map((v) => v.slice(0, 3).join(', ')));
+}
+
 const runChecks = (page, name) => page.evaluate(pageChecks, name).catch((e) => [{ level: 'WARN', id: `checks-${name}`, msg: `Checks crashed: ${e.message.split('\n')[0]}`, examples: [] }]);
 const errors = [];
 for (const name of ['desktop', 'phone', 'dark']) {
@@ -461,6 +520,8 @@ for (const name of ['desktop', 'phone', 'dark']) {
   results.push(...await runChecks(page, name));
   if (name === 'desktop' && axeSource) await axeCheck(page);
   if (name === 'desktop') {
+    await artCheck(page).catch((e) => add('INFO', 'art', `Art check did not run: ${e.message.split('\n')[0]}`));
+    await page.evaluate(() => scrollTo(0, 0));
     await focusCheck(page);
     // Arm's-length view: a blurred fold. Title, key number and primary action should read first.
     await page.keyboard.press('Escape'); await page.evaluate(() => { document.activeElement?.blur?.(); scrollTo(0, 0); });
@@ -498,5 +559,5 @@ const checked = ['contrast-light', 'contrast-dark', 'overflow-phone', 'short-bac
 const passed = checked.filter((id) => !results.some((r) => r.id === id));
 if (passed.length) console.log(`PASS [all views] ${passed.join(', ')}`);
 if (!axeSource) console.log('INFO axe-core not found, so axe rules were skipped. Optional: npm i -D axe-core');
-console.log(`\nScore: ${fails} FAIL, ${warns} WARN. Now open the screenshots and run the critique checklist.`);
+console.log(`\nScore: ${fails} FAIL, ${warns} WARN. Now open the screenshots and score the bar in SKILL.md.`);
 process.exit(fails ? 1 : 0);

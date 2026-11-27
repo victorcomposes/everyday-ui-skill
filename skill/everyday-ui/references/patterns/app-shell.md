@@ -19,8 +19,8 @@ Desktop (1024px and up):
 | [org v]  |                                                  |
 +----------+--------------------------------------------------+
 ```
-- Sidebar 240 to 264px on `--frame` (the brand tint) with a 1px right border. The logo (mark plus wordmark) sits at its top.
-- Full height without the 100vh bug: the grid column carries the background and stretches with the page, and the inner nav is sticky. Never give a box with a background `height: 100vh`, sticky or fixed: on a long page it stops at the first screen. Code in `../craft.md`, section Composition.
+- Sidebar 240 to 264px on `--surface` with a 1px right border, beside content on the `--bg` page. The logo (mark plus wordmark) sits at its top. Consumer products usually use a top bar instead: logo, 3 to 5 nav links, search, account.
+- Full height without the 100vh bug: the grid column carries the background and stretches with the page, and the inner nav is sticky. Never give a box with a background `height: 100vh`, sticky or fixed: on a long page it stops at the first screen. Code: `../craft.md`, section Layout.
 - Nav items 32 to 36px high, 16 to 20px icon, 14px label, 8px icon gap. Group with a small muted section label (sentence case) only when there are more than 7 items.
 - Nav groups stack from the top, 16 to 24px between groups, no gap in the middle. Only the account or workspace block pins to the bottom (`margin-top: auto` on that block alone). Settings and help sit in the last group or in the account block.
 - Page header in the content area: title left, primary action right, on one line. Secondary actions (Export, Refresh) sit left of the primary as secondary buttons. Tabs or filters sit right under it.
@@ -78,7 +78,7 @@ Must for a one-page brief: default with the active nav item; the phone navigatio
 
 - [ ] The current page is marked in the nav and matches the page title.
 - [ ] The sidebar background reaches the bottom of the full-page screenshot; the shell uses `min-height: 100dvh`.
-- [ ] The logo and the frame tint are visible in the desktop fold.
+- [ ] The logo, the tinted page and a display title are visible in the desktop fold.
 - [ ] At 390px there is no sidebar on screen; navigation is a bottom bar or a sheet.
 - [ ] One icon set, one size, one stroke in the nav.
 - [ ] A skip link reaches `main`; landmarks are `header`, `nav`, `main`.

@@ -8,8 +8,8 @@ Not for: product tours of features, or sign-up itself (use `sign-in.md`).
 Setup flow (desktop, split layout):
 ```
 +-----------------------------+--------------------------------------------+
-| Rail 360-440, --brand-deep  | Step 2 of 3                  Skip for now  |
-| or --frame                  |                                            |
+| Rail 360-440, --deep       | Step 2 of 3                  Skip for now  |
+| or --surface                |                                            |
 | [mark] Kestrel Billing      | Tell us about your team (h1, display)      |
 |                             | This sets up your workspace. You can       |
 | (x) Create account          | change it later.                           |

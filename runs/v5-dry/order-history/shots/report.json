@@ -1,0 +1,15 @@
+{
+  "url": "file:///C:/Projects/everyday-ui-skill/runs/v5-dry/order-history/index.html",
+  "fails": 0,
+  "warns": 0,
+  "results": [],
+  "shots": [
+    "desktop-fold.png",
+    "desktop-full.png",
+    "desktop-squint.png",
+    "phone-fold.png",
+    "phone-full.png",
+    "dark-fold.png",
+    "dark-full.png"
+  ]
+}

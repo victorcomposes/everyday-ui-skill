@@ -8,13 +8,13 @@ Not for: post-sign-up setup (use `onboarding.md`).
 Desktop (split layout, the default):
 ```
 +----------------------------------+------------------------------------------+
-| Brand panel 40-50%, --brand-deep |  Form column, form 400px wide,           |
+| Brand panel 40-50%, --deep       |  Form column, form 400px wide,           |
 |                                  |  vertically centred, left edge aligned   |
 | [mark] Kestrel Billing           |                                          |
 |                                  |  Sign in to Kestrel (h1, display, 28px)  |
 | Get paid 9 days sooner           |  [ Continue with Google ]   (secondary)  |
 | (display face, 36-44px, white)   |  ---------- or ----------                |
-| One line, --on-deep-muted        |  Email                                   |
+| One line, white at 72%           |  Email                                   |
 |                                  |  [ name@company.com      (placeholder) ] |
 | +----------------------------+   |  Password            Forgot password?    |
 | | Product glimpse: a real    |   |  [ ••••••••••            Show ]          |
@@ -25,7 +25,7 @@ Desktop (split layout, the default):
 |                                  |  Terms   Privacy   (small, muted, bottom)|
 +----------------------------------+------------------------------------------+
 ```
-- The brand panel carries the logo, one concrete headline about the outcome, one supporting line and a product glimpse (`brand.md` section 4). No stock photos, no testimonials, no gradient blobs.
+- The brand panel carries the logo, one concrete headline about the outcome, one supporting line and a product glimpse: a real piece of the product built from your components and fixture data, or drawn art of the product (`../art.md`). No stock photos, no testimonials, no gradient blobs.
 - The form column is `--bg`, form max 400px, and the form block is centred vertically in its half at desktop (`display: grid; place-items: center` on the column, the form left-aligned inside). No card around the form is needed.
 - Without a brand to show (an internal tool inside someone's product), use a centred 400px column with the logo above it, and a quiet `--bg-subtle` page. Never a lone card in a blank 1440px canvas with no logo.
 - One primary job: "Sign in" is the only filled button. Alternatives are grouped once: SSO buttons above a single "or" divider, the magic link as a text link under the primary button (or a quiet secondary). Never a second full-width button under Sign in, never two dividers.
