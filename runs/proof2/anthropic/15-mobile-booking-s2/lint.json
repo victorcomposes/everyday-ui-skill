@@ -1,0 +1,63 @@
+{
+  "axe": {
+    "rules": {
+      "label-content-name-mismatch": {
+        "impact": "serious",
+        "nodes": 6
+      },
+      "listitem": {
+        "impact": "serious",
+        "nodes": 3
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 2,
+        "nodes": 9
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "system-ui"
+  ],
+  "textColors": 3,
+  "minFontPx": 13,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(18, 48, 42)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(27, 99, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 0,
+    "examples": []
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New expense report - Outlay</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Harbour kit, Steel variant */
+  --accent: #1f5f9e; --accent-hover: #174b7d; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a; --on-deep: #ffffff; --on-deep-muted: #b9c8ee; --accent-on-deep: #7a9cff;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --text-2xl: 24px; --lh-2xl: 32px;
+  --text-3xl: 30px; --lh-3xl: 36px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --w-sidebar: 248px; --w-rail: 340px; --w-content: 1200px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link, p a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 26px; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+input[type="file"] { font-size: 16px; }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.aside-in { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-5) var(--s-4); }
+.brand { display: flex; align-items: center; gap: var(--s-3); font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; padding: 0 var(--s-2); min-height: 44px; }
+.menu-btn.btn { display: none; }
+.navpanel { display: flex; flex-direction: column; flex: 1; margin-top: var(--s-6); min-height: 0; }
+.nav { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.nav a { display: flex; align-items: center; gap: var(--s-3); min-height: 40px; padding: 0 var(--s-3); border-radius: var(--r-md); color: var(--text); transition: background-color var(--t-fast) var(--ease); }
+.nav a:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav a[aria-current="page"] svg { color: var(--accent); }
+.nav .count { margin-left: auto; min-width: 22px; justify-content: center; padding: 0 6px; border-radius: var(--r-full); background: var(--accent); color: var(--on-accent); font-size: var(--text-xs); font-weight: 600; line-height: 20px; }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4) var(--s-2) 0; border-top: 1px solid var(--border); }
+.account b { display: block; font-weight: 600; }
+.account span.m { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 600; flex: none; }
+
+main { padding: var(--s-8) var(--s-8) var(--s-16); min-width: 0; }
+.wrap { max-width: var(--w-content); margin: 0 auto; }
+.back { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; margin: calc(-1 * var(--s-3)) 0 var(--s-1) calc(-1 * var(--s-1)); padding: 0 var(--s-1); color: var(--text-muted); border-radius: var(--r-md); }
+.back:hover { color: var(--text); }
+.pagehead { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-6); margin-bottom: var(--rhythm-content); }
+.pagehead p { margin: var(--rhythm-title) 0 0; color: var(--text-muted); font-size: var(--text-md); line-height: var(--lh-md); max-width: 62ch; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); font-weight: 500; position: relative; }
+.btn:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.btn[aria-busy="true"] { cursor: progress; opacity: 0.85; }
+.icon-btn { display: inline-grid; place-items: center; width: var(--control-h-sm); height: var(--control-h-sm); border: 0; border-radius: var(--r-md); background: transparent; color: var(--text-muted); cursor: pointer; }
+.icon-btn:hover { background: var(--bg-subtle); color: var(--danger); }
+
+/* error summary */
+.summary { border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent); background: var(--danger-subtle); border-radius: var(--r-lg); padding: var(--s-4) var(--s-5); margin-bottom: var(--rhythm-content); max-width: 800px; }
+.summary h2 { font-size: var(--text-lg); color: var(--danger); }
+.summary ul { margin: var(--s-2) 0 0; padding-left: var(--s-5); }
+.summary a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; display: inline-flex; align-items: center; min-height: 44px; }
+
+/* form layout */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); column-gap: var(--s-12); align-items: start; }
+.sections { grid-column: 1; grid-row: 1; min-width: 0; max-width: 800px; }
+.rail { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: var(--s-6); }
+.actions { grid-column: 1; grid-row: 2; display: flex; align-items: center; gap: var(--s-4); margin-top: var(--rhythm-group); }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.group { margin: 0 0 var(--rhythm-group); }
+.group > legend, .group > .gh { padding: 0; float: left; width: 100%; margin-bottom: var(--rhythm-tight); }
+.group > legend + *, .group > .gh + * { clear: both; }
+.group .intro { color: var(--text-muted); margin: 0 0 var(--rhythm-content); max-width: 62ch; clear: both; }
+.field { margin-bottom: var(--s-6); max-width: 480px; position: relative; }
+.field.wide { max-width: 560px; }
+.field label.btn { display: inline-flex; margin: 0; font-weight: 500; }
+.group > .field:last-child { margin-bottom: 0; }
+.ghost { border-color: transparent; background: transparent; color: var(--text-muted); }
+.ghost:hover { color: var(--text); }
+.field label, .field .lbl { display: block; font-weight: 500; margin-bottom: var(--s-1); }
+.field .hint { color: var(--text-muted); margin: 0 0 var(--s-2); font-size: var(--text-sm); }
+.field .err { margin: 0 0 var(--s-2); color: var(--danger); font-weight: 500; display: flex; gap: var(--s-2); }
+.field .err::before { content: ""; width: 16px; height: 16px; margin-top: 2px; flex: none; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 1.5 15 14H1z' fill='none' stroke='black' stroke-width='1.6' stroke-linejoin='round'/%3E%3Cpath d='M8 6v3.5M8 11.6v.1' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 1.5 15 14H1z' fill='none' stroke='black' stroke-width='1.6' stroke-linejoin='round'/%3E%3Cpath d='M8 6v3.5M8 11.6v.1' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat; }
+.input, select.input, textarea.input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+.field-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); max-width: 480px; }
+.field-pair .field { margin-bottom: var(--s-6); }
+textarea.input { padding: var(--s-2) var(--s-3); min-height: 84px; resize: vertical; line-height: var(--lh-sm); }
+.input[aria-invalid="true"] { border: 2px solid var(--danger); padding-left: 11px; }
+textarea.input[aria-invalid="true"] { padding: 7px 11px; }
+input[type="date"].input { font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .input, select.input, textarea.input { font-size: 16px; } }
+
+/* expenses table */
+.lines { width: 100%; border-collapse: collapse; }
+.lines th { text-align: left; font-weight: 500; color: var(--text-muted); padding: 0 var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--border); font-size: var(--text-sm); }
+.lines td { padding: var(--s-3) var(--s-3) var(--s-3) 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.lines .num { text-align: right; }
+.lines td.num { white-space: nowrap; font-weight: 500; }
+.lines th:last-child, .lines td:last-child { padding-right: 0; width: 40px; }
+.lines .c-date { width: 96px; color: var(--text-muted); white-space: nowrap; }
+.lines .c-rec { width: 188px; }
+.lines .c-amt { width: 96px; }
+.lines .who { font-weight: 500; overflow-wrap: anywhere; }
+.lines .meta { color: var(--text-muted); font-size: var(--text-sm); overflow-wrap: anywhere; }
+.rec-ok { display: flex; align-items: center; gap: var(--s-2); min-height: var(--control-h-sm); color: var(--text-muted); min-width: 0; }
+.rec-ok svg { color: var(--success); }
+.rec-ok span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.need { display: block; margin-top: var(--s-1); font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--warning); font-weight: 500; }
+.submitted-err .need { color: var(--danger); }
+.lines tfoot td { border-bottom: 0; padding-top: var(--s-4); font-weight: 600; }
+.lines tfoot .tot { font-size: var(--text-md); }
+.none { padding: var(--s-6) 0; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+.none b { color: var(--text); display: block; font-weight: 600; }
+
+.addbox { margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid var(--border); }
+.addbox h3 { font: 600 var(--text-md)/var(--lh-md) var(--font-display); margin: 0 0 var(--s-4); }
+.addbox .field-pair { max-width: 560px; }
+.addbox .field { max-width: 560px; }
+.pickfile { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.pickfile .name { color: var(--text-muted); overflow-wrap: anywhere; }
+
+/* summary rail */
+.rail-in { background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6); }
+.rail-in .lbl { color: var(--text-muted); font-weight: 500; }
+.total { font: 700 40px/1.1 var(--font-display); letter-spacing: -0.02em; margin: var(--s-1) 0 var(--s-1); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rail-in .sub { color: var(--text-muted); margin: 0; }
+.rail-sec { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--border); }
+.rail-sec h2 { font-size: var(--text-md); line-height: var(--lh-md); margin-bottom: var(--s-3); }
+.cats { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-4); }
+.cats .row { display: flex; justify-content: space-between; gap: var(--s-3); }
+.cats .row span:last-child { font-weight: 500; }
+.bar { height: 6px; margin: 6px 0 2px; border-radius: var(--r-full); background: var(--border); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: var(--r-full); }
+.bar.over i { background: var(--warning); }
+.cats .cap { color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.facts { margin: 0; display: grid; gap: var(--s-3); }
+.facts div { display: flex; justify-content: space-between; gap: var(--s-4); }
+.facts dt { color: var(--text-muted); }
+.facts dd { margin: 0; text-align: right; font-weight: 500; }
+.facts dd.warn { color: var(--warning); }
+.submitted-err .facts dd.warn { color: var(--danger); }
+
+/* done */
+.done { max-width: 560px; padding-top: var(--s-10); }
+.done .tick { width: 48px; height: 48px; border-radius: var(--r-full); background: var(--success-subtle); color: var(--success); display: grid; place-items: center; margin-bottom: var(--s-6); }
+.done .tick svg { width: 24px; height: 24px; stroke-width: 2.2; }
+.done p { color: var(--text-muted); font-size: var(--text-md); line-height: var(--lh-md); margin: var(--rhythm-title) 0 var(--rhythm-content); }
+.done .row { display: flex; gap: var(--s-4); align-items: center; flex-wrap: wrap; }
+
+/* tablet and phone */
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .sections, .actions, .rail { grid-column: 1; grid-row: auto; max-width: none; }
+  .sections { max-width: 800px; }
+  .rail { position: static; margin-top: var(--s-2); max-width: 800px; }
+  .actions { margin-top: var(--s-8); }
+}
+@media (max-width: 1023px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { border-right: 0; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .aside-in { position: static; height: auto; padding: var(--s-2) var(--s-4); flex-direction: column; }
+  .brandrow { display: flex; align-items: center; justify-content: space-between; }
+  .menu-btn.btn { display: inline-flex; }
+  .navpanel { display: none; margin-top: var(--s-2); padding-bottom: var(--s-4); }
+  .navpanel.open { display: flex; }
+  .nav a { min-height: 44px; }
+  .account { margin-top: var(--s-4); }
+  main { padding: var(--s-6) var(--s-4) var(--s-12); }
+}
+@media (max-width: 640px) {
+  .pagehead { gap: var(--s-3); }
+  .pagehead p { font-size: var(--text-sm); line-height: var(--lh-sm); }
+  .field-pair { gap: var(--s-3); }
+  textarea.input { min-height: 120px; }
+  .total { font-size: 36px; }
+  .actions { flex-direction: column-reverse; align-items: stretch; }
+  .actions .btn { width: 100%; min-height: 48px; }
+  .actions .cancel { justify-content: center; }
+  table.lines thead { display: none; }
+  table.lines, table.lines tbody, table.lines tr, table.lines td, table.lines tfoot { display: block; }
+  table.lines tr.line { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "date amt" "exp exp" "rec act"; gap: 2px var(--s-3); padding: var(--s-4) 0; border-bottom: 1px solid var(--border); align-items: center; }
+  table.lines td { border: 0; padding: 0; width: auto !important; }
+  td.c-date { grid-area: date; } td.c-exp { grid-area: exp; margin: 2px 0 var(--s-2); } td.c-rec { grid-area: rec; } td.c-amt { grid-area: amt; font-size: var(--text-md); } td.c-act { grid-area: act; justify-self: end; }
+  table.lines tfoot tr { display: flex; gap: var(--s-3); justify-content: space-between; padding-top: var(--s-4); }
+  table.lines tfoot td { padding: 0; }
+  table.lines tfoot td:last-child { display: none; }
+  table.lines tfoot td:first-child { flex: 1; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#content">Skip to the form</a>
+<div class="shell">
+  <aside>
+    <div class="aside-in">
+      <div class="brandrow">
+        <a class="brand" href="#" aria-label="Outlay home">
+          <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M8 19h12M8 14h8M8 9h4" stroke="var(--on-accent)" stroke-width="2.6" stroke-linecap="round"/></svg>
+          Outlay
+        </a>
+        <button type="button" class="btn sm menu-btn" id="menu-btn" aria-expanded="false" aria-controls="navpanel">Menu</button>
+      </div>
+      <div class="navpanel" id="navpanel">
+        <nav aria-label="Main">
+          <ul class="nav">
+            <li><a href="#"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7M6 10v10h12V10"/></svg>Overview</a></li>
+            <li><a href="#" aria-current="page"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h6"/></svg>Expense reports</a></li>
+            <li><a href="#"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM8 12l3 3 5-6"/></svg>Approvals <span class="badge count" aria-label="3 waiting">3</span></a></li>
+            <li><a href="#"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3zM3 10h18"/></svg>Cards</a></li>
+            <li><a href="#"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>Spend policy</a></li>
+          </ul>
+        </nav>
+        <div class="account">
+          <span class="avatar" aria-hidden="true">AO</span>
+          <div><b>Amara Okafor</b><span class="m">Enterprise Sales</span></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main id="content">
+    <div class="wrap">
+      <div id="formview">
+        <a class="back" href="#"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Expense reports</a>
+        <div class="pagehead">
+          <div>
+            <h1>New expense report</h1>
+            <p>List each expense from the trip and attach a receipt for anything over £15. Priya Raman approves the report.</p>
+          </div>
+          <button type="button" class="btn" id="save-draft">Save draft</button>
+        </div>
+
+        <div class="summary" id="summary" role="alert" tabindex="-1" hidden>
+          <h2>There is a problem</h2>
+          <ul id="summary-list"></ul>
+        </div>
+
+        <form id="form" novalidate class="layout">
+          <div class="sections" id="sections">
+            <fieldset class="group">
+              <legend><h2>Trip</h2></legend>
+              <p class="intro">Where you went and why. Priya sees this first.</p>
+              <div class="field" id="w-title">
+                <label for="f-title">Report title</label>
+                <p class="err" id="f-title-err" hidden></p>
+                <input class="input" id="f-title" name="title" type="text" autocomplete="off" aria-describedby="f-title-err">
+              </div>
+              <div class="field" id="w-client">
+                <label for="f-client">Client visited</label>
+                <p class="err" id="f-client-err" hidden></p>
+                <input class="input" id="f-client" name="client" type="text" autocomplete="off" aria-describedby="f-client-err">
+              </div>
+              <div class="field wide" id="w-purpose">
+                <label for="f-purpose">Business purpose</label>
+                <p class="hint" id="f-purpose-hint">One or two sentences. Finance uses this for audit.</p>
+                <p class="err" id="f-purpose-err" hidden></p>
+                <textarea class="input" id="f-purpose" name="purpose" aria-describedby="f-purpose-hint f-purpose-err"></textarea>
+              </div>
+              <div class="field-pair">
+                <div class="field" id="w-start">
+                  <label for="f-start">First day</label>
+                  <p class="err" id="f-start-err" hidden></p>
+                  <input class="input" id="f-start" name="start" type="date" aria-describedby="f-start-err">
+                </div>
+                <div class="field" id="w-end">
+                  <label for="f-end">Last day</label>
+                  <p class="err" id="f-end-err" hidden></p>
+                  <input class="input" id="f-end" name="end" type="date" aria-describedby="f-end-err">
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-cc">Cost centre</label>
+                <select class="input" id="f-cc" name="cc">
+                  <option>Enterprise Sales (4120)</option>
+                  <option>Customer Success (4210)</option>
+                  <option>Partnerships (4330)</option>
+                  <option>Marketing events (5105)</option>
+                </select>
+              </div>
+            </fieldset>
+
+            <fieldset class="group" id="lines-group">
+              <legend><h2>Expenses</h2></legend>
+              <p class="intro" id="lines-intro">One row for each receipt. Amounts are in pounds.</p>
+              <div id="lines-wrap"></div>
+
+              <div class="addbox" id="addbox">
+                <h3>Add an expense</h3>
+                <div class="field-pair">
+                  <div class="field" id="w-add-date">
+                    <label for="add-date">Date</label>
+                    <p class="err" id="add-date-err" hidden></p>
+                    <input class="input" id="add-date" type="date" aria-describedby="add-date-err">
+                  </div>
+                  <div class="field" id="w-add-amount">
+                    <label for="add-amount">Amount (£)</label>
+                    <p class="err" id="add-amount-err" hidden></p>
+                    <input class="input" id="add-amount" type="text" inputmode="decimal" autocomplete="off" aria-describedby="add-amount-err">
+                  </div>
+                </div>
+                <div class="field-pair">
+                  <div class="field">
+                    <label for="add-cat">Category</label>
+                    <select class="input" id="add-cat">
+                      <option>Travel</option><option>Lodging</option><option>Meals</option><option>Ground transport</option><option>Other</option>
+                    </select>
+                  </div>
+                  <div class="field" id="w-add-merchant">
+                    <label for="add-merchant">Merchant</label>
+                    <p class="err" id="add-merchant-err" hidden></p>
+                    <input class="input" id="add-merchant" type="text" autocomplete="off" aria-describedby="add-merchant-err">
+                  </div>
+                </div>
+                <div class="field">
+                  <span class="lbl" id="add-rec-lbl">Receipt</span>
+                  <div class="pickfile">
+                    <label class="btn sm" for="add-receipt"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11l-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/></svg>Choose file<input class="sr-only" id="add-receipt" type="file" accept="image/*,application/pdf" aria-describedby="add-file-name"></label>
+                    <span class="name" id="add-file-name">PDF or photo, up to 10 MB</span>
+                  </div>
+                </div>
+                <button type="button" class="btn" id="add-btn"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add expense</button>
+              </div>
+            </fieldset>
+          </div>
+
+          <aside class="rail" aria-label="Report summary">
+            <div class="rail-in" id="rail"></div>
+          </aside>
+
+          <div class="actions">
+            <button type="submit" class="btn primary" id="submit">Submit for approval</button>
+            <a class="btn ghost cancel" href="#">Cancel</a>
+          </div>
+        </form>
+      </div>
+
+      <section class="done" id="done" hidden aria-labelledby="done-title">
+        <div class="tick"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></div>
+        <h1 id="done-title" tabindex="-1">Report submitted</h1>
+        <p id="done-text"></p>
+        <div class="row">
+          <a class="btn primary" href="#">View report</a>
+          <a class="link" href="">Start another report</a>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+/* data module: the one source for every number on screen */
+const RECEIPT_OVER = 15;                       // pounds: receipts are required above this
+const LIMITS = { 'Travel': 400, 'Lodging': 300, 'Meals': 250, 'Ground transport': 80, 'Other': 100 };
+const STATE = new URLSearchParams(location.search).get('state') || '';
+const REPORT_ID = 'EXP-2026-0318';
+const FIRST = '2026-11-12', LAST = '2026-11-14';
+
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const num = new Intl.NumberFormat('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const dfmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+const dshort = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const fd = (iso) => dfmt.format(new Date(iso + 'T00:00:00Z'));
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pence = (x) => Math.round(x * 100);
+
+let trip = { title: 'Client workshop, Edinburgh', client: 'Calder & Rowe Ltd', purpose: 'Two-day onboarding workshop for the Calder & Rowe finance team, with a client dinner on the first evening and the return on 14 November.', start: FIRST, end: LAST };
+let lines = [
+  { date: '2026-11-12', cat: 'Travel', merchant: 'LNER, London to Edinburgh', note: 'Standard fare', amount: 142.60, receipt: 'lner-london-edinburgh.pdf' },
+  { date: '2026-11-12', cat: 'Meals', merchant: 'Dishoom Edinburgh', note: 'Client dinner for 4', amount: 186.40, receipt: 'dishoom-dinner.jpg' },
+  { date: '2026-11-12', cat: 'Lodging', merchant: 'Motel One Edinburgh Royal', note: '2 nights', amount: 228.00, receipt: 'motel-one-folio.pdf' },
+  { date: '2026-11-13', cat: 'Meals', merchant: 'Pret A Manger', note: 'Lunch', amount: 9.85, receipt: null },
+  { date: '2026-11-13', cat: 'Ground transport', merchant: 'Uber', note: 'Hotel to client office', amount: 18.70, receipt: null },
+  { date: '2026-11-14', cat: 'Travel', merchant: 'LNER, Edinburgh to London', note: 'Standard fare', amount: 139.20, receipt: 'lner-edinburgh-london.pdf' },
+];
+if (STATE === 'stress') {
+  trip.title = 'Quarterly renewals planning workshop with Hartley-Pemberton Associates, Edinburgh and Glasgow';
+  trip.client = 'Hartley-Pemberton Associates International Holdings Ltd';
+  lines = lines.concat([
+    { date: '2026-11-13', cat: 'Other', merchant: 'Edinburgh International Conference Centre venue hire and catering supplement', note: 'Room and AV, deposit paid on the day', amount: 1284.50, receipt: 'eicc-invoice-final-signed-version-2-scan-0013.pdf' },
+    { date: '2026-11-14', cat: 'Ground transport', merchant: 'X', note: '', amount: 0.99, receipt: null },
+  ]);
+}
+if (STATE === 'empty') lines = [];
+if (STATE === 'error') trip.purpose = '';
+let nextId = 1; lines.forEach((l) => (l.id = nextId++));
+
+const $ = (id) => document.getElementById(id);
+const need = (l) => !l.receipt && l.amount > RECEIPT_OVER;
+const totalP = () => lines.reduce((s, l) => s + pence(l.amount), 0);
+
+/* render */
+function renderLines() {
+  const wrap = $('lines-wrap');
+  if (!lines.length) {
+    wrap.innerHTML = '<div class="none"><b>No expenses yet</b>Add the first one below. Train fares, hotel and meals all count.</div>';
+    return;
+  }
+  const rows = lines.map((l) => `
+    <tr class="line">
+      <td class="c-date"><time datetime="${l.date}">${fd(l.date)}</time></td>
+      <td class="c-exp"><div class="who">${esc(l.merchant)}</div><div class="meta">${esc(l.cat)}${l.note ? ', ' + esc(l.note.charAt(0).toLowerCase() + l.note.slice(1)) : ''}</div></td>
+      <td class="c-rec">${l.receipt
+        ? `<div class="rec-ok" title="${esc(l.receipt)}"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>${esc(l.receipt)}</span></div>`
+        : `<label class="btn sm" for="rc-${l.id}"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11l-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/></svg>Attach receipt<span class="sr-only"> for ${esc(l.merchant)}</span><input class="sr-only" type="file" id="rc-${l.id}" data-id="${l.id}" accept="image/*,application/pdf"></label>${need(l) ? `<span class="need">Required over £${RECEIPT_OVER}</span>` : ''}`}</td>
+      <td class="num c-amt">${num.format(l.amount)}</td>
+      <td class="c-act"><button type="button" class="icon-btn" data-remove="${l.id}" aria-label="Remove ${esc(l.merchant)}"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></button></td>
+    </tr>`).join('');
+  wrap.innerHTML = `<table class="lines"><thead><tr><th scope="col">Date</th><th scope="col">Expense</th><th scope="col">Receipt</th><th scope="col" class="num">Amount (£)</th><th scope="col"><span class="sr-only">Remove</span></th></tr></thead>
+    <tbody>${rows}</tbody>
+    <tfoot><tr><td colspan="3">Total, ${lines.length} ${lines.length === 1 ? 'expense' : 'expenses'}</td><td class="num tot">${num.format(totalP() / 100)}</td><td></td></tr></tfoot></table>`;
+}
+
+function renderRail() {
+  const byCat = {};
+  lines.forEach((l) => (byCat[l.cat] = (byCat[l.cat] || 0) + pence(l.amount)));
+  const cats = Object.keys(LIMITS).filter((c) => byCat[c]).map((c) => {
+    const spent = byCat[c] / 100, lim = LIMITS[c], pct = Math.min(100, Math.round((spent / lim) * 100));
+    return `<li><div class="row"><span>${c}</span><span>${gbp.format(spent)}</span></div>
+      <div class="bar${spent > lim ? ' over' : ''}" role="img" aria-label="${c}: ${pct}% of the ${gbp.format(lim)} trip limit"><i style="width:${pct}%"></i></div>
+      <div class="cap">${spent > lim ? 'Over the' : 'Trip limit'} ${gbp.format(lim)}${spent > lim ? ': needs a note for Priya' : ''}</div></li>`;
+  }).join('');
+  const withRec = lines.filter((l) => l.receipt).length, missing = lines.filter(need).length;
+  const d1 = trip.start && trip.end ? `${dshort.format(new Date($('f-start').value + 'T00:00:00Z')).replace(/ \d{4}$/, '')} to ${dshort.format(new Date($('f-end').value + 'T00:00:00Z'))}` : 'Dates not set';
+  $('rail').innerHTML = `
+    <div class="lbl">Report total</div>
+    <div class="total">${gbp.format(totalP() / 100)}</div>
+    <p class="sub">${lines.length} ${lines.length === 1 ? 'expense' : 'expenses'}, ${esc(d1)}</p>
+    ${cats ? `<div class="rail-sec"><h2>Against trip limits</h2><ul class="cats">${cats}</ul></div>` : ''}
+    <div class="rail-sec"><h2>Before you submit</h2><dl class="facts">
+      <div><dt>Receipts</dt><dd class="${missing ? 'warn' : ''}">${withRec} of ${lines.length} attached</dd></div>
+      <div><dt>Approver</dt><dd>Priya Raman</dd></div>
+      <div><dt>Paid out</dt><dd>27 Nov pay run</dd></div>
+    </dl></div>`;
+}
+
+function fillTrip() {
+  $('f-title').value = trip.title; $('f-client').value = trip.client; $('f-purpose').value = trip.purpose;
+  $('f-start').value = trip.start; $('f-end').value = trip.end;
+  $('add-date').value = trip.start;
+}
+function refresh() { renderLines(); renderRail(); }
+
+/* field errors */
+function setErr(id, msg) {
+  const p = $(id + '-err'), inp = $(id);
+  if (!p) return;
+  p.hidden = !msg; p.textContent = msg || '';
+  if (msg) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid');
+}
+function validate() {
+  const errs = [];
+  const add = (id, msg) => { errs.push({ id, msg }); setErr(id, msg); };
+  ['f-title', 'f-client', 'f-purpose', 'f-start', 'f-end'].forEach((id) => setErr(id, ''));
+  if (!$('f-title').value.trim()) add('f-title', 'Enter a report title, for example "Client workshop, Edinburgh".');
+  if (!$('f-client').value.trim()) add('f-client', 'Enter the client you visited.');
+  if (!$('f-purpose').value.trim()) add('f-purpose', 'Say why you travelled, in one or two sentences.');
+  if (!$('f-start').value) add('f-start', 'Enter the first day of the trip.');
+  if (!$('f-end').value) add('f-end', 'Enter the last day of the trip.');
+  else if ($('f-start').value && $('f-end').value < $('f-start').value) add('f-end', 'Enter a last day on or after the first day.');
+  if (!lines.length) errs.push({ id: 'add-date', msg: 'Add at least one expense.' });
+  lines.filter(need).forEach((l) => errs.push({ id: 'rc-' + l.id, msg: `Attach a receipt for ${l.merchant} on ${fd(l.date)} (${gbp.format(l.amount)}).` }));
+  return errs;
+}
+function showSummary(errs) {
+  $('formview').classList.toggle('submitted-err', errs.length > 0);
+  const box = $('summary');
+  if (!errs.length) { box.hidden = true; return; }
+  $('summary-list').innerHTML = errs.map((e) => `<li><a href="#${e.id}" data-go="${e.id}">${esc(e.msg)}</a></li>`).join('');
+  box.hidden = false; box.focus(); box.scrollIntoView({ block: 'nearest' });
+}
+
+/* events */
+$('summary').addEventListener('click', (e) => {
+  const a = e.target.closest('[data-go]'); if (!a) return;
+  e.preventDefault();
+  const el = $(a.dataset.go); if (!el) return;
+  el.scrollIntoView({ block: 'center' }); el.focus({ preventScroll: true });
+});
+$('lines-wrap').addEventListener('change', (e) => {
+  const inp = e.target.closest('input[type=file]'); if (!inp || !inp.files[0]) return;
+  lines.find((l) => l.id == inp.dataset.id).receipt = inp.files[0].name;
+  refresh(); if (!$('summary').hidden) showSummary(validate());
+});
+$('lines-wrap').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-remove]'); if (!b) return;
+  lines = lines.filter((l) => l.id != b.dataset.remove); refresh();
+  if (!$('summary').hidden) showSummary(validate());
+});
+['f-start', 'f-end'].forEach((id) => $(id).addEventListener('change', renderRail));
+$('add-receipt').addEventListener('change', (e) => { $('add-file-name').textContent = e.target.files[0] ? e.target.files[0].name : 'PDF or photo, up to 10 MB'; });
+$('add-btn').addEventListener('click', () => {
+  let ok = true;
+  ['add-date', 'add-amount', 'add-merchant'].forEach((id) => setErr(id, ''));
+  const date = $('add-date').value, merchant = $('add-merchant').value.trim(), raw = $('add-amount').value.replace(/[£,\s]/g, ''), amount = parseFloat(raw);
+  if (!date) { setErr('add-date', 'Enter the date on the receipt.'); ok = false; }
+  else if (($('f-start').value && date < $('f-start').value) || ($('f-end').value && date > $('f-end').value)) { setErr('add-date', 'Use a date within the trip.'); ok = false; }
+  if (!merchant) { setErr('add-merchant', 'Enter who you paid.'); ok = false; }
+  if (!/^\d+(\.\d{1,2})?$/.test(raw) || !(amount > 0)) { setErr('add-amount', 'Enter an amount like 24.50.'); ok = false; }
+  if (!ok) { document.querySelector('#addbox [aria-invalid="true"]').focus(); return; }
+  const f = $('add-receipt').files[0];
+  lines.push({ id: nextId++, date, cat: $('add-cat').value, merchant, note: '', amount, receipt: f ? f.name : null });
+  lines.sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id);
+  $('add-merchant').value = ''; $('add-amount').value = ''; $('add-receipt').value = ''; $('add-file-name').textContent = 'PDF or photo, up to 10 MB';
+  refresh(); if (!$('summary').hidden) showSummary(validate());
+  $('add-merchant').focus();
+});
+$('save-draft').addEventListener('click', () => {
+  const b = $('save-draft'); b.textContent = 'Draft saved';
+  setTimeout(() => (b.textContent = 'Save draft'), 2000);
+});
+$('menu-btn').addEventListener('click', (e) => {
+  const open = $('navpanel').classList.toggle('open');
+  e.currentTarget.setAttribute('aria-expanded', open);
+});
+
+let pending = false;
+function submitting() {
+  pending = true;
+  const b = $('submit'); b.textContent = 'Submitting…'; b.setAttribute('aria-busy', 'true');
+  $('sections').inert = true; $('sections').style.opacity = '0.7';
+}
+$('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (pending) return;
+  const errs = validate(); showSummary(errs);
+  if (errs.length) return;
+  submitting();
+  setTimeout(() => {
+    $('done-text').textContent = `${REPORT_ID} went to Priya Raman for approval. ${gbp.format(totalP() / 100)} is paid out in the 27 Nov pay run once she approves.`;
+    $('formview').hidden = true; $('done').hidden = false; $('done-title').focus(); window.scrollTo(0, 0);
+  }, 1400);
+});
+
+fillTrip(); refresh();
+if (STATE === 'error') showSummary(validate());
+if (STATE === 'submitting') { lines.filter(need).forEach((l) => (l.receipt = 'receipt-' + l.id + '.pdf')); refresh(); submitting(); }
+</script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aero Runner 2 - Stride</title>
+<style>
+:root{
+  --bg:#eceae6; --surface:#fff; --surface-2:#f4f2ee; --text:#16161a; --muted:#6b6b73; --line:#e4e1db;
+  --brand:#16161a; --on-brand:#fff; --focus:#2f5bff; --good:#12805c; --warn:#b4231a; --star:#e8a317;
+  --upper:#d9f24a; --accent:#16161a; --sole:#fbfaf7;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0b0b0d; --surface:#17171a; --surface-2:#202024; --text:#f3f2ee; --muted:#9e9ea7; --line:#2c2c31;
+    --brand:#f3f2ee; --on-brand:#16161a; --focus:#7f9bff; --good:#4cc79a; --warn:#ff8a80; --star:#f2b84b;}
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.app{max-width:430px;margin:0 auto;min-height:100vh;background:var(--surface);position:relative;box-shadow:0 0 0 1px var(--line)}
+@media (min-width:600px){.app{margin-block:24px;min-height:calc(100vh - 48px);border-radius:28px;overflow:clip}}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:4px;padding:8px 12px;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.bar h1{flex:1;font-size:1rem;font-weight:650;text-align:center}
+.icon{position:relative;width:44px;height:44px;display:grid;place-items:center;border-radius:50%}
+.icon:hover{background:var(--surface-2)}
+.icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#fav[aria-pressed=true] svg{fill:var(--warn);stroke:var(--warn)}
+#count{position:absolute;top:4px;right:2px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--brand);color:var(--on-brand);font-size:.7rem;font-weight:700;display:grid;place-items:center}
+#count[hidden]{display:none}
+
+/* gallery */
+.gallery{position:relative}
+.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;aspect-ratio:1;scroll-snap-align:center;display:grid;place-items:center;overflow:hidden;background:color-mix(in srgb,var(--upper) 16%,var(--surface-2))}
+.slide svg{width:92%;height:auto;filter:drop-shadow(0 18px 14px rgba(0,0,0,.22))}
+.slide:nth-child(2) svg{width:190%;transform:translate(-4%,6%)}
+.slide:nth-child(3) svg{transform:scaleX(-1)}
+.dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:6px}
+.dots i{width:7px;height:7px;border-radius:4px;background:var(--text);opacity:.25;transition:.2s}
+.dots i.on{width:20px;opacity:.85}
+.tag{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:99px;background:var(--brand);color:var(--on-brand);font-size:.75rem;font-weight:700;letter-spacing:.03em}
+
+.pad{padding:20px 16px}
+.brand{font-size:.8rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h2.name{font-size:1.65rem;line-height:1.15;margin-top:2px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin-top:2px}
+.row{display:flex;align-items:center;gap:8px}
+.rating{margin-top:10px;font-size:.9rem}
+.stars{--p:94%;flex:none;width:84px;height:16px;background:linear-gradient(90deg,var(--star) var(--p),var(--line) var(--p));-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='16' viewBox='0 0 84 16'%3E%3Cpath id='s' d='M8 .8l2.2 4.9 5.3.5-4 3.6 1.2 5.2L8 12.2l-4.7 2.8 1.2-5.2-4-3.6 5.3-.5z'/%3E%3Cuse href='%23s' x='17'/%3E%3Cuse href='%23s' x='34'/%3E%3Cuse href='%23s' x='51'/%3E%3Cuse href='%23s' x='68'/%3E%3C/svg%3E") 0 0/84px 16px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='16' viewBox='0 0 84 16'%3E%3Cpath id='s' d='M8 .8l2.2 4.9 5.3.5-4 3.6 1.2 5.2L8 12.2l-4.7 2.8 1.2-5.2-4-3.6 5.3-.5z'/%3E%3Cuse href='%23s' x='17'/%3E%3Cuse href='%23s' x='34'/%3E%3Cuse href='%23s' x='51'/%3E%3Cuse href='%23s' x='68'/%3E%3C/svg%3E") 0 0/84px 16px no-repeat}
+.rating a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.price{display:flex;align-items:baseline;gap:10px;margin-top:14px}
+.price b{font-size:1.7rem;letter-spacing:-.01em}
+.price s{color:var(--muted)}
+.price em{font-style:normal;font-size:.8rem;font-weight:700;color:var(--good);background:color-mix(in srgb,var(--good) 14%,transparent);padding:2px 8px;border-radius:99px}
+.note{font-size:.85rem;color:var(--muted);margin-top:4px}
+
+.label{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px;font-weight:650}
+.label span{font-weight:400;color:var(--muted)}
+.label button{font-weight:500;font-size:.9rem;text-decoration:underline;text-underline-offset:3px;color:var(--muted);min-height:32px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+.swatches{display:flex;gap:12px;position:relative}
+.swatches label{position:relative;width:56px;height:56px;border-radius:14px;cursor:pointer;border:2px solid var(--line);display:grid;place-items:center;background:var(--surface-2)}
+.swatches label i{width:34px;height:34px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.swatches input:checked+label{border-color:var(--brand)}
+.swatches input:focus-visible+label,.sizes input:focus-visible+label{outline:3px solid var(--focus);outline-offset:2px}
+
+.sizes{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-radius:12px}
+.sizes label{display:grid;place-items:center;height:48px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums}
+.sizes label:hover{border-color:var(--muted)}
+.sizes input:checked+label{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.sizes input:disabled+label{color:var(--muted);cursor:not-allowed;background:repeating-linear-gradient(135deg,transparent 0 7px,var(--line) 7px 8px);opacity:.7;text-decoration:line-through}
+.sizes.err{outline:2px solid var(--warn);outline-offset:6px;animation:nudge .3s}
+@keyframes nudge{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#err{color:var(--warn);font-size:.85rem;font-weight:600;margin-top:12px;min-height:1.3em}
+
+.perks{display:grid;margin-top:14px;border:1px solid var(--line);border-radius:16px}
+.perks div{display:flex;gap:12px;padding:14px;align-items:center}
+.perks div+div{border-top:1px solid var(--line)}
+.perks svg{flex:none;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.perks small{display:block;color:var(--muted);font-size:.85rem}
+
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:56px;font-weight:650;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:9px;height:9px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg);transition:.2s;margin-right:4px}
+details[open] summary::after{transform:rotate(-135deg)}
+details .body{padding:0 0 16px;color:var(--muted)}
+details ul{padding-left:18px}
+details li+li{margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:.9rem;font-variant-numeric:tabular-nums;margin:4px 0 8px}
+td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--text);font-weight:600}
+.guide{border:0!important;margin-bottom:10px}
+.guide>summary{display:none}
+.guide .body{padding:0 12px 12px;background:var(--surface-2);border-radius:12px;font-size:.9rem}
+
+.rev+.rev{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.rev b{color:var(--text)}
+.rev .stars{width:66px;height:13px;-webkit-mask-size:66px 13px;mask-size:66px 13px;--p:100%}
+.rev p{margin-top:4px}
+
+h3.sec{font-size:1.15rem;margin:28px 0 12px}
+.more{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:6px;margin-inline:-16px;padding-inline:16px;scrollbar-width:none}
+.more::-webkit-scrollbar{display:none}
+.card{flex:0 0 150px;scroll-snap-align:start}
+.card div{aspect-ratio:1;border-radius:16px;display:grid;place-items:center;background:color-mix(in srgb,var(--upper) 16%,var(--surface-2))}
+.card svg{width:92%}
+.card p{font-weight:600;font-size:.9rem;margin-top:8px}
+.card span{color:var(--muted);font-size:.85rem}
+
+/* buy bar */
+.buy{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;gap:14px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.buy .p{line-height:1.15}
+.buy .p small{display:block;color:var(--muted);font-size:.75rem}
+.buy .p b{font-size:1.2rem}
+#add{flex:1;height:52px;border-radius:14px;background:var(--brand);color:var(--on-brand);font-weight:700;font-size:1rem;transition:transform .1s}
+#add:active{transform:scale(.98)}
+#add.done{background:var(--good);color:#fff}
+.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:.9rem;font-weight:600;transition:.25s;z-index:9;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="shoe" viewBox="0 0 400 250">
+    <path d="M62 176C56 134 64 102 80 76l42-8c14 22 40 30 70 30 32 0 56-10 78-22 30 22 62 46 90 60 18 9 28 24 26 42z" fill="var(--upper)"/>
+    <path d="M80 76l42-8c8 14 20 22 34 26-10 20-34 28-58 24-2-14-4-28-18-42z" fill="var(--accent)" opacity=".16"/>
+    <path d="M62 176C58 150 60 128 66 108l28 6c-6 20-8 42-6 62z" fill="var(--accent)"/>
+    <path d="M126 164C180 156 248 134 306 108" fill="none" stroke="var(--accent)" stroke-width="13" stroke-linecap="round"/>
+    <g stroke="var(--sole)" stroke-width="5" stroke-linecap="round" opacity=".95">
+      <path d="M176 100l18-14M200 100l18-14M224 98l18-14M248 94l17-14"/>
+    </g>
+    <path d="M326 140c26 8 46 20 58 34l-60 4z" fill="var(--accent)" opacity=".16"/>
+    <path d="M32 190c-2-18 12-24 32-24l266-8c34-1 54 6 56 26 2 18-10 30-34 30l-268 4c-30 0-50-6-52-28z" fill="var(--sole)"/>
+    <path d="M36 198c20 6 60 8 120 6l200-8c10-1 22-6 28-14" fill="none" stroke="var(--accent)" stroke-width="5" opacity=".35"/>
+    <path d="M60 222l270-4" stroke="rgba(0,0,0,.18)" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12"/>
+  </symbol>
+</svg>
+
+<div class="app">
+  <header class="bar">
+    <button class="icon" aria-label="Back" onclick="history.length>1&&history.back()"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <h1>Running</h1>
+    <button class="icon" id="fav" aria-pressed="false" aria-label="Save to favourites"><svg viewBox="0 0 24 24"><path d="M12 20.5s-8-4.6-8-10.7A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 2.8c0 6.1-8 10.7-8 10.7z"/></svg></button>
+    <button class="icon" aria-label="Bag"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="count" hidden>0</span></button>
+  </header>
+
+  <main>
+    <section class="gallery" id="gallery" aria-label="Product photos">
+      <div class="slides" id="slides" tabindex="0">
+        <div class="slide" role="img" aria-label="Side view"><svg viewBox="0 0 400 250"><use href="#shoe"/></svg></div>
+        <div class="slide" role="img" aria-label="Toe and upper detail"><svg viewBox="0 0 400 250"><use href="#shoe"/></svg></div>
+        <div class="slide" role="img" aria-label="Opposite side view"><svg viewBox="0 0 400 250"><use href="#shoe"/></svg></div>
+      </div>
+      <span class="tag">NEW SEASON</span>
+      <div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+    </section>
+
+    <div class="pad" id="product">
+      <p class="brand">Stride Lab</p>
+      <h2 class="name">Aero Runner 2</h2>
+      <p class="sub">Men's road running shoe</p>
+      <div class="row rating"><span class="stars" role="img" aria-label="4.7 out of 5"></span><b>4.7</b><a href="#reviews">312 reviews</a></div>
+
+      <div class="price"><b>$138</b><s>$165</s><em>16% off</em></div>
+      <p class="note">Or 4 payments of $34.50 with no interest.</p>
+
+      <div class="label">Colour <span id="cname">Volt</span></div>
+      <div class="swatches" id="swatches" role="radiogroup" aria-label="Colour">
+        <input class="sr" type="radio" name="c" id="c0" checked data-n="Volt" data-u="#d9f24a" data-a="#16161a" data-s="#fbfaf7"><label for="c0" style="--c:#d9f24a"><i></i><span class="sr">Volt</span></label>
+        <input class="sr" type="radio" name="c" id="c1" data-n="Midnight" data-u="#2c3a8c" data-a="#ff6b3d" data-s="#f1efe9"><label for="c1" style="--c:#2c3a8c"><i></i><span class="sr">Midnight</span></label>
+        <input class="sr" type="radio" name="c" id="c2" data-n="Bone" data-u="#e9e2d3" data-a="#6b4f3a" data-s="#ffffff"><label for="c2" style="--c:#e9e2d3"><i></i><span class="sr">Bone</span></label>
+        <input class="sr" type="radio" name="c" id="c3" data-n="Coral" data-u="#ff7a66" data-a="#2a1a1a" data-s="#fff4ef"><label for="c3" style="--c:#ff7a66"><i></i><span class="sr">Coral</span></label>
+      </div>
+
+      <div class="label">Size (US men's) <button type="button" id="guideBtn">Size guide</button></div>
+      <details class="guide" id="guide"><summary>Size guide</summary>
+        <div class="body">
+          <table><tr><th>US</th><th>UK</th><th>EU</th><th>Foot (cm)</th></tr>
+          <tr><td>8</td><td>7</td><td>41</td><td>26.0</td></tr>
+          <tr><td>9</td><td>8</td><td>42.5</td><td>27.0</td></tr>
+          <tr><td>10</td><td>9</td><td>44</td><td>27.9</td></tr>
+          <tr><td>11</td><td>10</td><td>45</td><td>28.8</td></tr></table>
+          Runs half a size small. Size up if you are between sizes.
+        </div></details>
+      <div class="sizes" id="sizes" role="radiogroup" aria-label="Size">
+        <input class="sr" type="radio" name="s" id="s7" value="7" disabled><label for="s7">7</label>
+        <input class="sr" type="radio" name="s" id="s75" value="7.5"><label for="s75">7.5</label>
+        <input class="sr" type="radio" name="s" id="s8" value="8"><label for="s8">8</label>
+        <input class="sr" type="radio" name="s" id="s85" value="8.5"><label for="s85">8.5</label>
+        <input class="sr" type="radio" name="s" id="s9" value="9"><label for="s9">9</label>
+        <input class="sr" type="radio" name="s" id="s95" value="9.5"><label for="s95">9.5</label>
+        <input class="sr" type="radio" name="s" id="s10" value="10"><label for="s10">10</label>
+        <input class="sr" type="radio" name="s" id="s105" value="10.5" disabled><label for="s105">10.5</label>
+        <input class="sr" type="radio" name="s" id="s11" value="11"><label for="s11">11</label>
+        <input class="sr" type="radio" name="s" id="s115" value="11.5"><label for="s115">11.5</label>
+        <input class="sr" type="radio" name="s" id="s12" value="12" disabled><label for="s12">12</label>
+        <input class="sr" type="radio" name="s" id="s13" value="13"><label for="s13">13</label>
+      </div>
+      <p id="err" role="alert"></p>
+
+      <div class="perks">
+        <div><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a1.5 1.5 0 1 0 0-.01M17 19a1.5 1.5 0 1 0 0-.01"/></svg><span>Free delivery by Tue, 1 Dec<small>Order within 3 h 12 min</small></span></div>
+        <div><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 4v5h-5M20 12a8 8 0 0 1-14 5l-2-2M4 20v-5h5"/></svg><span>Free returns within 60 days<small>Run in them. Send them back if they do not fit.</small></span></div>
+      </div>
+
+      <div style="margin-top:22px">
+        <details open><summary>Details</summary><div class="body"><ul>
+          <li>Responsive foam midsole, 38 mm heel and 30 mm forefoot.</li>
+          <li>Engineered mesh upper with a padded, breathable collar.</li>
+          <li>Rubber outsole with flex grooves for a smooth toe-off.</li>
+          <li>Weight 262 g in a US men's 9. Drop 8 mm.</li></ul></div></details>
+        <details><summary>Materials and care</summary><div class="body">Upper: 100% recycled polyester mesh. Midsole: EVA foam. Outsole: carbon rubber. Spot clean with a damp cloth and air dry. Do not machine wash.</div></details>
+        <details id="reviews"><summary>Reviews (312)</summary><div class="body">
+          <div class="rev"><div class="row"><span class="stars" role="img" aria-label="5 out of 5"></span><b>Daniel O.</b></div><p>Ran a half marathon in them last weekend. Light and soft, and no hot spots at all.</p></div>
+          <div class="rev"><div class="row"><span class="stars" role="img" aria-label="4 out of 5" style="--p:80%"></span><b>Priya S.</b></div><p>Great cushioning. They run a touch small, so I went up half a size and now they fit.</p></div>
+        </div></details>
+      </div>
+
+      <h3 class="sec">You may also like</h3>
+      <div class="more">
+        <div class="card" style="--upper:#ff7a66;--accent:#2a1a1a;--sole:#fff4ef"><div><svg viewBox="0 0 400 250"><use href="#shoe"/></svg></div><p>Aero Trail</p><span>$149</span></div>
+        <div class="card" style="--upper:#2c3a8c;--accent:#d9f24a;--sole:#f1efe9"><div><svg viewBox="0 0 400 250"><use href="#shoe"/></svg></div><p>Pulse Tempo</p><span>$129</span></div>
+        <div class="card" style="--upper:#e9e2d3;--accent:#16161a;--sole:#ffffff"><div><svg viewBox="0 0 400 250"><use href="#shoe"/></svg></div><p>Court Classic</p><span>$110</span></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="buy">
+    <div class="p"><small>Total</small><b>$138</b></div>
+    <button id="add" type="button">Select a size</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s), sizes=$('#sizes'), add=$('#add'), err=$('#err'), root=document.documentElement;
+let n=0, t;
+const toast=m=>{const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(t);t=setTimeout(()=>e.classList.remove('on'),2200)};
+$('#swatches').addEventListener('change',e=>{const d=e.target.dataset;
+  root.style.setProperty('--upper',d.u);root.style.setProperty('--accent',d.a);root.style.setProperty('--sole',d.s);
+  $('#cname').textContent=d.n});
+sizes.addEventListener('change',()=>{const v=sizes.querySelector(':checked').value;
+  sizes.classList.remove('err');add.textContent='Add to bag';
+  err.textContent=(v==='13'||v==='7.5')?'Only a few left in this size.':''});
+add.addEventListener('click',()=>{
+  const s=sizes.querySelector(':checked');
+  if(!s){sizes.classList.remove('err');void sizes.offsetWidth;sizes.classList.add('err');err.textContent='Choose a size to continue.';sizes.scrollIntoView({block:'center',behavior:'smooth'});return}
+  n++;const c=$('#count');c.hidden=false;c.textContent=n;
+  add.textContent='Added';add.classList.add('done');setTimeout(()=>{add.textContent='Add to bag';add.classList.remove('done')},1400);
+  toast('Aero Runner 2, '+$('#cname').textContent+', US '+s.value+' added to your bag')});
+$('#fav').addEventListener('click',e=>{const b=e.currentTarget,on=b.getAttribute('aria-pressed')!=='true';
+  b.setAttribute('aria-pressed',on);toast(on?'Saved to favourites':'Removed from favourites')});
+$('#guideBtn').addEventListener('click',()=>{const d=$('#guide');d.open=!d.open});
+const sl=$('#slides'),dots=[...$('#dots').children];
+sl.addEventListener('scroll',()=>{const i=Math.round(sl.scrollLeft/sl.clientWidth);dots.forEach((d,j)=>d.classList.toggle('on',i===j))},{passive:true});
+sl.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();sl.scrollBy({left:(e.key==='ArrowRight'?1:-1)*sl.clientWidth,behavior:'smooth'})}});
+</script>
+</body>
+</html>

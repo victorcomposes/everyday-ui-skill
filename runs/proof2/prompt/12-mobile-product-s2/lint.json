@@ -1,0 +1,77 @@
+{
+  "axe": {
+    "rules": {
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "moderate": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "avenir next"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(26, 24, 20)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(185, 60, 20)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 3,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "4.7 out of 5, 312 reviews",
+        "w": 234,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Size guide",
+        "w": 65,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "See all 312",
+        "w": 66,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

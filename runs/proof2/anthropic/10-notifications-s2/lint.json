@@ -1,0 +1,98 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "bahnschrift",
+    "segoe ui variable text"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(18, 34, 43)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(23, 96, 122)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 44,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Gigwell",
+        "w": 112,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 358,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "text": "Everything\n7",
+        "w": 128,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Offers and invites\n2",
+        "w": 172,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Messages\n1",
+        "w": 121,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Contracts and delivery\n1",
+        "w": 204,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Payments\n1",
+        "w": 119,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Reviews\n1",
+        "w": 108,
+        "h": 37
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

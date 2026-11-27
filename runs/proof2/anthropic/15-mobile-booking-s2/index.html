@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a check-up - Fernlea</title>
+<style>
+:root {
+  --enamel: #f2f6f3;
+  --paper: #ffffff;
+  --ink: #12302a;
+  --ink-soft: #4d655e;
+  --line: #d3dfd9;
+  --fern: #1f6b4f;
+  --fern-deep: #0f3d2e;
+  --sage: #dcebe2;
+  --on-fern: #ffffff;
+  --mint: #b9e4cb;
+  --taken: #e6ece8;
+  --focus: #1b63d6;
+  --shadow: 0 1px 0 rgba(15,61,46,.06), 0 10px 30px -12px rgba(15,61,46,.25);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --enamel: #0c1815;
+    --paper: #14241f;
+    --ink: #e6f1ec;
+    --ink-soft: #99b1a8;
+    --line: #294039;
+    --fern: #6fcf9f;
+    --fern-deep: #bfeed6;
+    --sage: #1d3a2f;
+    --on-fern: #07251a;
+    --mint: #2c5a46;
+    --taken: #1a2c26;
+    --focus: #8ab6ff;
+    --shadow: 0 1px 0 rgba(0,0,0,.3), 0 10px 30px -12px rgba(0,0,0,.6);
+  }
+}
+* { box-sizing: border-box; margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--enamel);
+  color: var(--ink);
+  font: 16px/1.45 var(--sans);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.app {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  background: var(--enamel);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+@media (min-width: 600px) {
+  body { background: color-mix(in srgb, var(--enamel) 70%, var(--ink) 8%); padding: 28px 0; }
+  .app { min-height: 0; height: min(860px, calc(100vh - 56px)); border-radius: 36px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--line); }
+  main { overflow-y: auto; }
+}
+
+header { padding: 20px 20px 4px; display: flex; gap: 12px; align-items: center; }
+.back {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--paper);
+  display: grid; place-items: center; flex: none;
+}
+.back svg { width: 20px; height: 20px; }
+.title { font-family: var(--serif); font-size: 26px; line-height: 1.15; font-weight: 600; letter-spacing: -.01em; }
+.where { font-size: 14px; color: var(--ink-soft); margin-top: 2px; }
+
+main { flex: 1; padding: 8px 20px 24px; }
+section { margin-top: 20px; }
+h2 { font-family: var(--serif); font-size: 19px; font-weight: 600; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+h2 small { font-family: var(--sans); font-size: 14px; font-weight: 400; color: var(--ink-soft); }
+
+/* dentists */
+.dentists { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0; list-style: none; }
+.dentists li { display: flex; }
+.dentist {
+  width: 100%; text-align: center; background: var(--paper); position: relative;
+  border: 1.5px solid var(--line); border-radius: 18px;
+  padding: 12px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: border-color .15s, background-color .15s;
+}
+.dentist[aria-checked="true"] { border-color: var(--fern); background: var(--sage); }
+.avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--mint); display: grid; place-items: center; overflow: hidden; }
+.avatar svg { width: 100%; height: 100%; }
+.dentist b { display: block; font-weight: 650; font-size: 15px; line-height: 1.2; }
+.dentist .role { display: block; font-size: 13px; line-height: 1.25; color: var(--ink-soft); margin-top: 2px; }
+.tick { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--line); display: grid; place-items: center; }
+.dentist[aria-checked="true"] .tick { background: var(--fern); border-color: var(--fern); }
+.tick svg { width: 12px; height: 12px; opacity: 0; }
+.dentist[aria-checked="true"] .tick svg { opacity: 1; }
+
+/* week */
+.nav { display: flex; gap: 8px; }
+.nav button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); display: grid; place-items: center; }
+.nav button:disabled { opacity: .35; cursor: default; }
+.nav svg { width: 18px; height: 18px; }
+.weekhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.weekhead h2 { margin: 0; }
+.days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.day {
+  min-height: 64px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 4px 0;
+}
+.day .w { font-size: 13px; color: var(--ink-soft); }
+.day .n { font-family: var(--serif); font-size: 21px; font-weight: 600; line-height: 1.1; }
+.day[aria-pressed="true"] { background: var(--fern); border-color: var(--fern); color: var(--on-fern); }
+.day[aria-pressed="true"] .w { color: inherit; opacity: .85; }
+.day:disabled { background: transparent; border-style: dashed; cursor: default; }
+.day:disabled .n { color: var(--ink-soft); font-weight: 400; text-decoration: line-through; text-decoration-thickness: 1px; }
+.dayhint { font-size: 14px; color: var(--ink-soft); margin-top: 8px; }
+
+/* slots */
+.part { margin-bottom: 14px; }
+.part h3 { font-size: 14px; font-weight: 500; color: var(--ink-soft); margin-bottom: 6px; }
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.slot {
+  min-height: 48px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--paper);
+  font-variant-numeric: tabular-nums; font-weight: 550;
+}
+.slot[aria-pressed="true"] { background: var(--fern); border-color: var(--fern); color: var(--on-fern); }
+.slot:disabled { background: var(--taken); border-color: transparent; color: var(--ink-soft); text-decoration: line-through; text-decoration-thickness: 1px; cursor: default; opacity: .8; }
+.empty { border: 1.5px dashed var(--line); border-radius: 14px; padding: 18px; color: var(--ink-soft); font-size: 15px; }
+
+/* bottom bar */
+.bar {
+  position: sticky; bottom: 0; background: var(--paper); border-top: 1px solid var(--line);
+  padding: 12px 20px calc(14px + env(safe-area-inset-bottom)); display: grid; gap: 10px;
+}
+.sum { font-size: 15px; min-height: 22px; }
+.sum b { font-weight: 650; }
+.sum .muted { color: var(--ink-soft); }
+.go {
+  min-height: 52px; border-radius: 16px; border: 0; background: var(--fern-deep); color: var(--paper);
+  font-weight: 650; font-size: 17px;
+}
+.go:disabled { background: var(--taken); color: var(--ink-soft); cursor: default; }
+
+/* confirmation */
+.done {
+  position: absolute; inset: 0; background: var(--enamel); padding: 48px 24px 24px; display: none; flex-direction: column; gap: 18px; z-index: 5;
+}
+.done.show { display: flex; animation: rise .35s ease-out; }
+@keyframes rise { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .done.show { animation: none; } * { transition: none !important; } }
+.seal { width: 72px; height: 72px; border-radius: 50%; background: var(--fern); display: grid; place-items: center; }
+.seal svg { width: 36px; height: 36px; }
+.done h2 { font-size: 28px; display: block; margin: 0; line-height: 1.15; }
+.ticket { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 4px 16px; }
+.ticket div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.ticket div:last-child { border-bottom: 0; }
+.ticket dt { color: var(--ink-soft); }
+.ticket dd { font-weight: 600; text-align: right; }
+.done .go { margin-top: auto; }
+.note { font-size: 14px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <button class="back" type="button" aria-label="Back to appointments">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div>
+      <h1 class="title">Book a check-up</h1>
+      <p class="where">Fernlea Dental, 14 Alder Row. 30 minutes, &pound;65</p>
+    </div>
+  </header>
+
+  <main>
+    <section aria-labelledby="h-dentist">
+      <h2 id="h-dentist">Who would you like to see?</h2>
+      <ul class="dentists" role="radiogroup" aria-labelledby="h-dentist" id="dentists"></ul>
+    </section>
+
+    <section aria-labelledby="h-day">
+      <div class="weekhead">
+        <h2 id="h-day">Pick a day</h2>
+        <div class="nav">
+          <button type="button" id="prev" aria-label="Previous week"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button type="button" id="next" aria-label="Next week"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+            <div class="days" id="days"></div>
+      <p class="dayhint" id="dayhint"></p>
+    </section>
+
+    <section aria-labelledby="h-time">
+      <h2 id="h-time">Pick a time</h2>
+      <div id="slots" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div class="bar">
+    <p class="sum" id="sum" aria-live="polite"></p>
+    <button class="go" type="button" id="go" disabled>Confirm booking</button>
+  </div>
+
+  <div class="done" id="done" role="dialog" aria-modal="true" aria-labelledby="done-h" hidden>
+    <div class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-fern)"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2 id="done-h">Your check-up is booked</h2>
+    <dl class="ticket" id="ticket"></dl>
+    <p class="note">We will text a reminder the day before. Free changes up to 24 hours ahead.</p>
+    <button class="go" type="button" id="close">Done</button>
+  </div>
+</div>
+
+<script>
+const DENTISTS = [
+  { id: "okafor", name: "Dr Amara Okafor", short: "Okafor", role: "General, 12 years", works: [1,2,3,4], skin: "#c9946b", hair: "#2a1d16" },
+  { id: "wieczorek", name: "Dr Tomasz Wieczorek", short: "Wieczorek", role: "Family dentistry", works: [2,3,4,5,6], skin: "#e8bf9c", hair: "#6d4a2b" },
+  { id: "raman", name: "Dr Priya Raman", short: "Raman", role: "Gentle with nervous patients", works: [1,3,5], skin: "#a9714a", hair: "#150f0d" }
+];
+const MORNING = ["08:30","09:00","09:30","10:00","10:30","11:00","11:30"];
+const AFTERNOON = ["13:30","14:00","14:30","15:00","15:30","16:00","16:30"];
+const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const FIRST_MONDAY = new Date(2026, 10, 30); // clinic "today" is Fri 27 Nov 2026
+const WEEKS = 4;
+
+const state = { dentist: DENTISTS[0], date: null, time: null, week: 0 };
+const $ = id => document.getElementById(id);
+const dateAt = (w, i) => { const d = new Date(FIRST_MONDAY); d.setDate(d.getDate() + w * 7 + i); return d; };
+const fmt = d => `${DOW[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()].slice(0,3)}`;
+const works = (den, d) => den.works.includes(d.getDay());
+// Deterministic "already booked" so the demo is stable.
+const taken = (den, d, t) => {
+  const s = den.id + d.getDate() + d.getMonth() + t;
+  let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return h % 10 < 4;
+};
+const free = (den, d) => [...MORNING, ...AFTERNOON].filter(t => !taken(den, d, t));
+
+function avatar(d) {
+  return `<svg viewBox="0 0 52 52" aria-hidden="true"><path d="M8 52c0-12 8-17 18-17s18 5 18 17z" fill="#f4f8f6"/><path d="M20 35l6 7 6-7" fill="none" stroke="#1f6b4f" stroke-width="2"/><rect x="22" y="27" width="8" height="10" rx="3" fill="${d.skin}"/><ellipse cx="26" cy="20" rx="9" ry="10" fill="${d.skin}"/><path d="M16.5 19c0-8 5-11 10-11 6 0 9.500 4 9 11-2-4-5-6-9-6s-7 2-10 6z" fill="${d.hair}"/></svg>`;
+}
+
+function renderDentists() {
+  $("dentists").innerHTML = DENTISTS.map(d => `
+    <li><button type="button" class="dentist" role="radio" aria-checked="${d === state.dentist}" data-id="${d.id}" aria-label="${d.name}, ${d.role}">
+      <span class="avatar">${avatar(d)}</span>
+      <span><b>Dr ${d.short}</b><span class="role">${d.role}</span></span>
+      <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-fern)"><path d="M5 12.5l4.5 4.5L19 7.500"/></svg></span>
+    </button></li>`).join("");
+}
+
+function renderDays() {
+  const den = state.dentist;
+  const first = dateAt(state.week, 0), last = dateAt(state.week, 5);
+  const range = first.getMonth() === last.getMonth()
+    ? `${first.getDate()} to ${last.getDate()} ${MONTHS[first.getMonth()]} ${first.getFullYear()}`
+    : `${first.getDate()} ${MONTHS[first.getMonth()]} to ${last.getDate()} ${MONTHS[last.getMonth()]} ${last.getFullYear()}`;
+  $("prev").disabled = state.week === 0;
+  $("next").disabled = state.week === WEEKS - 1;
+  let html = "";
+  for (let i = 0; i < 6; i++) {
+    const d = dateAt(state.week, i), ok = works(den, d);
+    const sel = state.date && state.date.getTime() === d.getTime();
+    html += `<button type="button" class="day" data-i="${i}" aria-pressed="${!!sel}" ${ok ? "" : "disabled"} aria-label="${fmt(d)}${ok ? "" : ", not working"}">
+      <span class="w">${DOW[d.getDay()]}</span><span class="n">${d.getDate()}</span></button>`;
+  }
+  $("days").innerHTML = html;
+  const off = [1,2,3,4,5,6].filter(k => !den.works.includes(k)).map(k => DOW[k]);
+  $("dayhint").textContent = `${range}. ${den.name} is off on ${off.join(" and ")}.`;
+}
+
+function renderSlots() {
+  const box = $("slots"), den = state.dentist, d = state.date;
+  if (!d) { box.innerHTML = `<p class="empty">Pick a day to see ${den.name}'s free times.</p>`; return; }
+  const left = free(den, d).length;
+  if (!left) { box.innerHTML = `<p class="empty">${den.name} is fully booked on ${fmt(d)}. Try another day this week.</p>`; return; }
+  const part = (label, list) => `<div class="part"><h3>${label}</h3><div class="slots">${list.map(t =>
+    `<button type="button" class="slot" data-t="${t}" aria-pressed="${state.time === t}" ${taken(den, d, t) ? "disabled" : ""}>${t}</button>`).join("")}</div></div>`;
+  box.innerHTML = `<p class="dayhint" style="margin:-4px 0 10px">${left} free on ${fmt(d)}. Crossed-out times are taken.</p>` + part("Morning", MORNING) + part("Afternoon", AFTERNOON);
+}
+
+function renderBar() {
+  const { dentist, date, time } = state;
+  $("sum").innerHTML = date && time
+    ? `<b>${fmt(date)} at ${time}</b><br><span class="muted">Check-up with ${dentist.name}</span>`
+    : `<span class="muted">Choose a ${!date ? "day" : "time"} to continue.</span>`;
+  $("go").disabled = !(date && time);
+}
+
+function render() { renderDentists(); renderDays(); renderSlots(); renderBar(); }
+
+function firstOpenDay() {
+  for (let w = 0; w < WEEKS; w++) for (let i = 0; i < 6; i++) {
+    const d = dateAt(w, i);
+    if (works(state.dentist, d) && free(state.dentist, d).length) return { d, w };
+  }
+}
+
+$("dentists").addEventListener("click", e => {
+  const b = e.target.closest(".dentist"); if (!b) return;
+  state.dentist = DENTISTS.find(x => x.id === b.dataset.id);
+  const keepDay = state.date && works(state.dentist, state.date) && free(state.dentist, state.date).length;
+  if (!keepDay) { const f = firstOpenDay(); state.date = f.d; state.week = f.w; }
+  if (state.time && taken(state.dentist, state.date, state.time)) state.time = null;
+  render();
+});
+$("days").addEventListener("click", e => {
+  const b = e.target.closest(".day"); if (!b || b.disabled) return;
+  state.date = dateAt(state.week, +b.dataset.i);
+  if (state.time && taken(state.dentist, state.date, state.time)) state.time = null;
+  render();
+});
+$("slots").addEventListener("click", e => {
+  const b = e.target.closest(".slot"); if (!b || b.disabled) return;
+  state.time = b.dataset.t; render();
+});
+$("prev").onclick = () => { state.week--; renderDays(); };
+$("next").onclick = () => { state.week++; renderDays(); };
+$("go").onclick = () => {
+  const { dentist, date, time } = state;
+  $("ticket").innerHTML = [["Dentist", dentist.name], ["Date", `${DOW[date.getDay()]} ${date.getDate()} ${MONTHS[date.getMonth()]}`], ["Time", time], ["Visit", "Check-up, 30 minutes"], ["Place", "Fernlea Dental, 14 Alder Row"]]
+    .map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+  const dlg = $("done"); dlg.hidden = false; dlg.classList.add("show"); $("close").focus();
+};
+$("close").onclick = () => {
+  const dlg = $("done"); dlg.classList.remove("show"); dlg.hidden = true;
+  state.time = null; render(); $("go").focus();
+};
+
+// Start on the earliest open day so the page is useful before any tap.
+{ const f = firstOpenDay(); state.date = f.d; state.week = f.w; }
+render();
+</script>
+</body>
+</html>

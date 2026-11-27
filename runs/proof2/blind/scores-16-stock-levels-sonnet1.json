@@ -1,0 +1,236 @@
+{
+ "16-stock-levels-s1": {
+  "A": {
+   "hierarchy": 7,
+   "layout": 7,
+   "typography": 7,
+   "colour": 7,
+   "craft": 7,
+   "realism": 7,
+   "mobile": 7,
+   "dark": 5,
+   "overall": 7,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "dark.png: the nav bar turns a bright mint block that fights the dark page"
+  },
+  "B": {
+   "hierarchy": 6,
+   "layout": 6,
+   "typography": 6,
+   "colour": 5,
+   "craft": 5,
+   "realism": 6,
+   "mobile": 4,
+   "dark": 7,
+   "overall": 5,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "mobile-fold.png: status pills and the category label clip at the right edge of each row"
+  },
+  "C": {
+   "hierarchy": 7,
+   "layout": 7,
+   "typography": 6,
+   "colour": 7,
+   "craft": 6,
+   "realism": 6,
+   "mobile": 5,
+   "dark": 7,
+   "overall": 6,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "mobile-fold.png: the nav tabs run off the right edge and the Review order button touches the edge"
+  },
+  "D": {
+   "hierarchy": 8,
+   "layout": 8,
+   "typography": 8,
+   "colour": 8,
+   "craft": 8,
+   "realism": 8,
+   "mobile": 6,
+   "dark": 8,
+   "overall": 8,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "mobile-fold.png: the nav tabs and the filter tabs clip at the right edge"
+  }
+ },
+ "16-stock-levels-s2": {
+  "A": {
+   "hierarchy": 5,
+   "layout": 6,
+   "typography": 5,
+   "colour": 5,
+   "craft": 5,
+   "realism": 5,
+   "mobile": 6,
+   "dark": 6,
+   "overall": 5,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "desktop.png: every row repeats a Reorder button and shows decimals such as 0.0 d and 18.0 L"
+  },
+  "B": {
+   "hierarchy": 8,
+   "layout": 8,
+   "typography": 8,
+   "colour": 8,
+   "craft": 8,
+   "realism": 9,
+   "mobile": 6,
+   "dark": 8,
+   "overall": 8,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "mobile-fold.png: the nav tabs clip at the right edge"
+  },
+  "C": {
+   "hierarchy": 7,
+   "layout": 7,
+   "typography": 7,
+   "colour": 7,
+   "craft": 7,
+   "realism": 7,
+   "mobile": 7,
+   "dark": 7,
+   "overall": 7,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "desktop.png: all nine rows are pre-ticked in a heavy green tint with sparse row detail"
+  },
+  "D": {
+   "hierarchy": 6,
+   "layout": 7,
+   "typography": 6,
+   "colour": 6,
+   "craft": 6,
+   "realism": 6,
+   "mobile": 6,
+   "dark": 6,
+   "overall": 6,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "mobile-fold.png: the All 20 tab is cut off and the draft order sits far below the list"
+  }
+ },
+ "16-stock-levels-s3": {
+  "A": {
+   "hierarchy": 5,
+   "layout": 6,
+   "typography": 5,
+   "colour": 5,
+   "craft": 5,
+   "realism": 6,
+   "mobile": 7,
+   "dark": 6,
+   "overall": 5,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "desktop.png: a plain table with a Reorder button on every row and no sense of what to do first"
+  },
+  "B": {
+   "hierarchy": 8,
+   "layout": 8,
+   "typography": 8,
+   "colour": 8,
+   "craft": 8,
+   "realism": 7,
+   "mobile": 7,
+   "dark": 8,
+   "overall": 8,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "desktop-fold.png: dollar prices for a UK kitchen in Falmouth"
+  },
+  "C": {
+   "hierarchy": 6,
+   "layout": 7,
+   "typography": 7,
+   "colour": 6,
+   "craft": 6,
+   "realism": 6,
+   "mobile": 6,
+   "dark": 6,
+   "overall": 6,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "desktop-fold.png: Needs attention 16 beside Reorder now 9 confuses the tab counts, and prices use dollars for Bermondsey"
+  },
+  "D": {
+   "hierarchy": 7,
+   "layout": 7,
+   "typography": 6,
+   "colour": 7,
+   "craft": 7,
+   "realism": 8,
+   "mobile": 6,
+   "dark": 7,
+   "overall": 7,
+   "seen": [
+    "desktop-fold.png",
+    "desktop.png",
+    "mobile-fold.png",
+    "mobile.png",
+    "dark.png"
+   ],
+   "worst": "mobile-fold.png: the nav tabs clip at the right edge and each card repeats a full-width Reorder button"
+  }
+ }
+}

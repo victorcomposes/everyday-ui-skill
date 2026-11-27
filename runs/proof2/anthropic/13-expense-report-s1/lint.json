@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "select-name": {
+        "impact": "critical",
+        "nodes": 11
+      }
+    },
+    "byImpact": {
+      "critical": {
+        "rules": 1,
+        "nodes": 11
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "bahnschrift",
+    "segoe ui variable text"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(86, 102, 97)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(13, 106, 84)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 61,
+    "examples": [
+      {
+        "tag": "input",
+        "text": "Edinburgh visit, Harcourt & Lo",
+        "w": 358,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "Harcourt & Lowe Shipping",
+        "w": 358,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "2026-11-09",
+        "w": 172,
+        "h": 43
+      },
+      {
+        "tag": "select",
+        "text": "4120 Enterprise sales\n4130 Acc",
+        "w": 358,
+        "h": 40
+      },
+      {
+        "tag": "select",
+        "text": "Travel\nAccommodation\nMeals\nCli",
+        "w": 191,
+        "h": 40
+      },
+      {
+        "tag": "input",
+        "text": "LNER, London King's Cross to E",
+        "w": 328,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "142.60",
+        "w": 127,
+        "h": 41
+      },
+      {
+        "tag": "button",
+        "text": "Remove receipt lner-outbound-t",
+        "w": 34,
+        "h": 34
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

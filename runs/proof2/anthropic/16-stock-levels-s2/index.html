@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock levels - Larderly</title>
+<style>
+:root{
+  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#14282A; --muted:#546A69; --line:#D3DEDB; --line-soft:#E6EDEB;
+  --accent:#0E5A4B; --on-accent:#FFFFFF; --focus:#0E5A4B;
+  --ok:#4C8C78; --low:#C9891A; --low-bg:#FBEFD6; --low-ink:#744600;
+  --out:#B02446; --out-bg:#F9E0E6; --out-ink:#8C1530;
+  --track:#E4EBE9; --row-hover:#F7FAF9; --sel:#EAF4F1;
+  --display:Bahnschrift,"DIN Alternate","Avenir Next Condensed","Franklin Gothic Medium","Segoe UI",system-ui,sans-serif;
+  --body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0D1819; --surface:#142425; --ink:#E5EEEB; --muted:#98ADAA; --line:#2B3F3F; --line-soft:#213334;
+    --accent:#6FD0B4; --on-accent:#08201B; --focus:#6FD0B4;
+    --ok:#5DAA92; --low:#E3B04A; --low-bg:#3A2E12; --low-ink:#F2CD7C;
+    --out:#F0708C; --out-bg:#43192A; --out-ink:#FBA9BA;
+    --track:#223636; --row-hover:#182B2C; --sel:#17302C;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--body);font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+
+/* top bar */
+.bar{background:var(--surface);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1360px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:10px;font:700 20px/1 var(--display);letter-spacing:.01em}
+.brand svg{width:26px;height:26px}
+.bar nav{display:flex;gap:4px;height:100%}
+.bar nav a{white-space:nowrap;display:flex;align-items:center;padding:0 14px;color:var(--muted);text-decoration:none;font-weight:500;border-bottom:3px solid transparent;margin-bottom:-1px}
+.bar nav a:hover{color:var(--ink)}
+.bar nav a[aria-current]{color:var(--ink);border-color:var(--accent)}
+.where{margin-left:auto;color:var(--muted);font-size:14px}
+
+/* layout */
+main{max-width:1360px;margin:0 auto;padding:36px 32px 64px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:40px;align-items:start}
+h1{font:700 44px/1.02 var(--display);letter-spacing:-.01em;margin:0 0 10px}
+.lede{margin:0;font-size:18px;max-width:62ch;color:var(--ink)}
+.lede strong{font-weight:650}
+.counted{margin:8px 0 0;color:var(--muted);font-size:14px}
+
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:28px 0 14px}
+.seg{display:inline-flex;background:var(--track);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:7px 14px;border-radius:8px;cursor:pointer;color:var(--muted);font-weight:550}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.seg .n{margin-left:6px;color:var(--muted);font-weight:500}
+.field{height:38px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 12px}
+input.field{width:220px;margin-left:auto}
+select.field{padding-right:8px}
+
+/* list */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-weight:550;font-size:13px;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+td{padding:14px 12px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--row-hover)}
+tbody tr[data-sel=true]{background:var(--sel)}
+th:first-child,td:first-child{width:48px;padding-left:16px;padding-right:0}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);margin:0;cursor:pointer}
+.name{font-weight:600;font-size:15px}
+.sub{color:var(--muted);font-size:13px}
+.lvl{width:26%;min-width:170px}
+.gauge{position:relative;height:10px;border-radius:5px;background:var(--track);margin:3px 0 4px}
+.gauge i{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--ok);transform-origin:left;animation:fill .9s cubic-bezier(.2,.7,.2,1) both}
+.gauge[data-s=low] i{background:var(--low)}
+.gauge[data-s=out] i{background:var(--out)}
+.gauge b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);border-radius:1px;opacity:.75}
+@keyframes fill{from{transform:scaleX(0)}}
+.qty{white-space:nowrap}
+.qty b{font-weight:650;font-size:15px}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.chip.low{background:var(--low-bg);color:var(--low-ink)}
+.chip.out{background:var(--out-bg);color:var(--out-ink)}
+.chip.ord{background:var(--sel);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.days{white-space:nowrap}
+.empty{padding:48px 24px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+.legend{margin:12px 2px 0;color:var(--muted);font-size:13px;display:flex;align-items:center;gap:8px}
+.legend b{display:inline-block;width:2px;height:14px;background:var(--ink);opacity:.75}
+
+/* order draft */
+.draft{position:sticky;top:20px}
+.draft-head{padding:18px 20px 12px;display:flex;align-items:baseline;justify-content:space-between}
+.draft h2{font:700 24px/1.1 var(--display);margin:0}
+.draft-head span{color:var(--muted);font-size:14px}
+.grp{padding:12px 20px;border-top:1px solid var(--line-soft)}
+.grp-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+.grp-h strong{font-weight:650}
+.grp-h span{color:var(--muted);font-size:13px;text-align:right}
+.line{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;align-items:center}
+.line .ln{font-size:14.5px}
+.line .lp{text-align:right;font-weight:550}
+.step{display:inline-flex;align-items:center;gap:2px;margin-top:2px;grid-column:1/-1}
+.step button{width:28px;height:28px;border:1px solid var(--line);background:var(--surface);border-radius:7px;cursor:pointer;line-height:1;font-size:16px}
+.step button:hover{border-color:var(--accent)}
+.step output{min-width:28px;text-align:center;font-weight:600}
+.step small{color:var(--muted);margin-left:6px;font-size:13px}
+.foot{padding:16px 20px 20px;border-top:1px solid var(--line)}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.total strong{font:700 28px/1 var(--display)}
+.go{width:100%;height:46px;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);font-weight:650;font-size:16px;cursor:pointer}
+.go:disabled{background:var(--track);color:var(--muted);cursor:not-allowed}
+.go:not(:disabled):hover{filter:brightness(1.08)}
+.none{padding:6px 20px 24px;margin:0;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:10px;font-weight:550;opacity:0;pointer-events:none;transition:.25s;z-index:30;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.sheetbar{display:none}
+.close{display:none;border:1px solid var(--line);background:var(--surface);border-radius:8px;height:34px;padding:0 12px;cursor:pointer;margin-bottom:12px}
+
+@media (max-width:1100px){
+  main{grid-template-columns:minmax(0,1fr) 320px;gap:24px;padding:28px 24px 48px}
+  .bar-in{padding:0 24px}
+  .lvl{display:none}
+  th.lvl{display:none}
+}
+@media (max-width:860px){
+  main{display:block;padding:20px 16px 110px}
+  .bar-in{padding:0 16px;gap:16px}
+  .bar nav a{padding:0 9px;font-size:14px}
+  .bar nav a:nth-child(n+3),.where{display:none}
+  h1{font-size:34px}
+  .lede{font-size:16.5px}
+  input.field{flex:1 1 100%;width:100%;margin-left:0}
+  select.field{flex:1}
+  .seg{width:100%}.seg button{flex:1;padding:7px 2px;font-size:14px;white-space:nowrap}.seg .n{margin-left:4px}
+  thead{display:none}
+  table,tbody{display:block}
+  tbody tr{display:grid;grid-template-columns:40px 1fr auto;grid-template-areas:"c n d" "c g g" "c q s";gap:2px 0;padding:12px 14px 12px 0;border-bottom:1px solid var(--line-soft)}
+  tbody tr:last-child{border-bottom:0}
+  td{display:block;padding:0;border:0}
+  td:first-child{grid-area:c;width:auto;padding:2px 0 0 14px}
+  td.c-name{grid-area:n}td.lvl{display:block;grid-area:g;width:auto;min-width:0;padding-top:8px}td.c-days{grid-area:d;text-align:right}
+  td.c-qty{grid-area:q}td.c-sup{grid-area:s;text-align:right}
+  .draft{position:fixed;inset:0;z-index:20;transform:translateY(100%);transition:transform .25s;overflow:auto;background:var(--bg);padding:16px;visibility:hidden}
+  .draft.open{transform:none;visibility:visible}
+  .sheetbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:12px;align-items:center}
+  .sheetbar div{flex:1;font-size:14px;color:var(--muted)}
+  .sheetbar strong{display:block;color:var(--ink);font-size:17px}
+  .sheetbar button{height:44px;padding:0 20px;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);font-weight:650;cursor:pointer}
+  .close{display:inline-block}
+}
+@media (prefers-reduced-motion:reduce){.gauge i{animation:none}.toast,.draft{transition:none}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <svg viewBox="0 0 26 26" aria-hidden="true"><rect x="3" y="3" width="20" height="20" rx="6" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M8 17h10M8 13h10M8 9h6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      Larderly
+    </div>
+    <nav aria-label="Main">
+      <a href="#" aria-current="page">Stock levels</a><a href="#">Orders</a><a href="#">Suppliers</a><a href="#">Recipes</a><a href="#">Waste log</a>
+    </nav>
+    <div class="where">Harbour Street kitchen</div>
+  </div>
+</header>
+
+<main>
+  <section aria-labelledby="t">
+    <h1 id="t">Stock levels</h1>
+    <p class="lede" id="lede"></p>
+    <p class="counted">Last counted Friday 27 November, 07:40, by Amara.</p>
+
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Show">
+        <button type="button" data-tab="need" aria-pressed="true">Needs reorder<span class="n" id="n-need"></span></button>
+        <button type="button" data-tab="ord" aria-pressed="false">On order<span class="n" id="n-ord"></span></button>
+        <button type="button" data-tab="all" aria-pressed="false">All<span class="n" id="n-all"></span></button>
+      </div>
+      <input class="field" id="q" type="search" placeholder="Search ingredients" aria-label="Search ingredients">
+      <select class="field" id="loc" aria-label="Storage area">
+        <option value="">All storage areas</option><option>Walk-in</option><option>Dry store</option><option>Freezer</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead><tr>
+          <th><input type="checkbox" id="all" aria-label="Select every ingredient shown"></th>
+          <th>Ingredient</th><th class="lvl">Level against full shelf</th><th>On hand</th><th>Lasts</th><th>Supplier</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden></div>
+    </div>
+    <p class="legend"><b></b> Reorder point. Bars show on hand against the full shelf.</p>
+  </section>
+
+  <aside class="draft" id="draft" aria-labelledby="dt">
+    <button type="button" class="close" id="close">Back to stock</button>
+    <div class="card">
+      <div class="draft-head"><h2 id="dt">Order draft</h2><span id="dcount"></span></div>
+      <div id="groups"></div>
+      <div class="foot">
+        <div class="total"><span>Estimated total</span><strong id="total"></strong></div>
+        <button type="button" class="go" id="go"></button>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div class="sheetbar">
+  <div><strong id="sbtotal"></strong><span id="sbcount"></span></div>
+  <button type="button" id="open">Review order</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SUP = {
+  "Dairy Direct":{due:"Sat 28 Nov"}, "Harlow Meats":{due:"Mon 30 Nov"}, "Covent Greens":{due:"Sat 28 Nov"},
+  "Harbour Fishmongers":{due:"Sat 28 Nov"}, "Millbrook Dry Goods":{due:"Tue 1 Dec"}
+};
+// name, area, unit, onHand, reorderPoint, fullShelf, usePerDay, supplier, packName, packSize, packPrice
+const RAW = [
+ ["Double cream","Walk-in","L",0,6,15,2.2,"Dairy Direct","6 x 1 L",6,21.60],
+ ["Cod loin","Walk-in","kg",0,4,10,2.5,"Harbour Fishmongers","5 kg box",5,64.00],
+ ["Unsalted butter","Walk-in","kg",1.5,4,12,1.8,"Dairy Direct","5 kg block",5,38.50],
+ ["Free-range eggs","Walk-in","eggs",90,180,360,62,"Dairy Direct","tray of 30",30,7.80],
+ ["Flat-leaf parsley","Walk-in","bunches",4,6,15,3,"Covent Greens","10 bunches",10,8.00],
+ ["Whole milk","Walk-in","L",20,12,30,7,"Dairy Direct","12 L crate",12,10.80],
+ ["Chicken thighs","Walk-in","kg",6,10,24,5.5,"Harlow Meats","10 kg case",10,62.00],
+ ["Lemons","Walk-in","each",38,40,120,14,"Covent Greens","case of 60",60,16.80],
+ ["Chopped tomatoes","Dry store","tins",14,24,72,9,"Millbrook Dry Goods","case of 12",12,22.80],
+ ["Plain flour","Dry store","kg",14,10,50,5,"Millbrook Dry Goods","16 kg sack",16,19.20],
+ ["Frozen fries","Freezer","kg",6,10,30,4,"Harlow Meats","10 kg bag",10,19.00],
+ ["Lamb shoulder","Walk-in","kg",9,8,20,3,"Harlow Meats","10 kg case",10,88.00],
+ ["Shallots","Dry store","kg",11,6,15,1.4,"Covent Greens","5 kg net",5,9.50],
+ ["Arborio rice","Dry store","kg",8,5,15,1.1,"Millbrook Dry Goods","5 kg bag",5,14.40],
+ ["Olive oil","Dry store","L",7,6,20,1.5,"Millbrook Dry Goods","5 L tin",5,34.00],
+ ["Sea salt flakes","Dry store","kg",2.4,1,5,0.2,"Millbrook Dry Goods","1.5 kg tub",1.5,6.20],
+ ["Frozen peas","Freezer","kg",12,5,15,1.2,"Harlow Meats","5 kg bag",5,8.90],
+ ["Vanilla pods","Dry store","each",22,10,50,0.8,"Millbrook Dry Goods","pack of 25",25,46.00]
+];
+const items = RAW.map((r,i)=>{
+  const [name,loc,unit,on,rp,full,per,sup,pack,ps,pp]=r;
+  const status = on===0?"out":on<=rp?"low":"ok";
+  return {id:i,name,loc,unit,on,rp,full,per,sup,pack,ps,pp,status,days:on/per,
+    packs:Math.max(1,Math.ceil((full-on)/ps)),ordered:false};
+}).sort((a,b)=>a.days-b.days);
+const sel = new Set(items.filter(i=>i.status!=="ok").map(i=>i.id));
+let tab="need", focusKey=null;
+const $=id=>document.getElementById(id);
+const gbp=n=>"£"+n.toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=n=>Number.isInteger(n)?String(n):n.toFixed(1);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pl=(n,w)=>n+" "+w+(n===1?"":"s");
+
+function lastsText(i){
+  if(i.status==="out") return '<span class="chip out">Out</span>';
+  const d=i.days;
+  const t=d<1?"under a day":d<2?"1 day":Math.floor(d)+" days";
+  return i.status==="low"?'<span class="chip low">Low</span> '+t:t;
+}
+function visible(){
+  const q=$("q").value.trim().toLowerCase(), l=$("loc").value;
+  return items.filter(i=>(tab==="all"||(tab==="ord"?i.ordered:(!i.ordered&&i.status!=="ok")))
+    &&(!l||i.loc===l)&&(!q||i.name.toLowerCase().includes(q)||i.sup.toLowerCase().includes(q)));
+}
+function renderRows(){
+  const v=visible();
+  $("rows").innerHTML=v.map(i=>{
+    const w=Math.min(100,i.on/i.full*100), t=i.rp/i.full*100;
+    return `<tr data-id="${i.id}" data-sel="${sel.has(i.id)}">
+<td>${i.ordered?"":`<input type="checkbox" data-pick="${i.id}" ${sel.has(i.id)?"checked":""} aria-label="Add ${esc(i.name)} to the order">`}</td>
+<td class="c-name"><div class="name">${esc(i.name)}</div><div class="sub">${i.loc}</div></td>
+<td class="lvl"><div class="gauge" data-s="${i.status}" role="img" aria-label="${num(i.on)} of ${num(i.full)} ${i.unit}, reorder at ${num(i.rp)}"><i style="width:${w}%"></i><b style="left:${t}%"></b></div></td>
+<td class="c-qty qty"><b>${num(i.on)}</b> <span class="sub">of ${num(i.full)} ${i.unit}</span></td>
+<td class="c-days days">${i.ordered?`<span class="chip ord">On order</span> <span class="sub">due ${SUP[i.sup].due}</span>`:lastsText(i)}</td>
+<td class="c-sup sub">${i.sup}</td></tr>`;
+  }).join("");
+  const e=$("empty");
+  e.hidden=v.length>0;
+  const filtered=$("q").value||$("loc").value;
+  if(!v.length) e.innerHTML=filtered?"<strong>No ingredients match</strong>Clear the search or choose another storage area."
+    :tab==="ord"?"<strong>No open orders</strong>Orders you place show up here until they arrive."
+    :"<strong>Nothing is below its reorder point</strong>Every ingredient is above its reorder point.";
+  syncAll(v);
+}
+function syncAll(v=visible()){
+  const pick=v.filter(i=>!i.ordered), n=pick.filter(i=>sel.has(i.id)).length, a=$("all");
+  a.disabled=!pick.length; a.checked=pick.length>0&&n===pick.length; a.indeterminate=n>0&&n<pick.length;
+}
+function renderHead(){
+  const need=items.filter(i=>!i.ordered&&i.status!=="ok"), out=need.filter(i=>i.status==="out").length, ord=items.filter(i=>i.ordered).length;
+  $("lede").innerHTML = need.length
+    ? `<strong>${pl(need.length,"ingredient")} ${need.length===1?"is":"are"} at or below the reorder point.</strong> ${out?`${out} ${out===1?"is":"are"} out. `:""}Check the draft order and place it before the afternoon cut-off.`
+    : `<strong>Nothing is left to reorder.</strong> ${pl(ord,"ingredient")} ${ord===1?"is":"are"} on order.`;
+  $("n-need").textContent=need.length; $("n-ord").textContent=ord; $("n-all").textContent=items.length;
+}
+function groups(){
+  const g={};
+  items.filter(i=>sel.has(i.id)&&!i.ordered).forEach(i=>(g[i.sup]??=[]).push(i));
+  return g;
+}
+function renderDraft(){
+  const g=groups(), names=Object.keys(g).sort(), list=names.flatMap(n=>g[n]);
+  const total=list.reduce((s,i)=>s+i.packs*i.pp,0);
+  $("groups").innerHTML=names.length?names.map(n=>{
+    const sub=g[n].reduce((s,i)=>s+i.packs*i.pp,0);
+    return `<div class="grp"><div class="grp-h"><strong>${n}</strong><span>${gbp(sub)}, due ${SUP[n].due}</span></div>`+
+    g[n].map(i=>`<div class="line"><div class="ln">${esc(i.name)}</div><div class="lp">${gbp(i.packs*i.pp)}</div>
+<div class="step" role="group" aria-label="${esc(i.name)} quantity"><button type="button" data-k="m${i.id}" data-dec="${i.id}" aria-label="Fewer ${esc(i.name)}">−</button><output>${i.packs}</output><button type="button" data-k="p${i.id}" data-inc="${i.id}" aria-label="More ${esc(i.name)}">+</button><small>x ${i.pack}</small></div></div>`).join("")+`</div>`;
+  }).join(""):`<p class="none">Tick an ingredient to add it to the order.</p>`;
+  $("dcount").textContent=pl(list.length,"item");
+  $("total").textContent=gbp(total);
+  const go=$("go"); go.disabled=!list.length;
+  go.textContent=list.length?"Place "+pl(names.length,"order"):"Place order";
+  $("sbtotal").textContent=gbp(total);
+  $("sbcount").textContent=list.length?pl(list.length,"item")+" from "+pl(names.length,"supplier"):"No items selected";
+  if(focusKey){const b=document.querySelector(`[data-k="${focusKey}"]`);if(b)b.focus();focusKey=null;}
+}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),3600);}
+function refresh(){renderHead();renderRows();renderDraft();}
+
+$("rows").addEventListener("change",e=>{
+  const id=e.target.dataset.pick; if(id==null) return;
+  if(e.target.checked) sel.add(+id); else sel.delete(+id);
+  e.target.closest("tr").dataset.sel=e.target.checked;
+  syncAll(); renderDraft();
+});
+$("all").addEventListener("change",e=>{
+  visible().filter(i=>!i.ordered).forEach(i=>{if(e.target.checked) sel.add(i.id); else sel.delete(i.id);});
+  renderRows(); renderDraft();
+});
+$("groups").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  const inc=b.dataset.inc, dec=b.dataset.dec, it=items.find(i=>i.id==(inc!=null?inc:dec));
+  it.packs=Math.max(1,it.packs+(inc!=null?1:-1)); focusKey=b.dataset.k; renderDraft();
+});
+document.querySelector(".seg").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  tab=b.dataset.tab; document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  renderRows();
+});
+$("q").addEventListener("input",renderRows); $("loc").addEventListener("change",renderRows);
+$("go").addEventListener("click",()=>{
+  const g=groups(), names=Object.keys(g); if(!names.length) return;
+  names.forEach(n=>g[n].forEach(i=>{i.ordered=true;sel.delete(i.id);}));
+  $("draft").classList.remove("open");
+  refresh(); toast(pl(names.length,"order")+" placed: "+names.join(", ")+".");
+});
+$("open").addEventListener("click",()=>{$("draft").classList.add("open");$("close").focus();});
+$("close").addEventListener("click",()=>{$("draft").classList.remove("open");$("open").focus();});
+refresh();
+</script>
+</body>
+</html>

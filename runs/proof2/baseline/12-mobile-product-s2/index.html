@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stride Runner 2 - Product</title>
+<style>
+:root{
+  --bg:#ecebe7; --surface:#ffffff; --surface2:#f4f3ef; --ink:#15171c; --muted:#5b606b;
+  --line:#e3e1db; --accent:#d9400f; --accent-ink:#ffffff; --good:#1b7a45; --star:#e8a317;
+  --stage:#eceae4; --shadow:0 10px 40px rgba(20,20,30,.16);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#08090b; --surface:#16181d; --surface2:#1e2127; --ink:#f2f3f5; --muted:#a0a5b0;
+    --line:#2a2d35; --accent:#ff6a3d; --accent-ink:#1a0b05; --good:#4cc47f; --star:#f0b43a;
+    --stage:#23262d; --shadow:0 10px 40px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  display:flex; justify-content:center; align-items:center; min-height:100dvh;
+}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{
+  width:100%; max-width:430px; background:var(--surface); position:relative;
+  overflow-y:auto; overflow-x:hidden; scroll-behavior:smooth;
+}
+@media (min-width:600px){
+  body{padding:24px}
+  .app{width:390px; height:min(844px,calc(100dvh - 48px)); border-radius:36px; box-shadow:var(--shadow); border:1px solid var(--line)}
+}
+@media (max-width:599px){
+  body{display:block}
+  .app{max-width:none;overflow:visible}
+}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:4px;padding:10px 12px;
+  background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(12px)}
+.top h2{flex:1;margin:0;font-size:15px;font-weight:600;text-align:center;opacity:0;transition:opacity .2s}
+.top.scrolled h2{opacity:1}
+.ib{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;position:relative;background:var(--surface2)}
+.ib svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ib[aria-pressed=true] svg{fill:var(--accent);stroke:var(--accent)}
+.badge{position:absolute;top:2px;right:1px;min-width:18px;height:18px;border-radius:9px;background:var(--accent);color:var(--accent-ink);
+  font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.badge[hidden]{display:none}
+
+/* gallery */
+.gallery{position:relative;margin-top:-64px}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:1/1.02;background:var(--stage);display:grid;place-items:center;overflow:hidden}
+.slide svg{width:100%;height:100%;display:block}
+.tag{position:absolute;left:16px;bottom:44px;background:var(--ink);color:var(--surface);font-size:12px;font-weight:700;
+  letter-spacing:.04em;padding:5px 10px;border-radius:999px}
+.dots{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:6px}
+.dots i{width:6px;height:6px;border-radius:3px;background:var(--ink);opacity:.25;transition:all .2s}
+.dots i.on{width:18px;opacity:.9}
+
+/* body */
+.pad{padding:0 20px}
+.brand{margin:18px 0 2px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{margin:0;font-size:26px;line-height:1.15;letter-spacing:-.01em}
+.sub{margin:4px 0 0;color:var(--muted)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.price{margin-top:14px}
+.price b{font-size:26px;letter-spacing:-.01em}
+.price s{color:var(--muted);margin-left:8px}
+.price em{font-style:normal;font-size:12px;font-weight:700;color:var(--good);margin-left:8px}
+.rating{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;margin-top:10px;background:none}
+.stars{color:var(--star);letter-spacing:2px;font-size:15px}
+.rating u{text-underline-offset:3px}
+
+h3{margin:26px 0 12px;font-size:14px;font-weight:700}
+h3 span{font-weight:500;color:var(--muted)}
+.swatches{display:flex;gap:12px}
+.sw{width:52px;height:52px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;padding:4px}
+.sw i{display:block;width:100%;height:100%;border-radius:50%}
+.sw[aria-checked=true]{border-color:var(--ink)}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.size{height:48px;border-radius:12px;border:1.5px solid var(--line);font-weight:600;background:var(--surface)}
+.size[aria-checked=true]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.size:disabled{color:var(--muted);opacity:.5;text-decoration:line-through;cursor:not-allowed;background:var(--surface2)}
+.sizes.err .size:not(:disabled){border-color:var(--accent)}
+.sizeHead{display:flex;justify-content:space-between;align-items:baseline}
+.link{color:var(--ink);font-size:13px;text-decoration:underline;text-underline-offset:3px;min-height:44px;padding:0 2px}
+.hint{margin:10px 0 0;font-size:13px;color:var(--muted);min-height:20px}
+.hint.err{color:var(--accent);font-weight:600}
+
+.perks{display:grid;gap:10px;margin-top:22px;padding:14px;border-radius:16px;background:var(--surface2)}
+.perk{display:flex;gap:12px;align-items:center;font-size:13.5px}
+.perk svg{flex:none;width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.perk span{color:var(--muted)}
+
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:56px;font-weight:600;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s;margin-right:4px}
+details[open] summary::after{transform:rotate(-135deg)}
+details p,details ul{margin:0 0 16px;color:var(--muted)}
+details ul{padding-left:18px}
+details li{margin-bottom:4px}
+.acc{margin-top:26px}
+
+.bars{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;margin-bottom:16px}
+.score{text-align:center}
+.score b{font-size:38px;line-height:1}
+.bar{display:grid;grid-template-columns:14px 1fr 30px;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+.bar i{height:6px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
+.bar i::after{content:"";position:absolute;inset:0;width:var(--w);background:var(--star)}
+.review{padding:14px;border-radius:14px;background:var(--surface2);margin-bottom:10px}
+.review p{margin:6px 0 0;color:var(--ink)}
+.review small{color:var(--muted)}
+
+.more{margin:30px 0 8px;display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.more::-webkit-scrollbar{display:none}
+.card{flex:0 0 150px;border-radius:16px;background:var(--surface2);padding:0 0 12px;text-align:left}
+.card .img{aspect-ratio:1;display:grid;place-items:center;background:var(--stage);border-radius:16px 16px 0 0}
+.card .img svg{width:100%}
+.card b,.card span{display:block;padding:0 12px}
+.card b{margin-top:10px;font-size:14px}
+.card span{color:var(--muted);font-size:13px}
+
+/* sticky buy bar */
+.buy{position:sticky;bottom:0;z-index:6;display:flex;gap:12px;align-items:center;padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+  background:var(--surface);border-top:1px solid var(--line);margin-top:24px}
+.buy .total{line-height:1.2}
+.buy .total small{display:block;color:var(--muted);font-size:12px}
+.buy .total b{font-size:20px}
+.cta{flex:1;height:54px;border-radius:27px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px;transition:transform .1s}
+.cta:active{transform:scale(.98)}
+.cta.shake{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.toast{position:absolute;left:20px;right:20px;bottom:calc(100% + 12px);z-index:8;background:var(--ink);color:var(--surface);padding:14px 16px;border-radius:14px;
+  font-weight:600;opacity:0;transform:translateY(10px);pointer-events:none;transition:all .25s}
+.toast.show{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="app" id="app">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="shoe" viewBox="0 0 400 240">
+        <ellipse cx="205" cy="214" rx="170" ry="9" fill="#000" opacity=".12"/>
+        <!-- upper -->
+        <path d="M44 172V122Q44 96 70 91L124 80Q152 77 168 58L192 38Q204 30 216 38L246 62Q266 79 296 91L352 112Q384 124 384 172Z" fill="var(--upper)"/>
+        <!-- heel counter -->
+        <path d="M44 172V122Q44 96 70 91L98 86L108 172Z" fill="var(--panel)"/>
+        <!-- toe cap -->
+        <path d="M312 98L352 112Q384 124 384 172H296Q310 138 312 98Z" fill="var(--panel)"/>
+        <!-- stripe -->
+        <path d="M130 168Q160 120 214 92Q232 120 284 150L296 168Z" fill="var(--accent2)"/>
+        <!-- collar -->
+        <path d="M168 58L192 38Q204 30 216 38L226 46Q196 52 176 70Z" fill="var(--panel)" opacity=".9"/>
+        <!-- laces -->
+        <g stroke="var(--lace)" stroke-width="6" stroke-linecap="round">
+          <path d="M186 60L206 76"/><path d="M200 50L222 68"/><path d="M214 44L238 62"/>
+          <path d="M226 78L252 90"/><path d="M246 86L274 98"/>
+        </g>
+        <!-- midsole -->
+        <path d="M32 172H384V184Q384 208 354 208H64Q32 208 32 184Z" fill="var(--sole)"/>
+        <path d="M32 196H384V198Q384 210 354 210H64Q32 210 32 198Z" fill="var(--outsole)"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="top" id="top">
+    <button class="ib" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <h2>Stride Runner 2</h2>
+    <button class="ib" id="fav" aria-pressed="false" aria-label="Save to favourites"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.600-7 10-7 10z"/></svg></button>
+    <button class="ib" aria-label="Bag"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 016 0v2"/></svg><span class="badge" id="count" hidden>0</span></button>
+  </div>
+
+  <section class="gallery" id="gal" style="--upper:#2f4a7a;--panel:#1f2f4f;--accent2:#ff7a45;--lace:#f4f1ea;--sole:#f4f1ea;--outsole:#c9c3b6">
+    <div class="track" id="track">
+      <div class="slide"><svg viewBox="0 0 400 240" role="img" aria-label="Stride Runner 2, side view"><use href="#shoe"/></svg></div>
+      <div class="slide"><svg viewBox="40 40 260 156" role="img" aria-label="Stride Runner 2, laces close-up"><use href="#shoe" width="400" height="240"/></svg></div>
+      <div class="slide"><svg viewBox="200 70 200 150" role="img" aria-label="Stride Runner 2, toe box close-up"><use href="#shoe" width="400" height="240"/></svg></div>
+    </div>
+    <span class="tag">NEW SEASON</span>
+    <div class="dots" id="dots"><i class="on"></i><i></i><i></i></div>
+  </section>
+
+  <div class="pad">
+    <p class="brand">Stride Co.</p>
+    <h1>Stride Runner 2</h1>
+    <p class="sub" id="cname">Midnight Blue - Men's road running shoe</p>
+    <div class="price"><b>$129</b><s>$149</s><em>SAVE 13%</em></div>
+    <button class="rating" aria-label="4.6 out of 5 from 1,284 reviews, jump to reviews" onclick="document.getElementById('rev').open=true;document.getElementById('rev').scrollIntoView({behavior:'smooth'})">
+      <span class="stars">★★★★★</span><span>4.6 <u>(1,284 reviews)</u></span>
+    </button>
+
+    <h3>Colour <span id="cl">Midnight Blue</span></h3>
+    <div class="swatches" role="radiogroup" aria-label="Colour" id="sws"></div>
+
+    <div class="sizeHead"><h3 style="margin-bottom:4px">Size <span>US men's</span></h3><button class="link">Size guide</button></div>
+    <div class="sizes" id="sizes" role="radiogroup" aria-label="Size"></div>
+    <p class="hint" id="hint">Runs true to size. Only 3 left in size 10.</p>
+
+    <div class="perks">
+      <div class="perk"><svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7zM6 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z"/></svg><div><b>Free delivery</b> <span>Arrives Tue, Dec 2</span></div></div>
+      <div class="perk"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.300M20 12a8 8 0 01-14 5.300M18 3v4h-4M6 21v-4h4"/></svg><div><b>Free 60-day returns</b> <span>Wear them, then decide</span></div></div>
+    </div>
+
+    <div class="acc">
+      <details open><summary>Description</summary>
+        <p>A daily trainer built for easy miles. The engineered mesh upper stays cool, and the 38 mm foam midsole keeps landings soft without feeling slow.</p></details>
+      <details><summary>Details and materials</summary>
+        <ul><li>Recycled mesh upper, 62% post-consumer content</li><li>Drop 8 mm, weight 268 g (US 9)</li><li>Rubber outsole with 3.5 mm lugs</li><li>Machine washable insole</li></ul></details>
+      <details id="rev"><summary>Reviews (1,284)</summary>
+        <div class="bars">
+          <div class="score"><b>4.6</b><div class="stars" style="font-size:12px">★★★★★</div></div>
+          <div>
+            <div class="bar">5<i style="--w:78%"></i><span>78%</span></div>
+            <div class="bar">4<i style="--w:14%"></i><span>14%</span></div>
+            <div class="bar">3<i style="--w:5%"></i><span>5%</span></div>
+            <div class="bar">2<i style="--w:2%"></i><span>2%</span></div>
+            <div class="bar">1<i style="--w:1%"></i><span>1%</span></div>
+          </div>
+        </div>
+        <div class="review"><span class="stars" style="font-size:13px">★★★★★</span><p>Wore them straight out of the box for a 10 mile run. No hot spots at all.</p><small>Marcus T. - Nov 14</small></div>
+        <div class="review"><span class="stars" style="font-size:13px">★★★★☆</span><p>Great cushion. The toe box is a little snug if you have wide feet, so size up.</p><small>Priya N. - Nov 2</small></div>
+      </details>
+    </div>
+
+    <h3 style="margin-top:30px">You may also like</h3>
+    <div class="more" id="more"></div>
+  </div>
+
+  <div class="buy">
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="total"><small>Total</small><b>$129.00</b></div>
+    <button class="cta" id="cta">Add to bag</button>
+  </div>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const colors=[
+ {n:"Midnight Blue",u:"#2f4a7a",p:"#1f2f4f",a:"#ff7a45"},
+ {n:"Ember Red",u:"#c8442b",p:"#7c2616",a:"#f4f1ea"},
+ {n:"Sage Green",u:"#6f8f6a",p:"#40583c",a:"#f2c14e"},
+ {n:"Graphite",u:"#4a4d55",p:"#26282d",a:"#9bd1ff"}
+];
+const sold=["US 7","US 8.5","US 11.5"];
+const sizes=["7","7.5","8","8.5","9","9.5","10","10.5","11","11.5","12","13"];
+let color=0,size=null,n=0;
+
+$("sws").innerHTML=colors.map((c,i)=>`<button class="sw" role="radio" aria-checked="${i==0}" aria-label="${c.n}" data-i="${i}"><i style="background:${c.u}"></i></button>`).join("");
+$("sizes").innerHTML=sizes.map(s=>`<button class="size" role="radio" aria-checked="false" data-s="${s}" ${sold.includes("US "+s)?"disabled aria-label=\"US "+s+", sold out\"":""}>${s}</button>`).join("");
+$("more").innerHTML=[["Trail Glide","$139","#8a6a3b","#5a4425"],["Court Low","$99","#e9e4d8","#b8b0a0"],["Stride Sprint","$159","#d9400f","#8a2608"]]
+ .map(([t,p,u,pn])=>`<button class="card"><div class="img" style="--upper:${u};--panel:${pn};--accent2:#f4f1ea;--lace:#f4f1ea;--sole:#f4f1ea;--outsole:#c9c3b6"><svg viewBox="0 0 400 240"><use href="#shoe"/></svg></div><b>${t}</b><span>${p}</span></button>`).join("");
+
+$("sws").onclick=e=>{
+  const b=e.target.closest(".sw"); if(!b)return;
+  color=+b.dataset.i; const c=colors[color];
+  [...$("sws").children].forEach((x,i)=>x.setAttribute("aria-checked",i==color));
+  const g=$("gal").style; g.setProperty("--upper",c.u);g.setProperty("--panel",c.p);g.setProperty("--accent2",c.a);
+  $("cl").textContent=c.n; $("cname").textContent=c.n+" - Men's road running shoe";
+};
+$("sizes").onclick=e=>{
+  const b=e.target.closest(".size"); if(!b||b.disabled)return;
+  size=b.dataset.s;
+  [...$("sizes").children].forEach(x=>x.setAttribute("aria-checked",x===b));
+  $("sizes").classList.remove("err");
+  $("hint").className="hint"; $("hint").textContent="US "+size+" selected."+(size=="10"?" Only 3 left.":" In stock, ships today.");
+};
+$("fav").onclick=()=>{const p=$("fav").getAttribute("aria-pressed")!="true";$("fav").setAttribute("aria-pressed",p);toast(p?"Saved to favourites":"Removed from favourites")};
+let tt; function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2000)}
+$("cta").onclick=()=>{
+  if(!size){
+    $("sizes").classList.add("err");$("hint").className="hint err";$("hint").textContent="Select a size to add this to your bag.";
+    $("cta").classList.remove("shake");void $("cta").offsetWidth;$("cta").classList.add("shake");
+    $("sizes").scrollIntoView({behavior:"smooth",block:"center"});return;
+  }
+  n++; $("count").hidden=false; $("count").textContent=n;
+  toast("Added: "+colors[color].n+", US "+size);
+};
+const track=$("track"),dots=[...$("dots").children];
+track.addEventListener("scroll",()=>{const i=Math.round(track.scrollLeft/track.clientWidth);dots.forEach((d,k)=>d.classList.toggle("on",k==i))},{passive:true});
+$("app").addEventListener("scroll",e=>$("top").classList.toggle("scrolled",e.target.scrollTop>300),{passive:true});
+addEventListener("scroll",()=>$("top").classList.toggle("scrolled",scrollY>300),{passive:true});
+</script>
+</body>
+</html>

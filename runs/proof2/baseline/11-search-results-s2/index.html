@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chickpea curry - Recipe search - Saltbox Kitchen</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #faf7f2;
+    --surface: #ffffff;
+    --surface-2: #f3eee6;
+    --text: #231d16;
+    --muted: #6b6258;
+    --line: #e4dcce;
+    --accent: #c2410c;
+    --accent-ink: #ffffff;
+    --accent-soft: #fde8d9;
+    --focus: #1d4ed8;
+    --star: #d97706;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(35,29,22,.06), 0 4px 14px rgba(35,29,22,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16130f;
+      --surface: #201b16;
+      --surface-2: #2a241d;
+      --text: #f3ece1;
+      --muted: #aa9f90;
+      --line: #3a3228;
+      --accent: #f4813f;
+      --accent-ink: #1a0f07;
+      --accent-soft: #3a2314;
+      --focus: #8fb0ff;
+      --star: #f5b041;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  a { color: inherit; text-decoration: none; }
+  button, input, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Header */
+  header.site {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .bar {
+    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; letter-spacing: -.01em; }
+  .brand svg { width: 30px; height: 30px; flex: none; }
+  nav.main { display: flex; gap: 20px; color: var(--muted); font-size: .95rem; }
+  nav.main a:hover { color: var(--text); }
+  form.search { flex: 1; max-width: 520px; margin-left: auto; position: relative; }
+  form.search input {
+    width: 100%; height: 44px; padding: 0 84px 0 42px;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface-2);
+  }
+  form.search .ico { position: absolute; left: 14px; top: 12px; width: 20px; height: 20px; color: var(--muted); pointer-events: none; }
+  form.search button {
+    position: absolute; right: 4px; top: 4px; height: 36px; padding: 0 16px;
+    border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-weight: 600; cursor: pointer;
+  }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  .crumbs { font-size: .875rem; color: var(--muted); margin-bottom: 8px; }
+  .crumbs a:hover { text-decoration: underline; }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  h1 { margin: 0; font-size: 1.75rem; line-height: 1.2; letter-spacing: -.02em; }
+  h1 span { color: var(--accent); }
+  .count { color: var(--muted); margin: 4px 0 0; }
+  .sort { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .9rem; }
+  .sort select {
+    height: 40px; padding: 0 12px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--surface);
+  }
+
+  .layout { display: grid; grid-template-columns: 250px 1fr; gap: 28px; align-items: start; }
+
+  /* Filters */
+  aside.filters {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px; position: sticky; top: 84px;
+  }
+  .filters h2 { font-size: 1rem; margin: 0 0 4px; display: flex; justify-content: space-between; align-items: center; }
+  .filters h2 button { border: 0; background: none; color: var(--accent); cursor: pointer; font-size: .85rem; padding: 4px; }
+  fieldset { border: 0; border-top: 1px solid var(--line); margin: 12px 0 0; padding: 12px 0 0; }
+  legend { font-weight: 600; font-size: .9rem; padding: 0; float: left; width: 100%; margin-bottom: 8px; }
+  fieldset label { display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: .92rem; cursor: pointer; clear: both; }
+  fieldset input[type=checkbox], fieldset input[type=radio] { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+  fieldset label small { margin-left: auto; color: var(--muted); }
+  .filter-toggle { display: none; }
+
+  /* Chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .chips a, .chips span.lab {
+    display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--surface); font-size: .9rem;
+  }
+  .chips a:hover { border-color: var(--accent); }
+  .chips .lab { border: 0; background: none; padding-left: 0; color: var(--muted); }
+
+  /* Cards */
+  ul.results { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+  li.card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  li.card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  li.card[hidden] { display: none; }
+  .thumb { position: relative; aspect-ratio: 4 / 3; }
+  .thumb svg { width: 100%; height: 100%; display: block; }
+  .badge {
+    position: absolute; left: 10px; top: 10px; background: var(--surface); color: var(--text);
+    font-size: .75rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line);
+  }
+  .save {
+    position: absolute; right: 10px; top: 10px; width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: grid; place-items: center;
+  }
+  .save svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .save[aria-pressed=true] { color: var(--accent); }
+  .save[aria-pressed=true] svg { fill: currentColor; }
+  .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .body h3 { margin: 0; font-size: 1.05rem; line-height: 1.3; letter-spacing: -.01em; }
+  .body h3 a::after { content: ""; position: absolute; inset: 0; } /* stretched link */
+  li.card { position: relative; }
+  .save { z-index: 2; }
+  .rating { display: flex; align-items: center; gap: 6px; font-size: .85rem; color: var(--muted); }
+  .stars { color: var(--star); letter-spacing: 1px; font-size: .95rem; }
+  .rating b { color: var(--text); }
+  .desc { margin: 0; font-size: .9rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .meta { margin-top: auto; padding-top: 10px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .82rem; color: var(--muted); border-top: 1px dashed var(--line); }
+  .meta span { display: inline-flex; align-items: center; gap: 5px; }
+  .meta svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+  .author { font-size: .8rem; color: var(--muted); }
+
+  .empty { display: none; text-align: center; padding: 48px 16px; background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius); }
+  .empty.show { display: block; }
+  .empty button { margin-top: 8px; height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-weight: 600; cursor: pointer; }
+
+  /* Pagination */
+  nav.pager { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 32px 0 8px; flex-wrap: wrap; }
+  nav.pager a, nav.pager span {
+    min-width: 40px; height: 40px; padding: 0 12px; display: inline-grid; place-items: center;
+    border-radius: 10px; border: 1px solid var(--line); background: var(--surface); font-size: .92rem;
+  }
+  nav.pager a:hover { border-color: var(--accent); }
+  nav.pager [aria-current=page] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+  nav.pager .dis { color: var(--muted); opacity: .6; }
+  .also { margin-top: 28px; color: var(--muted); font-size: .92rem; text-align: center; }
+  .also a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+  footer { max-width: 1200px; margin: 24px auto 0; padding: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside.filters { position: static; display: none; }
+    aside.filters.open { display: block; }
+    .filter-toggle {
+      display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 10px;
+      border: 1px solid var(--line); background: var(--surface); cursor: pointer;
+    }
+    nav.main { display: none; }
+  }
+  @media (max-width: 560px) {
+    .bar { padding: 10px 16px; flex-wrap: wrap; gap: 10px; }
+    form.search { order: 3; flex-basis: 100%; max-width: none; margin-left: 0; }
+    main { padding: 16px; }
+    h1 { font-size: 1.4rem; }
+    .head { align-items: stretch; }
+    .tools { display: flex; gap: 8px; width: 100%; }
+    .tools .sort { flex: 1; }
+    .tools .sort select { flex: 1; min-width: 0; }
+    .sort .lbl { display: none; }
+    ul.results { grid-template-columns: 1fr; }
+    footer { padding: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { li.card { transition: none; } li.card:hover { transform: none; } }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a class="brand" href="#" aria-label="Saltbox Kitchen home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><path d="M8 17h16a8 8 0 0 1-16 0Z" fill="var(--accent-ink)"/><path d="M12 12c0-2 2-2 2-4M17 12c0-2 2-2 2-4" stroke="var(--accent-ink)" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+      Saltbox Kitchen
+    </a>
+    <nav class="main" aria-label="Primary">
+      <a href="#">Recipes</a><a href="#">Collections</a><a href="#">Meal plans</a><a href="#">Saved</a>
+    </nav>
+    <form class="search" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Search recipes</label>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" value="chickpea curry">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+</header>
+
+<main>
+  <div class="crumbs"><a href="#">Home</a> / <a href="#">Recipes</a> / Search</div>
+
+  <div class="head">
+    <div>
+      <h1>Results for <span>&ldquo;chickpea curry&rdquo;</span></h1>
+      <p class="count" id="count" aria-live="polite">48 recipes found</p>
+    </div>
+    <div class="tools">
+      <button class="filter-toggle" id="ftoggle" aria-expanded="false" aria-controls="filters">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Filters
+      </button>
+      <div class="sort">
+        <label class="lbl" for="sort">Sort by</label>
+        <select id="sort">
+          <option value="rel">Best match</option>
+          <option value="rating">Highest rated</option>
+          <option value="time">Quickest first</option>
+          <option value="new">Newest</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="chips" aria-label="Related searches">
+    <span class="lab">Try also:</span>
+    <a href="#">chana masala</a>
+    <a href="#">chickpea coconut curry</a>
+    <a href="#">spinach chickpea curry</a>
+    <a href="#">sweet potato chickpea curry</a>
+  </div>
+
+  <div class="layout">
+    <aside class="filters" id="filters" aria-label="Filters">
+      <h2>Filters <button type="button" id="clear">Clear all</button></h2>
+
+      <fieldset>
+        <legend>Diet</legend>
+        <label><input type="checkbox" data-f="vegan"> Vegan <small>31</small></label>
+        <label><input type="checkbox" data-f="gf"> Gluten-free <small>27</small></label>
+        <label><input type="checkbox" data-f="df"> Dairy-free <small>34</small></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Total time</legend>
+        <label><input type="radio" name="time" value="0" checked> Any</label>
+        <label><input type="radio" name="time" value="30"> Under 30 min</label>
+        <label><input type="radio" name="time" value="45"> Under 45 min</label>
+        <label><input type="radio" name="time" value="60"> Under 1 hour</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Method</legend>
+        <label><input type="checkbox" data-f="onepot"> One pot <small>19</small></label>
+        <label><input type="checkbox" data-f="slow"> Slow cooker <small>8</small></label>
+        <label><input type="checkbox" data-f="instant"> Instant Pot <small>6</small></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Rating</legend>
+        <label><input type="radio" name="rating" value="0" checked> Any</label>
+        <label><input type="radio" name="rating" value="4"> 4 stars and up</label>
+        <label><input type="radio" name="rating" value="4.5"> 4.5 stars and up</label>
+      </fieldset>
+    </aside>
+
+    <section aria-label="Search results">
+      <ul class="results" id="results"></ul>
+      <div class="empty" id="empty">
+        <h2 style="margin:0 0 4px">No recipes match these filters</h2>
+        <p style="margin:0;color:var(--muted)">Try removing a filter to see more chickpea curries.</p>
+        <button type="button" id="clear2">Clear filters</button>
+      </div>
+
+      <nav class="pager" aria-label="Pagination">
+        <span class="dis" aria-disabled="true">Previous</span>
+        <a href="#" aria-current="page">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <span aria-hidden="true">&hellip;</span>
+        <a href="#">6</a>
+        <a href="#">Next</a>
+      </nav>
+      <p class="also">Not what you wanted? <a href="#">Search ingredients instead</a> or <a href="#">browse all curries</a>.</p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <span>&copy; 2026 Saltbox Kitchen</span>
+  <span>About &middot; Contact &middot; Privacy &middot; Terms</span>
+</footer>
+
+<script>
+/* Inline demo data: 12 results shown on page 1 of 6. */
+const R = [
+  { t:"Weeknight Chickpea Curry with Coconut Milk", a:"Priya Nair", r:4.8, n:2314, m:35, k:410, d:"Creamy tomato and coconut sauce, warm spices and tender chickpeas. Ready in one pot.", f:["vegan","gf","df","onepot"], b:"Editor's pick", c:["#e9a23b","#c2410c"], i:1, new:3 },
+  { t:"Chana Masala (Punjabi-Style)", a:"Arjun Mehta", r:4.9, n:5120, m:50, k:360, d:"Tangy, dark and deeply spiced. Amchur and black tea give the sauce its colour.", f:["vegan","gf","df","onepot"], b:"Most saved", c:["#b45309","#7c2d12"], i:2, new:9 },
+  { t:"Spinach and Chickpea Curry in 25 Minutes", a:"Dana Whitfield", r:4.6, n:1187, m:25, k:320, d:"Fresh spinach wilts into a garlicky ginger base. Serve over rice or with naan.", f:["vegan","gf","df","onepot"], b:"Quick", c:["#65a30d","#365314"], i:3, new:2 },
+  { t:"Sweet Potato Chickpea Curry", a:"Maren Lopez", r:4.7, n:932, m:45, k:445, d:"Roasted sweet potato, chickpeas and red curry paste simmered in coconut milk.", f:["vegan","gf","df"], b:"", c:["#ea580c","#9a3412"], i:4, new:6 },
+  { t:"Slow Cooker Chickpea Tikka Masala", a:"Owen Baptiste", r:4.5, n:604, m:255, k:480, d:"Set it in the morning. Cashew cream finishes a rich, mildly spiced sauce.", f:["vegan","gf","df","slow"], b:"", c:["#dc2626","#7f1d1d"], i:5, new:7 },
+  { t:"Instant Pot Chickpea Coconut Curry", a:"Hana Sato", r:4.4, n:410, m:40, k:390, d:"Dried chickpeas cook from scratch in the pressure cooker with no soaking.", f:["vegan","gf","df","instant","onepot"], b:"", c:["#f59e0b","#b45309"], i:6, new:5 },
+  { t:"Butter Chickpea Curry", a:"Leila Haddad", r:4.7, n:1675, m:30, k:520, d:"A vegetarian take on butter chicken, finished with cream and kasuri methi.", f:["gf","onepot"], b:"", c:["#fb923c","#c2410c"], i:7, new:1 },
+  { t:"Thai Red Chickpea Curry", a:"Noi Chaiyasit", r:4.3, n:288, m:30, k:430, d:"Bright with lime and basil. Green beans and bell pepper add crunch.", f:["vegan","gf","df","onepot"], b:"", c:["#ef4444","#991b1b"], i:8, new:4 },
+  { t:"Cauliflower and Chickpea Curry", a:"Ben Okafor", r:4.6, n:777, m:40, k:340, d:"Golden roasted cauliflower with chickpeas in a fragrant turmeric sauce.", f:["vegan","gf","df"], b:"", c:["#eab308","#a16207"], i:9, new:8 },
+  { t:"Coconut Chickpea Curry with Kale", a:"Sofia Reyes", r:4.2, n:196, m:20, k:355, d:"The fastest dinner of the week: pantry staples, a bunch of kale, 20 minutes.", f:["vegan","gf","df","onepot"], b:"Quick", c:["#16a34a","#14532d"], i:10, new:10 },
+  { t:"Jamaican-Style Chickpea Curry", a:"Marcus Bell", r:4.5, n:352, m:55, k:465, d:"Allspice, thyme and scotch bonnet bring a Caribbean twist to the pot.", f:["vegan","gf","df","onepot"], b:"", c:["#d97706","#78350f"], i:11, new:11 },
+  { t:"Chickpea and Potato Curry (Aloo Chole)", a:"Kavita Rao", r:4.8, n:1490, m:60, k:405, d:"Comforting potatoes and chickpeas in a lightly spiced, tomato-based gravy.", f:["vegan","gf","df","onepot"], b:"", c:["#f97316","#9a3412"], i:12, new:12 },
+];
+const fmt = m => m >= 60 ? Math.floor(m/60) + " hr" + (m%60 ? " " + (m%60) + " min" : "") : m + " min";
+const stars = r => { const full = Math.round(r); return "★".repeat(full) + "☆".repeat(5-full); };
+const art = (c, i) => `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of a bowl of curry">
+  <defs><linearGradient id="g${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c[0]}" stop-opacity=".25"/><stop offset="1" stop-color="${c[1]}" stop-opacity=".35"/></linearGradient></defs>
+  <rect width="400" height="300" fill="url(#g${i})"/>
+  <ellipse cx="200" cy="232" rx="150" ry="16" fill="#000" opacity=".12"/>
+  <path d="M60 140h280a140 100 0 0 1-280 0Z" fill="#f4efe6" stroke="#00000022"/>
+  <ellipse cx="200" cy="140" rx="140" ry="26" fill="${c[0]}"/>
+  <ellipse cx="200" cy="140" rx="118" ry="19" fill="${c[1]}" opacity=".55"/>
+  <g fill="#e8c27a" stroke="#b98a3a" stroke-width="2">
+    <circle cx="150" cy="138" r="11"/><circle cx="185" cy="146" r="11"/><circle cx="222" cy="136" r="11"/>
+    <circle cx="256" cy="146" r="11"/><circle cx="205" cy="128" r="10"/><circle cx="170" cy="128" r="9"/>
+  </g>
+  <g fill="#4d7c0f"><path d="M240 124c8-8 18-6 20 2-8 4-16 4-20-2Z"/><path d="M128 132c6-8 16-8 20-2-8 6-14 6-20 2Z"/></g>
+  <g stroke="#fff" stroke-opacity=".7" stroke-width="5" stroke-linecap="round" fill="none">
+    <path d="M165 98c-10-14 10-20 0-34"/><path d="M200 94c-10-14 10-20 0-34"/><path d="M235 98c-10-14 10-20 0-34"/>
+  </g>
+</svg>`;
+const ico = {
+  clock:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  fire:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9Z"/></svg>',
+};
+const tagNames = { vegan:"Vegan", gf:"Gluten-free", df:"Dairy-free", onepot:"One pot", slow:"Slow cooker", instant:"Instant Pot" };
+
+const ul = document.getElementById("results");
+ul.innerHTML = R.map((x, idx) => `
+  <li class="card" data-idx="${idx}">
+    <div class="thumb">${art(x.c, x.i)}${x.b ? `<span class="badge">${x.b}</span>` : ""}
+      <button class="save" type="button" aria-pressed="false" aria-label="Save ${x.t.replace(/"/g,"&quot;")}"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4Z"/></svg></button>
+    </div>
+    <div class="body">
+      <div class="tags">${x.f.filter(f=>["vegan","gf","slow","instant"].includes(f)).slice(0,2).map(f=>`<span class="tag">${tagNames[f]}</span>`).join("")}</div>
+      <h3><a href="#">${x.t}</a></h3>
+      <div class="rating"><span class="stars" aria-hidden="true">${stars(x.r)}</span><b>${x.r.toFixed(1)}</b><span>(${x.n.toLocaleString("en-US")})</span><span class="sr-only">out of 5 stars</span></div>
+      <p class="desc">${x.d}</p>
+      <div class="author">By ${x.a}</div>
+      <div class="meta"><span>${ico.clock}${fmt(x.m)}</span><span>${ico.fire}${x.k} kcal</span></div>
+    </div>
+  </li>`).join("");
+
+const cards = [...ul.children];
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const TOTAL = 48; // matches pager: 12 per page, 6 pages (page 1 shown)
+
+function apply() {
+  const need = $$("[data-f]:checked").map(i => i.dataset.f);
+  const time = +$("input[name=time]:checked").value;
+  const rate = +$("input[name=rating]:checked").value;
+  const mode = $("#sort").value;
+  const order = R.map((x, i) => i).sort((a, b) => {
+    const A = R[a], B = R[b];
+    if (mode === "rating") return B.r - A.r || B.n - A.n;
+    if (mode === "time") return A.m - B.m;
+    if (mode === "new") return A.new - B.new;
+    return a - b;
+  });
+  order.forEach(i => ul.appendChild(cards[i]));
+  let shown = 0;
+  R.forEach((x, i) => {
+    const ok = need.every(f => x.f.includes(f)) && (!time || x.m <= time) && x.r >= rate;
+    cards[i].hidden = !ok; if (ok) shown++;
+  });
+  const filtered = need.length || time || rate;
+  $("#count").textContent = filtered ? `${shown} of ${R.length} recipes on this page match` : `${TOTAL} recipes found`;
+  $("#empty").classList.toggle("show", shown === 0);
+}
+function clear() {
+  $$("[data-f]").forEach(i => i.checked = false);
+  $$("input[type=radio][value='0']").forEach(i => i.checked = true);
+  apply();
+}
+document.addEventListener("change", e => { if (e.target.closest("#filters, #sort")) apply(); });
+$("#clear").onclick = clear; $("#clear2").onclick = clear;
+ul.addEventListener("click", e => {
+  const b = e.target.closest(".save"); if (!b) return;
+  b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true");
+});
+$("#ftoggle").onclick = e => {
+  const open = $("#filters").classList.toggle("open");
+  e.currentTarget.setAttribute("aria-expanded", open);
+};
+</script>
+</body>
+</html>

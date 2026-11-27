@@ -1,0 +1,100 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "inter",
+    "iowan old style"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(245, 242, 235)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(11, 107, 87)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 34,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to notifications",
+        "w": 159,
+        "h": 43
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 358,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 358,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "All\n11",
+        "w": 69,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Unread\n5",
+        "w": 91,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Proposals\n2",
+        "w": 106,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Contracts\n2",
+        "w": 105,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Payments\n3",
+        "w": 106,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

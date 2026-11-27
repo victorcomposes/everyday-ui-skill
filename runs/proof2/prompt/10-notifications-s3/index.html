@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Notifications - Gigwell</title>
+<style>
+:root{
+  --bg:#F5F2EB; --surface:#FFFFFF; --surface-2:#FAF8F3; --unread:#F1F8F5;
+  --ink:#1C211D; --ink-2:#444C45; --ink-3:#5B635C; --line:#E3DED1; --line-strong:#CFC9B8;
+  --accent:#0B6B57; --accent-ink:#FFFFFF; --accent-soft:#E1F0EA; --accent-hover:#08574A;
+  --danger:#A3341F; --focus:#0B6B57;
+  --c-proposal-fg:#2B4FA0; --c-proposal-bg:#E6ECF8;
+  --c-contract-fg:#6A3FA0; --c-contract-bg:#EFE8F8;
+  --c-payment-fg:#0B6B57;  --c-payment-bg:#E1F0EA;
+  --c-message-fg:#0D6178;  --c-message-bg:#DFF0F4;
+  --c-security-fg:#A3341F; --c-security-bg:#FBE8E3;
+  --c-review-fg:#8A5A00;   --c-review-bg:#F9EED3;
+  --shadow:0 1px 2px rgba(28,33,29,.05);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:Inter,"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#101411; --surface:#181D19; --surface-2:#141815; --unread:#1B2620;
+    --ink:#EEF0EA; --ink-2:#BBC2B9; --ink-3:#9BA39A; --line:#262D27; --line-strong:#38413A;
+    --accent:#52C7A4; --accent-ink:#09190F; --accent-soft:#1C3A31; --accent-hover:#6FD6B7;
+    --danger:#F08A74; --focus:#52C7A4;
+    --c-proposal-fg:#9DB7F2; --c-proposal-bg:#1E2840;
+    --c-contract-fg:#C9A9F0; --c-contract-bg:#2C2140;
+    --c-payment-fg:#52C7A4;  --c-payment-bg:#1C3A31;
+    --c-message-fg:#6CCBE3;  --c-message-bg:#17323B;
+    --c-security-fg:#F08A74; --c-security-bg:#3E211B;
+    --c-review-fg:#E9BF63;   --c-review-bg:#3A2F14;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+a{color:inherit}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:8px;z-index:50;text-decoration:none}
+.skip:focus{top:12px}
+
+/* shell */
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;padding:22px 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:22px;background:var(--bg)}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;font-family:var(--serif);font-size:23px;font-weight:700;letter-spacing:-.02em;text-decoration:none}
+.brand svg{width:30px;height:30px}
+.nav{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;text-decoration:none;color:var(--ink-2);font-weight:500}
+.nav a:hover{background:var(--surface);color:var(--ink)}
+.nav a[aria-current="page"]{background:var(--ink);color:var(--bg);font-weight:600}
+.nav .n{margin-left:auto;min-width:22px;padding:0 7px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:700;line-height:20px;text-align:center}
+.nav a[aria-current="page"] .n{background:var(--bg);color:var(--ink)}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.av{width:36px;height:36px;border-radius:50%;background:var(--c-contract-bg);color:var(--c-contract-fg);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.me b{display:block;font-size:14px;line-height:1.25}
+.me span{font-size:12.5px;color:var(--ink-3)}
+
+.top{display:flex;align-items:center;gap:14px;padding:14px 32px;border-bottom:1px solid var(--line)}
+.search{position:relative;flex:1;max-width:420px}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-3);width:18px;height:18px}
+.search input{width:100%;height:40px;padding:0 14px 0 38px;border:1px solid var(--line-strong);border-radius:10px;background:var(--surface);color:var(--ink)}
+.search input::placeholder{color:var(--ink-3)}
+.top .sp{flex:1}
+.top .stat{font-size:13.5px;color:var(--ink-2)}
+.top .stat b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+main{padding:30px 32px 56px;max-width:1160px;width:100%}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+h1{margin:0;font-family:var(--serif);font-size:36px;line-height:1.1;letter-spacing:-.02em;font-weight:700}
+.sub{margin:6px 0 0;color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:10px;border:1px solid var(--line-strong);background:var(--surface);font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover:not(:disabled){border-color:var(--ink-3)}
+.btn:disabled{color:var(--ink-3);cursor:default;background:transparent;border-style:dashed}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.sm{height:34px;font-size:13.5px;padding:0 12px}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.ghost:hover:not(:disabled){background:var(--surface-2);border-color:var(--line);color:var(--ink)}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:28px;align-items:start}
+
+.filters{display:flex;gap:8px;margin-bottom:22px;overflow-x:auto;padding:2px;margin-left:-2px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.chip{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:99px;border:1px solid var(--line-strong);background:transparent;color:var(--ink-2);font-weight:550;font-size:14px;cursor:pointer;white-space:nowrap}
+.chip:hover{background:var(--surface);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip .c{font-size:12.5px;font-variant-numeric:tabular-nums;opacity:.85}
+
+.group+.group{margin-top:26px}
+.group h2{margin:0 0 10px 4px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.list{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.item{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 22px 18px 26px}
+.item+.item{border-top:1px solid var(--line)}
+.item.unread{background:var(--unread)}
+.item.unread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center}
+.ico svg{width:22px;height:22px}
+.cat-proposal .ico{background:var(--c-proposal-bg);color:var(--c-proposal-fg)}
+.cat-contract .ico{background:var(--c-contract-bg);color:var(--c-contract-fg)}
+.cat-payment .ico{background:var(--c-payment-bg);color:var(--c-payment-fg)}
+.cat-message .ico{background:var(--c-message-bg);color:var(--c-message-fg)}
+.cat-security .ico{background:var(--c-security-bg);color:var(--c-security-fg)}
+.cat-review .ico{background:var(--c-review-bg);color:var(--c-review-fg)}
+.t{margin:0;font-size:15.5px;line-height:1.4;color:var(--ink-2);font-weight:500}
+.t strong{font-weight:650;color:var(--ink)}
+.item.unread .t{color:var(--ink);font-weight:600}
+.tx{margin:4px 0 0;color:var(--ink-2);max-width:62ch}
+.quote{margin:8px 0 0;padding:8px 12px;border-left:3px solid var(--line-strong);background:var(--surface-2);border-radius:0 8px 8px 0;color:var(--ink-2);max-width:62ch}
+.meta{margin:8px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:13px;color:var(--ink-3)}
+.meta .dot{width:3px;height:3px;border-radius:50%;background:currentColor}
+.flag{display:inline-flex;align-items:center;gap:5px;font-weight:650;color:var(--danger)}
+.flag svg{width:14px;height:14px}
+.acts{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+
+.empty{padding:56px 24px;text-align:center;background:var(--surface);border:1px dashed var(--line-strong);border-radius:16px}
+.empty svg{width:44px;height:44px;color:var(--accent);margin-bottom:10px}
+.empty h2{margin:0;font-family:var(--serif);font-size:22px;text-transform:none;letter-spacing:0;color:var(--ink);font-weight:700}
+.empty p{margin:6px 0 0;color:var(--ink-2)}
+
+/* aside */
+.aside{display:flex;flex-direction:column;gap:18px;position:sticky;top:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.card h2{margin:0 0 4px;font-size:16px;font-weight:700}
+.card .hint{margin:0 0 14px;color:var(--ink-3);font-size:13.5px}
+.todo{list-style:none;margin:0;padding:0}
+.todo li{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.todo li:first-child{border-top:0;padding-top:2px}
+.todo b{display:block;font-size:14.5px;line-height:1.35}
+.todo span{font-size:13px;color:var(--ink-3)}
+.todo .due{color:var(--danger);font-weight:650}
+.todo svg{margin-top:2px;color:var(--ink-3)}
+.pref{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.pref:first-of-type{border-top:0}
+.pref b{display:block;font-size:14.5px;font-weight:600;line-height:1.3}
+.pref span.d{font-size:13px;color:var(--ink-3)}
+.sw{position:relative;width:44px;height:26px;flex:none;border-radius:99px;border:0;background:var(--ink-3);cursor:pointer;padding:0;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);transition:transform .15s}
+.sw[aria-checked="true"]{background:var(--accent)}
+.sw[aria-checked="true"]::after{transform:translateX(18px);background:var(--accent-ink)}
+.sw:focus-visible{outline-offset:3px;border-radius:99px}
+@media (prefers-reduced-motion:reduce){.sw,.sw::after{transition:none}}
+
+.bnav{display:none}
+
+@media (max-width:1100px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .aside{position:static;display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .top{padding:12px 16px;position:sticky;top:0;background:var(--bg);z-index:10}
+  .top .stat,.top .sp{display:none}
+  .search{max-width:none}
+  main{padding:22px 16px 110px}
+  h1{font-size:30px}
+  .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  .bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:10px;text-decoration:none;font-size:11.5px;font-weight:600;color:var(--ink-3);position:relative;min-height:48px}
+  .bnav a[aria-current="page"]{color:var(--accent)}
+  .bnav .n{position:absolute;top:2px;left:calc(50% + 6px);min-width:18px;padding:0 5px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:11px;line-height:18px;text-align:center}
+}
+@media (max-width:640px){
+  .aside{grid-template-columns:1fr}
+  .item{grid-template-columns:40px minmax(0,1fr);gap:12px;padding:16px 16px 16px 20px}
+  .ico{width:40px;height:40px;border-radius:11px}
+  .head .btn{width:100%;justify-content:center}
+  .head > div{width:100%}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#list">Skip to notifications</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H10l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h13v3"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-1z"/><path d="M16 14h2"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9z"/><path d="M10 19a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8L3.5 9.7l5.9-.9z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></symbol>
+    <symbol id="i-done" viewBox="0 0 24 24"><path d="M2.5 12.5l4 4 8-9M12 15.5l1.5 1.5 8-9"/></symbol>
+    <symbol id="i-brief" viewBox="0 0 24 24"><path d="M4 8h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><path d="M9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <aside class="side">
+    <a class="brand" href="#" aria-label="Gigwell home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><circle cx="16" cy="16" r="9" fill="none" stroke="var(--accent-ink)" stroke-width="2" opacity=".45"/><circle cx="16" cy="16" r="4.5" fill="none" stroke="var(--accent-ink)" stroke-width="2.4"/></svg>
+      Gigwell
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav">
+        <li><a href="#"><svg class="i"><use href="#i-home"/></svg>Dashboard</a></li>
+        <li><a href="#"><svg class="i"><use href="#i-search"/></svg>Find work</a></li>
+        <li><a href="#"><svg class="i"><use href="#i-doc"/></svg>Proposals</a></li>
+        <li><a href="#"><svg class="i"><use href="#i-pen"/></svg>Contracts</a></li>
+        <li><a href="#"><svg class="i"><use href="#i-chat"/></svg>Messages<span class="n">2<span class="sr"> unread messages</span></span></a></li>
+        <li><a href="#"><svg class="i"><use href="#i-wallet"/></svg>Earnings</a></li>
+        <li><a href="#" aria-current="page"><svg class="i"><use href="#i-bell"/></svg>Notifications<span class="n" data-count>0</span></a></li>
+      </ul>
+    </nav>
+    <div class="me">
+      <span class="av" aria-hidden="true">AO</span>
+      <div><b>Amara Okafor</b><span>Product designer</span></div>
+    </div>
+  </aside>
+
+  <div>
+    <header class="top">
+      <form class="search" role="search" onsubmit="return false">
+        <label class="sr" for="q">Search jobs, clients and messages</label>
+        <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+        <input id="q" type="search" placeholder="Search jobs, clients, messages">
+      </form>
+      <span class="sp"></span>
+      <span class="stat">Available balance <b>$3,264.50</b></span>
+    </header>
+
+    <main id="main">
+      <div class="head">
+        <div>
+          <h1>Notifications</h1>
+          <p class="sub" id="summary">Loading</p>
+        </div>
+        <button class="btn" id="markall" type="button"><svg class="i" aria-hidden="true"><use href="#i-done"/></svg>Mark all as read</button>
+      </div>
+
+      <div class="layout">
+        <section aria-label="Notification list">
+          <div class="filters" role="group" aria-label="Filter notifications" id="filters"></div>
+          <div id="list" tabindex="-1"></div>
+          <p class="sr" role="status" aria-live="polite" id="live"></p>
+        </section>
+
+        <div class="aside">
+          <section class="card" aria-labelledby="todo-h">
+            <h2 id="todo-h">Needs your response</h2>
+            <p class="hint">Three things are waiting on you.</p>
+            <ul class="todo">
+              <li><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg><div><b>Fernhill Coffee Roasters offer</b><span class="due">Expires Sun, Nov 29</span></div></li>
+              <li><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg><div><b>Reply to Lucas Meyer</b><span>Call starts today at 3:00 PM</span></div></li>
+              <li><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg><div><b>Confirm a new sign-in</b><span>Lisbon, Portugal on Firefox</span></div></li>
+            </ul>
+          </section>
+
+          <section class="card" aria-labelledby="pref-h">
+            <h2 id="pref-h">Delivery</h2>
+            <p class="hint">Choose how Gigwell reaches you.</p>
+            <div class="pref"><div id="p1l"><b>Daily email digest</b><span class="d">One summary at 8:00 AM</span></div><button class="sw" role="switch" aria-checked="true" aria-labelledby="p1l" type="button"></button></div>
+            <div class="pref"><div id="p2l"><b>Push on my phone</b><span class="d">Messages and payments only</span></div><button class="sw" role="switch" aria-checked="true" aria-labelledby="p2l" type="button"></button></div>
+            <div class="pref"><div id="p3l"><b>Quiet hours</b><span class="d">Paused 10:00 PM to 7:00 AM</span></div><button class="sw" role="switch" aria-checked="false" aria-labelledby="p3l" type="button"></button></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bnav" aria-label="Primary mobile">
+  <a href="#"><svg class="i"><use href="#i-home"/></svg>Home</a>
+  <a href="#"><svg class="i"><use href="#i-search"/></svg>Work</a>
+  <a href="#"><svg class="i"><use href="#i-chat"/></svg>Messages<span class="n">2</span></a>
+  <a href="#"><svg class="i"><use href="#i-wallet"/></svg>Earnings</a>
+  <a href="#" aria-current="page"><svg class="i"><use href="#i-bell"/></svg>Alerts<span class="n" data-count>0</span></a>
+</nav>
+
+<script>
+const CATS={
+  proposal:{label:"Proposals",icon:"i-doc"},
+  contract:{label:"Contracts",icon:"i-pen"},
+  payment:{label:"Payments",icon:"i-wallet"},
+  message:{label:"Messages",icon:"i-chat"},
+  security:{label:"Security",icon:"i-shield"},
+  review:{label:"Reviews",icon:"i-star"}
+};
+const FILTERS=[["all","All"],["unread","Unread"],["proposal","Proposals"],["contract","Contracts"],["payment","Payments"],["message","Messages"]];
+const DAYS={"2026-11-27":"Today","2026-11-26":"Yesterday","2026-11-25":"Earlier this week"};
+const N=[
+ {id:1,cat:"message",unread:1,day:"2026-11-27",iso:"2026-11-27T10:42",rel:"18 min ago",
+  t:"<strong>Lucas Meyer</strong> sent a message in Checkout redesign",
+  quote:"Can you share the Figma file before the 3 PM call? Ines wants to walk through the payment step.",
+  act:["Reply","#"]},
+ {id:2,cat:"payment",unread:1,day:"2026-11-27",iso:"2026-11-27T09:15",rel:"1 hour ago",
+  t:"<strong>$2,400.00</strong> released for Milestone 2",
+  tx:"Brightloop Studio approved your Brand system handoff. The funds reach your balance in 2 business days.",
+  act:["View receipt","#"]},
+ {id:3,cat:"contract",unread:1,day:"2026-11-27",iso:"2026-11-27T08:03",rel:"2 hours ago",
+  t:"<strong>Fernhill Coffee Roasters</strong> sent you an offer",
+  tx:"Brand identity refresh, fixed price of $4,800.00 over 6 weeks. Starts December 7.",
+  flag:"Expires in 2 days",act:["Review offer","#"]},
+ {id:4,cat:"proposal",unread:0,day:"2026-11-27",iso:"2026-11-27T07:30",rel:"3 hours ago",
+  t:"<strong>Northwind Health</strong> viewed your proposal",
+  tx:"Design system audit. Viewed by Dana Whitfield, Head of Product.",
+  act:["View proposal","#"]},
+ {id:5,cat:"review",unread:0,day:"2026-11-26",iso:"2026-11-26T16:48",rel:"Thu, 4:48 PM",
+  t:"<strong>Priya Nair</strong> left you a 5-star review",
+  quote:"Amara turned a vague brief into a clear, testable flow in two weeks. Calm, fast and easy to work with.",
+  act:["Read review","#"]},
+ {id:6,cat:"proposal",unread:1,day:"2026-11-26",iso:"2026-11-26T13:20",rel:"Thu, 1:20 PM",
+  t:"You were shortlisted for <strong>Mobile onboarding flow</strong>",
+  tx:"Plume Finance picked 3 of 41 proposals. Expect a message about an interview slot.",
+  act:["View job","#"]},
+ {id:7,cat:"contract",unread:0,day:"2026-11-26",iso:"2026-11-26T09:05",rel:"Thu, 9:05 AM",
+  t:"Timesheet for <strong>Nov 16 to Nov 22</strong> is awaiting approval",
+  tx:"32 hours submitted to Tomás Reyes at Halden Logistics. Clients have 5 days to respond.",
+  act:["View timesheet","#"]},
+ {id:8,cat:"payment",unread:0,day:"2026-11-26",iso:"2026-11-26T07:10",rel:"Thu, 7:10 AM",
+  t:"Withdrawal of <strong>$1,860.00</strong> completed",
+  tx:"Sent to Barclays account ending 4821. It can take up to 1 business day to appear.",
+  act:["View receipt","#"]},
+ {id:9,cat:"security",unread:1,day:"2026-11-25",iso:"2026-11-25T22:12",rel:"Wed, 10:12 PM",
+  t:"New sign-in to your account from <strong>Lisbon, Portugal</strong>",
+  tx:"Firefox on Windows. If this was not you, secure your account now.",
+  act:["Review activity","#"]},
+ {id:10,cat:"payment",unread:0,day:"2026-11-25",iso:"2026-11-25T15:00",rel:"Wed, 3:00 PM",
+  t:"Brightloop Studio funded <strong>Milestone 3</strong> in escrow",
+  tx:"$2,400.00 is held safely and releases when you deliver and the client approves.",
+  act:["Open contract","#"]},
+ {id:11,cat:"message",unread:0,day:"2026-11-25",iso:"2026-11-25T11:36",rel:"Wed, 11:36 AM",
+  t:"<strong>Ines Duarte</strong> added you to Checkout redesign",
+  tx:"3 people are in this conversation, including Lucas Meyer and Kofi Mensah.",
+  act:["Open conversation","#"]}
+];
+const state={filter:"all"};
+const $=s=>document.querySelector(s);
+const svg=n=>`<svg class="i" aria-hidden="true"><use href="#${n}"/></svg>`;
+const unreadCount=()=>N.filter(n=>n.unread).length;
+const matches=n=>state.filter==="all"||(state.filter==="unread"?n.unread:n.cat===state.filter);
+
+function renderFilters(){
+  $("#filters").innerHTML=FILTERS.map(([k,l])=>{
+    const c=k==="all"?N.length:k==="unread"?unreadCount():N.filter(n=>n.cat===k).length;
+    return `<button class="chip" type="button" data-f="${k}" aria-pressed="${state.filter===k}">${l}<span class="c">${c}</span></button>`;
+  }).join("");
+}
+function item(n){
+  const c=CATS[n.cat];
+  return `<li class="item cat-${n.cat}${n.unread?" unread":""}" data-id="${n.id}">
+    <div class="ico" aria-hidden="true">${svg(c.icon)}</div>
+    <div>
+      <p class="t">${n.unread?'<span class="sr">Unread. </span>':""}${n.t}</p>
+      ${n.tx?`<p class="tx">${n.tx}</p>`:""}
+      ${n.quote?`<p class="quote">${n.quote}</p>`:""}
+      <p class="meta"><span>${c.label}</span><span class="dot" aria-hidden="true"></span><time datetime="${n.iso}">${n.rel}</time>${n.flag?`<span class="dot" aria-hidden="true"></span><span class="flag">${svg("i-clock")}${n.flag}</span>`:""}</p>
+      <div class="acts">
+        <a class="btn sm ${n.unread?"pri":""}" href="${n.act[1]}">${n.act[0]}</a>
+        <button class="btn sm ghost" type="button" data-toggle="${n.id}">${n.unread?"Mark as read":"Mark as unread"}</button>
+      </div>
+    </div>
+  </li>`;
+}
+function renderList(){
+  const rows=N.filter(matches);
+  if(!rows.length){
+    const f=state.filter;
+    $("#list").innerHTML=`<div class="empty">${svg("i-done")}<h2>${f==="unread"?"You are all caught up":"Nothing here yet"}</h2><p>${f==="unread"?"New activity on your jobs, contracts and payments will show up here.":"Notifications of this type will appear here when they arrive."}</p></div>`;
+    return;
+  }
+  const out=[];
+  Object.keys(DAYS).forEach((d,i)=>{
+    const g=rows.filter(n=>n.day===d);
+    if(g.length)out.push(`<section class="group" aria-labelledby="g${i}"><h2 id="g${i}">${DAYS[d]}</h2><ul class="list">${g.map(item).join("")}</ul></section>`);
+  });
+  $("#list").innerHTML=out.join("");
+}
+function renderMeta(){
+  const u=unreadCount();
+  $("#summary").textContent=u?`${u} unread of ${N.length} this week`:`You have read everything from this week`;
+  $("#markall").disabled=!u;
+  document.querySelectorAll("[data-count]").forEach(e=>{e.textContent=u;e.hidden=!u;e.setAttribute("aria-label",u+" unread notifications")});
+  document.title=(u?`(${u}) `:"")+"Notifications - Gigwell";
+}
+function render(){renderFilters();renderList();renderMeta()}
+
+$("#filters").addEventListener("click",e=>{
+  const b=e.target.closest("[data-f]");if(!b)return;
+  state.filter=b.dataset.f;render();
+  document.querySelector(`[data-f="${state.filter}"]`).focus();
+});
+$("#list").addEventListener("click",e=>{
+  const b=e.target.closest("[data-toggle]");if(!b)return;
+  const n=N.find(x=>x.id==b.dataset.toggle);n.unread=n.unread?0:1;
+  render();
+  const again=document.querySelector(`[data-toggle="${n.id}"]`);
+  (again||document.querySelector("[data-toggle]")||$("#list")).focus();
+  $("#live").textContent=n.unread?"Marked as unread.":"Marked as read.";
+});
+$("#markall").addEventListener("click",()=>{
+  N.forEach(n=>n.unread=0);render();$("#live").textContent="All notifications marked as read.";$("#list").focus();
+});
+document.querySelectorAll(".sw").forEach(s=>s.addEventListener("click",()=>s.setAttribute("aria-checked",s.getAttribute("aria-checked")!=="true")));
+render();
+</script>
+</body>
+</html>

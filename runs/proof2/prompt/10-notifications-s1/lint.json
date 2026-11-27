@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "label-content-name-mismatch": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui",
+    "ui-serif"
+  ],
+  "textColors": 7,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(11, 102, 80)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 41,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to notifications",
+        "w": 164,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Gigwell",
+        "w": 116,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "Find work",
+        "w": 87,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Proposals",
+        "w": 86,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Contracts",
+        "w": 85,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Messages",
+        "w": 86,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Earnings",
+        "w": 78,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Search",
+        "w": 40,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

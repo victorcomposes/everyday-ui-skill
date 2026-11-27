@@ -1,0 +1,117 @@
+{
+  "axe": {
+    "rules": {
+      "heading-order": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "landmark-one-main": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 8
+      }
+    },
+    "byImpact": {
+      "moderate": {
+        "rules": 3,
+        "nodes": 10
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 9,
+  "minFontPx": 11.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(27, 42, 34)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(11, 87, 208)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 20,
+    "examples": [
+      {
+        "tag": "input",
+        "text": "amara",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "tom",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "priya",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "2026-11-30",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "2026-12-1",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "2026-12-2",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "2026-12-3",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "2026-12-7",
+        "w": 1,
+        "h": 1
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 1,
+    "examples": [
+      "div.bar.main-bar"
+    ]
+  }
+}

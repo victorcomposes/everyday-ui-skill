@@ -1,0 +1,100 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "ui-sans-serif"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(12, 106, 77)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 47,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to notifications",
+        "w": 164,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Gigwell",
+        "w": 120,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 358,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "All",
+        "w": 41,
+        "h": 44
+      },
+      {
+        "tag": "button",
+        "text": "Accept time",
+        "w": 280,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Suggest another time",
+        "w": 280,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Mark as read: Northpine Logist",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Dismiss: Northpine Logistics i",
+        "w": 36,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

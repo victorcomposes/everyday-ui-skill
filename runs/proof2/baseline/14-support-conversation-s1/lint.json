@@ -1,0 +1,115 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 4
+      },
+      "heading-order": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 4
+      },
+      "moderate": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 4
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 9,
+  "minFontPx": 10.8333,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(11, 107, 115)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(26, 95, 208)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 14,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "All",
+        "w": 36,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Open",
+        "w": 52,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Pending",
+        "w": 68,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Solved",
+        "w": 59,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Inbox",
+        "w": 80,
+        "h": 34
+      },
+      {
+        "tag": "select",
+        "text": "Open\nPending\nSolved",
+        "w": 89,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Details",
+        "w": 87,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Reply",
+        "w": 55,
+        "h": 41
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

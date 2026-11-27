@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gigwell notifications</title>
+<style>
+:root{
+  --bg:#e9f0ee; --surface:#f8fbfa; --line:#cfdcd8; --ink:#112a30; --muted:#4f666b;
+  --accent:#0b5f73; --accent-ink:#fff; --hover:#eef5f3; --unread:#e1f0f2;
+  --warn:#b4411f; --warn-bg:#fbe9e2; --ok:#1d6b45;
+  --pay:#1d6b45; --msg:#2457c5; --con:#6a43b8; --rev:#a56a00; --due:#b4411f;
+  --av-bg-l:90%; --av-fg-l:26%;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c1c20; --surface:#122a30; --line:#26434a; --ink:#e4f0ee; --muted:#9bb3b6;
+    --accent:#5cc3d8; --accent-ink:#06222a; --hover:#173339; --unread:#163b44;
+    --warn:#ff9a76; --warn-bg:#3a2119; --ok:#6fd0a0;
+    --pay:#6fd0a0; --msg:#8fb0ff; --con:#c0a4ff; --rev:#f0bf62; --due:#ff9a76;
+    --av-bg-l:26%; --av-fg-l:84%;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 "Avenir Next","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 24px 64px}
+
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;font-size:17px}
+.brand svg{width:26px;height:26px}
+.top{display:flex;justify-content:space-between;align-items:center;padding-bottom:22px}
+.me{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+.me b{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:13px}
+
+h1{margin:0;font-size:34px;line-height:1.1;letter-spacing:-.025em;font-weight:700}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.head p{margin:6px 0 0;color:var(--muted)}
+.head .btns{display:flex;gap:8px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:8px;font-weight:600;font-size:14px;min-height:40px}
+.btn:hover{background:var(--hover)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{min-height:34px;padding:5px 12px}
+.btn:disabled{opacity:.5;cursor:default}
+
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:32px;align-items:start}
+nav.filters{position:sticky;top:20px}
+nav.filters ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.f{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;padding:9px 12px;border-radius:8px;text-align:left;color:var(--muted);font-weight:500}
+.f:hover{background:var(--hover);color:var(--ink)}
+.f[aria-pressed=true]{background:var(--surface);color:var(--ink);font-weight:700;box-shadow:inset 3px 0 0 var(--accent)}
+.f .n{font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.f .n.hot{background:var(--accent);color:var(--accent-ink);border-radius:99px;padding:0 8px;font-weight:700}
+.toggle{display:flex;align-items:center;gap:10px;margin:18px 12px 0;color:var(--muted);font-size:14px;cursor:pointer}
+.toggle input{accent-color:var(--accent);width:18px;height:18px;margin:0}
+.prefs{margin:18px 12px 0;display:block;color:var(--accent);font-weight:600;font-size:14px}
+
+.wait{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:28px;overflow:hidden}
+.wait>h2{margin:0;padding:14px 18px 10px;font-size:17px;letter-spacing:-.01em;display:flex;gap:10px;align-items:baseline}
+.wait>h2 span{font-weight:500;color:var(--muted);font-size:14px}
+.wait .item{border-top:1px solid var(--line);position:relative}
+.wait .item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--due)}
+.wait .item.soft::before{background:var(--rev)}
+.due{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;color:var(--warn);background:var(--warn-bg);padding:2px 9px;border-radius:99px;white-space:nowrap}
+.due svg{width:13px;height:13px}
+.due.soft{color:var(--rev);background:color-mix(in srgb,var(--rev) 14%,transparent)}
+
+.day{margin:0 0 6px;padding:0 4px;font-size:14px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:12px}
+.day::after{content:"";flex:1;height:1px;background:var(--line)}
+ul.list{list-style:none;margin:0 0 28px;padding:0}
+.item{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;padding:14px 18px;align-items:start}
+.stream .item{border-bottom:1px solid var(--line)}
+.stream .item:hover,.wait .item:hover{background:var(--hover)}
+.stream .item.unread{background:var(--unread)}
+.stream .item.unread:hover{background:color-mix(in srgb,var(--unread) 80%,var(--accent) 8%)}
+.av{position:relative;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:15px;
+  background:hsl(var(--h) 38% var(--av-bg-l));color:hsl(var(--h) 55% var(--av-fg-l))}
+.av.sys{border-radius:12px}
+.badge{position:absolute;right:-4px;bottom:-4px;width:20px;height:20px;border-radius:50%;background:var(--surface);border:2px solid var(--surface);display:grid;place-items:center}
+.badge svg{width:13px;height:13px}
+.t-payment{color:var(--pay)}.t-message{color:var(--msg)}.t-contract{color:var(--con)}.t-review{color:var(--rev)}.t-deadline{color:var(--due)}
+.body .line{margin:0}
+.item.unread .line{font-weight:600}
+.line b{font-weight:700}
+.sub{margin:2px 0 0;color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.quote{margin:6px 0 0;padding:6px 12px;border-left:3px solid var(--line);color:var(--muted);font-size:14px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:6px;font-size:13px;color:var(--muted)}
+.acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.done{display:inline-flex;gap:6px;align-items:center;color:var(--ok);font-weight:600;font-size:14px;margin-top:8px}
+.done svg{width:15px;height:15px;flex:none}
+.dot{width:36px;height:36px;border-radius:50%;border:0;background:none;display:grid;place-items:center;color:var(--muted)}
+.dot:hover{background:var(--line);color:var(--ink)}
+.dot i{width:10px;height:10px;border-radius:50%;border:2px solid var(--muted)}
+.unread .dot i{background:var(--accent);border-color:var(--accent)}
+.amt{font-variant-numeric:tabular-nums;font-weight:700}
+.empty{padding:48px 24px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--radius)}
+.empty b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+
+@media (max-width:820px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:16px}
+  .layout>*{min-width:0}
+  nav.filters{position:static;margin:0 -24px}
+  nav.filters ul{flex-direction:row;overflow-x:auto;padding:2px 24px 6px;gap:6px;scrollbar-width:none}
+  .f{width:auto;white-space:nowrap;gap:8px;border:1px solid var(--line);border-radius:99px;padding:7px 14px}
+  .f[aria-pressed=true]{box-shadow:none;background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .f[aria-pressed=true] .n{color:inherit}
+  .f[aria-pressed=true] .n.hot{background:var(--accent-ink);color:var(--accent)}
+  .toggle{margin:4px 24px 0}.prefs{display:none}
+}
+@media (max-width:560px){
+  .wrap{padding:18px 16px 48px}
+  nav.filters{margin:0 -16px}
+  nav.filters ul{padding-left:16px;padding-right:16px}
+  .toggle{margin-left:16px;margin-right:16px}
+  h1{font-size:28px}
+  .me span{display:none}
+  .head .btns{width:100%}.head .btns .btn{flex:1}
+  .item{grid-template-columns:40px minmax(0,1fr) auto;gap:12px;padding:14px 12px}
+  .av{width:40px;height:40px;font-size:14px}
+  .acts .btn{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .item{transition:background .15s}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="13" fill="var(--accent)"/><path d="M7 16c2.5 3.5 11.5 3.5 14 0M9 11.5c2-2 8-2 10 0" stroke="var(--accent-ink)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      Gigwell
+    </div>
+    <div class="me"><span>Amara Okafor, brand designer</span><b aria-hidden="true">AO</b></div>
+  </header>
+
+  <div class="head">
+    <div>
+      <h1>Notifications</h1>
+      <p id="summary" aria-live="polite"></p>
+    </div>
+    <div class="btns">
+      <button class="btn" id="markAll">Mark all as read</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="filters" aria-label="Filter notifications">
+      <ul id="filters"></ul>
+      <label class="toggle"><input type="checkbox" id="unreadOnly"> Show unread only</label>
+      <a class="prefs" href="#prefs" onclick="return false">Notification settings</a>
+    </nav>
+    <main id="main"></main>
+  </div>
+</div>
+
+<script>
+const I = {
+  payment:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v7M10 6.2C9.4 5.6 6 5.5 6 7.3c0 1.9 4 1 4 3C10 12 6.6 11.8 6 10.7"/></svg>',
+  message:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/></svg>',
+  contract:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 1.8h5.5L12.5 5v9.2H4zM9.5 1.8V5h3M6 8.5h4M6 11h4"/></svg>',
+  review:'<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5l2 4.2 4.5.6-3.3 3.1.9 4.5L8 11.6 3.9 13.9l.9-4.5L1.5 6.3 6 5.7z"/></svg>',
+  deadline:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8.5" r="5.5"/><path d="M8 5.5v3.3l2 1.2M6 1.5h4"/></svg>',
+  check:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>'
+};
+const FILTERS=[['all','All'],['action','Needs action'],['payment','Payments'],['message','Messages'],['contract','Contracts'],['review','Reviews']];
+
+const N=[
+ {id:1,type:'contract',ini:'NL',h:200,day:'Today',time:'9:12 am',unread:1,
+  text:'<b>Northwind Labs</b> sent you a fixed-price offer',sub:'Brand refresh, 3 milestones, $4,800 total. Starts 2 December.',
+  due:'Offer expires in 5 hours',urgent:1,act:{a:'Accept offer',b:'Decline',doneA:'Offer accepted. The contract starts 2 December.',doneB:'Offer declined.'}},
+ {id:2,type:'deadline',ini:'G',sys:1,h:20,day:'Today',time:'8:40 am',unread:1,
+  text:'Dispute on <b>Harbor &amp; Pine packaging</b> needs your reply',sub:'The client says the final files were incomplete. Share your delivery proof.',
+  due:'Reply due Friday, 29 Nov',urgent:1,act:{a:'Add your reply',b:'View dispute',doneA:'Reply sent. Support will review within 2 working days.',doneB:'Dispute opened.'}},
+ {id:3,type:'deadline',ini:'TR',h:150,day:'Today',time:'7:55 am',unread:1,
+  text:'<b>Tomás Rivera</b> delivered milestone 2 of <b>Mobile onboarding screens</b>',sub:'It approves on its own unless you request changes.',
+  due:'Auto-approves in 2 days',act:{a:'Approve delivery',b:'Request changes',doneA:'Milestone approved. $1,200 moves to Tomás.',doneB:'Changes requested. Tomás has been told.'}},
+ {id:4,type:'payment',ini:'LH',h:140,day:'Today',time:'7:03 am',unread:1,
+  text:'<b>Lumen Health</b> released <span class="amt">$2,450.00</span> for milestone 3',sub:'Landing page illustrations. Arrives in your bank account by 2 December.'},
+ {id:5,type:'message',ini:'PN',h:330,day:'Today',time:'6:48 am',unread:1,
+  text:'<b>Priya Nair</b> replied in <b>Podcast cover art</b>',quote:'“Version B is the one. Could the wordmark sit a little lower? Then we can lock it.”',
+  act:{a:'Reply',doneA:'Reply sent.'}},
+ {id:6,type:'review',ini:'MW',h:42,day:'Yesterday',time:'5:20 pm',unread:0,
+  text:'<b>Marcus Webb</b> left you a 5-star review',quote:'“Clear communication and delivered a day early. Would hire again.”'},
+ {id:7,type:'contract',ini:'FS',h:260,day:'Yesterday',time:'2:14 pm',unread:1,
+  text:'<b>Fieldnote Studio</b> invited you to submit a proposal',sub:'Editorial illustration series, budget $1,500 to $2,200. 4 other freelancers invited.',
+  act:{a:'Write proposal',b:'Not interested',doneA:'Proposal draft saved.',doneB:'Invitation declined.'}},
+ {id:8,type:'payment',ini:'G',sys:1,h:20,day:'Yesterday',time:'11:30 am',unread:0,
+  text:'Your withdrawal of <span class="amt">$3,180.00</span> was sent',sub:'To Monzo ending 4417. Expect it within 1 working day.'},
+ {id:9,type:'message',ini:'DO',h:175,day:'Yesterday',time:'9:02 am',unread:0,
+  text:'<b>Daniel Oyelaran</b> sent 2 files in <b>Event poster set</b>',sub:'poster-a-final.pdf, poster-b-final.pdf'},
+ {id:10,type:'contract',ini:'HP',h:12,day:'Earlier this week',time:'Monday',unread:0,
+  text:'<b>Harbor &amp; Pine</b> opened a dispute on milestone 2',sub:'Funds of $900 are held until the dispute closes.'},
+ {id:11,type:'payment',ini:'G',sys:1,h:20,day:'Earlier this week',time:'Monday',unread:0,
+  text:'Gigwell took a <span class="amt">$245.00</span> service fee from your latest payment',sub:'10% on contracts under $5,000. Your fee drops to 8% after 3 more completed contracts.'},
+ {id:12,type:'review',ini:'G',sys:1,h:20,day:'Earlier this week',time:'Sunday',unread:0,
+  text:'Rate your work with <b>Lumen Health</b>',sub:'Reviews stay open for 14 days after a contract ends.',
+  act:{a:'Write a review',doneA:'Thanks. Your review is published.'}}
+];
+const state=N.map(n=>({...n,resolved:null}));
+let filter='all',unreadOnly=false;
+
+const pending=n=>n.act&&!n.resolved&&n.due;
+const match=n=>{
+  if(unreadOnly&&!n.unread)return false;
+  if(filter==='all')return true;
+  if(filter==='action')return n.act&&!n.resolved;
+  return n.type===filter;
+};
+const avatar=n=>`<div class="av${n.sys?' sys':''}" style="--h:${n.h}" aria-hidden="true">${n.ini}<span class="badge t-${n.type}">${I[n.type]}</span></div>`;
+
+function item(n){
+  const dueTag=pending(n)?`<span class="due${n.urgent?'':' soft'}">${I.deadline}${n.due}</span>`:'';
+  const acts=n.act?(n.resolved?`<div class="done">${I.check}${n.act['done'+n.resolved]}</div>`:
+    `<div class="acts"><button class="btn primary sm" data-act="${n.id}" data-r="A">${n.act.a}</button>${n.act.b?`<button class="btn sm" data-act="${n.id}" data-r="B">${n.act.b}</button>`:''}</div>`):'';
+  return `<li class="item${n.unread?' unread':''}${n.urgent?'':' soft'}" data-id="${n.id}">
+    ${avatar(n)}
+    <div class="body">
+      <p class="line">${n.text}</p>
+      ${n.sub?`<p class="sub">${n.sub}</p>`:''}${n.quote?`<p class="quote">${n.quote}</p>`:''}
+      <div class="meta">${dueTag}<span>${n.time}</span></div>
+      ${acts}
+    </div>
+    <button class="dot" data-read="${n.id}" aria-label="${n.unread?'Mark as read':'Mark as unread'}" title="${n.unread?'Mark as read':'Mark as unread'}"><i></i></button>
+  </li>`;
+}
+
+function render(){
+  const unread=state.filter(n=>n.unread).length, need=state.filter(n=>n.act&&!n.resolved).length;
+  document.getElementById('summary').textContent=
+    unread?`${unread} unread, ${need} waiting on you`:`You are all caught up.${need?' '+need+' waiting on you.':''}`;
+  document.getElementById('markAll').disabled=!unread;
+  document.getElementById('filters').innerHTML=FILTERS.map(([k,l])=>{
+    const c=k==='all'?unread:k==='action'?need:state.filter(n=>n.type===k&&n.unread).length;
+    return `<li><button class="f" data-f="${k}" aria-pressed="${k===filter}">${l}<span class="n${c&&(k==='all'||k==='action')?' hot':''}">${c||''}</span></button></li>`;
+  }).join('');
+
+  const shown=state.filter(match);
+  const wait=shown.filter(pending).sort((a,b)=>(b.urgent||0)-(a.urgent||0)||a.id-b.id);
+  const rest=shown.filter(n=>!pending(n));
+  let h='';
+  if(wait.length)h+=`<section class="wait" aria-labelledby="wh"><h2 id="wh">Waiting on you<span>${wait.length} with a deadline</span></h2><ul class="list" style="margin:0">${wait.map(item).join('')}</ul></section>`;
+  if(rest.length){
+    h+='<div class="stream">';
+    ['Today','Yesterday','Earlier this week'].forEach(d=>{
+      const g=rest.filter(n=>n.day===d);
+      if(g.length)h+=`<h2 class="day">${d}</h2><ul class="list">${g.map(item).join('')}</ul>`;
+    });
+    h+='</div>';
+  }
+  if(!shown.length)h=`<div class="empty"><b>${unreadOnly?'Nothing unread here':'Nothing here yet'}</b>${filter==='all'?'New activity on your contracts shows up here.':'Try another filter to see more.'}</div>`;
+  document.getElementById('main').innerHTML=h;
+}
+
+document.addEventListener('click',e=>{
+  const f=e.target.closest('[data-f]'); if(f){filter=f.dataset.f;render();return}
+  const r=e.target.closest('[data-read]'); if(r){const n=state.find(x=>x.id==r.dataset.read);n.unread=n.unread?0:1;render();return}
+  const a=e.target.closest('[data-act]');
+  if(a){const n=state.find(x=>x.id==a.dataset.act);n.resolved=a.dataset.r;n.unread=0;render()}
+});
+document.getElementById('markAll').onclick=()=>{state.forEach(n=>n.unread=0);render()};
+document.getElementById('unreadOnly').onchange=e=>{unreadOnly=e.target.checked;render()};
+render();
+</script>
+</body>
+</html>

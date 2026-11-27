@@ -1,0 +1,115 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      },
+      "moderate": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 1
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "avenir next"
+  ],
+  "textColors": 15,
+  "minFontPx": 13,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(17, 42, 48)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(11, 95, 115)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 24,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 358,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "All\n6",
+        "w": 81,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Needs action\n6",
+        "w": 151,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Payments\n1",
+        "w": 111,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Messages\n1",
+        "w": 111,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Contracts\n2",
+        "w": 110,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Reviews",
+        "w": 92,
+        "h": 39
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 358,
+        "h": 21
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Notifications - Gigwell</title>
+<style>
+:root{
+  --bg:#F5F2EC; --surface:#FFFFFF; --surface-2:#FAF8F4; --line:#E3DED3; --line-strong:#CFC9BB;
+  --text:#1A1D1B; --muted:#596158;
+  --accent:#0B6650; --accent-ink:#FFFFFF; --accent-soft:#DDF0E8; --accent-hover:#08523F;
+  --unread:#F1F8F4;
+  --badge:#B83A0B; --badge-ink:#FFFFFF;
+  --warn-bg:#FFF1D6; --warn-ink:#733D00; --warn-line:#E8C985;
+  --switch-off:#838B85;
+  --shadow:0 1px 2px rgba(26,29,27,.05),0 4px 16px rgba(26,29,27,.04);
+  --c-pay-bg:#DDF0E8; --c-pay:#0B6650;
+  --c-msg-bg:#E1EBFA; --c-msg:#1D4C94;
+  --c-prop-bg:#FBEACB; --c-prop:#85470A;
+  --c-con-bg:#E8E5F7; --c-con:#483D9A;
+  --c-rev-bg:#FCE2DE; --c-rev:#A02A1F;
+  --c-acc-bg:#E7E9E4; --c-acc:#3A423E;
+  --serif:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI Variable","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0E1210; --surface:#161C19; --surface-2:#1B2220; --line:#2A332F; --line-strong:#3A4540;
+    --text:#E9EEEA; --muted:#A0ABA4;
+    --accent:#5CD1AB; --accent-ink:#07251B; --accent-soft:#17352B; --accent-hover:#7FE0BF;
+    --unread:#18241F;
+    --badge:#FF9A70; --badge-ink:#2A0E02;
+    --warn-bg:#3A2B12; --warn-ink:#F7D597; --warn-line:#5E4620;
+    --switch-off:#6B7670;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+    --c-pay-bg:#17352B; --c-pay:#6FDDB8;
+    --c-msg-bg:#1B2A44; --c-msg:#9CC0F5;
+    --c-prop-bg:#3A2B12; --c-prop:#F0BE6E;
+    --c-con-bg:#28264A; --c-con:#BDB5F6;
+    --c-rev-bg:#40201C; --c-rev:#F4A59C;
+    --c-acc-bg:#262C29; --c-acc:#B7C1BB;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--accent);color:var(--accent-ink);padding:8px 14px;border-radius:8px;z-index:10;font-weight:600}
+.skip:focus{top:12px}
+
+/* top bar */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:28px;min-height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:-.02em}
+.logo svg{width:28px;height:28px}
+.mainnav{display:flex;gap:4px;flex:1}
+.mainnav a{text-decoration:none;color:var(--muted);font-weight:500;padding:8px 12px;border-radius:8px}
+.mainnav a:hover{color:var(--text);background:var(--surface-2)}
+.mainnav a[aria-current]{color:var(--text)}
+.tools{display:flex;align-items:center;gap:6px;margin-left:auto}
+.iconbtn{position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.iconbtn:hover{background:var(--surface-2);color:var(--text)}
+.iconbtn[aria-current]{background:var(--accent-soft);color:var(--accent)}
+.pip{position:absolute;top:-7px;right:-7px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--badge);color:var(--badge-ink);font-size:11px;font-weight:700;line-height:18px;text-align:center;border:2px solid var(--surface);box-sizing:content-box}
+.pip[hidden]{display:none}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--c-con-bg);color:var(--c-con);font-weight:700;font-size:13px;margin-left:6px}
+
+/* page */
+main{max-width:1180px;margin:0 auto;padding:36px 24px 72px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+h1{font-family:var(--serif);font-size:36px;line-height:1.1;letter-spacing:-.02em;margin:0 0 6px;font-weight:700}
+.sub{margin:0;color:var(--muted)}
+.sub b{color:var(--text);font-weight:600}
+.head-acts{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:10px;border:1px solid var(--line-strong);background:var(--surface);font-weight:600;font-size:14px;text-decoration:none;cursor:pointer;color:var(--text)}
+.btn:hover{background:var(--surface-2)}
+.btn:disabled{opacity:1;color:var(--muted);cursor:default;background:transparent;border-color:var(--line)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn-sm{min-height:34px;padding:0 14px;font-size:13.5px;border-radius:8px}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:32px;align-items:start}
+
+/* filters */
+.filters{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 14px;margin:0 -2px;scrollbar-width:thin}
+.chip{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;min-height:38px;padding:0 14px;border-radius:19px;border:1px solid var(--line-strong);background:var(--surface);font-weight:500;font-size:14px;cursor:pointer}
+.chip:hover{background:var(--surface-2)}
+.chip[aria-pressed="true"]{background:var(--text);border-color:var(--text);color:var(--bg)}
+.chip .n{font-size:12px;font-weight:700;padding:1px 7px;border-radius:10px;background:var(--badge);color:var(--badge-ink)}
+.chip[aria-pressed="true"] .n{background:var(--bg);color:var(--text)}
+.chip .n[hidden]{display:none}
+
+/* list */
+.group{margin-bottom:28px}
+.group[hidden]{display:none}
+.group h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 10px 4px;display:flex;gap:10px;align-items:baseline}
+.group h2 span{font-weight:500;letter-spacing:0;text-transform:none;font-size:13px}
+.list{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.item{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;padding:18px 18px 18px 22px;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item[hidden]{display:none}
+.item.unread{background:var(--unread)}
+.item.unread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center}
+.ico svg{width:22px;height:22px}
+.k-pay{background:var(--c-pay-bg);color:var(--c-pay)}
+.k-msg{background:var(--c-msg-bg);color:var(--c-msg)}
+.k-prop{background:var(--c-prop-bg);color:var(--c-prop)}
+.k-con{background:var(--c-con-bg);color:var(--c-con)}
+.k-rev{background:var(--c-rev-bg);color:var(--c-rev)}
+.k-acc{background:var(--c-acc-bg);color:var(--c-acc)}
+.title{margin:0;font-size:15px;line-height:1.45}
+.title b{font-weight:650}
+.item:not(.unread) .title b{font-weight:600}
+.desc{margin:3px 0 0;color:var(--muted);font-size:14px}
+.quote{margin:8px 0 0;padding:8px 12px;border-left:3px solid var(--line-strong);background:var(--surface-2);border-radius:0 8px 8px 0;font-size:14px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:8px;font-size:13px;color:var(--muted)}
+.meta .tag{font-weight:600;color:var(--text)}
+.meta .sep{width:3px;height:3px;border-radius:50%;background:var(--line-strong)}
+.urgent{display:inline-flex;align-items:center;gap:5px;background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line);border-radius:6px;padding:1px 8px;font-weight:600;font-size:12px}
+.urgent svg{width:13px;height:13px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.side-r{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.time{font-size:13px;color:var(--muted);white-space:nowrap;padding-top:2px}
+.rd{width:36px;height:36px;border-radius:10px;border:0;background:transparent;color:var(--muted);display:grid;place-items:center;cursor:pointer}
+.rd:hover{background:var(--surface-2);color:var(--text)}
+.rd svg{width:18px;height:18px}
+.item:not(.unread) .rd .ck{display:none}
+.item.unread .rd .un{display:none}
+
+.empty{text-align:center;padding:56px 24px;background:var(--surface);border:1px dashed var(--line-strong);border-radius:16px;color:var(--muted)}
+.empty[hidden]{display:none}
+.empty svg{width:32px;height:32px;color:var(--accent);margin-bottom:8px}
+.empty p{margin:0}
+.empty .big{font-family:var(--serif);font-size:20px;color:var(--text);margin-bottom:4px}
+
+/* aside */
+aside{display:grid;gap:20px;position:sticky;top:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.card h2{font-size:15px;margin:0 0 4px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.card .hint{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+.todo{list-style:none;margin:0;padding:0}
+.todo li{border-top:1px solid var(--line)}
+.todo li:first-child{border-top:0}
+.todo a{display:flex;justify-content:space-between;gap:12px;padding:11px 0;text-decoration:none;align-items:center}
+.todo a:hover .t{text-decoration:underline}
+.todo .t{font-weight:600;font-size:14px;display:block}
+.todo .d{font-size:13px;color:var(--muted);display:block}
+.todo svg{color:var(--muted);width:18px;height:18px}
+.big-n{font-family:var(--serif);font-size:15px;background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line);border-radius:999px;min-width:26px;text-align:center;padding:0 8px;font-weight:700}
+.prefs{list-style:none;margin:0;padding:0}
+.prefs li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.prefs li:first-child{border-top:0;padding-top:4px}
+.prefs .lbl{font-size:14px;font-weight:600;display:block}
+.prefs .ds{font-size:13px;color:var(--muted);display:block}
+.sw{flex:none;width:44px;height:26px;border-radius:13px;border:0;background:var(--switch-off);position:relative;cursor:pointer;padding:0;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.sw[aria-checked="true"]{background:var(--accent)}
+.sw[aria-checked="true"]::after{transform:translateX(18px);background:var(--accent-ink)}
+.link{display:inline-flex;gap:6px;align-items:center;margin-top:12px;font-weight:600;font-size:14px;color:var(--accent);text-decoration:none}
+.link:hover{text-decoration:underline}
+.link svg{width:16px;height:16px}
+
+@media (max-width:1020px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  aside{position:static;grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .top-in{flex-wrap:wrap;padding:10px 16px 0;gap:4px 12px}
+  .mainnav{order:3;flex:1 0 100%;overflow-x:auto;margin:0 -8px;padding-bottom:6px}
+  .mainnav a{white-space:nowrap;padding:8px 10px}
+  .mainnav a[aria-current]{box-shadow:inset 0 -2px 0 var(--accent);border-radius:0}
+  main{padding:24px 16px 56px}
+  h1{font-size:30px}
+  .head-acts{width:100%}
+  .head-acts .btn{flex:1;justify-content:center}
+  .item{grid-template-columns:40px minmax(0,1fr);gap:12px;padding:16px 14px 14px 18px}
+  .ico{width:40px;height:40px;border-radius:11px}
+  .side-r{grid-column:2;flex-direction:row;justify-content:space-between;align-items:center;margin:-2px 0 -6px}
+  .item .rd{margin-right:-2px}
+  .meta .sep{display:none}
+  aside{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9Z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-9l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-1Z"/><circle cx="16" cy="14" r="1.2"/></symbol>
+    <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.7l5.9-.8Z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#list">Skip to notifications</a>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#" aria-label="Gigwell home">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M8 14.5a6 6 0 1 1 6 6" fill="none" stroke="var(--accent-ink)" stroke-width="2.6" stroke-linecap="round"/><circle cx="14" cy="14.5" r="2" fill="var(--accent-ink)"/></svg>
+      Gigwell
+    </a>
+    <nav class="mainnav" aria-label="Main">
+      <a href="#">Find work</a>
+      <a href="#">Proposals</a>
+      <a href="#">Contracts</a>
+      <a href="#">Messages</a>
+      <a href="#">Earnings</a>
+    </nav>
+    <div class="tools">
+      <button class="iconbtn" type="button" aria-label="Search"><svg class="i"><use href="#i-search"/></svg></button>
+      <a class="iconbtn" href="#" aria-current="page" aria-label="Notifications"><svg class="i"><use href="#i-bell"/></svg><span class="pip" id="pip" aria-hidden="true">5</span></a>
+      <span class="avatar" role="img" aria-label="Signed in as Amara Okafor">AO</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="head">
+    <div>
+      <h1>Notifications</h1>
+      <p class="sub" id="sub"></p>
+    </div>
+    <div class="head-acts">
+      <button class="btn" id="markall" type="button"><svg class="i"><use href="#i-check"/></svg>Mark all as read</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <section aria-label="Notification list">
+      <div class="filters" role="group" aria-label="Filter notifications" id="filters">
+        <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-f="unread" aria-pressed="false">Unread <span class="n" id="n-unread">5</span></button>
+        <button class="chip" type="button" data-f="msg" aria-pressed="false">Messages</button>
+        <button class="chip" type="button" data-f="prop" aria-pressed="false">Proposals</button>
+        <button class="chip" type="button" data-f="con" aria-pressed="false">Contracts</button>
+        <button class="chip" type="button" data-f="pay" aria-pressed="false">Payments</button>
+        <button class="chip" type="button" data-f="acc" aria-pressed="false">Account</button>
+      </div>
+      <p class="sr" role="status" aria-live="polite" id="live"></p>
+
+      <div id="list">
+        <section class="group" aria-labelledby="g-today">
+          <h2 id="g-today">Today <span>Fri, Nov 27</span></h2>
+          <ul class="list">
+            <li class="item unread" data-k="pay">
+              <div class="ico k-pay"><svg class="i"><use href="#i-wallet"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Unread. </span><b>Brightfold Studio</b> released <b>$1,850.00</b> for milestone 2</p>
+                <p class="desc">The funds are in your Gigwell balance and ready to withdraw.</p>
+                <div class="meta"><span class="tag">Brand refresh</span><span class="sep" aria-hidden="true"></span><span>Milestone 2 of 3</span></div>
+                <div class="acts"><a class="btn btn-sm" href="#">View receipt</a><a class="btn btn-sm" href="#">Withdraw funds</a></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-27T09:42">9:42 AM</time><button class="rd" type="button" aria-label="Mark as read"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item unread" data-k="con" data-needs="1">
+              <div class="ico k-con"><svg class="i"><use href="#i-brief"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Unread. </span><b>Larkspur Coffee</b> sent you a fixed-price offer of <b>$2,400.00</b></p>
+                <p class="desc">Packaging illustration for the winter blend range. Delivery in 3 weeks, 2 rounds of revisions.</p>
+                <div class="meta"><span class="urgent"><svg class="i"><use href="#i-clock"/></svg>Offer expires in 2 days</span><span class="sep" aria-hidden="true"></span><span>Sent by Priya Nair</span></div>
+                <div class="acts"><a class="btn btn-primary btn-sm" href="#">Review offer</a><a class="btn btn-sm" href="#">Ask a question</a></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-27T09:05">9:05 AM</time><button class="rd" type="button" aria-label="Mark as read"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item unread" data-k="msg">
+              <div class="ico k-msg"><svg class="i"><use href="#i-chat"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Unread. </span><b>Tomás Reyes</b> sent a message in <b>Fintech onboarding</b></p>
+                <p class="quote">Can you share the updated onboarding frames before 3pm? Legal wants to review the consent screen today.</p>
+                <div class="acts"><a class="btn btn-sm" href="#">Reply</a></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-27T08:15">8:15 AM</time><button class="rd" type="button" aria-label="Mark as read"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item unread" data-k="prop">
+              <div class="ico k-prop"><svg class="i"><use href="#i-doc"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Unread. </span>Your proposal for <b>Patient portal redesign</b> was shortlisted</p>
+                <p class="desc">Northwind Health shortlisted 4 of 31 proposals. They usually reply within 3 days.</p>
+                <div class="meta"><span class="tag">Northwind Health</span><span class="sep" aria-hidden="true"></span><span>Your bid $68/hr</span></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-27T07:30">7:30 AM</time><button class="rd" type="button" aria-label="Mark as read"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+          </ul>
+        </section>
+
+        <section class="group" aria-labelledby="g-yest">
+          <h2 id="g-yest">Yesterday <span>Thu, Nov 26</span></h2>
+          <ul class="list">
+            <li class="item unread" data-k="rev">
+              <div class="ico k-rev"><svg class="i"><use href="#i-star"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Unread. </span><b>Hana Lindqvist</b> left you a 5-star review</p>
+                <p class="quote">Amara turned a vague brief into a clear system in two weeks. Communication was excellent throughout.</p>
+                <div class="meta"><span class="tag">Design system audit</span><span class="sep" aria-hidden="true"></span><span>Your rating is now 4.9 from 38 reviews</span></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-26T16:20">4:20 PM</time><button class="rd" type="button" aria-label="Mark as read"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item" data-k="pay">
+              <div class="ico k-pay"><svg class="i"><use href="#i-wallet"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Read. </span>Your withdrawal of <b>$3,200.00</b> is on its way</p>
+                <p class="desc">Sent to Barclays account ending 4821. It arrives in 1 to 2 business days.</p>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-26T11:02">11:02 AM</time><button class="rd" type="button" aria-label="Mark as unread"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item" data-k="con">
+              <div class="ico k-con"><svg class="i"><use href="#i-brief"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Read. </span><b>Meridian Rail</b> approved your timesheet for <b>12.5 hrs</b></p>
+                <p class="desc">Week of Nov 16 to Nov 22. Payment of $875.00 is in escrow review for 5 days.</p>
+                <div class="meta"><span class="tag">Wayfinding app UI</span></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-26T09:48">9:48 AM</time><button class="rd" type="button" aria-label="Mark as unread"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+          </ul>
+        </section>
+
+        <section class="group" aria-labelledby="g-week">
+          <h2 id="g-week">Earlier this week <span>Nov 23 to Nov 25</span></h2>
+          <ul class="list">
+            <li class="item" data-k="acc" data-needs="1">
+              <div class="ico k-acc"><svg class="i"><use href="#i-shield"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Read. </span>Add your tax form to keep receiving payouts</p>
+                <p class="desc">Gigwell needs a W-8BEN on file for clients based in the US. Payouts pause after Dec 15.</p>
+                <div class="meta"><span class="urgent"><svg class="i"><use href="#i-clock"/></svg>Due Dec 15</span></div>
+                <div class="acts"><a class="btn btn-primary btn-sm" href="#">Complete tax form</a></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-25T14:10">Wed, 2:10 PM</time><button class="rd" type="button" aria-label="Mark as unread"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item" data-k="con" data-needs="1">
+              <div class="ico k-con"><svg class="i"><use href="#i-brief"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Read. </span>Milestone due soon: <b>Wireframes, round 1</b></p>
+                <p class="desc">Larkspur Coffee expects delivery by Sat, Nov 29. Submit your files to release the milestone.</p>
+                <div class="meta"><span class="tag">Packaging illustration</span></div>
+                <div class="acts"><a class="btn btn-sm" href="#">Open workroom</a></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-25T10:00">Wed, 10:00 AM</time><button class="rd" type="button" aria-label="Mark as unread"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item" data-k="prop">
+              <div class="ico k-prop"><svg class="i"><use href="#i-doc"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Read. </span>New match: <b>Senior UI designer</b> at Meridian Rail</p>
+                <p class="desc">Hourly, $70 to $90. 20 hrs a week for 3 months. Posted 2 hours ago, 6 proposals so far.</p>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-24T15:35">Tue, 3:35 PM</time><button class="rd" type="button" aria-label="Mark as unread"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+            <li class="item" data-k="acc">
+              <div class="ico k-acc"><svg class="i"><use href="#i-shield"/></svg></div>
+              <div>
+                <p class="title"><span class="sr state">Read. </span>New sign-in from <b>Chrome on Windows</b></p>
+                <p class="desc">Lisbon, Portugal. If this was you, no action is needed.</p>
+                <div class="acts"><a class="btn btn-sm" href="#">Review activity</a></div>
+              </div>
+              <div class="side-r"><time class="time" datetime="2026-11-23T21:12">Mon, 9:12 PM</time><button class="rd" type="button" aria-label="Mark as unread"><svg class="i ck"><use href="#i-check"/></svg><svg class="i un"><use href="#i-dot"/></svg></button></div>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="empty" id="empty" hidden>
+        <svg class="i"><use href="#i-check"/></svg>
+        <p class="big" id="empty-t">You are all caught up</p>
+        <p id="empty-d">Nothing here right now.</p>
+      </div>
+    </section>
+
+    <aside aria-label="Shortcuts and settings">
+      <section class="card" aria-labelledby="a-todo">
+        <h2 id="a-todo">Needs your action <span class="big-n" id="todo-n">3</span></h2>
+        <p class="hint">Deadlines that affect your earnings.</p>
+        <ul class="todo">
+          <li><a href="#"><span><span class="t">Answer Larkspur's offer</span><span class="d">Expires Sun, Nov 29</span></span><svg class="i"><use href="#i-chev"/></svg></a></li>
+          <li><a href="#"><span><span class="t">Deliver wireframes, round 1</span><span class="d">Due Sat, Nov 29</span></span><svg class="i"><use href="#i-chev"/></svg></a></li>
+          <li><a href="#"><span><span class="t">Submit tax form W-8BEN</span><span class="d">Due Tue, Dec 15</span></span><svg class="i"><use href="#i-chev"/></svg></a></li>
+        </ul>
+      </section>
+
+      <section class="card" aria-labelledby="a-pref">
+        <h2 id="a-pref">Delivery</h2>
+        <p class="hint">Choose how Gigwell reaches you.</p>
+        <ul class="prefs">
+          <li><span><span class="lbl" id="p1">Email</span><span class="ds">Offers, payments, security</span></span><button class="sw" type="button" role="switch" aria-checked="true" aria-labelledby="p1"></button></li>
+          <li><span><span class="lbl" id="p2">Push on this device</span><span class="ds">Messages and deadlines</span></span><button class="sw" type="button" role="switch" aria-checked="true" aria-labelledby="p2"></button></li>
+          <li><span><span class="lbl" id="p3">Weekly job digest</span><span class="ds">Mondays at 8:00 AM</span></span><button class="sw" type="button" role="switch" aria-checked="false" aria-labelledby="p3"></button></li>
+          <li><span><span class="lbl" id="p4">Quiet hours</span><span class="ds">10:00 PM to 7:00 AM, Lisbon time</span></span><button class="sw" type="button" role="switch" aria-checked="true" aria-labelledby="p4"></button></li>
+        </ul>
+        <a class="link" href="#">All notification settings <svg class="i"><use href="#i-arrow"/></svg></a>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<script>
+(function(){
+  var items=[].slice.call(document.querySelectorAll('.item'));
+  var groups=[].slice.call(document.querySelectorAll('.group'));
+  var chips=[].slice.call(document.querySelectorAll('.chip'));
+  var filter='all';
+  var names={all:'All',unread:'Unread',msg:'Messages',prop:'Proposals',con:'Contracts',pay:'Payments',acc:'Account'};
+
+  function unreadCount(){return items.filter(function(i){return i.classList.contains('unread')}).length}
+
+  function setRead(li,read){
+    li.classList.toggle('unread',!read);
+    var st=li.querySelector('.state'); if(st) st.textContent=read?'Read. ':'Unread. ';
+    var b=li.querySelector('.rd'); b.setAttribute('aria-label',read?'Mark as unread':'Mark as read');
+  }
+
+  function render(announce){
+    var u=unreadCount(), shown=0;
+    items.forEach(function(li){
+      var ok=filter==='all'||(filter==='unread'?li.classList.contains('unread'):li.dataset.k===filter);
+      li.hidden=!ok; if(ok) shown++;
+    });
+    groups.forEach(function(g){g.hidden=!g.querySelector('.item:not([hidden])')});
+    var n=document.getElementById('n-unread'); n.textContent=u; n.hidden=u===0;
+    var pip=document.getElementById('pip'); pip.textContent=u; pip.hidden=u===0;
+    document.title=(u?'('+u+') ':'')+'Notifications - Gigwell';
+    var needs=document.querySelectorAll('.item[data-needs]').length;
+    document.getElementById('sub').innerHTML=(u?'<b>'+u+' unread</b>':'<b>No unread notifications</b>')+', '+needs+' need your action.';
+    document.getElementById('markall').disabled=u===0;
+    var empty=document.getElementById('empty');
+    empty.hidden=shown>0;
+    if(shown===0){
+      var f=filter==='unread';
+      document.getElementById('empty-t').textContent=f?'You are all caught up':'Nothing in '+names[filter].toLowerCase();
+      document.getElementById('empty-d').textContent=f?'New offers, messages and payments will show up here.':'Notifications of this kind will appear here.';
+    }
+    if(announce) document.getElementById('live').textContent='Showing '+shown+' '+(shown===1?'notification':'notifications')+', filter: '+names[filter]+'.';
+  }
+
+  chips.forEach(function(c){c.addEventListener('click',function(){
+    filter=c.dataset.f;
+    chips.forEach(function(x){x.setAttribute('aria-pressed',x===c?'true':'false')});
+    render(true);
+  })});
+
+  items.forEach(function(li){
+    li.querySelector('.rd').addEventListener('click',function(){
+      setRead(li,li.classList.contains('unread'));
+      var live=document.getElementById('live');
+      render(false);
+      live.textContent=unreadCount()+' unread.';
+    });
+  });
+
+  document.getElementById('markall').addEventListener('click',function(){
+    items.forEach(function(li){setRead(li,true)});
+    render(false);
+    document.getElementById('live').textContent='All notifications marked as read.';
+  });
+
+  [].forEach.call(document.querySelectorAll('.sw'),function(s){
+    s.addEventListener('click',function(){s.setAttribute('aria-checked',s.getAttribute('aria-checked')==='true'?'false':'true')});
+  });
+
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href="#"]'); if(a) e.preventDefault();
+  });
+
+  render(false);
+})();
+</script>
+</body>
+</html>

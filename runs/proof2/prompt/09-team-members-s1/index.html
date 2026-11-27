@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members - Cobalt</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f6f6f3;
+  --surface: #ffffff;
+  --surface-2: #f1f1ed;
+  --line: #e3e3dd;
+  --line-strong: #c9c9c1;
+  --text: #16181d;
+  --muted: #595e6a;
+  --accent: #1d4ed8;
+  --accent-hover: #1a43bd;
+  --accent-ink: #ffffff;
+  --accent-soft: #e8eefc;
+  --danger: #b3261e;
+  --danger-soft: #fcebe9;
+  --ok: #17703f;
+  --ok-soft: #e4f4ea;
+  --warn: #8a5300;
+  --warn-soft: #fdf1dc;
+  --shadow: 0 1px 2px rgb(22 24 29 / .06), 0 8px 24px rgb(22 24 29 / .06);
+  --radius: 10px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1014;
+    --surface: #161920;
+    --surface-2: #1d212a;
+    --line: #272c37;
+    --line-strong: #3a4150;
+    --text: #eceef3;
+    --muted: #a3a9b7;
+    --accent: #8facff;
+    --accent-hover: #a6bdff;
+    --accent-ink: #0b1230;
+    --accent-soft: #1d2646;
+    --danger: #ff9a92;
+    --danger-soft: #3a1c1a;
+    --ok: #6fd69b;
+    --ok-soft: #14291e;
+    --warn: #f2b45a;
+    --warn-soft: #302210;
+    --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 32px rgb(0 0 0 / .45);
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 14px/1.5 var(--font); -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 12px; top: -48px; background: var(--accent); color: var(--accent-ink); padding: 8px 12px; border-radius: 8px; z-index: 50; }
+.skip:focus { top: 12px; }
+svg { display: block; flex: none; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; }
+.side {
+  position: sticky; top: 0; height: 100vh; padding: 20px 14px;
+  border-right: 1px solid var(--line); background: var(--surface);
+  display: flex; flex-direction: column; gap: 22px;
+}
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 8px; font-weight: 650; font-size: 16px; letter-spacing: -.01em; }
+.brand-mark { width: 26px; height: 26px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+.ws { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); }
+.ws b { display: block; font-weight: 600; line-height: 1.25; }
+.ws small { color: var(--muted); font-size: 12px; }
+.ws-ico { width: 30px; height: 30px; border-radius: 8px; background: #16181d; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+@media (prefers-color-scheme: dark) { .ws-ico { background: #eceef3; color: #16181d; } }
+.nav-group { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.nav-label { padding: 0 10px 6px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.nav a {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px;
+  color: var(--muted); text-decoration: none; font-weight: 500;
+}
+.nav a:hover { background: var(--surface-2); color: var(--text); }
+.nav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.side-foot { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px 8px 0; border-top: 1px solid var(--line); }
+.side-foot b { display: block; font-weight: 600; line-height: 1.25; }
+.side-foot small { color: var(--muted); font-size: 12px; }
+
+main { padding: 36px clamp(16px, 4vw, 56px) 64px; max-width: 1180px; width: 100%; }
+.crumbs { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; }
+h1 { margin: 0; font-size: 26px; line-height: 1.2; letter-spacing: -.02em; font-weight: 650; }
+.head p { margin: 6px 0 0; color: var(--muted); max-width: 56ch; }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 38px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line-strong);
+  background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap; color: var(--text); text-decoration: none;
+}
+.btn:hover { background: var(--surface-2); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn-quiet { color: var(--muted); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn-danger:hover { background: var(--danger); filter: brightness(.92); }
+@media (prefers-color-scheme: dark) { .btn-danger { color: #2a0a08; } }
+.btn-quiet { border-color: transparent; background: transparent; color: var(--muted); }
+.btn-quiet:hover { color: var(--text); }
+.btn-sm { min-height: 32px; padding: 0 10px; font-size: 13px; }
+.icon-btn { width: 36px; height: 36px; padding: 0; min-height: 0; }
+.icon-btn.danger:hover { color: var(--danger); background: var(--danger-soft); }
+
+/* seats */
+.seats {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px 18px; margin-bottom: 24px;
+}
+.seats strong { font-size: 15px; margin-right: 8px; }
+.seats span.sub { color: var(--muted); }
+.meter { grid-column: 1 / -1; height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; display: flex; gap: 2px; }
+.meter i { display: block; height: 100%; }
+.meter .m-used { background: var(--accent); }
+.meter .m-pend { background: repeating-linear-gradient(135deg, var(--accent) 0 3px, transparent 3px 6px); opacity: .7; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 12.5px; grid-column: 1 / -1; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 3px; background: var(--accent); }
+.legend i.p { background: repeating-linear-gradient(135deg, var(--accent) 0 2px, transparent 2px 4px); outline: 1px solid var(--accent); outline-offset: -1px; }
+.legend i.f { background: var(--surface-2); outline: 1px solid var(--line-strong); outline-offset: -1px; }
+
+/* card + toolbar */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.tabs { display: flex; gap: 4px; padding: 0 12px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tab {
+  position: relative; background: none; border: 0; padding: 14px 10px; cursor: pointer; color: var(--muted); font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.tab:hover { color: var(--text); }
+.tab[aria-selected="true"] { color: var(--text); }
+.tab[aria-selected="true"]::after { content: ""; position: absolute; left: 6px; right: 6px; bottom: -1px; height: 2px; background: var(--accent); border-radius: 2px; }
+.count { min-width: 22px; padding: 0 7px; border-radius: 99px; background: var(--surface-2); color: var(--muted); font-size: 12px; line-height: 20px; text-align: center; font-variant-numeric: tabular-nums; }
+.tab[aria-selected="true"] .count { background: var(--accent-soft); color: var(--accent); }
+.toolbar { display: flex; gap: 10px; padding: 14px 16px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+.search { position: relative; flex: 1 1 260px; max-width: 380px; }
+.search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.field, .select {
+  width: 100%; min-height: 38px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 8px;
+  background: var(--surface); appearance: none;
+}
+.search .field { padding-left: 36px; }
+textarea.field { padding: 10px 12px; min-height: 84px; resize: vertical; }
+.field::placeholder { color: var(--muted); opacity: 1; }
+.select {
+  padding-right: 32px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23808693' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center;
+}
+.select:disabled { cursor: not-allowed; color: var(--muted); background-color: var(--surface-2); background-image: none; padding-right: 12px; }
+.filter { width: auto; min-width: 150px; }
+.field:hover, .select:not(:disabled):hover { border-color: var(--muted); }
+.field:focus-visible, .select:focus-visible { outline-offset: 0; border-radius: 8px; }
+.field[aria-invalid="true"] { border-color: var(--danger); }
+
+/* table */
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--muted);
+  letter-spacing: .03em; text-transform: uppercase; background: var(--surface-2); border-bottom: 1px solid var(--line);
+}
+th:first-child { border-top-left-radius: 0; }
+td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
+.col-role { width: 200px; }
+.col-act { width: 150px; }
+.col-sec { width: 130px; }
+.col-btn { width: 56px; text-align: right; }
+.person { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.person b { display: block; font-weight: 600; line-height: 1.3; }
+.person .mail { display: block; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.you { margin-left: 6px; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; background: var(--surface-2); color: var(--muted); vertical-align: 1px; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%; flex: none; display: grid; place-items: center;
+  font-size: 13px; font-weight: 650; letter-spacing: .02em;
+  background: hsl(var(--h) 55% 90%); color: hsl(var(--h) 60% 24%);
+}
+@media (prefers-color-scheme: dark) { .avatar { background: hsl(var(--h) 32% 24%); color: hsl(var(--h) 80% 90%); } }
+.avatar.sm { width: 30px; height: 30px; font-size: 11px; }
+.avatar.dash { background: var(--surface-2); color: var(--muted); border: 1px dashed var(--line-strong); }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 99px; font-size: 12.5px; font-weight: 600; }
+.badge i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.b-ok { background: var(--ok-soft); color: var(--ok); }
+.b-warn { background: var(--warn-soft); color: var(--warn); }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+.role-static { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 12px; font-weight: 600; }
+.role-static svg { color: var(--muted); }
+.role-cell .hint { display: none; }
+.foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+.empty { padding: 56px 20px; text-align: center; }
+.empty svg { margin: 0 auto 14px; color: var(--muted); }
+.empty h3 { margin: 0 0 4px; font-size: 16px; }
+.empty p { margin: 0 auto 16px; max-width: 42ch; color: var(--muted); }
+
+/* roles reference */
+.roles { margin-top: 28px; }
+.roles h2 { font-size: 15px; margin: 0 0 12px; letter-spacing: -.005em; }
+.role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.role-grid li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+.role-grid b { display: block; margin-bottom: 4px; }
+.role-grid span { color: var(--muted); font-size: 13px; display: block; }
+
+/* dialog */
+dialog {
+  border: 1px solid var(--line); border-radius: 14px; padding: 0; background: var(--surface); color: var(--text);
+  width: min(480px, calc(100vw - 32px)); box-shadow: var(--shadow); margin: auto;
+}
+dialog::backdrop { background: rgb(10 12 18 / .55); }
+.dlg-h { padding: 22px 24px 4px; }
+.dlg-h h2 { margin: 0; font-size: 18px; letter-spacing: -.01em; }
+.dlg-h p { margin: 6px 0 0; color: var(--muted); }
+.dlg-b { padding: 16px 24px 4px; display: grid; gap: 16px; }
+.dlg-f { display: flex; justify-content: flex-end; gap: 10px; padding: 20px 24px 22px; flex-wrap: wrap; }
+label.l { display: block; font-weight: 600; margin-bottom: 6px; }
+.help { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+.err { color: var(--danger); font-size: 13px; margin: 6px 0 0; font-weight: 500; display: flex; gap: 6px; align-items: center; }
+.err[hidden] { display: none; }
+.callout { display: flex; gap: 10px; padding: 12px 14px; border-radius: 8px; background: var(--warn-soft); color: var(--text); font-size: 13.5px; }
+.callout svg { color: var(--warn); margin-top: 2px; }
+.who { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+
+/* toast */
+.toasts { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 100; display: grid; gap: 8px; width: min(440px, calc(100vw - 32px)); pointer-events: none; }
+.toast {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; pointer-events: auto;
+  background: #16181d; color: #f3f4f7; box-shadow: var(--shadow); animation: up .18s ease-out;
+}
+.toast svg { color: #7fe0a8; }
+.toast button { margin-left: auto; background: none; border: 0; color: #b9c6ff; font-weight: 600; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+@media (prefers-color-scheme: dark) { .toast { background: #eceef3; color: #16181d; } .toast svg { color: #17703f; } .toast button { color: #1d4ed8; } }
+@keyframes up { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .toast { animation: none; } }
+
+/* responsive */
+@media (max-width: 1000px) { .col-sec { display: none; } td.sec { display: none; } }
+@media (max-width: 860px) {
+  .shell { display: block; }
+  .side { position: static; height: auto; flex-direction: row; align-items: center; flex-wrap: wrap; padding: 12px 16px 0; gap: 10px 16px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .ws, .side-foot, .nav-label { display: none; }
+  .nav { flex-basis: 100%; overflow-x: auto; margin: 0 -16px; padding: 0 16px 10px; }
+  .nav-group { display: flex; gap: 4px; }
+  .nav a { white-space: nowrap; }
+  main { padding-top: 24px; }
+}
+@media (max-width: 720px) {
+  .col-act, td.act { display: none; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table, tbody, tr, td { display: block; }
+  tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  tbody tr:last-child { border-bottom: 0; }
+  td { padding: 0; border: 0; }
+  td.who-c { grid-column: 1; }
+  td.col-btn { grid-column: 2; grid-row: 1; width: auto; align-self: start; }
+  td.role-cell { grid-column: 1 / -1; }
+  td.role-cell .hint { display: block; }
+  .role-cell .select, .role-static { width: 100%; }
+  td.sec { display: none; }
+  td.extra { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
+  .head .btn { width: 100%; }
+  .seats { grid-template-columns: 1fr; }
+  .seats .btn { justify-self: start; grid-row: 2; }
+  .role-static { padding-left: 0; }
+  .toolbar .filter, .search { flex: 1 1 100%; max-width: none; }
+  .dlg-f .btn { flex: 1 1 140px; }
+}
+@media (min-width: 721px) { td.extra { display: none; } }
+@media (forced-colors: active) { .btn-primary, .btn-danger { border: 1px solid ButtonText; } .tab[aria-selected="true"]::after { background: Highlight; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 14 5v6l-6 3.5L2 11V5l6-3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 8.2V14.4M8 8.2 2.4 5M8 8.2 13.6 5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+      Cobalt
+    </div>
+    <div class="ws">
+      <span class="ws-ico" aria-hidden="true">N</span>
+      <div><b>Northwind Studio</b><small>Team plan</small></div>
+    </div>
+    <nav class="nav" aria-label="Workspace settings">
+      <div class="nav-label">Workspace settings</div>
+      <ul class="nav-group">
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="5.5" height="5.5" rx="1.2"/><rect x="10" y="2.5" width="5.5" height="5.5" rx="1.2"/><rect x="2.5" y="10" width="5.5" height="5.5" rx="1.2"/><rect x="10" y="10" width="5.5" height="5.5" rx="1.2"/></svg>General</a></li>
+        <li><a href="#" aria-current="page"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="6" r="2.6"/><path d="M1.8 15c.4-2.4 2.3-3.8 4.7-3.8s4.3 1.4 4.7 3.8"/><path d="M11.6 3.6a2.6 2.6 0 0 1 0 4.8M13.4 11.5c1.6.5 2.6 1.7 2.9 3.5"/></svg>Team members</a></li>
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 1.8 15 4v4.6c0 3.4-2.4 6-6 7.6-3.6-1.6-6-4.2-6-7.6V4l6-2.2Z"/><path d="m6.4 9 1.9 1.9 3.4-3.6"/></svg>Security</a></li>
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="14" height="10" rx="2"/><path d="M2 7.5h14"/></svg>Billing</a></li>
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3v3M11 3v3M5 6h8v3a4 4 0 0 1-8 0V6ZM9 13v2.5"/></svg>Integrations</a></li>
+      </ul>
+    </nav>
+    <div class="side-foot">
+      <span class="avatar sm" style="--h:215" aria-hidden="true">MO</span>
+      <div><b>Maya Okafor</b><small>Owner</small></div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <p class="crumbs">Workspace settings</p>
+    <div class="head">
+      <div>
+        <h1>Team members</h1>
+        <p>Invite people to review designs, set what each person can do, and remove access when someone leaves.</p>
+      </div>
+      <button class="btn btn-primary" id="openInvite" type="button">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>
+        Invite people
+      </button>
+    </div>
+
+    <section class="seats" aria-labelledby="seatsT">
+      <div><strong id="seatsT"></strong> <span class="sub" id="seatsSub"></span></div>
+      <a class="btn btn-sm" href="#">Manage seats</a>
+      <div class="meter" aria-hidden="true"><i class="m-used" id="mUsed"></i><i class="m-pend" id="mPend"></i></div>
+      <div class="legend"><span><i></i>Active members</span><span><i class="p"></i>Pending invites</span><span><i class="f"></i>Available</span></div>
+    </section>
+
+    <section class="card" aria-label="Members and invitations">
+      <div class="tabs" role="tablist" aria-label="Team lists">
+        <button class="tab" role="tab" id="tab-members" aria-controls="panel" aria-selected="true">Members <span class="count" id="cMembers"></span></button>
+        <button class="tab" role="tab" id="tab-invites" aria-controls="panel" aria-selected="false" tabindex="-1">Pending invites <span class="count" id="cInvites"></span></button>
+      </div>
+      <div class="toolbar">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+          <label class="sr" for="q">Search by name or email</label>
+          <input class="field" id="q" type="search" placeholder="Search by name or email" autocomplete="off">
+        </div>
+        <div id="filterWrap">
+          <label class="sr" for="roleFilter">Filter by role</label>
+          <select class="select filter" id="roleFilter">
+            <option value="">All roles</option>
+            <option>Owner</option><option>Admin</option><option>Designer</option><option>Reviewer</option><option>Viewer</option>
+          </select>
+        </div>
+      </div>
+      <div id="panel" role="tabpanel" aria-labelledby="tab-members" tabindex="-1"></div>
+      <div class="foot"><span id="resultCount" aria-live="polite"></span><span>Roles apply to every project in this workspace.</span></div>
+    </section>
+
+    <section class="roles" aria-labelledby="rolesT">
+      <h2 id="rolesT">What each role can do</h2>
+      <ul class="role-grid">
+        <li><b>Owner</b><span>Everything an Admin can do, plus billing and deleting the workspace.</span></li>
+        <li><b>Admin</b><span>Manage members, roles and integrations. Cannot change billing.</span></li>
+        <li><b>Designer</b><span>Create projects, upload frames and resolve review threads.</span></li>
+        <li><b>Reviewer</b><span>Comment, approve and request changes. Cannot upload.</span></li>
+        <li><b>Viewer</b><span>Read-only access to projects they are added to.</span></li>
+      </ul>
+    </section>
+  </main>
+</div>
+
+<dialog id="inviteDlg" aria-labelledby="inviteT">
+  <form id="inviteForm" novalidate>
+    <div class="dlg-h"><h2 id="inviteT">Invite people to Northwind Studio</h2><p>They get an email with a link that works for 7 days.</p></div>
+    <div class="dlg-b">
+      <div>
+        <label class="l" for="emails">Email addresses</label>
+        <textarea class="field" id="emails" placeholder="name@company.com, another@company.com" aria-describedby="emailsHelp emailsErr" autocomplete="off"></textarea>
+        <p class="help" id="emailsHelp">Separate addresses with commas, spaces or new lines.</p>
+        <p class="err" id="emailsErr" hidden></p>
+      </div>
+      <div>
+        <label class="l" for="inviteRole">Role</label>
+        <select class="select" id="inviteRole" aria-describedby="roleHelp">
+          <option>Admin</option><option selected>Designer</option><option>Reviewer</option><option>Viewer</option>
+        </select>
+        <p class="help" id="roleHelp"></p>
+      </div>
+    </div>
+    <div class="dlg-f">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn btn-primary" type="submit">Send invites</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="removeDlg" aria-labelledby="removeT">
+  <form method="dialog" id="removeForm">
+    <div class="dlg-h"><h2 id="removeT">Remove from workspace?</h2></div>
+    <div class="dlg-b">
+      <div class="who"><span class="avatar" id="rmAvatar" aria-hidden="true"></span><div><b id="rmName"></b><span class="mail muted" id="rmMail" style="display:block;font-size:13px"></span></div></div>
+      <div class="callout">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2.2 16.2 15H1.8L9 2.2Z"/><path d="M9 7v3.4M9 12.6v.1"/></svg>
+        <span id="rmNote">They lose access immediately. Their comments stay, and their projects move to you.</span>
+      </div>
+    </div>
+    <div class="dlg-f">
+      <button class="btn" type="button" data-close>Keep member</button>
+      <button class="btn btn-danger" type="submit" id="rmConfirm">Remove member</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+const ROLES = {
+  Owner: 'Full control, including billing and deleting the workspace.',
+  Admin: 'Manage members, roles and integrations. Cannot change billing.',
+  Designer: 'Create projects, upload frames and resolve review threads.',
+  Reviewer: 'Comment, approve and request changes. Cannot upload.',
+  Viewer: 'Read-only access to projects they are added to.'
+};
+const ASSIGNABLE = ['Admin', 'Designer', 'Reviewer', 'Viewer'];
+const SEATS = 25;
+
+let members = [
+  { id: 1, name: 'Maya Okafor', email: 'maya@northwind.studio', role: 'Owner', active: 'Active now', mfa: true, you: true, h: 215 },
+  { id: 2, name: 'Daniel Reyes', email: 'daniel.reyes@northwind.studio', role: 'Admin', active: '12 minutes ago', mfa: true, h: 28 },
+  { id: 3, name: 'Priya Nair', email: 'priya@northwind.studio', role: 'Admin', active: '2 hours ago', mfa: true, h: 330 },
+  { id: 4, name: 'Tomasz Kowalski', email: 'tomasz.k@northwind.studio', role: 'Designer', active: 'Today, 09:41', mfa: true, h: 150 },
+  { id: 5, name: 'Aiko Tanaka', email: 'aiko@northwind.studio', role: 'Designer', active: 'Yesterday', mfa: true, h: 265 },
+  { id: 6, name: 'Samuel Mensah', email: 'samuel.mensah@northwind.studio', role: 'Designer', active: 'Yesterday', mfa: false, h: 95 },
+  { id: 7, name: 'Lena Fischer', email: 'lena.fischer@northwind.studio', role: 'Designer', active: 'Nov 25', mfa: true, h: 300 },
+  { id: 8, name: 'Ravi Menon', email: 'ravi@northwind.studio', role: 'Designer', active: 'Nov 24', mfa: true, h: 190 },
+  { id: 9, name: 'Chloe Martin', email: 'chloe.martin@halden-labs.com', role: 'Reviewer', active: 'Nov 24', mfa: false, h: 10 },
+  { id: 10, name: 'Jonas Lindqvist', email: 'jonas@halden-labs.com', role: 'Reviewer', active: 'Nov 21', mfa: true, h: 235 },
+  { id: 11, name: 'Fatima Al-Sayed', email: 'fatima.alsayed@northwind.studio', role: 'Reviewer', active: 'Nov 19', mfa: true, h: 350 },
+  { id: 12, name: 'Ben Carter', email: 'ben.carter@northwind.studio', role: 'Viewer', active: 'Nov 12', mfa: false, h: 60 },
+  { id: 13, name: 'Ines Duarte', email: 'ines@fableworks.co', role: 'Viewer', active: 'Nov 4', mfa: false, h: 170 },
+  { id: 14, name: 'Kwame Boateng', email: 'kwame.boateng@northwind.studio', role: 'Designer', active: 'Oct 29', mfa: true, h: 120 }
+];
+let invites = [
+  { id: 101, email: 'hannah.wells@northwind.studio', role: 'Designer', by: 'Daniel Reyes', sent: 'Nov 26' },
+  { id: 102, email: 'o.petrov@halden-labs.com', role: 'Reviewer', by: 'Maya Okafor', sent: 'Nov 24' },
+  { id: 103, email: 'grace@fableworks.co', role: 'Viewer', by: 'Priya Nair', sent: 'Nov 20' }
+];
+let nextId = 200, tab = 'members', pendingRemove = null, lastOpener = null;
+
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const initials = n => n.split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+const hueOf = s => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 360, 7);
+const owners = () => members.filter(m => m.role === 'Owner').length;
+
+const icoLock = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6" rx="1.5"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6"/></svg>';
+const icoTrash = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5h11M6 4.5V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5M4 4.5l.6 8a1 1 0 0 0 1 .9h4.8a1 1 0 0 0 1-.9l.6-8M6.6 7v4M9.4 7v4"/></svg>';
+const icoCheck = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 9.5 3.2 3.2L14 5.5"/></svg>';
+
+function roleSelect(id, value, label, opts) {
+  return `<select class="select" data-role="${id}" aria-label="${esc(label)}">${opts.map(r => `<option${r === value ? ' selected' : ''}>${r}</option>`).join('')}</select>`;
+}
+
+function renderSeats() {
+  const used = members.length, pend = invites.length, free = SEATS - used - pend;
+  $('#seatsT').textContent = `${used + pend} of ${SEATS} seats in use`;
+  $('#seatsSub').textContent = free > 0 ? `${free} available` : 'No seats available';
+  $('#mUsed').style.width = (used / SEATS * 100) + '%';
+  $('#mPend').style.width = (pend / SEATS * 100) + '%';
+  $('#cMembers').textContent = members.length;
+  $('#cInvites').textContent = invites.length;
+}
+
+function renderPanel() {
+  const q = $('#q').value.trim().toLowerCase();
+  const rf = $('#roleFilter').value;
+  const panel = $('#panel');
+  let html, shown, total;
+  if (tab === 'members') {
+    const list = members.filter(m => (!rf || m.role === rf) && (!q || (m.name + ' ' + m.email).toLowerCase().includes(q)));
+    shown = list.length; total = members.length;
+    html = list.length ? `<table><thead><tr>
+      <th scope="col">Member</th><th scope="col" class="col-role">Role</th><th scope="col" class="col-sec">Two-step sign-in</th><th scope="col" class="col-act">Last active</th><th scope="col" class="col-btn"><span class="sr">Actions</span></th></tr></thead><tbody>` +
+      list.map(m => {
+        const lastOwner = m.role === 'Owner' && owners() < 2;
+        const roleCell = m.role === 'Owner'
+          ? `<span class="role-static">${icoLock}Owner</span><span class="hint help">Only an owner can transfer ownership.</span>`
+          : roleSelect(m.id, m.role, `Role for ${m.name}`, ASSIGNABLE);
+        return `<tr data-id="${m.id}">
+          <td class="who-c"><div class="person"><span class="avatar" style="--h:${m.h}" aria-hidden="true">${initials(m.name)}</span><div><b>${esc(m.name)}${m.you ? '<span class="you">You</span>' : ''}</b><span class="mail">${esc(m.email)}</span></div></div></td>
+          <td class="role-cell col-role">${roleCell}</td>
+          <td class="sec col-sec">${m.mfa ? '<span class="badge b-ok"><i></i>On</span>' : '<span class="badge b-warn"><i></i>Not set up</span>'}</td>
+          <td class="act col-act muted num">${m.active}</td>
+          <td class="col-btn">${lastOwner || m.you ? '' : `<button class="btn btn-quiet icon-btn danger" type="button" data-remove="${m.id}" aria-label="Remove ${esc(m.name)}" title="Remove ${esc(m.name)}">${icoTrash}</button>`}</td>
+        </tr>`;
+      }).join('') + '</tbody></table>'
+      : empty('No members match', 'Try a different name or email, or clear the role filter.', true);
+  } else {
+    const list = invites.filter(i => (!rf || i.role === rf) && (!q || i.email.toLowerCase().includes(q)));
+    shown = list.length; total = invites.length;
+    html = list.length ? `<table><thead><tr>
+      <th scope="col">Invited person</th><th scope="col" class="col-role">Role</th><th scope="col" class="col-act">Sent</th><th scope="col" class="col-btn" style="width:210px"><span class="sr">Actions</span></th></tr></thead><tbody>` +
+      list.map(i => `<tr data-id="${i.id}">
+        <td class="who-c"><div class="person"><span class="avatar dash" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1.8" y="3.5" width="12.4" height="9" rx="1.6"/><path d="m2.4 4.6 5.6 4.2 5.6-4.2"/></svg></span><div><b>${esc(i.email)}</b><span class="mail">Invited by ${esc(i.by)}</span></div></div></td>
+        <td class="role-cell col-role">${roleSelect(i.id, i.role, `Role for ${i.email}`, ASSIGNABLE)}</td>
+        <td class="act col-act muted num">${i.sent}</td>
+        <td class="col-btn" style="width:210px;white-space:nowrap"><button class="btn btn-sm" type="button" data-resend="${i.id}" aria-label="Resend invite to ${esc(i.email)}">Resend</button> <button class="btn btn-sm btn-quiet" type="button" data-revoke="${i.id}" aria-label="Revoke invite for ${esc(i.email)}">Revoke</button></td>
+      </tr>`).join('') + '</tbody></table>'
+      : (total ? empty('No invites match', 'Try a different email or clear the role filter.', true) : empty('No pending invites', 'Everyone you invited has joined. Invite more people to fill your open seats.', false));
+  }
+  panel.setAttribute('aria-labelledby', 'tab-' + tab);
+  panel.innerHTML = html;
+  $('#resultCount').textContent = shown === total ? `${total} ${tab === 'members' ? 'members' : 'pending invites'}` : `Showing ${shown} of ${total}`;
+}
+
+function empty(title, text, clear) {
+  return `<div class="empty"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="9"/><path d="m23 23 7 7"/></svg><h3>${title}</h3><p>${text}</p>${clear ? '<button class="btn" type="button" data-clear>Clear filters</button>' : '<button class="btn btn-primary" type="button" data-invite>Invite people</button>'}</div>`;
+}
+
+function render() { renderSeats(); renderPanel(); }
+
+function toast(msg, undo) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = icoCheck + `<span>${esc(msg)}</span>` + (undo ? '<button type="button">Undo</button>' : '');
+  if (undo) t.querySelector('button').onclick = () => { undo(); t.remove(); };
+  $('#toasts').appendChild(t);
+  setTimeout(() => t.remove(), undo ? 8000 : 4500);
+}
+
+/* tabs */
+const tabs = [$('#tab-members'), $('#tab-invites')];
+function setTab(name, focus) {
+  tab = name;
+  tabs.forEach(t => { const on = t.id === 'tab-' + name; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
+  render();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => setTab(i ? 'invites' : 'members'));
+  t.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'Home' || e.key === 'End') {
+      e.preventDefault();
+      const n = e.key === 'Home' ? 0 : e.key === 'End' ? 1 : 1 - i;
+      setTab(n ? 'invites' : 'members', true);
+    }
+  });
+});
+$('#q').addEventListener('input', renderPanel);
+$('#roleFilter').addEventListener('change', renderPanel);
+
+/* panel actions */
+$('#panel').addEventListener('change', e => {
+  const sel = e.target.closest('[data-role]'); if (!sel) return;
+  const id = +sel.dataset.role, list = tab === 'members' ? members : invites;
+  const item = list.find(x => x.id === id), prev = item.role;
+  item.role = sel.value;
+  const who = item.name || item.email;
+  toast(`${who} is now ${/^[AEIOU]/.test(item.role) ? 'an' : 'a'} ${item.role}.`, () => { item.role = prev; render(); });
+  renderPanel();
+});
+$('#panel').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.remove) {
+    const m = members.find(x => x.id === +b.dataset.remove); pendingRemove = m; lastOpener = b;
+    $('#rmName').textContent = m.name; $('#rmMail').textContent = m.email;
+    const av = $('#rmAvatar'); av.style.setProperty('--h', m.h); av.textContent = initials(m.name);
+    $('#rmNote').textContent = m.role === 'Admin'
+      ? 'They lose access immediately and can no longer manage members. Their comments stay, and their projects move to you.'
+      : 'They lose access immediately. Their comments stay, and their projects move to you.';
+    $('#removeDlg').showModal();
+  } else if (b.dataset.resend) {
+    const i = invites.find(x => x.id === +b.dataset.resend); i.sent = 'Nov 27'; renderPanel(); toast(`Invite resent to ${i.email}.`);
+  } else if (b.dataset.revoke) {
+    const idx = invites.findIndex(x => x.id === +b.dataset.revoke), i = invites[idx];
+    invites.splice(idx, 1); render();
+    toast(`Invite for ${i.email} revoked.`, () => { invites.splice(idx, 0, i); render(); });
+  } else if (b.hasAttribute('data-clear')) {
+    $('#q').value = ''; $('#roleFilter').value = ''; renderPanel(); $('#q').focus();
+  } else if (b.hasAttribute('data-invite')) openInvite(b);
+});
+
+/* dialogs */
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+$('#removeForm').addEventListener('submit', () => {
+  const m = pendingRemove; if (!m) return;
+  const idx = members.findIndex(x => x.id === m.id);
+  members.splice(idx, 1); render();
+  toast(`${m.name} was removed.`, () => { members.splice(idx, 0, m); render(); });
+  pendingRemove = null;
+});
+
+function openInvite(opener) {
+  lastOpener = opener || $('#openInvite');
+  $('#emails').value = ''; clearErr(); updateRoleHelp();
+  $('#inviteDlg').showModal();
+  $('#emails').focus();
+}
+$('#openInvite').addEventListener('click', e => openInvite(e.currentTarget));
+function updateRoleHelp() { $('#roleHelp').textContent = ROLES[$('#inviteRole').value]; }
+$('#inviteRole').addEventListener('change', updateRoleHelp);
+function clearErr() { const e = $('#emailsErr'); e.hidden = true; e.textContent = ''; $('#emails').removeAttribute('aria-invalid'); }
+function showErr(msg) { const e = $('#emailsErr'); e.textContent = msg; e.hidden = false; $('#emails').setAttribute('aria-invalid', 'true'); $('#emails').focus(); }
+$('#emails').addEventListener('input', clearErr);
+
+$('#inviteForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const list = [...new Set($('#emails').value.split(/[\s,;]+/).map(s => s.trim().toLowerCase()).filter(Boolean))];
+  if (!list.length) return showErr('Enter at least one email address.');
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const bad = list.filter(x => !re.test(x));
+  if (bad.length) return showErr(`${bad[0]} is not a valid email address.`);
+  const dup = list.find(x => members.some(m => m.email === x) || invites.some(i => i.email === x));
+  if (dup) return showErr(`${dup} is already a member or has a pending invite.`);
+  const free = SEATS - members.length - invites.length;
+  if (list.length > free) return showErr(`You have ${free} open ${free === 1 ? 'seat' : 'seats'} and tried to invite ${list.length}. Remove an invite or add seats.`);
+  const role = $('#inviteRole').value;
+  list.forEach(email => invites.unshift({ id: nextId++, email, role, by: 'Maya Okafor', sent: 'Nov 27' }));
+  $('#inviteDlg').close();
+  setTab('invites');
+  toast(list.length === 1 ? `Invite sent to ${list[0]}.` : `${list.length} invites sent.`);
+});
+
+render();
+</script>
+</body>
+</html>

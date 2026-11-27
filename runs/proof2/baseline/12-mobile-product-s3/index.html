@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aero Runner 2 - Stride Lab</title>
+<style>
+:root{
+  --bg:#f4f2ee; --surface:#ffffff; --surface-2:#f0eee9; --ink:#15171a; --ink-2:#555a61; --ink-3:#8a8f96;
+  --line:#e4e1da; --accent:#1f4fe0; --accent-ink:#ffffff; --good:#17794a; --warn:#b4540a; --star:#e8a317;
+  --stage:#e9e6df; --shadow:0 1px 2px rgba(20,20,20,.06),0 8px 24px rgba(20,20,20,.08);
+  --sole:#f7f5f0; --sole-edge:#d8d4ca;
+  --upper:#d7ff3a; --upper-2:#16181d; --lace:#ffffff;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c0d0f; --surface:#17191d; --surface-2:#1f2227; --ink:#f2f3f5; --ink-2:#b0b5bc; --ink-3:#7c828a;
+    --line:#2a2d33; --accent:#6f93ff; --accent-ink:#0b1020; --good:#4cc78a; --warn:#f0a15c; --star:#f2b53a;
+    --stage:#22252b; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.5);
+    --sole:#e9e6de; --sole-edge:#bdb8ab;
+  }
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;justify-content:center}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{width:100%;max-width:430px;background:var(--surface);min-height:100vh;position:relative;padding-bottom:96px}
+@media (min-width:600px){
+  body{padding:24px 0}
+  .app{min-height:0;border-radius:36px;box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+}
+.topbar{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;padding:12px 16px}
+.topbar .grp{display:flex;gap:10px}
+.ib{width:44px;height:44px;border-radius:50%;background:var(--surface);color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.18);position:relative}
+.ib svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ib[aria-pressed=true] svg{fill:#e5384f;stroke:#e5384f}
+.count{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:700;display:grid;place-items:center}
+.count[hidden]{display:none}
+.gallery{position:relative;background:var(--stage)}
+.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:1/1;display:grid;place-items:center;padding:56px 12px 28px}
+.slide svg{width:100%;height:auto;overflow:visible}
+.tag{position:absolute;left:16px;bottom:44px;background:var(--ink);color:var(--bg);font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 10px;border-radius:999px}
+.dots{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.dots i{width:6px;height:6px;border-radius:3px;background:var(--ink-3);opacity:.5;transition:all .2s}
+.dots i.on{width:18px;opacity:1;background:var(--ink)}
+.sec{padding:16px 20px}
+.brand{font-size:13px;font-weight:600;color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase}
+h1{font-size:26px;line-height:1.15;margin:4px 0 8px;letter-spacing:-.01em}
+.price{font-size:24px;font-weight:700}
+.price s{font-size:15px;font-weight:400;color:var(--ink-3);margin-left:8px}
+.price em{font-style:normal;font-size:13px;font-weight:700;color:var(--good);margin-left:8px}
+.rating{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-2);margin-top:8px}
+.rating svg{width:16px;height:16px;fill:var(--star)}
+.rating a{color:var(--ink-2)}
+.lbl{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;margin-bottom:10px;color:var(--ink-2)}
+.lbl b{color:var(--ink);font-size:15px}
+.lbl button{color:var(--accent);font-weight:600;font-size:14px;min-height:32px}
+.sw{display:flex;gap:12px}
+.sw button{width:64px;height:64px;border-radius:14px;border:2px solid var(--line);background:var(--stage);display:grid;place-items:center;padding:4px}
+.sw button[aria-checked=true]{border-color:var(--ink)}
+.sw svg{width:100%;height:auto}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sizes button{height:48px;border-radius:12px;border:1.5px solid var(--line);font-weight:600;background:var(--surface)}
+.sizes button[aria-checked=true]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.sizes button:disabled{color:var(--ink-3);background:var(--surface-2);text-decoration:line-through;cursor:not-allowed;border-style:dashed}
+.low{font-size:13px;color:var(--warn);margin-top:10px;min-height:20px}
+.perks{display:grid;border:1px solid var(--line);border-radius:16px;margin:4px 20px 8px}
+.perk{display:flex;gap:12px;padding:14px;align-items:flex-start}
+.perk+.perk{border-top:1px solid var(--line)}
+.perk svg{flex:none;width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin-top:1px}
+.perk b{display:block;font-size:15px}
+.perk span{font-size:13.5px;color:var(--ink-2)}
+details{border-top:1px solid var(--line);padding:0 20px}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:56px;font-weight:600;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--ink-2);border-bottom:2px solid var(--ink-2);transform:rotate(45deg);transition:transform .2s;margin-right:4px}
+details[open] summary::after{transform:rotate(-135deg)}
+details p,details ul{padding-bottom:16px;color:var(--ink-2);font-size:15px}
+details ul{padding-left:20px}
+details li+li{margin-top:4px}
+.rv{padding:14px 0;border-top:1px solid var(--line)}
+.rv:first-of-type{border-top:0;padding-top:0}
+.rv .who{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3)}
+.rv .who b{color:var(--ink)}
+.rv .st{color:var(--star);letter-spacing:2px;font-size:14px}
+.rv p{padding:4px 0 0;color:var(--ink-2)}
+.bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--surface);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;gap:12px;align-items:center;z-index:6}
+@media (min-width:600px){.bar{position:sticky;transform:none;left:auto;bottom:0;max-width:none}.app{padding-bottom:0}}
+.bar .p{display:flex;flex-direction:column;line-height:1.15;min-width:64px}
+.bar .p small{color:var(--ink-3);font-size:12px}
+.bar .p b{font-size:20px}
+.cta{flex:1;height:52px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px}
+.cta:active{transform:scale(.98)}
+.cta.added{background:var(--good);color:#fff}
+.toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,20px);background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:9;max-width:90%;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="shoe" viewBox="0 0 400 240">
+      <ellipse cx="205" cy="222" rx="180" ry="10" fill="#000" opacity=".12"/>
+      <path d="M18 186c0-14 20-20 52-20h262c34 0 54 10 54 26 0 16-20 22-46 22H62c-28 0-44-8-44-28z" fill="var(--sole)" stroke="var(--sole-edge)" stroke-width="2"/>
+      <path d="M30 200c30 6 90 8 170 8s130-2 170-10" fill="none" stroke="var(--sole-edge)" stroke-width="2"/>
+      <path d="M60 190h30M110 192h30M160 192h30M210 192h30M260 192h30" stroke="var(--sole-edge)" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <path d="M36 170c-4-34 4-58 22-76l50-8c22-8 40-28 58-44 14-10 30-6 44 6 26 22 52 42 92 54 34 10 58 30 66 66z" fill="var(--upper)"/>
+      <path d="M108 86c-10-8-8-26 4-34l30-4c-6 14-6 28 2 40z" fill="var(--upper-2)"/>
+      <path d="M150 62l26-30c8-8 18-6 24 2l-18 34z" fill="var(--upper-2)"/>
+      <path d="M300 112c40 12 64 34 70 58h-80c4-22 6-40 10-58z" fill="var(--upper-2)" opacity=".92"/>
+      <path d="M36 170c-4-34 4-58 22-76l24-4c-8 26-10 54-6 80z" fill="var(--upper-2)"/>
+      <path d="M96 168c40-20 90-44 150-50 24-2 40 2 52 8-34 0-72 14-130 46z" fill="var(--lace)" opacity=".95"/>
+      <g stroke="var(--lace)" stroke-width="5" stroke-linecap="round">
+        <path d="M184 60l24 14"/><path d="M200 72l26 16"/><path d="M218 86l28 16"/><path d="M238 100l28 14"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="app" id="app">
+  <header class="topbar">
+    <button class="ib" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="grp">
+      <button class="ib" id="fav" aria-pressed="false" aria-label="Save to wishlist"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+      <button class="ib" aria-label="Bag, 0 items" id="bagbtn"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg><span class="count" id="count" hidden>0</span></button>
+    </div>
+  </header>
+
+  <section class="gallery" aria-label="Product photos">
+    <div class="slides" id="slides">
+      <div class="slide" aria-label="Side view"><svg viewBox="0 0 400 240" role="img" aria-label="Aero Runner 2, side view"><use href="#shoe"/></svg></div>
+      <div class="slide" aria-label="Pair view"><svg viewBox="0 0 400 260" role="img" aria-label="Aero Runner 2, pair"><g transform="translate(40 -6) scale(.78)"><use href="#shoe"/></g><g transform="translate(400 112) scale(-.8 .8)"><use href="#shoe"/></g></svg></div>
+      <div class="slide" aria-label="Detail view"><svg viewBox="150 30 250 200" role="img" aria-label="Aero Runner 2, toe detail"><g transform="translate(-120 -20) scale(1.35)"><use href="#shoe"/></g></svg></div>
+    </div>
+    <span class="tag">NEW SEASON</span>
+    <div class="dots" id="dots"><i class="on"></i><i></i><i></i></div>
+  </section>
+
+  <section class="sec">
+    <div class="brand">Stride Lab</div>
+    <h1>Aero Runner 2</h1>
+    <div class="price">$148<s>$175</s><em>-15%</em></div>
+    <div class="rating">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.7-5.7 5 1.7 7.4L12 18l-6.5 4 1.7-7.4-5.7-5L9 8.9z"/></svg>
+      <b>4.7</b><a href="#reviews">(1,284 reviews)</a>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:4px">
+    <div class="lbl"><span>Colour: <b id="cname">Volt / Ink</b></span></div>
+    <div class="sw" role="radiogroup" aria-label="Colour" id="sw"></div>
+  </section>
+
+  <section class="sec">
+    <div class="lbl"><span>Size (US men's): <b id="sname">Select</b></span><button>Size guide</button></div>
+    <div class="sizes" role="radiogroup" aria-label="Size" id="sizes"></div>
+    <div class="low" id="low" aria-live="polite"></div>
+  </section>
+
+  <div class="perks">
+    <div class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><div><b>Free delivery by Tue, 3 Dec</b><span>Orders over $100. Next-day from $7.</span></div></div>
+    <div class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0114-5l2 2M20 4v5h-5M20 12a8 8 0 01-14 5l-2-2M4 20v-5h5"/></svg><div><b>60-day free returns</b><span>Wear them indoors first. Easy drop-off.</span></div></div>
+    <div class="perk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5-7-11a7 7 0 0114 0c0 6-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><b>Try in store</b><span>In stock at Stride Lab Soho, 0.8 mi away.</span></div></div>
+  </div>
+
+  <div style="margin-top:12px">
+    <details open><summary>Description</summary><p>A neutral daily trainer with a 34 mm foam stack, a breathable engineered-mesh upper and a rocker geometry that rolls you forward. Built for 5K to half marathon, and comfortable enough for the commute.</p></details>
+    <details><summary>Details and materials</summary><ul><li>Weight: 248 g (US 9)</li><li>Heel-to-toe drop: 8 mm</li><li>Upper: 62% recycled mesh</li><li>Outsole: durable carbon rubber</li></ul></details>
+    <details id="reviews"><summary>Reviews (1,284)</summary>
+      <div class="rv"><div class="who"><b>Priya N.</b><span>2 weeks ago</span></div><div class="st" aria-label="5 stars">★★★★★</div><p>Light and bouncy. Ran my first 10K in these with zero hot spots.</p></div>
+      <div class="rv"><div class="who"><b>Marcus T.</b><span>1 month ago</span></div><div class="st" aria-label="4 stars">★★★★☆</div><p>Runs a touch narrow. Going half a size up fixed it.</p></div>
+    </details>
+  </div>
+
+  <div class="bar">
+    <div class="p"><small>Total</small><b>$148</b></div>
+    <button class="cta" id="cta">Select a size</button>
+  </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const colors=[
+ {n:'Volt / Ink',u:'#d7ff3a',u2:'#16181d',l:'#ffffff'},
+ {n:'Bone / Sage',u:'#ece6d8',u2:'#6f8a6a',l:'#ffffff'},
+ {n:'Rust / Cream',u:'#d4582a',u2:'#2b1a14',l:'#f6ecd9'}
+];
+const sizes=['7','7.5','8','8.5','9','9.5','10','10.5','11','11.5','12','13'];
+const out=new Set(['7','9.5','12']), low={'8.5':2,'10':3,'11':1};
+const $=id=>document.getElementById(id);
+let size=null,bag=0,ci=0,tt;
+
+$('sw').innerHTML=colors.map((c,i)=>`<button role="radio" aria-checked="${i==0}" aria-label="${c.n}" data-i="${i}"><svg viewBox="0 0 400 240" style="--upper:${c.u};--upper-2:${c.u2};--lace:${c.l}"><use href="#shoe"/></svg></button>`).join('');
+$('sizes').innerHTML=sizes.map(s=>`<button role="radio" aria-checked="false" data-s="${s}" ${out.has(s)?'disabled aria-label="'+s+', sold out"':''}>${s}</button>`).join('');
+
+$('sw').onclick=e=>{const b=e.target.closest('button');if(!b)return;ci=+b.dataset.i;const c=colors[ci];
+  [...$('sw').children].forEach(x=>x.setAttribute('aria-checked',x===b));
+  const g=document.querySelector('.gallery');g.style.setProperty('--upper',c.u);g.style.setProperty('--upper-2',c.u2);g.style.setProperty('--lace',c.l);
+  $('cname').textContent=c.n};
+$('sizes').onclick=e=>{const b=e.target.closest('button');if(!b||b.disabled)return;size=b.dataset.s;
+  [...$('sizes').children].forEach(x=>x.setAttribute('aria-checked',x===b));
+  $('sname').textContent=size;
+  $('low').textContent=low[size]?`Only ${low[size]} left in this size`:'';
+  $('cta').textContent='Add to bag';$('cta').classList.remove('added')};
+$('fav').onclick=e=>{const b=e.currentTarget,on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);toast(on?'Saved to wishlist':'Removed from wishlist')};
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2000)}
+$('cta').onclick=()=>{
+  if(!size){toast('Pick a size first');$('sizes').scrollIntoView({behavior:'smooth',block:'center'});return}
+  bag++;$('count').hidden=false;$('count').textContent=bag;$('bagbtn').setAttribute('aria-label',`Bag, ${bag} items`);
+  $('cta').textContent='Added - view bag';$('cta').classList.add('added');
+  toast(`${colors[ci].n}, US ${size} added to bag`)};
+const sl=$('slides'),dots=[...$('dots').children];
+sl.addEventListener('scroll',()=>{const i=Math.round(sl.scrollLeft/sl.clientWidth);dots.forEach((d,j)=>d.classList.toggle('on',i===j))},{passive:true});
+</script>
+</body>
+</html>

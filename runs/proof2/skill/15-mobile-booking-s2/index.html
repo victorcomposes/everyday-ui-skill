@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a check-up - Fernlea</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Fern kit */
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f1f8f7; --brand-deep: #0b3a37; --on-deep: #ffffff; --on-deep-muted: #a6d8d2; --accent-on-deep: #4fc7bd;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-lg: 18px; --lh-lg: 28px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --text-2xl: 24px; --lh-2xl: 32px;
+  --text-3xl: 30px; --lh-3xl: 36px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h-touch: 44px;
+  --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg-subtle); color: var(--text);
+  font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-lg)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 28px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 10; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* phone column; centred on a tinted page at desktop width */
+.app { position: relative; max-width: 420px; min-height: calc(100dvh - 48px); margin: var(--s-6) auto;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: var(--shadow-pop);
+  overflow: clip; display: flex; flex-direction: column; scroll-padding-bottom: 96px; }
+@media (max-width: 640px) {
+  .app { margin: 0; min-height: 100dvh; max-width: none; border: 0; border-radius: 0; box-shadow: none; }
+}
+.topbar { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between;
+  height: var(--h-topbar); padding: 0 var(--s-2) 0 var(--s-1); background: var(--frame); border-bottom: 1px solid var(--border); }
+.back { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; padding: 0 var(--s-3) 0 var(--s-2);
+  border-radius: var(--r-md); color: var(--accent); font-weight: 600; font-size: var(--text-md); }
+.back:hover { background: var(--accent-subtle); }
+.brand { display: inline-flex; align-items: center; gap: var(--s-2); padding-right: var(--s-2); font: 700 var(--text-lg)/1 var(--font-display); letter-spacing: -0.01em; }
+main { flex: 1; padding: var(--s-6) var(--s-4) var(--s-8); }
+.lede { margin-top: var(--rhythm-title); color: var(--text-muted); font-size: var(--text-md); }
+.banner { display: flex; gap: var(--s-3); align-items: flex-start; margin-bottom: var(--s-6); padding: var(--s-3) var(--s-4);
+  background: var(--success-subtle); border: 1px solid color-mix(in srgb, var(--success) 30%, transparent); border-radius: var(--r-lg); }
+.banner svg { flex: none; margin-top: 2px; color: var(--success); }
+.banner strong { display: block; font-weight: 600; color: var(--text); }
+.banner span { color: var(--text); font-size: var(--text-sm); }
+section { margin-top: var(--rhythm-group); }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-3); }
+.meta { margin-top: 2px; color: var(--text-muted); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+.pager { display: flex; gap: var(--s-1); margin: -6px -8px 0 0; }
+.icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-full); background: transparent; color: var(--text); cursor: pointer; }
+.icon-btn:hover:not(:disabled) { background: var(--accent-subtle); color: var(--accent); }
+.icon-btn:disabled { color: var(--text-muted); opacity: 0.45; cursor: default; }
+
+/* dentists */
+.dentists { display: grid; gap: var(--s-2); }
+.dentist { position: relative; display: flex; align-items: center; gap: var(--s-3); min-height: 68px; padding: var(--s-3) var(--s-4);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.dentist:hover { background: var(--bg-subtle); }
+.dentist input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.dentist:has(input:checked) { background: var(--accent-subtle); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.dentist:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.avatar { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-full);
+  background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: var(--text-sm); }
+.dentist:has(input:checked) .avatar { background: var(--surface); }
+.dentist .who { flex: 1; min-width: 0; }
+.dentist .name { display: block; font-weight: 600; overflow-wrap: anywhere; }
+.dentist .next { display: block; color: var(--text-muted); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+.dentist .next b { color: var(--text); font-weight: 600; }
+.radio { flex: none; width: 22px; height: 22px; border: 2px solid var(--border-strong); border-radius: var(--r-full); display: grid; place-items: center; }
+.dentist:has(input:checked) .radio { border-color: var(--accent); }
+.dentist:has(input:checked) .radio::after { content: ""; width: 10px; height: 10px; border-radius: var(--r-full); background: var(--accent); }
+
+/* day strip */
+.days { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.day { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 76px; padding: var(--s-2) 0;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); cursor: pointer; font-variant-numeric: tabular-nums;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.day:hover:not(:disabled) { background: var(--bg-subtle); }
+.day .dow { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); font-weight: 500; }
+.day .num { font: 600 var(--text-xl)/1.1 var(--font-display); letter-spacing: -0.01em; }
+.day .free { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); white-space: nowrap; }
+.day:disabled { background: var(--bg-subtle); cursor: default; }
+.day:disabled .num { color: var(--text-muted); font-weight: 400; }
+.day[aria-pressed="true"] { background: var(--accent-subtle); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.day[aria-pressed="true"] .num, .day[aria-pressed="true"] .free, .day[aria-pressed="true"] .dow { color: var(--accent); }
+
+/* time slots */
+.group + .group { margin-top: var(--s-5); }
+.group h3 { margin: 0 0 var(--s-2); font: 500 var(--text-sm)/var(--lh-sm) var(--font); color: var(--text-muted); }
+.slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+.slot { min-height: 44px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg-subtle); font-weight: 500;
+  font-variant-numeric: tabular-nums; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.slot:hover { background: var(--accent-subtle); }
+.slot[aria-pressed="true"] { background: var(--accent-subtle); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); color: var(--accent); font-weight: 700; }
+.error { display: flex; gap: var(--s-2); align-items: flex-start; margin-bottom: var(--s-3); padding: var(--s-3); border-radius: var(--r-lg);
+  background: var(--danger-subtle); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); color: var(--text); font-size: var(--text-sm); }
+.error svg { flex: none; color: var(--danger); margin-top: 1px; }
+.empty { padding: var(--s-4); border: 1px dashed var(--border-strong); border-radius: var(--r-lg); background: var(--bg-subtle); }
+.empty strong { display: block; font-weight: 600; }
+.empty p { margin-top: var(--s-1); color: var(--text-muted); font-size: var(--text-sm); }
+.empty .btn { margin-top: var(--s-3); }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 48px; padding: 0 var(--s-5); border: 1px solid transparent;
+  border-radius: var(--r-lg); font-weight: 600; font-size: var(--text-md); cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.btn.primary { background: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); }
+.btn.secondary { background: var(--surface); color: var(--accent); border-color: var(--border-strong); min-height: 44px; }
+.btn.secondary:hover { background: var(--accent-subtle); }
+
+/* sticky booking bar */
+.bar { position: sticky; bottom: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
+  padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--border); }
+.bar .sum { min-width: 0; }
+.bar .when { display: block; font: 600 var(--text-md)/var(--lh-md) var(--font); font-variant-numeric: tabular-nums; }
+.bar .with { display: block; color: var(--text-muted); font-size: var(--text-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* confirmation sheet */
+.scrim { position: fixed; inset: 0; z-index: 20; background: rgb(8 12 16 / 0.5); }
+.sheet { position: fixed; z-index: 21; bottom: 0; left: 50%; transform: translateX(-50%); width: min(100%, 420px);
+  padding: var(--s-3) var(--s-4) calc(var(--s-5) + env(safe-area-inset-bottom)); background: var(--surface);
+  border: 1px solid var(--border); border-bottom: 0; border-radius: 16px 16px 0 0; box-shadow: var(--shadow-dialog); }
+.grab { display: block; width: 36px; height: 4px; margin: 0 auto var(--s-4); border-radius: var(--r-full); background: var(--border-strong); }
+.ok { display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-full); background: var(--success-subtle); color: var(--success); }
+.sheet h2 { margin-top: var(--s-3); font-size: var(--text-xl); }
+.sheet .when { margin-top: var(--s-1); font: 600 var(--text-2xl)/var(--lh-2xl) var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.sheet dl { display: grid; grid-template-columns: auto 1fr; gap: var(--s-2) var(--s-4); margin: var(--s-4) 0; padding: var(--s-4) 0; border-block: 1px solid var(--border); font-size: var(--text-sm); }
+.sheet dt { color: var(--text-muted); }
+.sheet dd { margin: 0; overflow-wrap: anywhere; }
+.sheet .note { margin-bottom: var(--s-4); color: var(--text-muted); font-size: var(--text-sm); }
+.sheet .btn { width: 100%; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to booking</a>
+<div class="app" id="app">
+  <header class="topbar">
+    <a class="back" href="#" aria-label="Back to appointments">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg>
+      Appointments
+    </a>
+    <span class="brand">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M14 8v12M8 14h12" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round"/></svg>
+      Fernlea
+    </span>
+  </header>
+  <main id="main">
+    <div id="banner"></div>
+    <h1>Book a check-up</h1>
+    <p class="lede">Routine check and clean, 30 minutes at Fernlea Dental, 14 Alder Row.</p>
+
+    <section aria-labelledby="h-dentist">
+      <div class="head"><div><h2 id="h-dentist">Dentist</h2></div></div>
+      <div class="dentists" id="dentists" role="radiogroup" aria-labelledby="h-dentist"></div>
+    </section>
+
+    <section aria-labelledby="h-date">
+      <div class="head">
+        <div><h2 id="h-date">Date</h2><p class="meta" id="range" aria-live="polite"></p></div>
+        <div class="pager">
+          <button class="icon-btn" id="prev" type="button" aria-label="Earlier dates"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg></button>
+          <button class="icon-btn" id="next" type="button" aria-label="Later dates"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7.5 4.5 5.5 5.5-5.5 5.5"/></svg></button>
+        </div>
+      </div>
+      <div class="days" id="days"></div>
+    </section>
+
+    <section aria-labelledby="h-time">
+      <div class="head"><div><h2 id="h-time">Time</h2><p class="meta" id="count" aria-live="polite"></p></div></div>
+      <div id="error"></div>
+      <div id="times"></div>
+    </section>
+  </main>
+  <div class="bar" role="region" aria-label="Your booking">
+    <div class="sum"><span class="when" id="bar-when"></span><span class="with" id="bar-with"></span></div>
+    <button class="btn primary" id="book" type="button">Book check-up</button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <span class="grab" aria-hidden="true"></span>
+  <div class="ok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+  <h2 id="sheet-title">Check-up booked</h2>
+  <p class="when" id="sheet-when"></p>
+  <dl>
+    <dt>Dentist</dt><dd id="sheet-dentist"></dd>
+    <dt>Where</dt><dd>Fernlea Dental, 14 Alder Row</dd>
+    <dt>Length</dt><dd>30 minutes</dd>
+  </dl>
+  <p class="note">We will text a reminder to 07700 900142 the day before.</p>
+  <button class="btn primary" id="done" type="button">Done</button>
+</div>
+
+<script>
+/* ---- data module: every number on screen is derived from here ---- */
+const TODAY = new Date(2026, 10, 27, 9, 15); // Fri 27 Nov 2026
+const params = new URLSearchParams(location.search);
+const STATE = params.get('state') || 'default';
+const SLOTS = ['09:00','09:30','10:00','10:30','11:00','11:30','13:30','14:00','14:30','15:00','15:30','16:00'];
+const MORNING_ONLY_DAY = 6; // Saturday: morning clinic
+const dentists = [
+  { id: 'okafor', name: 'Dr Amara Okafor', initials: 'AO', works: [1,2,3,4,5], fullDays: ['2026-11-30'], fullyBooked: STATE === 'empty', seed: 0 },
+  { id: 'lindqvist', name: STATE === 'stress' ? 'Dr Wilhelmina Featherstonehaugh-Adeyemi' : 'Dr Tomas Lindqvist', initials: STATE === 'stress' ? 'WF' : 'TL', works: [3,4,5,6], fullDays: [], seed: 1 },
+  { id: 'raman', name: 'Dr Priya Raman', initials: 'PR', works: [1,2,4,6], fullDays: [], seed: 2 },
+];
+const pad = (n) => String(n).padStart(2, '0');
+const keyOf = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const fmt = (d) => new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(d).replace(',', '');
+const fmtShort = (d) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' }).format(d);
+const dow = (d) => new Intl.DateTimeFormat('en-GB', { weekday: 'short' }).format(d);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const lastName = (n) => n.replace(/^Dr\s+/, '').split(' ').slice(-1)[0];
+
+// bookable days: tomorrow onward, 24 days, clinic closed Sundays
+const days = [];
+for (let i = 1; days.length < 24; i++) {
+  const d = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate() + i);
+  if (d.getDay() !== 0) days.push(d);
+}
+const PER_PAGE = 6;
+const PAGES = Math.ceil(days.length / PER_PAGE);
+
+function freeSlots(dn, d) {
+  if (!dn.works.includes(d.getDay())) return null; // off
+  if (dn.fullyBooked || dn.fullDays.includes(keyOf(d))) return [];
+  const offered = d.getDay() === MORNING_ONLY_DAY ? SLOTS.slice(0, 6) : SLOTS;
+  return offered.filter((s) => (d.getDate() * 7 + d.getMonth() * 5 + SLOTS.indexOf(s) * 3 + dn.seed * 11) % 5 >= 2);
+}
+function nextFree(dn) {
+  for (const d of days) { const f = freeSlots(dn, d); if (f && f.length) return { d, t: f[0] }; }
+  return null;
+}
+
+/* ---- state ---- */
+const st = { dentist: 'okafor', page: 0, date: null, time: null, error: false, booked: null };
+const cur = () => dentists.find((x) => x.id === st.dentist);
+const free = (d) => freeSlots(cur(), d);
+function pickDate() {
+  const dn = cur();
+  const ok = st.date && days.some((d) => keyOf(d) === st.date && (free(d) || []).length);
+  if (!ok) {
+    const nf = nextFree(dn);
+    st.date = nf ? keyOf(nf.d) : null;
+  }
+  const idx = days.findIndex((d) => keyOf(d) === st.date);
+  st.page = idx >= 0 ? Math.floor(idx / PER_PAGE) : 0;
+}
+pickDate();
+
+/* ---- render ---- */
+const $ = (id) => document.getElementById(id);
+
+function renderDentists() {
+  $('dentists').innerHTML = dentists.map((dn) => {
+    const nf = nextFree(dn);
+    const nextTxt = nf ? `Next free <b>${esc(fmt(nf.d))}, ${nf.t}</b>` : 'No free times in the next 4 weeks';
+    return `<label class="dentist"><input type="radio" name="dentist" value="${dn.id}" ${dn.id === st.dentist ? 'checked' : ''}>
+      <span class="avatar" aria-hidden="true">${esc(dn.initials)}</span>
+      <span class="who"><span class="name">${esc(dn.name)}</span><span class="next">${nextTxt}</span></span>
+      <span class="radio" aria-hidden="true"></span></label>`;
+  }).join('');
+}
+function renderDays() {
+  const list = days.slice(st.page * PER_PAGE, st.page * PER_PAGE + PER_PAGE);
+  $('range').textContent = `${fmtShort(list[0])} to ${fmtShort(list[list.length - 1])}`;
+  $('prev').disabled = st.page === 0;
+  $('next').disabled = st.page === PAGES - 1;
+  $('days').innerHTML = list.map((d) => {
+    const f = free(d); const k = keyOf(d);
+    const n = f === null ? 'Off' : f.length ? `${f.length} free` : 'Full';
+    const can = f && f.length;
+    return `<button type="button" class="day" data-date="${k}" aria-pressed="${k === st.date}" ${can ? '' : 'disabled'}>
+      <span class="dow">${dow(d)}</span><span class="num">${d.getDate()}</span><span class="free">${n}</span></button>`;
+  }).join('');
+}
+function renderTimes() {
+  const dn = cur();
+  const d = days.find((x) => keyOf(x) === st.date);
+  const f = d ? free(d) : [];
+  if (!d || !f.length) {
+    $('count').textContent = '';
+    // suggest the colleague with the earliest free time
+    const alt = dentists.filter((x) => x.id !== dn.id).map((x) => ({ x, nf: nextFree(x) })).filter((a) => a.nf)
+      .sort((a, b) => a.nf.d - b.nf.d || (a.nf.t < b.nf.t ? -1 : 1))[0];
+    $('times').innerHTML = `<div class="empty"><strong>${esc(dn.name)} has no free check-ups in the next 4 weeks</strong>
+      <p>${alt ? `${esc(alt.x.name)} is free ${esc(fmt(alt.nf.d))} at ${alt.nf.t}.` : 'Call the clinic on 01632 960 118 to join the waiting list.'}</p>
+      ${alt ? `<button type="button" class="btn secondary" data-switch="${alt.x.id}">Book with Dr ${esc(lastName(alt.x.name))}</button>` : ''}</div>`;
+    return;
+  }
+  $('count').textContent = `${f.length} free ${f.length === 1 ? 'time' : 'times'} on ${fmt(d)}`;
+  const grp = (label, arr) => arr.length ? `<div class="group" role="group" aria-label="${label}"><h3>${label}</h3><div class="slots">${arr.map((s) =>
+    `<button type="button" class="slot" data-time="${s}" aria-pressed="${s === st.time}">${s}</button>`).join('')}</div></div>` : '';
+  $('times').innerHTML = grp('Morning', f.filter((s) => s < '12:00')) + grp('Afternoon', f.filter((s) => s >= '12:00'));
+}
+function renderError() {
+  $('error').innerHTML = st.error ? `<div class="error" role="alert" id="err">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 6v5M10 13.8v.1"/></svg>
+    <span>Choose a time to book your check-up.</span></div>` : '';
+}
+function renderBar() {
+  const d = days.find((x) => keyOf(x) === st.date);
+  $('bar-when').textContent = d && st.time ? `${fmt(d)}, ${st.time}` : 'Choose a time';
+  $('bar-with').textContent = `${cur().name}, 30 min`;
+}
+function renderBanner() {
+  const b = st.booked;
+  $('banner').innerHTML = b ? `<div class="banner" role="status">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+    <div><strong>Check-up booked</strong><span>${esc(b.when)} with ${esc(b.who)}. You can book another visit below.</span></div></div>` : '';
+}
+function renderAll() { renderBanner(); renderDentists(); renderDays(); renderTimes(); renderError(); renderBar(); }
+renderAll();
+
+/* ---- events ---- */
+$('dentists').addEventListener('change', (e) => {
+  st.dentist = e.target.value; st.time = null; st.error = false; pickDate(); renderAll();
+  document.querySelector(`input[value="${st.dentist}"]`).focus();
+});
+$('days').addEventListener('click', (e) => {
+  const b = e.target.closest('.day'); if (!b) return;
+  st.date = b.dataset.date; st.time = null; st.error = false; renderDays(); renderTimes(); renderError(); renderBar();
+});
+$('times').addEventListener('click', (e) => {
+  const sw = e.target.closest('[data-switch]');
+  if (sw) { st.dentist = sw.dataset.switch; st.time = null; pickDate(); renderAll(); return; }
+  const b = e.target.closest('.slot'); if (!b) return;
+  st.time = b.dataset.time; st.error = false; renderTimes(); renderError(); renderBar();
+  document.querySelector(`.slot[data-time="${st.time}"]`).focus();
+});
+$('prev').addEventListener('click', () => { st.page--; renderDays(); });
+$('next').addEventListener('click', () => { st.page++; renderDays(); });
+$('book').addEventListener('click', () => {
+  const d = days.find((x) => keyOf(x) === st.date);
+  if (!d || !st.time) {
+    st.error = true; renderError();
+    const first = document.querySelector('.slot,[data-switch]'); if (first) first.focus();
+    $('error').scrollIntoView({ block: 'center' });
+    return;
+  }
+  $('sheet-when').textContent = `${fmt(d)}, ${st.time}`;
+  $('sheet-dentist').textContent = cur().name;
+  $('scrim').hidden = false; $('sheet').hidden = false; $('app').inert = true; $('done').focus();
+});
+function closeSheet() {
+  const d = days.find((x) => keyOf(x) === st.date);
+  st.booked = { when: `${fmt(d)}, ${st.time}`, who: cur().name }; st.time = null;
+  $('scrim').hidden = true; $('sheet').hidden = true; $('app').inert = false;
+  renderAll(); window.scrollTo({ top: 0 }); $('book').focus({ preventScroll: true });
+}
+$('done').addEventListener('click', closeSheet);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('sheet').hidden) closeSheet(); });
+</script>
+</body>
+</html>

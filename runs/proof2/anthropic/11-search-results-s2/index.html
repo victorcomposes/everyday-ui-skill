@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chickpea curry - Saltbox Kitchen</title>
+<style>
+:root{
+  --bg:#F3F6F0; --surface:#FFFFFF; --ink:#14291F; --muted:#546659; --line:#D6DED2;
+  --turmeric:#E9A400; --on-turmeric:#14291F; --leaf:#2D6B49; --chili:#B3301B; --focus:#1B5FD6;
+  --hero:#F2C94C; --hero-ink:#2A1D00;
+  --serif:Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif;
+  --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0E1913; --surface:#15251D; --ink:#EAF1EA; --muted:#9FB2A5; --line:#27382E;
+    --turmeric:#F0B429; --leaf:#78C69A; --chili:#FF8A70; --focus:#7FB0FF;
+    --hero:#C8921A; --hero-ink:#FFF6DD;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* header */
+header.site{border-bottom:1px solid var(--line);background:var(--surface)}
+.bar{display:flex;align-items:center;gap:28px;padding:14px 0}
+.brand{font:700 22px/1 var(--serif);text-decoration:none;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.brand svg{width:26px;height:26px}
+nav.main{display:flex;gap:22px;font-size:15px}
+nav.main a{text-decoration:none;color:var(--muted);padding:6px 0;white-space:nowrap}
+nav.main a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+nav.main a[aria-current]{color:var(--ink);font-weight:600}
+.saved{margin-left:auto;font-size:15px;text-decoration:none;display:flex;gap:8px;align-items:center;padding:6px 0;white-space:nowrap}
+.saved b{background:var(--ink);color:var(--surface);border-radius:99px;min-width:22px;height:22px;display:inline-grid;place-items:center;font-size:12px;padding:0 6px}
+
+form.search{display:flex;gap:10px;padding:0 0 20px}
+.field{flex:1;display:flex;align-items:center;gap:10px;background:var(--bg);border:1.5px solid var(--ink);border-radius:10px;padding:0 14px;min-width:0;position:relative}
+.field svg{width:20px;height:20px;flex:none;color:var(--muted)}
+.field input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:18px;color:var(--ink);padding:12px 0;outline:0}
+.field:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.vh{position:absolute;left:-9999px}
+.btn{font:600 16px var(--sans);background:var(--turmeric);color:var(--on-turmeric);border:0;border-radius:10px;padding:0 22px;cursor:pointer;min-height:48px}
+.btn:hover{filter:brightness(.95)}
+
+/* hero */
+.top{padding:36px 0 8px}
+h1{font:700 clamp(30px,4.2vw,46px)/1.1 var(--serif);letter-spacing:-.02em;margin:0 0 6px}
+.sub{margin:0;color:var(--muted)}
+.spotlight{margin-top:24px;display:grid;grid-template-columns:1.1fr .9fr;background:var(--hero);color:var(--hero-ink);border-radius:20px;overflow:hidden;align-items:center}
+.spotlight .copy{padding:36px 40px}
+.spotlight .tag{font-weight:600;font-size:14px;margin:0 0 10px}
+.spotlight h2{font:700 clamp(26px,3vw,36px)/1.15 var(--serif);margin:0 0 12px;letter-spacing:-.015em}
+.spotlight p{margin:0 0 18px;max-width:50ch;font-size:17px}
+.spotlight p.tag{font-size:14px;margin:0 0 10px}
+.spotlight .facts{display:flex;flex-wrap:wrap;gap:6px 22px;margin:0 0 22px;padding:0;list-style:none;font-size:15px}
+.spotlight .btn{background:var(--hero-ink);color:var(--hero);display:inline-flex;align-items:center;text-decoration:none}
+.spotlight .art{padding:20px;display:grid;place-items:center}
+.spotlight .art svg{width:min(100%,340px);height:auto;filter:drop-shadow(0 14px 18px rgba(60,30,0,.28))}
+
+/* layout */
+.layout{display:grid;grid-template-columns:250px 1fr;gap:40px;padding:36px 0 56px;align-items:start}
+#filters summary{display:none}
+fieldset{border:0;padding:0;margin:0 0 26px}
+fieldset legend{font:700 16px var(--serif);padding:0;margin-bottom:10px}
+.opt{display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;font-size:15px}
+.opt input{width:18px;height:18px;accent-color:var(--leaf);margin:0}
+.opt span.n{margin-left:auto;color:var(--muted);font-size:13px}
+.reset{background:none;border:0;padding:0;font:inherit;font-size:14px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+.listhead{display:flex;justify-content:space-between;align-items:end;gap:16px;border-bottom:1px solid var(--line);padding-bottom:14px;flex-wrap:wrap}
+.listhead h2{font:700 22px var(--serif);margin:0}
+.listhead p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.sort{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.sort select{font:inherit;font-size:15px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+
+ul.results{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:150px 1fr 44px;gap:22px;padding:22px 0;border-bottom:1px solid var(--line);position:relative}
+.thumb{width:150px;height:150px;border-radius:14px;background:var(--tile);display:grid;place-items:center}
+.thumb svg{width:128px;height:128px}
+.item h3{font:700 21px/1.25 var(--serif);margin:0 0 4px;letter-spacing:-.01em}
+.item h3 a{text-decoration:none}
+.item h3 a::after{content:"";position:absolute;inset:0}
+.item h3 a:hover{text-decoration:underline;text-underline-offset:4px}
+.by{font-size:14px;color:var(--muted);margin:0 0 8px}
+.desc{margin:0 0 12px;max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px;color:var(--muted);margin:0;padding:0;list-style:none}
+.meta li{display:flex;align-items:center;gap:6px}
+.meta svg{width:15px;height:15px}
+.rating{color:var(--ink);font-weight:600}
+.rating svg{color:var(--turmeric)}
+.rating small{font-weight:400;color:var(--muted);font-size:14px}
+.diet{color:var(--leaf);font-weight:600}
+.diet.nonveg{color:var(--chili)}
+.save{position:relative;z-index:1;align-self:start;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+.save:hover{border-color:var(--ink)}
+.save svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+.save[aria-pressed=true]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.save[aria-pressed=true] svg{fill:currentColor}
+
+.empty{padding:44px 0;text-align:center}
+.empty h3{font:700 22px var(--serif);margin:0 0 6px}
+.empty p{margin:0 0 16px;color:var(--muted)}
+
+.pager{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:30px;font-size:15px;flex-wrap:wrap}
+.pager a,.pager span{min-width:44px;height:44px;display:grid;place-items:center;border-radius:10px;text-decoration:none;padding:0 12px}
+.pager a:hover{background:var(--surface)}
+.pager [aria-current]{background:var(--ink);color:var(--surface);font-weight:600}
+.pager .off{color:var(--muted);opacity:.6}
+
+.related{margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+.related h3{font:700 18px var(--serif);margin:0 0 12px}
+.related ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.related a{display:inline-block;padding:9px 16px;border:1px solid var(--line);background:var(--surface);border-radius:99px;text-decoration:none;font-size:15px}
+.related a:hover{border-color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:14px}
+
+@media (max-width:900px){
+  .spotlight{grid-template-columns:1fr}
+  .spotlight .art{order:-1;padding:20px 20px 0}
+  .spotlight .art svg{width:150px}
+  .spotlight .copy{padding:22px 24px 28px}
+  .layout{grid-template-columns:1fr;gap:20px}
+  #filters{border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+  #filters summary{display:flex;justify-content:space-between;padding:14px 16px;font:700 16px var(--serif);cursor:pointer;min-height:48px;align-items:center;list-style:none}
+  #filters summary::-webkit-details-marker{display:none}
+  #filters summary::after{content:"Show";font:400 14px var(--sans);color:var(--muted)}
+  #filters[open] summary::after{content:"Hide"}
+  #filters .panel{padding:4px 16px 12px}
+}
+@media (max-width:620px){
+  .wrap{padding:0 16px}
+  .bar{gap:16px;flex-wrap:wrap;padding-bottom:10px}
+  nav.main{order:3;width:100%;gap:20px;overflow-x:auto}
+  form.search .btn{padding:0 16px}
+  .top{padding-top:24px}
+  .item{grid-template-columns:96px 1fr 44px;gap:14px;padding:18px 0}
+  .thumb{width:96px;height:96px;border-radius:12px}
+  .thumb svg{width:82px;height:82px}
+  .item h3{font-size:18px}
+  .desc{display:none}
+  .listhead h2{font-size:20px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bowl" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="96" fill="#F7F4EC"/>
+      <circle cx="100" cy="100" r="96" fill="none" stroke="#DAD3C3" stroke-width="2"/>
+      <circle cx="100" cy="100" r="80" fill="#E9E3D3"/>
+      <circle cx="100" cy="102" r="76" fill="var(--curry)"/>
+      <path d="M52 92c18-16 38-8 50 4s34 14 48-2" fill="none" stroke="var(--swirl)" stroke-width="7" stroke-linecap="round" opacity=".75"/>
+      <g fill="#E3BD6E" stroke="#B88C3C" stroke-width="1.5">
+        <ellipse cx="70" cy="112" rx="9" ry="8"/><ellipse cx="94" cy="124" rx="9" ry="8"/>
+        <ellipse cx="124" cy="116" rx="9" ry="8"/><ellipse cx="108" cy="90" rx="8" ry="7"/>
+        <ellipse cx="80" cy="82" rx="8" ry="7"/><ellipse cx="140" cy="94" rx="8" ry="7"/>
+        <ellipse cx="62" cy="136" rx="8" ry="7"/><ellipse cx="132" cy="140" rx="8" ry="7"/>
+        <ellipse cx="102" cy="148" rx="7" ry="6"/><ellipse cx="146" cy="118" rx="7" ry="6"/>
+      </g>
+      <g fill="var(--herb)">
+        <path d="M112 64c8-2 14 2 16 8-8 2-14-2-16-8z"/><path d="M92 140c6-5 13-5 17 0-6 5-13 5-17 0z"/>
+        <path d="M54 104c5-6 12-7 16-3-5 6-12 7-16 3z"/><path d="M128 126c7-3 13 0 15 5-7 3-13 0-15-5z"/>
+      </g>
+    </symbol>
+    <symbol id="star" viewBox="0 0 20 20"><path fill="currentColor" d="M10 1.6l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.4l-5.1 2.9L6 11.6l-4.3-4 5.8-.7z"/></symbol>
+    <symbol id="clock" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 5.5V10l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="site">
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="#" aria-label="Saltbox Kitchen home">
+        <svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="#E9A400"/><path d="M5 12h16a8 8 0 0 1-16 0z" fill="#14291F"/></svg>
+        Saltbox Kitchen
+      </a>
+      <nav class="main" aria-label="Main">
+        <a href="#" aria-current="page">Recipes</a>
+        <a href="#">Collections</a>
+        <a href="#">Meal plans</a>
+        <a href="#">Techniques</a>
+      </nav>
+      <a class="saved" href="#">Saved recipes <b id="savedCount">3</b></a>
+    </div>
+    <form class="search" role="search" onsubmit="return false">
+      <label class="field">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5"/></svg>
+        <span class="vh">Search recipes</span>
+        <input type="search" name="q" value="chickpea curry" autocomplete="off">
+      </label>
+      <button class="btn" type="submit">Search</button>
+    </form>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="top" aria-labelledby="h1">
+    <h1 id="h1">48 recipes for &ldquo;chickpea curry&rdquo;</h1>
+    <p class="sub">Tested in our kitchen or rated by home cooks. Most take under an hour.</p>
+
+    <article class="spotlight" style="--curry:#E08A1E;--swirl:#FFF3D6;--herb:#2F7A3E">
+      <div class="copy">
+        <p class="tag">Best match</p>
+        <h2>Weeknight coconut chickpea curry</h2>
+        <p>Tinned chickpeas simmer in coconut milk, tomato and toasted cumin. Finish with lime and eat it over rice or with warm flatbread.</p>
+        <ul class="facts">
+          <li>35 minutes</li><li>Serves 4</li><li>Vegan</li><li><b>4.8</b> from 2,314 ratings</li>
+        </ul>
+        <a class="btn" href="#">View recipe</a>
+      </div>
+      <div class="art"><svg viewBox="0 0 200 200" role="img" aria-label="Overhead view of a bowl of coconut chickpea curry"><use href="#bowl"/></svg></div>
+    </article>
+  </section>
+
+  <div class="layout">
+    <details id="filters" open>
+      <summary>Filters</summary>
+      <div class="panel">
+        <fieldset>
+          <legend>Diet</legend>
+          <label class="opt"><input type="checkbox" name="diet" value="vegan"> Vegan <span class="n">31</span></label>
+          <label class="opt"><input type="checkbox" name="diet" value="vegetarian"> Vegetarian <span class="n">42</span></label>
+          <label class="opt"><input type="checkbox" name="diet" value="gf"> Gluten-free <span class="n">36</span></label>
+        </fieldset>
+        <fieldset>
+          <legend>Total time</legend>
+          <label class="opt"><input type="radio" name="time" value="0" checked> Any time</label>
+          <label class="opt"><input type="radio" name="time" value="30"> Under 30 minutes</label>
+          <label class="opt"><input type="radio" name="time" value="60"> Under 1 hour</label>
+        </fieldset>
+        <fieldset>
+          <legend>Rating</legend>
+          <label class="opt"><input type="radio" name="rating" value="0" checked> Any rating</label>
+          <label class="opt"><input type="radio" name="rating" value="4.5"> 4.5 stars and up</label>
+        </fieldset>
+        <button class="reset" type="button" id="reset">Clear all filters</button>
+      </div>
+    </details>
+
+    <section aria-labelledby="listh">
+      <div class="listhead">
+        <div>
+          <h2 id="listh">More recipes</h2>
+          <p id="status" role="status" aria-live="polite">Showing 2&ndash;10 of 48</p>
+        </div>
+        <label class="sort">Sort by
+          <select id="sort">
+            <option value="match">Best match</option>
+            <option value="rating">Highest rated</option>
+            <option value="time">Quickest first</option>
+          </select>
+        </label>
+      </div>
+      <ul class="results" id="results"></ul>
+      <div class="empty" id="empty" hidden>
+        <h3>No recipes on this page match</h3>
+        <p>Remove a filter to see the other recipes for &ldquo;chickpea curry&rdquo;.</p>
+        <button class="btn" type="button" id="reset2">Clear all filters</button>
+      </div>
+
+      <nav class="pager" aria-label="Pagination">
+        <span class="off">Previous</span>
+        <a href="#" aria-current="page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a>
+        <a href="#">Next</a>
+      </nav>
+
+      <div class="related">
+        <h3>Related searches</h3>
+        <ul>
+          <li><a href="#">chana masala</a></li><li><a href="#">chickpea stew</a></li>
+          <li><a href="#">coconut lentil curry</a></li><li><a href="#">easy vegan dinner</a></li>
+          <li><a href="#">chickpea curry slow cooker</a></li><li><a href="#">aloo gobi</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer><div class="wrap">Saltbox Kitchen. Recipes tested in a home kitchen in Leeds.</div></footer>
+
+<script>
+const R=[
+ {t:"Chana masala, Punjabi dhaba style",by:"Meera Iyer",d:"Onion, tomato and whole spices cooked down until dark, with amchur for sourness. The classic version.",m:45,r:4.7,n:1902,diet:["vegan","vegetarian","gf"],curry:"#B5451B",swirl:"#E9B77A",tile:"#F6DCC2",herb:"#2F7A3E",rot:30},
+ {t:"Chickpea and spinach curry (chana saag)",by:"Tom Okafor",d:"Wilted spinach folded into a ginger-garlic base. Ready faster than a takeaway order.",m:30,r:4.6,n:1288,diet:["vegan","vegetarian","gf"],curry:"#5E7A2C",swirl:"#E8E2B4",tile:"#DDE8C8",herb:"#F5F0D8",rot:100},
+ {t:"One-pot sweet potato and chickpea curry",by:"Amara Lindqvist",d:"Sweet potato breaks down into the sauce, so it thickens without any cream. One pan to wash.",m:40,r:4.8,n:956,diet:["vegan","vegetarian","gf"],curry:"#D5701C",swirl:"#FFE3B0",tile:"#FBE5C8",herb:"#2F7A3E",rot:200},
+ {t:"Chickpea tikka masala with yoghurt",by:"Dev Raman",d:"Marinated chickpeas roast until blistered, then simmer in a creamy tomato sauce.",m:25,r:4.5,n:2071,diet:["vegetarian","gf"],curry:"#C2461D",swirl:"#FBE0C4",tile:"#F7D5C4",herb:"#2F7A3E",rot:260},
+ {t:"Slow cooker chickpea curry",by:"Helen Marsh",d:"Dried chickpeas, no soaking. Start it in the morning and it is done by dinner.",m:250,r:4.4,n:612,diet:["vegan","vegetarian","gf"],curry:"#9C5A1E",swirl:"#E8CDA0",tile:"#EBD9BE",herb:"#2F7A3E",rot:330},
+ {t:"Thai red chickpea curry with lime",by:"Nok Srisai",d:"Red curry paste, coconut milk and green beans. Bright, a little sweet and fast.",m:25,r:4.7,n:788,diet:["vegan","vegetarian","gf"],curry:"#C23B22",swirl:"#FFE9D6",tile:"#F6D0C8",herb:"#3C8A4B",rot:70},
+ {t:"Chickpea and cauliflower korma",by:"Priya Nambiar",d:"A mild korma with cashew and coconut. Good for people who want flavour without heat.",m:50,r:4.6,n:534,diet:["vegetarian","gf"],curry:"#E3B04B",swirl:"#FFF6DD",tile:"#F8EBC4",herb:"#2F7A3E",rot:150},
+ {t:"15-minute pantry chickpea curry",by:"Sam Whitlock",d:"Tinned tomatoes, curry powder and a tin of chickpeas. Good for the night you did not plan.",m:15,r:4.3,n:3342,diet:["vegan","vegetarian","gf"],curry:"#CF7A22",swirl:"#F7DDB0",tile:"#F5DEC0",herb:"#2F7A3E",rot:240},
+ {t:"Chicken and chickpea curry",by:"Rosa Delgado",d:"Chicken thighs and chickpeas braised together, so the chickpeas take up the chicken fat.",m:55,r:4.6,n:719,diet:["gf"],curry:"#A8501C",swirl:"#F0CFA0",tile:"#F0D6BC",herb:"#2F7A3E",rot:310}
+];
+const fmt=m=>m>=60?`${Math.floor(m/60)} hr${m%60?` ${m%60} min`:""}`:`${m} min`;
+const $=s=>document.querySelector(s), list=$("#results");
+const saved=new Set([1,4,6]); // three saved, matches the header count
+const dietOf=x=>x.diet.includes("vegan")?"Vegan":x.diet.includes("vegetarian")?"Vegetarian":"Contains meat";
+
+function card(x,i){
+  const dt=dietOf(x);
+  return `<li class="item">
+    <div class="thumb" style="--tile:${x.tile}"><svg viewBox="0 0 200 200" role="img" aria-label="Bowl of ${x.t.toLowerCase()}" style="--curry:${x.curry};--swirl:${x.swirl};--herb:${x.herb};transform:rotate(${x.rot}deg)"><use href="#bowl"/></svg></div>
+    <div>
+      <h3><a href="#">${x.t}</a></h3>
+      <p class="by">By ${x.by}</p>
+      <p class="desc">${x.d}</p>
+      <ul class="meta">
+        <li class="rating"><svg><use href="#star"/></svg>${x.r.toFixed(1)} <small>(${x.n.toLocaleString("en-GB")})</small></li>
+        <li><svg><use href="#clock"/></svg>${fmt(x.m)}</li>
+        <li class="diet${dt==="Contains meat"?" nonveg":""}">${dt}</li>
+      </ul>
+    </div>
+    <button class="save" type="button" aria-pressed="${saved.has(i)}" aria-label="Save ${x.t}" data-i="${i}"><svg viewBox="0 0 20 20"><path d="M5 2.5h10v15l-5-3.6-5 3.6z" stroke-linejoin="round"/></svg></button>
+  </li>`;
+}
+function view(){
+  const diets=[...document.querySelectorAll("[name=diet]:checked")].map(e=>e.value);
+  const time=+document.querySelector("[name=time]:checked").value||Infinity;
+  const rating=+document.querySelector("[name=rating]:checked").value;
+  const sort=$("#sort").value;
+  const out=R.map((x,i)=>[x,i]).filter(([x])=>diets.every(d=>x.diet.includes(d))&&x.m<=time&&x.r>=rating);
+  if(sort==="rating")out.sort((a,b)=>b[0].r-a[0].r);
+  if(sort==="time")out.sort((a,b)=>a[0].m-b[0].m);
+  list.innerHTML=out.map(([x,i])=>card(x,i)).join("");
+  $("#empty").hidden=out.length>0;
+  const active=diets.length||time<Infinity||rating>0;
+  $("#status").textContent=active?`${out.length} of ${R.length} recipes on this page match`:"Showing 2–10 of 48";
+}
+function reset(){document.querySelectorAll("#filters input").forEach(e=>e.checked=e.defaultChecked);view()}
+document.addEventListener("change",e=>{if(e.target.matches("#filters input,#sort"))view()});
+$("#reset").onclick=$("#reset2").onclick=reset;
+list.addEventListener("click",e=>{
+  const b=e.target.closest(".save");if(!b)return;
+  const i=+b.dataset.i,on=!saved.has(i);
+  on?saved.add(i):saved.delete(i);
+  b.setAttribute("aria-pressed",on);
+  $("#savedCount").textContent=saved.size;
+});
+// mobile: filters start collapsed; desktop: always open
+const mq=matchMedia("(max-width:900px)"),det=$("#filters");
+const sync=()=>{det.open=!mq.matches};
+sync();mq.addEventListener("change",sync);
+view();
+</script>
+</body>
+</html>

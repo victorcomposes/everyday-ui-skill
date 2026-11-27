@@ -1,0 +1,101 @@
+{
+  "axe": {
+    "rules": {
+      "scrollable-region-focusable": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "avenir next"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(12, 92, 136)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(12, 92, 136)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 7,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Order details",
+        "w": 105,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Reply to customer",
+        "w": 139,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Internal note",
+        "w": 107,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Tracking facts",
+        "w": 105,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Offer replacement",
+        "w": 132,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Refund delivery fee",
+        "w": 138,
+        "h": 28
+      },
+      {
+        "tag": "select",
+        "text": "Pending customer\nOpen\nSolved",
+        "w": 146,
+        "h": 34
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

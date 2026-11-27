@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order 48213 has not arrived - Harborline</title>
+<style>
+/* Tokens: Fern kit, system type stack (no network), standard shape */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f1f8f7;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px; --w-list: 320px; --w-rail: 320px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 1023px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/22px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 28px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+h2 { font: 600 var(--text-md)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: 16px; font-weight: 500; }
+.badge.accent { background: var(--accent-subtle); color: var(--accent); }
+.badge.warning { background: var(--warning-subtle); color: var(--warning); }
+.badge.danger { background: var(--danger-subtle); color: var(--danger); }
+.badge.neutral { background: var(--bg-subtle); color: var(--text-muted); }
+.muted { color: var(--text-muted); }
+.num { font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 10; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4); background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+svg.i { width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4);
+  border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn[aria-busy="true"] { cursor: progress; }
+
+/* shell */
+.app { display: grid; grid-template-columns: var(--w-sidebar) var(--w-list) minmax(0, 1fr); min-height: 100dvh; }
+.side { background: var(--frame); border-right: 1px solid var(--border); }
+.side-in { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-6); padding: var(--s-4) var(--s-3); }
+.brand { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-2); font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; }
+.shop { padding: 0 var(--s-2); margin-top: calc(var(--s-3) * -1 + var(--s-1)); }
+.shop span { display: block; font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); }
+.shop strong { font-weight: 600; }
+.nav-group h2 { font: 500 var(--text-xs)/16px var(--font); letter-spacing: 0; color: var(--text-muted); padding: 0 var(--s-2); margin-bottom: var(--s-1); }
+.nav a { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text); }
+.nav a:hover { background: var(--accent-subtle); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav a[aria-current="page"] svg { color: var(--accent); }
+.nav .count { margin-left: auto; font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.nav svg { color: var(--text-muted); }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-2) 0; border-top: 1px solid var(--border); }
+.account strong { display: block; font-weight: 600; }
+.account span { display: block; font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); }
+.avatar { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-xs); font-weight: 600; flex-shrink: 0; }
+.avatar.agent { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); }
+
+/* list pane */
+.list { border-right: 1px solid var(--border); min-width: 0; }
+.list-in { position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column; }
+.list-head { padding: var(--s-4) var(--s-4) var(--s-3); display: grid; gap: var(--s-3); border-bottom: 1px solid var(--border); }
+.list-head h2 { font-size: var(--text-xl); line-height: 28px; letter-spacing: -0.01em; }
+.search { position: relative; }
+.search svg { position: absolute; left: var(--s-3); top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.search input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3) 0 36px; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+.filters { display: flex; gap: var(--s-1); }
+.filters button { min-height: var(--control-h-sm); padding: 0 var(--s-3); border: 0; border-radius: var(--r-md); background: none; color: var(--text-muted); font-weight: 500; cursor: pointer; white-space: nowrap; }
+.filters button:hover { background: var(--bg-subtle); }
+.filters button[aria-pressed="true"] { background: var(--accent-subtle); color: var(--accent); }
+.filters .num { font-weight: 400; margin-left: var(--s-1); }
+.rows { overflow-y: auto; flex: 1; }
+.day { padding: var(--s-3) var(--s-4) var(--s-1); font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); font-weight: 500; }
+.row { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; column-gap: var(--s-2); padding: var(--s-3) var(--s-4) var(--s-3) var(--s-3); border-bottom: 1px solid var(--border); min-height: 76px; }
+.row:hover { background: var(--bg-subtle); }
+.row[aria-current="true"] { background: var(--accent-subtle); }
+.dot { width: 8px; height: 8px; margin-top: 7px; border-radius: var(--r-full); background: var(--accent); }
+.row .who { font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row.unread .who, .row.unread .subj { font-weight: 600; }
+.row time { font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; align-self: start; padding-top: 2px; }
+.row .subj, .row .prev { grid-column: 2 / 4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row .prev { color: var(--text-muted); font-size: var(--text-xs); line-height: 18px; }
+.row .tag { grid-column: 2 / 4; margin-top: var(--s-1); display: flex; gap: var(--s-2); align-items: center; font-size: var(--text-xs); color: var(--text-muted); }
+
+/* main */
+.main { display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); height: 100dvh; min-width: 0; }
+.convo { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.chead { padding: var(--s-6) var(--s-6) var(--s-4); border-bottom: 1px solid var(--border); }
+.chead .sub { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); margin-top: var(--rhythm-title); }
+.chead .sub .grow { margin-left: auto; display: flex; gap: var(--s-2); }
+.chead .from { color: var(--text-muted); }
+.thread { flex: 1; min-height: 0; overflow-y: auto; padding: var(--s-4) var(--s-6) var(--s-6); display: flex; flex-direction: column; gap: var(--s-5); }
+.dayrule { display: flex; align-items: center; gap: var(--s-3); font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); font-weight: 500; }
+.dayrule::before, .dayrule::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.msg { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: var(--s-3); }
+.msg header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--s-2); }
+.msg header strong { font-weight: 600; overflow-wrap: anywhere; }
+.msg header span, .msg header time { font-size: var(--text-xs); color: var(--text-muted); }
+.msg .body { margin-top: var(--s-1); max-width: 65ch; overflow-wrap: anywhere; white-space: pre-line; }
+.msg.note { background: var(--warning-subtle); border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent); border-radius: var(--r-lg); padding: var(--s-3); }
+.msg.note header strong, .msg.note header span, .msg.note header time { color: var(--warning); }
+.msg.note header span { display: inline-flex; align-items: center; gap: var(--s-1); font-weight: 500; }
+.msg.note .body { color: var(--text); }
+.event { display: flex; align-items: center; gap: var(--s-2); justify-content: center; font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); }
+
+/* composer */
+.composer { border-top: 1px solid var(--border); background: var(--surface); padding: var(--s-4) var(--s-6) var(--s-5); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+.comp-top { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.seg { display: inline-flex; gap: 4px; border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: 2px; margin: 0; min-width: 0; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg span { display: inline-flex; align-items: center; min-height: calc(var(--control-h-sm) - 6px); padding: 0 var(--s-3); border-radius: var(--r-sm); font-weight: 500; color: var(--text-muted); }
+@media (max-width: 1023px) { .seg span { min-height: 38px; } }
+.seg input:checked + span { background: var(--accent-subtle); color: var(--accent); }
+.seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 1px; }
+.to { color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.composer textarea { width: 100%; min-height: 128px; resize: vertical; padding: var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); line-height: 22px; }
+.composer.is-note textarea { background: var(--warning-subtle); }
+.composer textarea[aria-invalid="true"] { border-color: var(--danger); }
+.err { color: var(--danger); display: flex; align-items: center; gap: var(--s-2); }
+.comp-foot { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.comp-foot .opt { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--control-h); color: var(--text-muted); cursor: pointer; }
+.comp-foot .opt input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+.comp-foot .saved { font-size: var(--text-xs); color: var(--text-muted); }
+.comp-foot .push { margin-left: auto; display: flex; gap: var(--s-3); align-items: center; }
+.sent { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) var(--s-3); background: var(--success-subtle); color: var(--success); border-radius: var(--r-md); }
+.sent button { margin-left: auto; min-height: 32px; padding: 0 var(--s-2); border: 0; background: none; color: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }
+
+/* rail */
+.rail { border-left: 1px solid var(--border); background: var(--bg-subtle); overflow-y: auto; min-width: 0; }
+.rail summary { display: none; list-style: none; }
+.rail summary::-webkit-details-marker { display: none; }
+.rail-in { padding: var(--s-6); display: grid; gap: var(--s-8); }
+.rail section > h2 { margin-bottom: var(--rhythm-tight); }
+.keynum { font: 700 32px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--danger); }
+.keysub { margin-top: var(--s-2); color: var(--text-muted); }
+.route { margin-top: var(--s-4); position: relative; display: grid; gap: var(--s-3); }
+.route::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+.route li { position: relative; display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: var(--s-3); align-items: center; }
+.route i { width: 12px; height: 12px; border-radius: var(--r-full); background: var(--accent); position: relative; z-index: 1; }
+.route li.current i { box-shadow: 0 0 0 3px var(--accent-subtle), 0 0 0 4px var(--accent); }
+.route li.missed i { background: var(--bg-subtle); border: 2px solid var(--danger); }
+.route li.missed .when { color: var(--danger); }
+.route .when { font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.route li.current > span:nth-child(2) { font-weight: 600; }
+.items { width: 100%; border-collapse: collapse; }
+.items th, .items td { padding: var(--s-2) 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); font-weight: 400; }
+.items thead th { font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); font-weight: 500; }
+.items td:not(:first-child), .items th:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: var(--s-3); }
+.items tfoot th { font-weight: 400; color: var(--text-muted); }
+.items tfoot tr:last-child th, .items tfoot tr:last-child td { font-weight: 600; color: var(--text); border-bottom: 0; }
+.kv { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: var(--s-2) var(--s-3); margin: 0; }
+.kv dt { color: var(--text-muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+.ext { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 32px; }
+
+/* states */
+.quiet { display: grid; place-content: center; text-align: center; gap: var(--s-2); height: 100%; padding: var(--s-8); color: var(--text-muted); }
+.quiet h1, .quiet h2 { font-size: var(--text-xl); color: var(--text); }
+.quiet h1 { font-size: 28px; }
+.quiet .btn { justify-self: center; margin-top: var(--s-3); }
+.state-main { grid-column: 1 / -1; }
+.skel { background: var(--bg-subtle); border-radius: var(--r-sm); animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.5; } }
+.callout { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-4); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); border-radius: var(--r-lg); color: var(--text); }
+.callout svg { color: var(--danger); margin-top: 3px; }
+.callout strong { display: block; font-weight: 600; }
+
+/* phone and tablet */
+.topbar { display: none; }
+@media (max-width: 1359px) { .app { grid-template-columns: var(--w-sidebar) minmax(0, 1fr); } .list { display: none; } }
+@media (max-width: 1023px) {
+  h1 { font-size: 26px; }
+  .app { display: block; }
+  .side { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .topbar .back { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; margin-left: calc(var(--s-2) * -1); padding: 0 var(--s-2); font-weight: 600; }
+  .topbar .brand { padding: 0; font-size: var(--text-md); }
+  .list { display: none; border-right: 0; }
+  .list-in { position: static; height: auto; }
+  body.show-list .list { display: block; }
+  body.show-list .main { display: none; }
+  .row { min-height: 88px; }
+  .filters button { min-height: 44px; }
+  .main { display: flex; flex-direction: column; height: auto; }
+  .convo { display: contents; }
+  .chead { order: 1; padding: var(--s-5) var(--s-4) var(--s-4); }
+  .chead .sub .grow { margin-left: 0; width: 100%; }
+  .chead .sub .grow .btn { flex: 1; }
+  .rail { order: 2; border-left: 0; border-bottom: 1px solid var(--border); overflow: visible; }
+  .rail summary { display: flex; align-items: center; gap: var(--s-3); min-height: 52px; padding: 0 var(--s-4); cursor: pointer; font-weight: 600; }
+  .rail summary .badge { margin-left: auto; }
+  .rail summary::after { content: ""; width: 8px; height: 8px; border: solid var(--text-muted); border-width: 0 2px 2px 0; transform: rotate(45deg); margin: -4px 2px 0 var(--s-2); }
+  .rail[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
+  .rail-in { padding: var(--s-2) var(--s-4) var(--s-6); }
+  .thread { order: 3; overflow: visible; padding: var(--s-5) var(--s-4); }
+  .composer { order: 4; padding: var(--s-4) var(--s-4) calc(var(--s-5) + env(safe-area-inset-bottom)); }
+  .composer textarea { font-size: var(--text-md); line-height: 24px; min-height: 184px; }
+  .comp-foot .push { margin-left: 0; width: 100%; flex-direction: column-reverse; align-items: stretch; }
+  .comp-foot .push .btn { width: 100%; min-height: 48px; }
+  .search input { font-size: var(--text-md); }
+  .quiet { min-height: 60dvh; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#thread-title">Skip to the conversation</a>
+<div class="app">
+  <aside class="side" aria-label="Harborline navigation">
+    <div class="side-in">
+      <a class="brand" href="#" aria-label="Harborline home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M6 17.5c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2M6 12.5c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2" fill="none" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round"/></svg>
+        Harborline
+      </a>
+      <div class="shop"><span>Shop</span><strong>Larkfield Home</strong></div>
+      <nav class="nav" aria-label="Main" id="nav"></nav>
+      <div class="account">
+        <span class="avatar" aria-hidden="true">TW</span>
+        <div><strong>Tomasz Wieczorek</strong><span>Support agent, online now</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <section class="list" aria-labelledby="list-title">
+    <div class="list-in">
+      <div class="list-head">
+        <h2 id="list-title">Inbox</h2>
+        <div class="search">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <label class="sr-only" for="q">Search conversations</label>
+          <input id="q" type="search" placeholder="Search by name, order or subject" autocomplete="off">
+        </div>
+        <div class="filters" role="group" aria-label="Filter conversations" id="filters"></div>
+      </div>
+      <ul class="rows" id="rows"></ul>
+    </div>
+  </section>
+
+  <div>
+    <header class="topbar">
+      <button type="button" class="back btn sm" style="border:0;background:none" id="back" aria-label="Back to inbox">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Inbox
+      </button>
+      <span class="brand">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M6 17.5c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2M6 12.5c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2" fill="none" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round"/></svg>
+        Harborline
+      </span>
+    </header>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
+<script>
+/* ---------- data: one module, everything on screen derives from it ---------- */
+const TODAY = new Date('2026-11-27T10:30:00Z');
+const state = new URLSearchParams(location.search).get('state');
+const STRESS = state === 'stress';
+const ME = { name: 'Tomasz Wieczorek', initials: 'TW' };
+
+const customer = {
+  name: STRESS ? 'Bartholomew Featherstonehaugh-Cholmondeley-Wetherby' : 'Priya Raman',
+  email: STRESS ? null : 'priya.raman@example.com',
+  since: '2025-03-09',
+  orders: [{ id: '48213', total: 104.95 }, { id: '47630', total: 89.0 }, { id: '45871', total: 61.5 }],
+  address: '14 Kelham Row, Sheffield S3 8QX',
+};
+const order = {
+  id: STRESS ? '1048213-LF-WINTER-2026-0004417' : '48213',
+  placed: '2026-11-14', promised: '2026-11-20',
+  carrier: 'Parcelwise', tracking: 'PW 7720 4418 0236',
+  items: [
+    { name: 'Linen duvet cover, king, oat', qty: 1, price: 64.0 },
+    { name: 'Linen pillowcase pair, oat', qty: 2, price: 18.0 },
+  ],
+  shipping: 4.95,
+  route: [
+    { label: 'Ordered', at: '2026-11-14', st: 'done' },
+    { label: 'Packed', at: '2026-11-15', st: 'done' },
+    { label: 'With Parcelwise', at: '2026-11-17', st: 'done' },
+    { label: 'Reached Leeds hub', at: '2026-11-18', st: 'current' },
+    { label: 'Delivery promised', at: '2026-11-20', st: 'missed' },
+  ],
+};
+const subject = STRESS
+  ? 'Order 1048213-LF-WINTER-2026-0004417 never arrived and nobody has replied to any of my last four messages about it'
+  : 'Order 48213 has not arrived';
+const messages = [
+  { kind: 'customer', at: '2026-11-22T09:14', body: 'Hi, my order 48213 was due on Friday and has not arrived. The tracking page says it reached Leeds on Tuesday and nothing since. Could you tell me where it is? I need the duvet cover for guests this weekend.' },
+  { kind: 'event', at: '2026-11-22T09:20', body: 'Conversation assigned to Tomasz Wieczorek' },
+  { kind: 'agent', who: 'Tomasz Wieczorek', at: '2026-11-23T09:05', body: 'Hi Priya, thanks for letting us know and sorry about the delay. I have asked Parcelwise to check the Leeds hub. I will update you by Wednesday.' },
+  { kind: 'note', who: 'Tomasz Wieczorek', at: '2026-11-25T14:20', body: 'Parcelwise ticket PW-2291-88 raised. They say the label is damaged and the parcel is held for a re-scan. No date yet. Replacement stock: 3 oat king covers in the Sheffield store room.' },
+  { kind: 'customer', at: '2026-11-26T18:47', body: 'It is now nearly a week late and I have heard nothing since Monday. Can you send a replacement by next-day delivery, or refund me? I would rather have the cover in time.' },
+  { kind: 'customer', at: '2026-11-27T08:12', body: 'Any news? Guests arrive on Saturday.' },
+];
+if (STRESS) messages[0].body = messages[0].body + ' ' + 'The tracking link they emailed me goes to a page that says "parcel not found" and the phone line has been engaged each time I try. '.repeat(6);
+const draft = 'Hi Priya,\n\nI am sorry the order is a week late. Parcelwise is holding the parcel for a re-scan and cannot give a date. I have sent a replacement today with next-day delivery, so it should reach you on Saturday 28 Nov.\n\nIf the first parcel arrives, please keep it. You do not need to send it back.\n\nTomasz';
+
+const D = (s) => new Date(s.length === 10 ? s + 'T00:00:00Z' : s + 'Z');
+const conversations = [
+  { id: 'c1', name: customer.name, subject, prev: 'Any news? Guests arrive on Saturday.', at: '2026-11-27T08:12', unread: false, mine: true, tag: 'Late delivery' },
+  { id: 'c2', name: 'Callum Reid', subject: 'Rug arrived in the wrong colour', prev: 'I ordered the sage one and got grey. Photo attached.', at: '2026-11-27T09:40', unread: true, mine: false, tag: 'Wrong item' },
+  { id: 'c3', name: 'Ngozi Adeyemi', subject: 'Refund for cancelled order 48190', prev: 'Cancelled on Tuesday, still waiting on the money.', at: '2026-11-27T09:05', unread: true, mine: true, tag: 'Refund' },
+  { id: 'c4', name: 'Marta Kowalczyk', subject: 'Can I change my delivery address?', prev: 'Order 48221 goes to my old flat. Is it too late?', at: '2026-11-27T07:50', unread: false, mine: false, tag: 'Address change' },
+  { id: 'c5', name: 'Owen Brightwell-Hartington', subject: 'Lamp shade cracked on arrival', prev: 'The box was fine but the shade has a split down one side.', at: '2026-11-26T17:20', unread: false, mine: false, tag: 'Damaged' },
+  { id: 'c6', name: 'Sofia Marchetti', subject: 'Parcel marked delivered but not received', prev: 'Nothing at the door or with the neighbours.', at: '2026-11-26T15:02', unread: true, mine: true, tag: 'Late delivery' },
+  { id: 'c7', name: 'Daniel Osei', subject: 'Discount code not working at checkout', prev: 'WINTER15 says it has expired. The email says 30 Nov.', at: '2026-11-25T11:31', unread: false, mine: false, tag: 'Question' },
+  { id: 'c8', name: 'Hannah Lindqvist', subject: 'Order 48102 is two days late', prev: 'Tracking has said out for delivery since Tuesday.', at: '2026-11-25T09:12', unread: false, mine: false, tag: 'Late delivery' },
+  { id: 'c9', name: 'Reuben Castellanos', subject: 'Gift receipt for order 48044', prev: 'Could you email a receipt without prices?', at: '2026-11-24T16:44', unread: false, mine: false, tag: 'Question' },
+  { id: 'c10', name: 'Mei-Ling Tan', subject: 'Return label has not arrived', prev: 'It has been four days since I asked for one.', at: '2026-11-23T10:18', unread: false, mine: true, tag: 'Return' },
+];
+const cleared = state === 'cleared';
+const open = cleared ? [] : conversations;
+
+/* ---------- helpers ---------- */
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const dayFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+const dayLong = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+const monthFmt = new Intl.DateTimeFormat('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+const timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' });
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const dayKey = (d) => d.toISOString().slice(0, 10);
+const daysBetween = (a, b) => Math.round((D(dayKey(b)) - D(dayKey(a))) / 864e5);
+const initials = (n) => n.split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+const relTime = (d) => { const n = daysBetween(d, TODAY); return n === 0 ? timeFmt.format(d) : n < 6 ? dayFmt.format(d).split(' ')[0].replace(',', '') : new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(d); };
+const ICON = {
+  inbox: '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  at: '<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/>',
+  send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+  check: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  refund: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  box: '<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+  lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  ext: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  alert: '<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>',
+  user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+};
+const icon = (n) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
+
+/* ---------- sidebar ---------- */
+const late = open.filter((c) => c.tag === 'Late delivery').length;
+const nav = [
+  { h: null, items: [
+    { t: 'Inbox', i: 'inbox', n: open.length, cur: true },
+    { t: 'Mentions', i: 'at', n: 0 },
+    { t: 'Sent', i: 'send' },
+    { t: 'Closed', i: 'check' },
+  ] },
+  { h: 'Saved views', items: [
+    { t: 'Late deliveries', i: 'clock', n: late },
+    { t: 'Refund requests', i: 'refund', n: open.filter((c) => c.tag === 'Refund').length },
+    { t: 'Returns', i: 'box', n: open.filter((c) => c.tag === 'Return').length },
+  ] },
+];
+document.getElementById('nav').innerHTML = nav.map((g) => `<div class="nav-group" style="margin-bottom:var(--s-4)">${g.h ? `<h2>${g.h}</h2>` : ''}${g.items.map((x) =>
+  `<a href="#"${x.cur ? ' aria-current="page"' : ''}>${icon(x.i)}${x.t}${x.n ? `<span class="count">${x.n}</span>` : ''}</a>`).join('')}</div>`).join('');
+
+/* ---------- list ---------- */
+let filter = 'all', query = '';
+const counts = () => ({ all: open.length, mine: open.filter((c) => c.mine).length, unread: open.filter((c) => c.unread).length });
+function renderFilters() {
+  const c = counts();
+  document.getElementById('filters').innerHTML = [['all', 'All'], ['mine', 'Mine'], ['unread', 'Unread']]
+    .map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${filter === k}">${l}<span class="num">${c[k]}</span></button>`).join('');
+}
+function renderRows() {
+  const rows = open.filter((c) => (filter === 'all' || (filter === 'mine' ? c.mine : c.unread)) &&
+    (!query || (c.name + ' ' + c.subject).toLowerCase().includes(query)));
+  const el = document.getElementById('rows');
+  if (!open.length) { el.innerHTML = `<li class="quiet" style="height:auto;padding-top:var(--s-10)"><h2>You are all caught up</h2><p>No open conversations. New messages show here.</p></li>`; return; }
+  if (!rows.length) { el.innerHTML = `<li class="quiet" style="height:auto;padding-top:var(--s-10)"><h2>No conversations match</h2><p>Try a different name or order number.</p></li>`; return; }
+  let last = '';
+  el.innerHTML = rows.map((c) => {
+    const d = D(c.at), n = daysBetween(d, TODAY), g = n === 0 ? 'Today' : n === 1 ? 'Yesterday' : 'Earlier this week';
+    const head = g !== last ? `<li class="day" >${g}</li>` : ''; last = g;
+    return `${head}<li><a class="row${c.unread ? ' unread' : ''}" href="#${c.id}" data-id="${c.id}"${c.id === 'c1' && !state ? ' aria-current="true"' : ''}>
+      <span class="dot" ${c.unread ? '' : 'style="visibility:hidden"'} role="img" aria-label="${c.unread ? 'Unread' : ''}"></span>
+      <span class="who">${esc(c.name)}</span><time datetime="${c.at}">${relTime(d)}</time>
+      <span class="subj">${esc(c.subject)}</span><span class="prev">${esc(c.prev)}</span>
+      <span class="tag">${esc(c.tag)}${c.mine ? '<span>Assigned to you</span>' : ''}</span></a></li>`;
+  }).join('');
+}
+renderFilters(); renderRows();
+document.getElementById('filters').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { filter = b.dataset.f; renderFilters(); renderRows(); } });
+document.getElementById('q').addEventListener('input', (e) => { query = e.target.value.trim().toLowerCase(); renderRows(); });
+
+/* ---------- conversation ---------- */
+const main = document.getElementById('main');
+const fullTime = (d) => `${dayLong.format(d)}, ${timeFmt.format(d)}`;
+const daysLate = daysBetween(D(order.promised), TODAY);
+const lastScan = order.route.find((r) => r.st === 'current');
+const scanGap = daysBetween(D(lastScan.at), TODAY);
+
+function renderMessages() {
+  let last = '';
+  return messages.map((m) => {
+    const d = D(m.at), k = dayKey(d);
+    const rule = k !== last ? `<div class="dayrule"><span>${daysBetween(d, TODAY) === 0 ? 'Today' : dayLong.format(d)}</span></div>` : ''; last = k;
+    const time = `<time datetime="${m.at}" title="${fullTime(d)}">${timeFmt.format(d)}</time>`;
+    if (m.kind === 'event') return `${rule}<div class="event">${icon('user')}${esc(m.body)}<span>at ${timeFmt.format(d)}</span></div>`;
+    const name = m.kind === 'customer' ? customer.name : m.who;
+    const av = `<span class="avatar${m.kind === 'customer' ? '' : ' agent'}" aria-hidden="true">${m.kind === 'note' ? icon('lock') : initials(name)}</span>`;
+    if (m.kind === 'note') return `${rule}<article class="msg note"><span class="avatar agent" aria-hidden="true">${initials(name)}</span><div><header><strong>${esc(name)}</strong><span>${icon('lock')}Internal note, only your team sees this</span>${time}</header><p class="body">${esc(m.body)}</p></div></article>`;
+    return `${rule}<article class="msg">${av}<div><header><strong>${esc(name)}</strong><span>${m.kind === 'customer' ? 'Customer' : 'You'}</span>${time}</header><p class="body">${esc(m.body)}</p></div></article>`;
+  }).join('');
+}
+
+const subtotal = order.items.reduce((s, i) => s + i.qty * i.price, 0);
+const orderTotal = subtotal + order.shipping;
+const spent = customer.orders.reduce((s, o) => s + o.total, 0);
+
+function renderRail() {
+  return `<details class="rail" id="rail" open>
+    <summary><span>Order ${esc(order.id.length > 12 ? order.id.slice(0, 9) + '...' : order.id)}</span><span class="badge danger">${daysLate} days late</span></summary>
+    <div class="rail-in">
+      <section aria-labelledby="r-del">
+        <h2 id="r-del">Delivery</h2>
+        <p class="keynum">${daysLate} days late</p>
+        <p class="keysub">Promised for ${dayFmt.format(D(order.promised))}. No scan for ${scanGap} days since the Leeds hub.</p>
+        <ol class="route" aria-label="Delivery route">${order.route.map((r) =>
+          `<li class="${r.st}"><i aria-hidden="true"></i><span>${r.label}${r.st === 'missed' ? '<span class="sr-only"> (missed)</span>' : ''}</span><span class="when">${r.st === 'missed' ? 'Missed ' : ''}${dayFmt.format(D(r.at)).replace(',', '')}</span></li>`).join('')}</ol>
+      </section>
+      <section aria-labelledby="r-ord">
+        <h2 id="r-ord">Order ${esc(order.id)}</h2>
+        <table class="items">
+          <thead><tr><th scope="col">Item</th><th scope="col">Qty</th><th scope="col">Amount</th></tr></thead>
+          <tbody>${order.items.map((i) => `<tr><th scope="row">${i.name}</th><td>${i.qty}</td><td>${gbp.format(i.qty * i.price)}</td></tr>`).join('')}</tbody>
+          <tfoot>
+            <tr><th scope="row" colspan="2">Subtotal</th><td>${gbp.format(subtotal)}</td></tr>
+            <tr><th scope="row" colspan="2">Shipping</th><td>${gbp.format(order.shipping)}</td></tr>
+            <tr><th scope="row" colspan="2">Total</th><td>${gbp.format(orderTotal)}</td></tr>
+          </tfoot>
+        </table>
+        <dl class="kv" style="margin-top:var(--s-4)">
+          <dt>Carrier</dt><dd>${order.carrier}</dd>
+          <dt>Tracking</dt><dd class="num">${order.tracking}</dd>
+        </dl>
+        <a class="link ext" href="#">Open tracking page ${icon('ext')}</a>
+      </section>
+      <section aria-labelledby="r-cus">
+        <h2 id="r-cus">Customer</h2>
+        <dl class="kv">
+          <dt>Name</dt><dd>${esc(customer.name)}</dd>
+          <dt>Email</dt><dd>${customer.email ? `<a class="link" href="mailto:${customer.email}">${customer.email}</a>` : '<span class="muted">Not set</span>'}</dd>
+          <dt>Ship to</dt><dd>${esc(customer.address)}</dd>
+          <dt>History</dt><dd class="num">${customer.orders.length} orders, ${gbp.format(spent)} since ${monthFmt.format(D(customer.since))}</dd>
+        </dl>
+      </section>
+    </div>
+  </details>`;
+}
+
+const composer = () => `<form class="composer" id="composer" novalidate>
+  <div class="comp-top">
+    <fieldset class="seg"><legend class="sr-only">Message type</legend>
+      <label><input type="radio" name="mode" value="reply" checked><span>Reply</span></label>
+      <label><input type="radio" name="mode" value="note"><span>Internal note</span></label>
+    </fieldset>
+    <span class="to" id="to">To ${esc(customer.name)}${customer.email ? ` &lt;${customer.email}&gt;` : ''}</span>
+  </div>
+  <div id="sent" role="status"></div>
+  <div>
+    <label class="sr-only" for="msg" id="msg-label">Your reply to ${esc(customer.name)}</label>
+    <textarea id="msg" aria-describedby="msg-err" placeholder="Write a reply">${esc(draft)}</textarea>
+    <p class="err" id="msg-err" hidden>${icon('alert')}Write a reply before you send it.</p>
+  </div>
+  <div class="comp-foot">
+    <label class="opt"><input type="checkbox" id="pend" checked>Set to Pending after sending</label>
+    <span class="saved" id="saved">Draft saved at 08:55</span>
+    <div class="push"><button class="btn primary" type="submit" id="send">Send reply</button></div>
+  </div>
+</form>`;
+
+function renderMain() {
+  if (state === 'empty' || cleared) {
+    const c = counts();
+    main.style.gridTemplateColumns = 'minmax(0,1fr)';
+    main.innerHTML = `<div class="quiet"><h1 id="thread-title">${cleared ? 'You are all caught up' : 'Select a conversation'}</h1><p>${cleared ? 'No open conversations right now.' : `${c.all} open, ${c.unread} unread, ${c.all - c.mine} not assigned to you.`}</p></div>`;
+    return;
+  }
+  if (state === 'loading') {
+    main.innerHTML = `<div class="convo" aria-busy="true"><div class="chead"><h1 id="thread-title" class="sr-only">Loading conversation</h1><div class="skel" style="height:32px;width:60%"></div><div class="skel" style="height:20px;width:40%;margin-top:12px"></div></div>
+      <div class="thread">${[70, 55, 80].map((w) => `<div class="msg"><div class="skel" style="width:32px;height:32px;border-radius:50%"></div><div><div class="skel" style="height:16px;width:30%"></div><div class="skel" style="height:56px;width:${w}%;margin-top:8px"></div></div></div>`).join('')}</div></div><div class="rail"></div>`;
+    return;
+  }
+  if (state === 'error') {
+    main.style.gridTemplateColumns = 'minmax(0,1fr)';
+    main.innerHTML = `<div class="quiet"><h1 id="thread-title">This conversation did not load</h1><p>Your saved draft is safe. Check your connection and try again.</p><button class="btn primary" type="button" onclick="location.search=''">Try again</button></div>`;
+    return;
+  }
+  main.innerHTML = `<div class="convo">
+    <header class="chead">
+      <h1 id="thread-title">${esc(subject)}</h1>
+      <div class="sub">
+        <span class="badge accent">Open</span><span class="badge warning">High priority</span>
+        <span class="from">Opened ${dayFmt.format(D(messages[0].at))}</span>
+        <div class="grow">
+          <button class="btn sm" type="button">${icon('clock')}Snooze</button>
+          <button class="btn sm" type="button">${icon('check')}Resolve</button>
+        </div>
+      </div>
+    </header>
+    <div class="thread" id="thread" tabindex="0" role="log" aria-label="Conversation messages">${renderMessages()}</div>
+    ${composer()}
+  </div>${renderRail()}`;
+  wire();
+}
+
+function wire() {
+  const thread = document.getElementById('thread'), form = document.getElementById('composer'), ta = document.getElementById('msg');
+  const mq = matchMedia('(min-width: 1024px)'), rail = document.getElementById('rail');
+  const sync = () => { rail.open = mq.matches; thread.scrollTop = mq.matches ? thread.scrollHeight : 0; };
+  mq.addEventListener('change', sync); sync();
+  let mode = 'reply', undoMsg = null, stash = '';
+  form.addEventListener('change', (e) => {
+    if (e.target.name !== 'mode') return;
+    mode = e.target.value;
+    form.classList.toggle('is-note', mode === 'note');
+    document.getElementById('send').textContent = mode === 'note' ? 'Add note' : 'Send reply';
+    ta.placeholder = mode === 'note' ? 'Write a note for your team' : 'Write a reply';
+    document.getElementById('msg-label').textContent = mode === 'note' ? 'Internal note' : `Your reply to ${customer.name}`;
+    document.getElementById('to').hidden = mode === 'note';
+    document.getElementById('pend').closest('label').hidden = mode === 'note';
+    [ta.value, stash] = [stash, ta.value];
+  });
+  ta.addEventListener('input', () => { ta.removeAttribute('aria-invalid'); document.getElementById('msg-err').hidden = true; document.getElementById('saved').textContent = 'Draft not saved yet'; });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = ta.value.trim();
+    if (!text) { ta.setAttribute('aria-invalid', 'true'); document.getElementById('msg-err').hidden = false; ta.focus(); return; }
+    const btn = document.getElementById('send'); btn.setAttribute('aria-busy', 'true');
+    const label = btn.textContent; btn.textContent = mode === 'note' ? 'Adding...' : 'Sending...';
+    setTimeout(() => {
+      undoMsg = { kind: mode === 'note' ? 'note' : 'agent', who: ME.name, at: '2026-11-27T10:31', body: text };
+      messages.push(undoMsg); stash = ''; ta.value = '';
+      thread.innerHTML = renderMessages(); thread.scrollTop = thread.scrollHeight;
+      btn.removeAttribute('aria-busy'); btn.textContent = label;
+      document.getElementById('sent').innerHTML = `<div class="sent">${mode === 'note' ? 'Note added' : `Reply sent to ${esc(customer.name)}`}<button type="button" id="undo">Undo</button></div>`;
+      document.getElementById('undo').onclick = () => { messages.pop(); ta.value = undoMsg.body; thread.innerHTML = renderMessages(); document.getElementById('sent').innerHTML = ''; ta.focus(); };
+    }, 400);
+  });
+}
+renderMain();
+
+/* phone: the inbox is its own screen */
+const setList = (on) => document.body.classList.toggle('show-list', on);
+document.getElementById('back').addEventListener('click', () => setList(true));
+document.getElementById('rows').addEventListener('click', (e) => { if (e.target.closest('a.row')) { e.preventDefault(); setList(false); } });
+</script>
+</body>
+</html>

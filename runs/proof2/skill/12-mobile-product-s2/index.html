@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aero Trail 3 - Stridewell</title>
+<style>
+/* Brief: Stridewell sneaker shop / warm / domain detail: delivery date promise + fit marker.
+   Signature: Ember / standard shape / system stack (no network), voice carried by 700 weight and tight tracking. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #c2410c; --accent-hover: #9a3412; --accent-subtle: #fdeee5; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f7f7f8; --brand-deep: #1c1f26; --on-deep: #ffffff; --on-deep-muted: #b4b9c4; --accent-on-deep: #ff9a5c;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px;  --lh-xs: 16px;
+  --text-sm: 14px;  --lh-sm: 20px;
+  --text-md: 16px;  --lh-md: 24px;
+  --text-lg: 18px;  --lh-lg: 28px;
+  --text-xl: 20px;  --lh-xl: 28px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h-touch: 44px;
+  --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms; --t-slow: 200ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #ff9a5c; --accent-hover: #ffb88a; --accent-subtle: #36210f; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #17191d; --brand-deep: #0f1115; --on-deep: #e9ebef; --on-deep-muted: #a0a6b2;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-bottom: 96px; scroll-padding-top: 72px; }
+body { margin: 0; min-height: 100dvh; background: var(--frame); color: var(--text);
+  font: 400 var(--text-md)/var(--lh-md) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 700 28px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--text-muted); }
+svg.i { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+
+/* ---------- phone column ---------- */
+.screen { position: relative; max-width: 430px; margin: 0 auto; min-height: 100dvh; background: var(--surface); overflow: clip; }
+@media (min-width: 480px) {
+  .screen { margin: var(--s-6) auto; min-height: calc(100dvh - 48px); border: 1px solid var(--border); border-radius: var(--r-xl); box-shadow: var(--shadow-pop); }
+}
+
+/* top bar */
+.topbar { position: sticky; top: 0; z-index: 10; height: var(--h-topbar); display: flex; align-items: center; gap: var(--s-1); padding: 0 var(--s-2);
+  background: var(--frame); border-bottom: 1px solid var(--border); }
+.brand { flex: 1; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: var(--s-2); font: 700 var(--text-lg)/1 var(--font-display); letter-spacing: -0.02em; }
+.iconbtn { position: relative; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; background: transparent; border-radius: var(--r-full); cursor: pointer; color: var(--text); }
+.iconbtn:hover { background: var(--accent-subtle); }
+.iconbtn[aria-pressed="true"] { color: var(--accent); }
+.iconbtn[aria-pressed="true"] svg { fill: currentColor; }
+.count { position: absolute; top: 2px; right: 0; min-width: 20px; height: 20px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--accent); color: var(--on-accent); border-radius: var(--r-full); font-size: var(--text-xs); font-weight: 600; line-height: 1; box-shadow: 0 0 0 2px var(--frame); }
+
+/* gallery */
+.stage { --upper: #d9c7a8; --stripe: #c2410c; --sole: #f4efe6; --lace: #ffffff; --ink: #1c1f26;
+  position: relative; background: var(--accent-subtle); }
+.slides { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.slides::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 100%; scroll-snap-align: center; aspect-ratio: 1 / 0.92; display: flex; align-items: center; justify-content: center; padding: var(--s-6) var(--s-4) var(--s-8); }
+.slide svg { width: 100%; height: auto; max-height: 100%; }
+.pager { position: absolute; left: var(--s-4); bottom: var(--s-4); display: flex; align-items: center; gap: var(--s-2); }
+.pager .dots { display: flex; gap: 6px; }
+.pager .dots i { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--border-strong); transition: width var(--t-base) var(--ease), background-color var(--t-base) var(--ease); }
+.pager .dots i[aria-current="true"] { width: 18px; background: var(--accent); }
+.pager .n { font-size: var(--text-xs); color: var(--text-muted); }
+.tag { position: absolute; left: var(--s-4); top: var(--s-4); padding: 2px var(--s-2); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500;
+  background: var(--surface); color: var(--text); border-radius: var(--r-sm); }
+
+.body { padding: var(--rhythm-content) var(--s-4) var(--s-10); }
+.brandline { font-size: var(--text-sm); line-height: var(--lh-sm); font-weight: 500; color: var(--text-muted); margin-bottom: var(--s-1); }
+.sub { margin-top: var(--rhythm-title); color: var(--text-muted); font-size: var(--text-md); }
+.buy { display: flex; align-items: baseline; gap: var(--s-3); margin-top: var(--rhythm-content); flex-wrap: wrap; }
+.price { font: 700 36px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.was { color: var(--text-muted); text-decoration: line-through; font-variant-numeric: tabular-nums; }
+.save { background: var(--success-subtle); color: var(--success); font-size: var(--text-xs); font-weight: 500; padding: 2px var(--s-2); border-radius: var(--r-sm); }
+.rating { display: flex; align-items: center; gap: var(--s-2); margin-top: var(--s-3); min-height: 44px; width: 100%; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; font-size: var(--text-sm); color: var(--text-muted); }
+.rating strong { color: var(--text); font-weight: 600; }
+.stars { display: inline-flex; gap: 2px; color: var(--accent); }
+.stars svg { width: 16px; height: 16px; }
+.stars .off { color: var(--border-strong); }
+
+section { margin-top: var(--rhythm-group); }
+.head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--rhythm-tight); }
+.head h2 { font-size: var(--text-lg); }
+.label { font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); }
+.label b { color: var(--text); font-weight: 600; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend { padding: 0; width: 100%; }
+.leg { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-3); font-size: var(--text-md); font-weight: 600; }
+.leg .label { font-weight: 400; }
+.leg button { min-height: 44px; margin: -12px 0; padding: 0 var(--s-1); background: none; border: 0; cursor: pointer; font-size: var(--text-sm); }
+
+/* swatches */
+.swatches { display: flex; gap: var(--s-3); }
+.swatch { position: relative; width: 72px; height: 64px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--accent-subtle); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.swatch svg { width: 56px; height: auto; }
+.swatch:has(input:checked) { border: 2px solid var(--accent); }
+.swatch:has(input:focus-visible), .size:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* sizes */
+.sizes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-2); }
+.size { position: relative; min-height: 48px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-strong); border-radius: var(--r-md);
+  font-weight: 500; font-variant-numeric: tabular-nums; cursor: pointer; background: var(--surface); transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.size:hover { background: var(--bg-subtle); }
+.size:has(input:checked) { border: 2px solid var(--accent); background: var(--accent-subtle); font-weight: 600; }
+.size.out { color: var(--text-muted); border-color: var(--border); background: var(--bg-subtle); text-decoration: line-through; cursor: not-allowed; }
+.size.out:hover { background: var(--bg-subtle); }
+.note { display: flex; align-items: center; gap: var(--s-2); margin-top: var(--s-3); font-size: var(--text-sm); line-height: var(--lh-sm); color: var(--text-muted); }
+.note.low { color: var(--warning); font-weight: 500; }
+.note.err { color: var(--danger); font-weight: 500; }
+.sizes.invalid .size:not(.out) { border-color: var(--danger); }
+
+/* delivery promise */
+.promise { display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); padding: var(--s-4); background: var(--bg-subtle); border-radius: var(--r-lg); }
+.promise svg { color: var(--accent); margin-top: 2px; }
+.promise strong { display: block; font-weight: 600; }
+.promise span { color: var(--text-muted); font-size: var(--text-sm); }
+
+/* fit */
+.fit { margin-top: var(--s-2); }
+.track { position: relative; height: 4px; border-radius: var(--r-full); background: var(--border); margin: var(--s-4) 8px var(--s-3); }
+.track i { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: var(--r-full); background: var(--accent); box-shadow: 0 0 0 3px var(--surface); }
+.scale { display: flex; justify-content: space-between; font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); }
+
+/* accordions */
+.acc { border-top: 1px solid var(--border); }
+.acc:last-of-type { border-bottom: 1px solid var(--border); }
+.acc summary { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); cursor: pointer; list-style: none; font-weight: 600; }
+.acc summary::-webkit-details-marker { display: none; }
+.acc summary svg { transition: transform var(--t-base) var(--ease); color: var(--text-muted); }
+.acc[open] summary svg { transform: rotate(180deg); }
+.acc .in { padding: 0 0 var(--s-5); color: var(--text); }
+.acc .in > * + * { margin-top: var(--s-3); }
+.facts { display: grid; grid-template-columns: 1fr; gap: var(--s-2); }
+.facts li { display: flex; justify-content: space-between; gap: var(--s-4); font-size: var(--text-sm); border-bottom: 1px solid var(--border); padding-bottom: var(--s-2); }
+.facts li:last-child { border: 0; padding: 0; }
+.facts span:first-child { color: var(--text-muted); }
+.facts span:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.dist { display: grid; gap: var(--s-1); }
+.dist li { display: grid; grid-template-columns: 28px 1fr 36px; align-items: center; gap: var(--s-3); font-size: var(--text-sm); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.dist li span:last-child { text-align: right; }
+.bar { height: 6px; border-radius: var(--r-full); background: var(--border); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.review { padding-top: var(--s-3); border-top: 1px solid var(--border); }
+.review header { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-2); }
+.avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-sm); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.review small { display: block; font-size: var(--text-sm); color: var(--text-muted); }
+
+/* purchase bar */
+.dock { position: sticky; bottom: 0; z-index: 10; display: flex; align-items: center; gap: var(--s-4); padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom));
+  background: var(--surface); border-top: 1px solid var(--border); }
+.dock .tot { display: flex; flex-direction: column; min-width: 0; }
+.dock .tot b { font: 700 var(--text-xl)/1.2 var(--font-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.dock .tot span { font-size: var(--text-xs); line-height: var(--lh-xs); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.btn { min-height: 48px; padding: 0 var(--s-6); display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); border: 1px solid transparent; border-radius: var(--r-md); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease); }
+.btn.primary { background: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); }
+.btn.primary:active { background: var(--accent-hover); }
+.btn.secondary { background: transparent; border-color: var(--border-strong); }
+.dock .btn { flex: 1; }
+.btn[aria-busy="true"] { pointer-events: none; opacity: 0.8; }
+
+/* toast */
+.toastwrap { position: sticky; bottom: 88px; height: 0; z-index: 15; }
+.toast { position: absolute; left: var(--s-4); right: var(--s-4); bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); min-height: 48px;
+  background: var(--brand-deep); color: var(--on-deep); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); font-size: var(--text-sm); }
+.toast button { min-height: 44px; padding: 0 var(--s-3); background: none; border: 0; color: var(--accent-on-deep); font-weight: 600; cursor: pointer; }
+.toast .check { color: var(--accent-on-deep); }
+.toast span { display: flex; align-items: center; gap: var(--s-2); }
+
+/* sheet */
+.scrim { position: absolute; inset: 0; z-index: 20; background: rgb(16 18 24 / 0.5); }
+.sheetwrap { position: sticky; bottom: 0; z-index: 30; height: 0; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 80dvh; overflow-y: auto; background: var(--surface); border-radius: var(--r-xl) var(--r-xl) 0 0; box-shadow: var(--shadow-dialog);
+  padding: var(--s-2) var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom)); }
+.grab { width: 36px; height: 4px; border-radius: var(--r-full); background: var(--border-strong); margin: 0 auto var(--s-2); }
+.sheet .row { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-2); }
+.sheet .row h2 { font-size: var(--text-lg); }
+.sheet .row button { min-height: 44px; padding: 0 var(--s-2); border: 0; background: none; cursor: pointer; font-weight: 600; color: var(--accent); }
+.guide { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-top: var(--s-3); }
+.guide caption { text-align: left; color: var(--text-muted); font-size: var(--text-sm); }
+.guide th, .guide td { padding: var(--s-3) 0; text-align: right; border-bottom: 1px solid var(--border); }
+.guide thead th { font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); }
+.guide tbody th { font-weight: 600; }
+.guide tr.on td, .guide tr.on th { background: var(--accent-subtle); }
+.guide tr.on th { padding-left: var(--s-2); border-radius: var(--r-sm) 0 0 var(--r-sm); }
+.guide tr.on td:last-child { padding-right: var(--s-2); border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+
+/* empty and error */
+.stateview { min-height: calc(100dvh - var(--h-topbar)); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: var(--s-3); padding: var(--s-8) var(--s-4); }
+.stateview svg.art { width: 160px; height: auto; margin-bottom: var(--s-3); }
+.stateview h1 { font-size: 28px; }
+.stateview p { color: var(--text-muted); max-width: 34ch; }
+.stateview .btn { margin-top: var(--s-4); align-self: stretch; }
+.stateview .btn.secondary { margin-top: 0; }
+
+/* skeleton */
+.sk { background: var(--bg-subtle); border-radius: var(--r-md); }
+.skwrap { padding: 0; }
+.skwrap .pad { padding: var(--rhythm-content) var(--s-4); display: grid; gap: var(--s-3); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to product</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="shoe" viewBox="0 0 320 200">
+      <ellipse cx="166" cy="184" rx="140" ry="8" fill="var(--ink)" opacity="0.14"/>
+      <!-- upper -->
+      <path d="M44 150 L40 100 Q40 82 56 80 L84 78 Q98 74 106 62 L128 50 Q142 46 150 58 L168 90 Q204 102 242 108 Q288 114 298 140 L298 152 Z" fill="var(--upper)"/>
+      <!-- toe cap shade and heel tab -->
+      <path d="M242 108 Q288 114 298 140 L298 152 L252 152 Q256 124 242 108 Z" fill="var(--ink)" opacity="0.12"/>
+      <path d="M40 100 Q40 82 56 80 L66 79 L62 126 L44 130 Z" fill="var(--stripe)"/>
+      <!-- stripe -->
+      <path d="M70 142 Q124 136 178 100 L190 110 Q134 154 70 154 Z" fill="var(--stripe)"/>
+      <!-- collar and tongue -->
+      <path d="M84 78 Q98 74 106 62 L128 50 Q142 46 150 58 L146 64 Q136 58 128 62 L110 74 Q98 84 84 86 Z" fill="var(--ink)" opacity="0.2"/>
+      <!-- laces -->
+      <g stroke="var(--lace)" stroke-width="5" stroke-linecap="round">
+        <path d="M158 68 L142 78"/><path d="M166 83 L148 93"/><path d="M180 94 L162 104"/><path d="M198 99 L180 109"/>
+      </g>
+      <!-- midsole and outsole -->
+      <path d="M36 148 L300 148 Q308 170 284 178 L58 178 Q34 176 36 148 Z" fill="var(--sole)"/>
+      <path d="M40 166 L296 166 Q290 178 278 178 L60 178 Q44 176 40 166 Z" fill="var(--ink)" opacity="0.85"/>
+      <path d="M36 148 L300 148" stroke="var(--ink)" stroke-opacity="0.12" stroke-width="2"/>
+    </symbol>
+    <symbol id="sole" viewBox="0 0 320 200">
+      <ellipse cx="160" cy="100" rx="140" ry="8" fill="none"/>
+      <path d="M32 100 Q32 44 92 40 L140 40 Q168 40 184 62 Q200 80 236 78 Q298 76 298 112 Q298 150 236 152 L96 158 Q32 156 32 100 Z" fill="var(--ink)" transform="translate(0 4)"/>
+      <g stroke="var(--sole)" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85">
+        <path d="M70 76 L92 96 L70 116"/><path d="M110 70 L132 96 L110 122"/><path d="M150 72 L172 98 L150 124"/><path d="M190 82 L212 104 L190 128"/><path d="M230 88 L252 106 L230 126"/>
+      </g>
+      <path d="M270 100 Q282 100 282 108" stroke="var(--stripe)" stroke-width="8" stroke-linecap="round" fill="none"/>
+    </symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.500 15.400 12 20 12 20z"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.500a3 3 0 0 1 6 0V8"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.500l2.600 5.400 5.900.8-4.300 4.100 1 5.900L12 16.900 6.800 19.700l1-5.900L3.500 9.700l5.900-.8L12 3.500z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7.500" cy="17.500" r="1.800"/><circle cx="17.500" cy="17.500" r="1.800"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.500v5.500M12 16.500v.1"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 15L15 3l6 6L9 21z"/><path d="M7 11l2 2M10 8l2 2M13 5l2 2"/></symbol>
+  </defs>
+</svg>
+<div class="screen" id="app"></div>
+
+<script>
+/* ---------- fixtures: one data module, every number below is derived ---------- */
+const TODAY = new Date('2026-11-27T10:30:00');
+const CUTOFF_HOUR = 14;
+const FREE_DELIVERY_FROM = 100;
+const SIZES = [6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5];
+const FOOT_MM = { 6: 240, 6.5: 245, 7: 249, 7.5: 254, 8: 259, 8.5: 264, 9: 268, 9.5: 273, 10: 278, 10.5: 283, 11: 288, 11.5: 293 };
+const EU = { 6: 39.5, 6.5: 40, 7: 40.5, 7.5: 41, 8: 42, 8.5: 42.5, 9: 43, 9.5: 44, 10: 44.5, 10.5: 45, 11: 46, 11.5: 46.5 };
+const US = { 6: 6.5, 6.5: 7, 7: 7.5, 7.5: 8, 8: 8.5, 8.5: 9, 9: 9.5, 9.5: 10, 10: 10.5, 10.5: 11, 11: 11.5, 11.5: 12 };
+
+const product = {
+  brand: 'Halden',
+  name: 'Aero Trail 3',
+  kind: 'Unisex trail running shoe',
+  price: 129, was: 149,
+  style: 'HT-AT3',
+  weightG: 268, dropMm: 6,
+  badge: 'New season',
+  dist: { 5: 198, 4: 74, 3: 26, 2: 9, 1: 5 },
+  fit: 3.1, /* reviewers' fit vote, 1 = runs small, 5 = runs large */
+  colours: [
+    { id: 'dune',     name: 'Dune and ember',    upper: '#d9c7a8', stripe: '#c2410c', sole: '#f4efe6', lace: '#ffffff', stock: { 6: 3, 6.5: 0, 7: 5, 7.5: 4, 8: 9, 8.5: 6, 9: 2, 9.5: 7, 10: 5, 10.5: 0, 11: 3, 11.5: 1 } },
+    { id: 'graphite', name: 'Graphite and lime', upper: '#3b4048', stripe: '#a7d12f', sole: '#e9ebef', lace: '#e9ebef', stock: { 6: 0, 6.5: 2, 7: 4, 7.5: 0, 8: 6, 8.5: 8, 9: 11, 9.5: 4, 10: 0, 10.5: 3, 11: 5, 11.5: 2 } },
+    { id: 'fjord',    name: 'Fjord and sand',    upper: '#35566f', stripe: '#e7d6b4', sole: '#f4efe6', lace: '#f4efe6', stock: { 6: 1, 6.5: 0, 7: 0, 7.5: 3, 8: 2, 8.5: 0, 9: 4, 9.5: 0, 10: 6, 10.5: 2, 11: 0, 11.5: 0 } },
+  ],
+  reviews: [
+    { who: 'Marta K.', date: '2026-11-12', size: 9, stars: 5, text: 'Grips well on wet slate and the heel stays put on steep descents. Ran 28 km in them straight out of the box.' },
+    { who: 'Owen B.', date: '2026-10-29', size: 10.5, stars: 4, text: 'Comfortable and light. The toe box is a touch narrow for my feet, so I went up half a size.' },
+  ],
+};
+
+const params = new URLSearchParams(location.search);
+const view = params.get('state') || '';
+if (view === 'stress') {
+  product.name = 'Aero Trail 3 GORE-TEX Winter Edition, Anniversary Pack';
+  product.colours[0].name = 'Dune and ember with reflective heel and winter lace set';
+  product.price = 1284; product.was = 1499;
+  product.colours.forEach((c) => SIZES.forEach((s, i) => { if (i % 5 !== 0) c.stock[s] = 0; }));
+}
+
+/* derived values */
+const reviewCount = Object.values(product.dist).reduce((a, b) => a + b, 0);
+const ratingAvg = Object.entries(product.dist).reduce((a, [k, v]) => a + k * v, 0) / reviewCount;
+const savePct = Math.round((1 - product.price / product.was) * 100);
+const fmtGBP = (n) => '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtSize = (s) => 'UK ' + s;
+const day = (d) => new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }).format(d);
+const longDate = (iso) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(iso));
+function delivery() {
+  const cutoff = new Date(TODAY); cutoff.setHours(CUTOFF_HOUR, 0, 0, 0);
+  const mins = Math.max(0, Math.round((cutoff - TODAY) / 60000));
+  const arrive = new Date(TODAY); arrive.setDate(arrive.getDate() + 1);
+  const when = day(arrive);
+  const left = mins >= 60 ? `${Math.floor(mins / 60)} h ${String(mins % 60).padStart(2, '0')} min` : `${mins} min`;
+  return { when, left, free: product.price >= FREE_DELIVERY_FROM };
+}
+
+/* ---------- state ---------- */
+const S = { colour: 'dune', size: null, wish: false, bag: 1, error: false, sheet: view === 'sheet', toast: null, open: { details: true, delivery: false, reviews: view === 'reviews' }, slide: 0, busy: false };
+const colour = () => product.colours.find((c) => c.id === S.colour);
+const shoeVars = (c) => `--upper:${c.upper};--stripe:${c.stripe};--sole:${c.sole};--lace:${c.lace}`;
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const icon = (n, cls = '') => `<svg class="i ${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const stars = (n) => `<span class="stars" aria-hidden="true">${[1, 2, 3, 4, 5].map((i) => `<svg class="${i <= Math.round(n) ? '' : 'off'}"><use href="#i-star"/></svg>`).join('')}</span>`;
+const mark = `<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M7 17.500h11.500l2.500 2.500H7zM9 17.500V12l5 1.500 3 3" fill="none" stroke="var(--on-accent)" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function topbar() {
+  return `<header class="topbar">
+    <button class="iconbtn" type="button" aria-label="Back to sneakers" data-act="back">${icon('back')}</button>
+    <a class="brand" href="#" aria-label="Stridewell home">${mark}<span>Stridewell</span></a>
+    <button class="iconbtn" type="button" aria-label="Wishlist" aria-pressed="${S.wish}" data-act="wish" id="wish">${icon('heart')}</button>
+    <button class="iconbtn" type="button" aria-label="Bag, ${S.bag} ${S.bag === 1 ? 'item' : 'items'}" data-act="bag">${icon('bag')}<span class="count num" aria-hidden="true">${S.bag}</span></button>
+  </header>`;
+}
+
+function gallery(c) {
+  return `<div class="stage" style="${shoeVars(c)}">
+    <span class="tag">${product.badge}</span>
+    <div class="slides" id="slides" tabindex="0" role="group" aria-label="Product photos, swipe for more">
+      <div class="slide"><svg viewBox="0 0 320 200" role="img" aria-label="${esc(product.name)} in ${esc(c.name)}, side view"><use href="#shoe"/></svg></div>
+      <div class="slide"><svg viewBox="0 0 320 200" role="img" aria-label="Medial side view" style="transform:scaleX(-1)"><use href="#shoe"/></svg></div>
+      <div class="slide"><svg viewBox="0 0 320 200" role="img" aria-label="Outsole tread, view from below"><use href="#sole"/></svg></div>
+    </div>
+    <div class="pager" aria-hidden="true"><span class="dots">${[0, 1, 2].map((i) => `<i ${i === S.slide ? 'aria-current="true"' : ''}></i>`).join('')}</span><span class="n num">${S.slide + 1} of 3</span></div>
+  </div>`;
+}
+
+function sizeBlock(c) {
+  const sel = S.size;
+  const left = sel != null ? c.stock[sel] : null;
+  let note = '';
+  if (S.error) note = `<p class="note err" id="sizenote" role="alert">${icon('alert', 'sm')}Choose a size to add this to your bag.</p>`;
+  else if (left != null && left <= 3) note = `<p class="note low" id="sizenote">${icon('alert', 'sm')}Only ${left} left in ${fmtSize(sel)}.</p>`;
+  else if (left != null) note = `<p class="note" id="sizenote">${icon('check', 'sm')}${fmtSize(sel)} is in stock.</p>`;
+  else note = `<p class="note" id="sizenote">Sizes that are sold out are crossed through.</p>`;
+  return `<fieldset>
+    <legend><span class="leg"><span>Size <span class="label">UK</span></span><button type="button" class="link" data-act="guide" id="guidebtn">Size guide</button></span></legend>
+    <div class="sizes ${S.error ? 'invalid' : ''}" id="sizes">
+      ${SIZES.map((s) => {
+        const out = c.stock[s] === 0;
+        return `<label class="size ${out ? 'out' : ''}"><input class="sr-only" type="radio" name="size" value="${s}" ${out ? 'disabled' : ''} ${sel === s ? 'checked' : ''} aria-describedby="sizenote"><span aria-hidden="true">${s}</span><span class="sr-only">${fmtSize(s)}${out ? ', sold out' : ''}</span></label>`;
+      }).join('')}
+    </div>${note}</fieldset>`;
+}
+
+function accordion(id, title, inner, extra = '') {
+  return `<details class="acc" data-acc="${id}" ${S.open[id] ? 'open' : ''}><summary><span>${title}${extra}</span>${icon('chev')}</summary><div class="in">${inner}</div></details>`;
+}
+
+function sheet() {
+  const rows = SIZES.filter((s) => s >= 7 && s <= 11);
+  return `<div class="scrim" data-act="closesheet"></div>
+  <div class="sheetwrap"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheettitle" id="sheet">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="row"><h2 id="sheettitle">Size guide</h2><button type="button" data-act="closesheet" id="sheetclose">Done</button></div>
+    <p class="muted">Halden runs true to size. Measure your foot from heel to longest toe, then pick the closest length.</p>
+    <table class="guide"><caption class="sr-only">Size conversion and foot length</caption>
+      <thead><tr><th scope="col">UK</th><th scope="col">EU</th><th scope="col">US</th><th scope="col">Foot, mm</th></tr></thead>
+      <tbody>${rows.map((s) => `<tr class="${S.size === s ? 'on' : ''}"><th scope="row">${s}</th><td>${EU[s]}</td><td>${US[s]}</td><td>${FOOT_MM[s]}</td></tr>`).join('')}</tbody>
+    </table>
+  </div></div>`;
+}
+
+function render(focusSel) {
+  const app = document.getElementById('app');
+  if (view === 'empty' || view === 'error') return renderState(app);
+  if (view === 'loading') return renderLoading(app);
+  const c = colour();
+  const d = delivery();
+  const fitPos = ((product.fit - 1) / 4) * 100;
+  const dockSub = S.size != null ? `${fmtSize(S.size)}, ${esc(c.name)}` : 'Choose a size';
+  app.innerHTML = `
+  ${topbar()}
+  <main id="main" ${S.sheet ? 'inert' : ''}>
+    ${gallery(c)}
+    <div class="body">
+      <p class="brandline">${product.brand}</p>
+      <h1>${esc(product.name)}</h1>
+      <p class="sub">${product.kind}</p>
+      <div class="buy">
+        <span class="price num" aria-label="Price ${fmtGBP(product.price)}">${fmtGBP(product.price)}</span>
+        <s class="was num" aria-label="Was ${fmtGBP(product.was)}">${fmtGBP(product.was)}</s>
+        <span class="save num badge">Save ${savePct}%</span>
+      </div>
+      <button class="rating" type="button" data-act="reviews" aria-label="${ratingAvg.toFixed(1)} out of 5 from ${reviewCount} reviews. Show reviews">${stars(ratingAvg)}<span><strong class="num">${ratingAvg.toFixed(1)}</strong> <span class="num">(${reviewCount.toLocaleString('en-GB')} reviews)</span></span></button>
+
+      <section>
+        <fieldset>
+          <legend><span class="leg"><span>Colour</span><span class="label"><b>${esc(c.name)}</b></span></span></legend>
+          <div class="swatches" role="radiogroup" aria-label="Colour">
+            ${product.colours.map((k) => `<label class="swatch" style="${shoeVars(k)}--ink:#1c1f26"><input class="sr-only" type="radio" name="colour" value="${k.id}" ${k.id === S.colour ? 'checked' : ''}><svg viewBox="0 0 320 200" aria-hidden="true"><use href="#shoe"/></svg><span class="sr-only">${esc(k.name)}</span></label>`).join('')}
+          </div>
+        </fieldset>
+      </section>
+
+      <section id="sizesec">${sizeBlock(c)}</section>
+
+      <section>
+        <div class="promise">${icon('truck')}<p><strong class="num">${d.free ? 'Free delivery' : 'Delivery'} tomorrow, ${d.when}</strong><span class="num">Order within ${d.left}. Free returns for 30 days.</span></p></div>
+      </section>
+
+      <section>
+        <div class="head"><h2>Fit</h2><span class="label">From ${reviewCount.toLocaleString('en-GB')} reviews</span></div>
+        <p>Runs true to size. Most runners kept their usual size.</p>
+        <div class="fit" role="img" aria-label="Fit rating ${product.fit} on a scale from small to large"><div class="track"><i style="left:${fitPos}%"></i></div><div class="scale"><span>Runs small</span><span>True to size</span><span>Runs large</span></div></div>
+      </section>
+
+      <section>
+        ${accordion('details', 'Details', `
+          <p>A light, grippy trail shoe for rocky ground and wet roots. The recycled mesh upper dries fast and the lugs bite on loose descents.</p>
+          <ul class="facts">
+            <li><span>Weight, UK 9</span><span>${product.weightG} g</span></li>
+            <li><span>Heel to toe drop</span><span>${product.dropMm} mm</span></li>
+            <li><span>Upper</span><span>Recycled mesh</span></li>
+            <li><span>Style code</span><span>${product.style}-${c.id.slice(0, 3).toUpperCase()}</span></li>
+          </ul>`)}
+        ${accordion('delivery', 'Delivery and returns', `
+          <p>Standard delivery is free over ${fmtGBP(FREE_DELIVERY_FROM).replace('.00', '')}. Order before ${CUTOFF_HOUR}:00 for next-day delivery.</p>
+          <p>Wear them indoors for up to 30 days. If they are not right, return them free from any Stridewell drop point.</p>`)}
+        ${accordion('reviews', 'Reviews', `
+          <ul class="dist" aria-label="Rating breakdown">${[5, 4, 3, 2, 1].map((k) => `<li><span>${k} star</span><span class="bar"><i style="width:${(product.dist[k] / reviewCount) * 100}%"></i></span><span>${product.dist[k]}</span></li>`).join('')}</ul>
+          ${product.reviews.map((r) => `<article class="review"><header><span class="avatar" aria-hidden="true">${r.who.split(' ').map((w) => w[0]).join('')}</span><div><strong>${r.who}</strong><small>${longDate(r.date)}, bought ${fmtSize(r.size)}</small></div></header><p>${esc(r.text)}</p></article>`).join('')}`,
+          ` <span class="label num">${reviewCount.toLocaleString('en-GB')}</span>`)}
+      </section>
+    </div>
+  </main>
+  ${S.toast ? `<div class="toastwrap"><div class="toast" role="status"><span>${icon('check', 'sm toast-ic')}${esc(S.toast.text)}</span>${S.toast.undo ? '<button type="button" data-act="undo">Undo</button>' : ''}</div></div>` : ''}
+  <div class="dock" role="region" aria-label="Purchase" ${S.sheet ? 'inert' : ''}>
+    <div class="tot"><b class="num">${fmtGBP(product.price)}</b><span>${dockSub}</span></div>
+    <button class="btn primary" type="button" data-act="add" id="addbtn" ${S.busy ? 'aria-busy="true"' : ''}>${S.busy ? 'Adding…' : 'Add to bag'}</button>
+  </div>
+  ${S.sheet ? sheet() : ''}`;
+  bind();
+  if (S.sheet) document.getElementById('sheetclose')?.focus();
+  else if (focusSel) document.querySelector(focusSel)?.focus({ preventScroll: false });
+}
+
+function renderState(app) {
+  const err = view === 'error';
+  app.innerHTML = `${topbar()}<main id="main" class="stateview">
+    <svg class="art" viewBox="0 0 160 110" aria-hidden="true"><rect x="8" y="14" width="144" height="86" rx="12" fill="var(--accent-subtle)"/><g style="--upper:var(--border-strong);--stripe:var(--accent);--sole:var(--surface);--lace:var(--surface);--ink:var(--text)"><use href="#shoe" x="30" y="22" width="100" height="62.500"/></g></svg>
+    <h1>${err ? 'We could not load this sneaker' : 'This sneaker is no longer available'}</h1>
+    <p>${err ? 'Your bag is safe. Check your connection and try again.' : 'Aero Trail 3 sold out in every size and Halden has not restocked it. Similar trail shoes are in stock.'}</p>
+    <button class="btn primary" type="button" data-act="${err ? 'retry' : 'back'}">${err ? 'Try again' : 'Browse trail shoes'}</button>
+    ${err ? '<button class="btn secondary" type="button" data-act="back">Back to sneakers</button>' : ''}
+  </main>`;
+  bind();
+}
+
+function renderLoading(app) {
+  app.innerHTML = `${topbar()}<main id="main" class="skwrap" aria-busy="true"><p class="sr-only" role="status">Loading product</p>
+    <div class="sk" style="aspect-ratio:1/0.92;border-radius:0"></div>
+    <div class="pad"><div class="sk" style="height:20px;width:30%"></div><div class="sk" style="height:32px;width:70%"></div><div class="sk" style="height:36px;width:40%"></div>
+    <div class="sk" style="height:64px;width:100%;margin-top:24px"></div><div class="sk" style="height:48px;width:100%"></div><div class="sk" style="height:48px;width:100%"></div></div></main>`;
+}
+
+/* ---------- behaviour ---------- */
+function say(text, undo) { S.toast = { text, undo }; clearTimeout(say.t); say.t = setTimeout(() => { S.toast = null; render(); }, 4000); }
+let prevBag = 1;
+
+function bind() {
+  const app = document.getElementById('app');
+  app.querySelectorAll('[data-act]').forEach((el) => el.addEventListener('click', () => act(el.dataset.act)));
+  app.querySelectorAll('input[name=colour]').forEach((el) => el.addEventListener('change', () => {
+    S.colour = el.value;
+    if (S.size != null && colour().stock[S.size] === 0) { S.size = null; }
+    S.error = false; render('input[name=colour]:checked');
+  }));
+  app.querySelectorAll('input[name=size]').forEach((el) => el.addEventListener('change', () => {
+    S.size = parseFloat(el.value); S.error = false; render('input[name=size]:checked');
+  }));
+  app.querySelectorAll('details[data-acc]').forEach((el) => el.addEventListener('toggle', () => { S.open[el.dataset.acc] = el.open; }));
+  const sl = document.getElementById('slides');
+  if (sl) sl.addEventListener('scroll', () => {
+    const i = Math.round(sl.scrollLeft / sl.clientWidth);
+    if (i !== S.slide) {
+      S.slide = i;
+      document.querySelectorAll('.pager .dots i').forEach((d, k) => { if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+      document.querySelector('.pager .n').textContent = `${i + 1} of 3`;
+    }
+  }, { passive: true });
+}
+
+function act(a) {
+  if (a === 'wish') { S.wish = !S.wish; say(S.wish ? 'Saved to your wishlist' : 'Removed from your wishlist', false); render('#wish'); }
+  else if (a === 'guide') { S.sheet = true; render(); document.body.style.overflow = 'hidden'; }
+  else if (a === 'closesheet') { S.sheet = false; document.body.style.overflow = ''; render('#guidebtn'); }
+  else if (a === 'reviews') { S.open.reviews = true; render(); document.querySelector('[data-acc=reviews]').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  else if (a === 'add') {
+    if (S.size == null) {
+      S.error = true; render();
+      document.getElementById('sizesec').scrollIntoView({ block: 'center', behavior: 'smooth' });
+      document.querySelector('input[name=size]:not(:disabled)')?.focus({ preventScroll: true });
+      return;
+    }
+    S.busy = true; render('#addbtn');
+    setTimeout(() => {
+      S.busy = false; prevBag = S.bag; S.bag += 1;
+      say(`Added ${fmtSize(S.size)}, ${colour().name.toLowerCase()}`, true); render('#addbtn');
+    }, 400);
+  }
+  else if (a === 'undo') { S.bag = prevBag; S.toast = null; render('#addbtn'); }
+  else if (a === 'retry') { location.search = ''; }
+  else if (a === 'back' && (view === 'empty' || view === 'error')) { /* demo: nothing behind this screen */ }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (!S.sheet) return;
+  if (e.key === 'Escape') act('closesheet');
+  if (e.key === 'Tab') { /* keep focus in the sheet: it has one button */ e.preventDefault(); document.getElementById('sheetclose')?.focus(); }
+});
+
+render();
+if (view === 'sheet') document.body.style.overflow = 'hidden';
+</script>
+</body>
+</html>

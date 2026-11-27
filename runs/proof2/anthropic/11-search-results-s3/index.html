@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chickpea curry - Ladle recipe search</title>
+<style>
+:root{
+  --bg:#edf0e6; --surface:#f8f9f3; --ink:#2b1d34; --muted:#5c5064; --line:#cdd2c1;
+  --accent:#e2a100; --on-accent:#2b1d34; --link:#5b2a86; --focus:#5b2a86; --chip:#e1e6d6;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1322; --surface:#251a2e; --ink:#f0e9f2; --muted:#b9adc0; --line:#3d2f49;
+    --accent:#f0b52a; --on-accent:#1b1322; --link:#d4b5f2; --focus:#f0b52a; --chip:#312439;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+
+/* header */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:28px}
+.brand{font-weight:800;font-size:1.5rem;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.brand svg{width:28px;height:28px}
+.nav{display:flex;gap:22px;font-size:.95rem}
+.nav a{text-decoration:none;color:var(--muted)}
+.nav a:hover{color:var(--ink);text-decoration:underline}
+.search{flex:1;display:flex;max-width:560px;margin-left:auto;border:2px solid var(--ink);border-radius:999px;background:var(--bg);overflow:hidden}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;padding:10px 8px 10px 18px}
+.search input:focus-visible{outline:none}
+.search:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.search button{border:0;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:700;padding:0 20px;cursor:pointer}
+.search button:hover{filter:brightness(1.06)}
+
+/* page */
+main{max-width:1200px;margin:0 auto;padding:32px 24px 56px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+h1{margin:0;font-size:clamp(2rem,4.2vw,3.1rem);line-height:1.05;letter-spacing:-.02em;font-weight:700}
+.sub{margin:8px 0 0;color:var(--muted)}
+.sub strong{color:var(--ink)}
+.sort{display:flex;align-items:center;gap:10px;font-size:.95rem}
+.sort select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--ink);border-radius:8px;padding:8px 32px 8px 12px;
+  appearance:none;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 17px) 55%,calc(100% - 12px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:40px;align-items:start}
+
+/* filters */
+.filters{position:sticky;top:16px}
+.filters summary{list-style:none;cursor:pointer;font-weight:700;padding:10px 0}
+.filters summary::-webkit-details-marker{display:none}
+.filters fieldset{border:0;margin:0 0 22px;padding:0}
+.filters legend{font-weight:700;padding:0 0 8px;font-size:1rem}
+.opt{display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer;font-size:.97rem}
+.opt input{width:18px;height:18px;accent-color:var(--link);margin:0}
+.opt small{margin-left:auto;color:var(--muted)}
+.reset{font:inherit;background:none;border:0;color:var(--link);text-decoration:underline;cursor:pointer;padding:0}
+.hint{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:.93rem}
+.hint a{color:var(--link)}
+
+/* results */
+.results{list-style:none;margin:0;padding:0}
+.card{display:grid;grid-template-columns:200px 1fr;gap:22px;padding:22px 0;border-top:1px solid var(--line)}
+.card:first-child{border-top:2px solid var(--ink)}
+.thumb{display:block;border-radius:10px;overflow:hidden;aspect-ratio:1;align-self:start}
+.thumb svg{display:block;width:100%;height:100%}
+.card h2{margin:0 0 6px;font-size:1.4rem;line-height:1.2;letter-spacing:-.01em;font-weight:700}
+.card h2 a{text-decoration:none}
+.card h2 a:hover{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:3px}
+.rate{display:flex;align-items:center;gap:6px;font-size:.93rem;color:var(--muted);flex-wrap:wrap}
+.rate b{color:var(--ink)}
+.stars{display:inline-flex;gap:1px;color:var(--accent)}
+.stars svg{width:16px;height:16px}
+.stars .off{color:var(--line)}
+.desc{margin:10px 0 12px;color:var(--ink);max-width:62ch}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{font-size:.84rem;background:var(--chip);border-radius:999px;padding:3px 11px}
+.time{display:inline-flex;align-items:center;gap:6px;font-size:.93rem;font-weight:600;margin-right:6px}
+.time svg{width:16px;height:16px}
+.by{margin-top:10px;font-size:.9rem;color:var(--muted)}
+.card:first-child .thumb{grid-row:span 1}
+.card:first-child{grid-template-columns:280px 1fr}
+.card:first-child h2{font-size:1.85rem}
+mark{background:color-mix(in srgb,var(--accent) 45%,transparent);color:inherit;border-radius:3px;padding:0 2px}
+
+.empty{padding:40px 0;border-top:2px solid var(--ink)}
+.empty h2{margin:0 0 8px}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:2px solid var(--ink);padding-top:20px;margin-top:4px;flex-wrap:wrap}
+.pager ol{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.pager a{display:inline-flex;min-width:40px;height:40px;align-items:center;justify-content:center;padding:0 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;background:var(--surface)}
+.pager a:hover{border-color:var(--ink)}
+.pager a[aria-current]{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:700}
+.pager .gap{align-self:center;color:var(--muted);padding:0 4px}
+.related{margin-top:36px}
+.related h2{font-size:1.1rem;margin:0 0 10px}
+.related ul{list-style:none;margin:0;padding:0;display:flex;gap:8px;flex-wrap:wrap}
+.related a{display:inline-block;padding:7px 14px;border:1px solid var(--ink);border-radius:999px;text-decoration:none;font-size:.95rem}
+.related a:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;gap:12px}
+  .filters{position:static;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:0 16px}
+  .filters summary{display:flex;justify-content:space-between}
+  .filters summary::after{content:"+";font-size:1.3rem;line-height:1}
+  .filters[open] summary::after{content:"2"}
+  .filters[open] summary{border-bottom:1px solid var(--line);margin-bottom:14px}
+  .nav{display:none}
+}
+@media (max-width:560px){
+  .top-in{padding:12px 16px;flex-wrap:wrap;gap:12px}
+  .brand{font-size:1.3rem}
+  .search{order:3;flex-basis:100%;max-width:none;margin:0}
+  main{padding:22px 16px 40px}
+  .head{margin-bottom:16px}
+  .card,.card:first-child{grid-template-columns:104px 1fr;gap:14px;padding:18px 0}
+  .card:first-child{grid-template-columns:104px 1fr}
+  .card h2,.card:first-child h2{font-size:1.15rem}
+  .desc{font-size:.93rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .pager{justify-content:center}
+}
+@media (prefers-reduced-motion:no-preference){
+  .results .card{animation:in .35s ease both}
+  @keyframes in{from{opacity:0}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="star" viewBox="0 0 20 20"><path fill="currentColor" d="M10 1.6l2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L1.4 7.9l6-.8z"/></symbol>
+  <symbol id="clock" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 5v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#" aria-label="Ladle home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#e2a100"/><path d="M6 15h20a10 10 0 0 1-20 0z" fill="#2b1d34"/><circle cx="12" cy="12" r="2" fill="#2b1d34"/><circle cx="17" cy="10.5" r="2" fill="#2b1d34"/><circle cx="21" cy="13" r="1.8" fill="#2b1d34"/></svg>
+      Ladle
+    </a>
+    <nav class="nav" aria-label="Main"><a href="#">Recipes</a><a href="#">Collections</a><a href="#">Meal plans</a><a href="#">Saved</a></nav>
+    <form class="search" role="search" onsubmit="return false">
+      <label class="vh" for="q">Search recipes</label>
+      <input id="q" type="search" value="chickpea curry" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <h1 class="serif">Chickpea curry</h1>
+      <p class="sub" id="count" aria-live="polite"></p>
+    </div>
+    <div class="sort">
+      <label for="sort">Sort by</label>
+      <select id="sort">
+        <option value="match">Best match</option>
+        <option value="rating">Highest rated</option>
+        <option value="time">Quickest first</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="layout">
+    <details class="filters" id="filters" open>
+      <summary>Filters <span id="fcount"></span></summary>
+      <form id="ff">
+        <fieldset>
+          <legend>Diet</legend>
+          <label class="opt"><input type="checkbox" name="diet" value="Vegan"> Vegan <small data-n="Vegan"></small></label>
+          <label class="opt"><input type="checkbox" name="diet" value="Vegetarian"> Vegetarian <small data-n="Vegetarian"></small></label>
+          <label class="opt"><input type="checkbox" name="diet" value="Gluten-free"> Gluten-free <small data-n="Gluten-free"></small></label>
+          <label class="opt"><input type="checkbox" name="diet" value="Dairy-free"> Dairy-free <small data-n="Dairy-free"></small></label>
+        </fieldset>
+        <fieldset>
+          <legend>Total time</legend>
+          <label class="opt"><input type="radio" name="time" value="0" checked> Any time</label>
+          <label class="opt"><input type="radio" name="time" value="30"> 30 minutes or less</label>
+          <label class="opt"><input type="radio" name="time" value="45"> 45 minutes or less</label>
+          <label class="opt"><input type="radio" name="time" value="60"> 1 hour or less</label>
+        </fieldset>
+        <fieldset>
+          <legend>Rating</legend>
+          <label class="opt"><input type="radio" name="rate" value="0" checked> Any rating</label>
+          <label class="opt"><input type="radio" name="rate" value="4.5"> 4.5 stars and up</label>
+        </fieldset>
+        <button type="reset" class="reset" id="reset">Clear all filters</button>
+      </form>
+    </details>
+
+    <section aria-label="Search results">
+      <ol class="results" id="results"></ol>
+
+      <nav class="pager" aria-label="Pagination" id="pager">
+        <span>Showing results 1 to 10 of 48</span>
+        <ol>
+          <li><a href="#" aria-current="page">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#" aria-label="Next page">Next</a></li>
+        </ol>
+      </nav>
+
+      <div class="related">
+        <h2>People also searched for</h2>
+        <ul>
+          <li><a href="#">chana masala</a></li>
+          <li><a href="#">coconut chickpea stew</a></li>
+          <li><a href="#">vegan curry for two</a></li>
+          <li><a href="#">chickpea tikka masala</a></li>
+          <li><a href="#">slow cooker chickpea curry</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+const R=[
+ {t:"Weeknight coconut chickpea curry with spinach",d:"Canned chickpeas, a tin of coconut milk and a fistful of spinach, ready while the rice cooks. Mild enough for children, easy to turn up with extra chilli.",m:35,r:4.8,n:2314,by:"Priya Nair",diet:["Vegan","Vegetarian","Gluten-free","Dairy-free"],c:["#d9941f","#3f7a3a"]},
+ {t:"Slow-simmered chana masala",d:"Dried chickpeas cooked with tea, onions browned until jammy and a homemade masala. Worth the extra time, and better the next day.",m:75,r:4.7,n:1902,by:"Arjun Mehta",diet:["Vegan","Vegetarian","Gluten-free","Dairy-free"],c:["#b5421e","#4c8a3c"]},
+ {t:"Butter chickpea curry",d:"A creamy tomato sauce with butter, cream and kasuri methi. All the comfort of butter chicken, with chickpeas doing the work.",m:30,r:4.7,n:1577,by:"Hannah Whitlock",diet:["Vegetarian","Gluten-free"],c:["#d4651f","#d8c9a0"]},
+ {t:"Sweet potato and chickpea curry",d:"Roasted sweet potato cubes melt into a spiced tomato and coconut sauce. Finish with lime and toasted cashews.",m:45,r:4.6,n:1208,by:"Dario Fenwick",diet:["Vegan","Vegetarian","Gluten-free","Dairy-free"],c:["#c9731d","#5a8f3b"]},
+ {t:"Chickpea tikka masala",d:"Chickpeas marinated in yoghurt and tikka spices, grilled until charred, then simmered in a smoky tomato sauce.",m:40,r:4.6,n:986,by:"Sana Qureshi",diet:["Vegetarian","Gluten-free"],c:["#c4421b","#e6dcc0"]},
+ {t:"One-pot chickpea curry for two",d:"One pan, 10 minutes of chopping and a pantry list you probably already have. Scales up easily for a crowd.",m:25,r:4.5,n:864,by:"Tom Okafor",diet:["Vegan","Vegetarian","Gluten-free","Dairy-free"],c:["#dca02b","#4a8a46"]},
+ {t:"Thai-style green chickpea curry",d:"Green curry paste, lime leaves and Thai basil over crisp green beans and chickpeas. Bright, fragrant and gently hot.",m:30,r:4.4,n:612,by:"Mali Suwan",diet:["Vegan","Vegetarian","Gluten-free","Dairy-free"],c:["#7fa840","#e8e2b0"]},
+ {t:"Chicken thigh and chickpea curry",d:"Bone-in thighs braised with chickpeas, ginger and garam masala. The chickpeas soak up the chicken fat and sauce.",m:55,r:4.5,n:743,by:"Ravi Sharma",diet:["Gluten-free","Dairy-free"],c:["#b9531b","#4d8a3d"]},
+ {t:"Cauliflower and chickpea curry",d:"Cauliflower florets roasted with curry powder, then folded into a quick onion and tomato gravy with chickpeas.",m:45,r:4.4,n:528,by:"Imogen Barratt",diet:["Vegan","Vegetarian","Gluten-free","Dairy-free"],c:["#d08a22","#e9e4d2"]},
+ {t:"Slow cooker chickpea curry",d:"Dried chickpeas, no soaking. Load the slow cooker in the morning, stir in coconut milk and lemon at the end.",m:255,r:4.3,n:431,by:"Beth Lindqvist",diet:["Vegan","Vegetarian","Gluten-free","Dairy-free"],c:["#a8561e","#5b9142"]}
+];
+const $=s=>document.querySelector(s), q="chickpea curry";
+
+function bowl(c,seed){
+  let s=seed*97+13;const rnd=()=>(s=(s*9301+49297)%233280)/233280;
+  let chick="",leaf="";
+  for(let i=0;i<15;i++){const a=rnd()*6.283,d=Math.sqrt(rnd())*34;chick+=`<circle cx="${(50+Math.cos(a)*d).toFixed(1)}" cy="${(50+Math.sin(a)*d).toFixed(1)}" r="${(4+rnd()*2).toFixed(1)}" fill="#e4c07a" stroke="#c49a4f" stroke-width=".8"/>`}
+  for(let i=0;i<7;i++){const a=rnd()*6.283,d=Math.sqrt(rnd())*30;leaf+=`<ellipse cx="${(50+Math.cos(a)*d).toFixed(1)}" cy="${(50+Math.sin(a)*d).toFixed(1)}" rx="3.2" ry="1.7" transform="rotate(${Math.round(rnd()*180)} ${(50+Math.cos(a)*d).toFixed(1)} ${(50+Math.sin(a)*d).toFixed(1)})" fill="${c[1]}"/>`}
+  const bgs=["#f2d9a0","#cfe0c0","#e8c9b8","#d8d3ea","#f0e0b8"];
+  return `<svg viewBox="0 0 100 100" role="img" aria-label="Bowl of curry" preserveAspectRatio="xMidYMid slice"><rect width="100" height="100" fill="${bgs[seed%5]}"/><circle cx="50" cy="52" r="44" fill="rgba(0,0,0,.12)"/><circle cx="50" cy="50" r="44" fill="#fbf7ee"/><circle cx="50" cy="50" r="38" fill="${c[0]}"/><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(0,0,0,.15)" stroke-width="1.5"/>${chick}${leaf}</svg>`;
+}
+function stars(r){let o="";for(let i=1;i<=5;i++){const full=r>=i-.25;o+=`<svg class="${full?"":"off"}" aria-hidden="true"><use href="#star"/></svg>`}return `<span class="stars">${o}</span>`}
+const hi=t=>t.replace(/(chickpea)( curry)?/i,m=>`<mark>${m}</mark>`);
+const fmt=m=>m<60?m+" min":Math.floor(m/60)+" hr"+(m%60?" "+m%60+" min":"");
+
+function state(){
+  const f=new FormData($("#ff"));
+  return {diet:f.getAll("diet"),time:+f.get("time"),rate:+f.get("rate"),sort:$("#sort").value};
+}
+function render(){
+  const s=state();
+  let list=R.map((x,i)=>({...x,i})).filter(x=>s.diet.every(d=>x.diet.includes(d))&&(!s.time||x.m<=s.time)&&x.r>=s.rate);
+  if(s.sort==="rating")list.sort((a,b)=>b.r-a.r||b.n-a.n);
+  if(s.sort==="time")list.sort((a,b)=>a.m-b.m);
+  const filtered=s.diet.length||s.time||s.rate;
+  const total=filtered?list.length:48;
+  $("#count").innerHTML=filtered?`<strong>${list.length}</strong> of 48 recipes match your filters`:`<strong>48 recipes</strong> for &ldquo;${q}&rdquo;`;
+  $("#fcount").textContent=filtered?"("+(s.diet.length+(s.time?1:0)+(s.rate?1:0))+" applied)":"";
+  $("#pager").hidden=!!filtered;
+  $("#results").innerHTML=list.length?list.map(x=>`
+   <li class="card">
+     <a class="thumb" href="#" tabindex="-1" aria-hidden="true">${bowl(x.c,x.i)}</a>
+     <div>
+       <h2 class="serif"><a href="#">${hi(x.t)}</a></h2>
+       <div class="rate">${stars(x.r)}<b>${x.r.toFixed(1)}</b><span>(${x.n.toLocaleString("en-GB")} reviews)</span></div>
+       <p class="desc">${x.d}</p>
+       <div class="meta"><span class="time"><svg aria-hidden="true"><use href="#clock"/></svg>${fmt(x.m)}</span>${x.diet.slice(0,2).map(d=>`<span class="pill">${d}</span>`).join("")}</div>
+       <div class="by">By ${x.by}</div>
+     </div>
+   </li>`).join(""):`<li class="empty"><h2 class="serif">No recipes match all of these filters</h2><p>Remove a filter to see more chickpea curries, or <button type="button" class="reset" onclick="document.getElementById('reset').click()">clear all filters</button>.</p></li>`;
+}
+document.querySelectorAll("small[data-n]").forEach(el=>el.textContent=Math.round(48*R.filter(x=>x.diet.includes(el.dataset.n)).length/R.length));
+$("#ff").addEventListener("change",render);
+$("#ff").addEventListener("reset",()=>setTimeout(render));
+$("#sort").addEventListener("change",render);
+const mq=matchMedia("(max-width:860px)");
+const sync=()=>{$("#filters").open=!mq.matches};sync();mq.addEventListener("change",sync);
+render();
+</script>
+</body>
+</html>

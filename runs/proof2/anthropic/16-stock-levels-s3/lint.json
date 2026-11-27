@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 1
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "segoe ui variable text"
+  ],
+  "textColors": 4,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(88, 112, 106)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(20, 86, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 22,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Needs attention16",
+        "w": 142,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Reorder now9",
+        "w": 112,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "All items19",
+        "w": 92,
+        "h": 36
+      },
+      {
+        "tag": "input",
+        "text": "Search ingredients",
+        "w": 308,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "All suppliers\nHartwell Dairy\nM",
+        "w": 332,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Add 9 below reorder point to o",
+        "w": 358,
+        "h": 40
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 18,
+        "h": 18
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 18,
+        "h": 18
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

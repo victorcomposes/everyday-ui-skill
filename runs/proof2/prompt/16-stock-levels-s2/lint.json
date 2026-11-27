@@ -1,0 +1,100 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "system-ui"
+  ],
+  "textColors": 9,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(43, 90, 58)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 101,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to stock table",
+        "w": 146,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Stock levels",
+        "w": 99,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Orders\n2",
+        "w": 96,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Suppliers",
+        "w": 83,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Recipes",
+        "w": 71,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Counts",
+        "w": 68,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Waste log",
+        "w": 88,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Select the 6 that need orderin",
+        "w": 358,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

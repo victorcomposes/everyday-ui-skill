@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "empty-table-header": {
+        "impact": "minor",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "minor": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(44, 106, 77)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(44, 106, 77)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 51,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Stock levels",
+        "w": 103,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Orders",
+        "w": 70,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Suppliers",
+        "w": 87,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Recipes",
+        "w": 75,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Waste log",
+        "w": 92,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Reorder everything that needs ",
+        "w": 358,
+        "h": 40
+      },
+      {
+        "tag": "input",
+        "text": "Search ingredients or supplier",
+        "w": 358,
+        "h": 40
+      },
+      {
+        "tag": "select",
+        "text": "All categories\nMeat and fish\nP",
+        "w": 158,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

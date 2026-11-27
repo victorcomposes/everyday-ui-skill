@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 3,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(29, 28, 26)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(36, 87, 197)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 44,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Gigwell",
+        "w": 96,
+        "h": 27
+      },
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 358,
+        "h": 41
+      },
+      {
+        "tag": "button",
+        "text": "Reply",
+        "w": 61,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "Mark as read",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Dismiss notification",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "View payment",
+        "w": 116,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "Mark as read",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Dismiss notification",
+        "w": 32,
+        "h": 32
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

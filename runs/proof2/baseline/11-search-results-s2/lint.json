@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 23
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 23
+      }
+    },
+    "contrastFailures": 23
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 5,
+  "minFontPx": 11.52,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(35, 29, 22)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 26,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Saltbox Kitchen",
+        "w": 173,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Search",
+        "w": 80,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Filters",
+        "w": 96,
+        "h": 40
+      },
+      {
+        "tag": "select",
+        "text": "Best match\nHighest rated\nQuick",
+        "w": 254,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "chana masala",
+        "w": 116,
+        "h": 34
+      },
+      {
+        "tag": "a",
+        "text": "chickpea coconut curry",
+        "w": 176,
+        "h": 34
+      },
+      {
+        "tag": "a",
+        "text": "spinach chickpea curry",
+        "w": 173,
+        "h": 34
+      },
+      {
+        "tag": "a",
+        "text": "sweet potato chickpea curry",
+        "w": 208,
+        "h": 34
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

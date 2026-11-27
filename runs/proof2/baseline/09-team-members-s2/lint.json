@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 1
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 5,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(93, 101, 114)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(36, 87, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 32,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Reviews",
+        "w": 69,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Projects",
+        "w": 69,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Design systems",
+        "w": 115,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Team members",
+        "w": 117,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Billing",
+        "w": 58,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Integrations",
+        "w": 94,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Invite people",
+        "w": 113,
+        "h": 39
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 316,
+        "h": 38
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

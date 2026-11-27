@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members - Cobalt</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Harbour kit, Steel variant */
+  --accent: #1f5f9e; --accent-hover: #174b7d; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-lg: 18px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  /* crisp shape */
+  --r-sm: 2px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px; --w-content: 1200px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --scrim: rgb(0 0 0 / 0.4);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #131a2b;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+    --scrim: rgb(0 0 0 / 0.6);
+  }
+  :root:not([data-theme="light"]) .btn-danger { color: #1a0b0a; }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm, 20px) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.side { background: var(--frame); border-right: 1px solid var(--border); }
+.side-inner { position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column; padding: var(--s-5) var(--s-3) var(--s-4); overflow-y: auto; }
+.logo { display: flex; align-items: center; gap: 10px; padding: 0 var(--s-2); margin-bottom: var(--s-6); font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; }
+.nav-group + .nav-group { margin-top: var(--s-5); }
+.nav-label { padding: 0 var(--s-2) var(--s-1); font-size: var(--text-xs); line-height: 16px; font-weight: 500; color: var(--text-muted); }
+.nav a { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); transition: background-color var(--t-fast) var(--ease); }
+.nav a svg { color: var(--text-muted); }
+.nav a:hover:not([aria-current]) { background: color-mix(in srgb, var(--text) 6%, transparent); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav a[aria-current="page"] svg { color: var(--accent); }
+.nav .count { margin-left: auto; font-size: var(--text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.acct { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: var(--s-3) var(--s-2) 0; border-top: 1px solid var(--border); }
+.acct b { display: block; font-weight: 600; }
+.acct small { display: block; color: var(--text-muted); font-size: 13px; line-height: 18px; }
+.col { min-width: 0; }
+.topbar { display: none; }
+.scrim { display: none; }
+.page { max-width: calc(var(--w-content) + 2 * var(--s-8)); padding: var(--s-8) var(--s-8) var(--s-16); }
+
+/* header */
+.head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--rhythm-title) var(--s-4); margin-bottom: var(--rhythm-content); }
+.head p { grid-column: 1 / -1; color: var(--text-muted); }
+.head b { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid transparent;
+  font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--surface); border-color: var(--border-strong); }
+.btn-secondary:hover { background: var(--bg-subtle); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-text { background: none; color: var(--accent); padding: 0 var(--s-2); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
+.btn-text.danger { color: var(--danger); }
+.btn-text, .pg { min-height: var(--control-h); }
+.btn[disabled] { opacity: 0.7; cursor: progress; }
+
+/* banner */
+.banner { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-3) var(--s-4); margin-bottom: var(--rhythm-content); border-radius: var(--r-lg);
+  background: var(--accent-subtle); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+.banner svg { color: var(--accent); margin-top: 1px; }
+.banner b { display: block; font-weight: 600; }
+.banner span { color: var(--text-muted); }
+
+/* tabs and toolbar */
+.tabs { display: flex; gap: var(--s-6); border-bottom: 1px solid var(--border); }
+.tabs button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; justify-content: center; padding: 0 var(--s-1); margin-bottom: -1px; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--text-muted); font-weight: 500; cursor: pointer; }
+.tabs button:hover { color: var(--text); }
+.tabs button[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.tabs .n { font-variant-numeric: tabular-nums; font-weight: 400; }
+.toolbar { display: flex; align-items: center; min-height: 44px; margin: var(--s-4) 0 var(--s-2); }
+.filters, .bulk { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; width: 100%; }
+.bulk { background: var(--accent-subtle); border-radius: var(--r-md); padding: 4px var(--s-3); min-height: 44px; }
+.bulk .grow { margin-right: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+.search { position: relative; width: 300px; max-width: 100%; }
+.search input { width: 100%; height: var(--control-h); padding: 0 var(--s-3) 0 36px; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); }
+.search svg { position: absolute; left: 10px; top: 50%; translate: 0 -50%; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; }
+.sel { position: relative; display: inline-flex; align-items: center; }
+.sel select { appearance: none; height: var(--control-h-sm); min-width: 120px; padding: 0 28px 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); cursor: pointer; }
+.sel svg { position: absolute; right: 8px; width: 14px; height: 14px; pointer-events: none; color: var(--text-muted); }
+.sel.boxed select { height: var(--control-h); padding-left: var(--s-3); border-color: var(--border-strong); background: var(--surface); min-width: 140px; }
+td .sel select:hover { background: var(--bg-subtle); }
+select option { background: var(--surface); color: var(--text); }
+
+/* table */
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th { position: sticky; top: 0; z-index: 2; background: var(--bg); height: 40px; padding: 0 var(--s-3); text-align: left; font-size: 13px; line-height: 18px; font-weight: 500; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+td { height: 52px; padding: 0 var(--s-3); border-bottom: 1px solid var(--border); vertical-align: middle; }
+tbody tr:hover td { background: var(--bg-subtle); }
+tbody tr.sel-row td { background: var(--accent-subtle); }
+col.k-check { width: 44px; } col.k-role { width: 176px; } col.k-status { width: 120px; } col.k-num { width: 128px; } col.k-seen { width: 136px; } col.k-act { width: 56px; }
+th.k-check, td.k-check { padding-right: 0; }
+.k-num { text-align: right; font-variant-numeric: tabular-nums; }
+th.k-num { text-align: right; }
+.k-act { text-align: center; padding: 0 var(--s-2); }
+.k-check input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); vertical-align: middle; }
+.who { display: flex; align-items: center; gap: var(--s-3); min-width: 0; }
+.av { display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-size: 12px; font-weight: 600; }
+.av.pend { background: none; border: 1px dashed var(--border-strong); color: var(--text-muted); }
+.av.pend svg { width: 16px; height: 16px; }
+.who-text { min-width: 0; display: flex; flex-direction: column; }
+.name-line { display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
+.name { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.you { flex: none; padding: 0 6px; border-radius: var(--r-sm); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-xs); line-height: 18px; font-weight: 500; }
+.email { color: var(--text-muted); font-size: 13px; line-height: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hint { display: block; color: var(--text-muted); font-size: 12px; line-height: 16px; }
+.muted { color: var(--text-muted); }
+td.k-role .plain { padding-left: 13px; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; gap: 6px; height: 22px; padding: 0 var(--s-2); border-radius: var(--r-sm); font-size: var(--text-xs); line-height: 16px; font-weight: 500; }
+.badge::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.b-active { color: var(--text-muted); padding-left: 0; font-weight: 400; font-size: 13px; }
+.b-active::before { background: var(--success); }
+.b-invited { background: var(--accent-subtle); color: var(--accent); }
+.b-suspended { background: var(--warning-subtle); color: var(--warning); }
+.icon-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: var(--r-md); background: none; color: var(--text-muted); cursor: pointer; }
+.icon-btn:hover, .icon-btn[aria-expanded="true"] { background: var(--bg-subtle); color: var(--text); }
+tr.empty td { height: 160px; text-align: center; color: var(--text-muted); }
+tr.empty td p { margin-bottom: var(--s-2); color: var(--text); font-weight: 600; }
+.pager { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); padding: var(--s-4) var(--s-3) 0; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.pager nav { display: flex; gap: var(--s-1); }
+.pg { min-width: 36px; padding: 0 var(--s-2); border: 0; border-radius: var(--r-md); background: none; cursor: pointer; font-variant-numeric: tabular-nums; }
+.pg:hover { background: var(--bg-subtle); }
+.pg[aria-current="page"] { background: var(--accent-subtle); color: var(--accent); font-weight: 600; }
+.pg[disabled] { color: var(--text-muted); opacity: 0.6; cursor: default; background: none; }
+
+/* menu and toast */
+.menu { position: fixed; z-index: 30; min-width: 208px; padding: var(--s-1); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.menu button { display: flex; width: 100%; align-items: center; min-height: 36px; padding: 0 var(--s-3); border: 0; border-radius: var(--r-md); background: none; text-align: left; cursor: pointer; }
+.menu button:hover, .menu button:focus-visible { background: var(--bg-subtle); }
+.menu button.danger { color: var(--danger); }
+.menu hr { border: 0; border-top: 1px solid var(--border); margin: var(--s-1) 0; }
+#toast { position: fixed; left: 50%; bottom: var(--s-6); translate: -50% 0; z-index: 50; pointer-events: none; width: max-content; max-width: calc(100vw - 32px); }
+.toast { pointer-events: auto; display: flex; align-items: center; gap: var(--s-4); padding: 6px 6px 6px var(--s-4); background: var(--text); color: var(--bg); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); min-height: 44px; }
+.toast button { min-height: 36px; padding: 0 var(--s-3); border: 0; background: none; color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; border-radius: var(--r-md); }
+
+/* dialogs */
+dialog { border: 0; padding: 0; border-radius: var(--r-xl); box-shadow: var(--shadow-dialog); background: var(--surface); color: var(--text); width: min(560px, calc(100vw - 32px)); max-height: 85dvh; }
+dialog.sm { width: min(400px, calc(100vw - 32px)); }
+dialog[open] { display: flex; flex-direction: column; }
+dialog::backdrop { background: var(--scrim); }
+dialog form { display: flex; flex-direction: column; min-height: 0; }
+.dlg-head { display: flex; align-items: center; justify-content: space-between; padding: var(--s-5) var(--s-6) var(--s-3); }
+.dlg-head h2 { font-size: var(--text-lg); }
+.dlg-body { padding: var(--s-2) var(--s-6) var(--s-5); overflow-y: auto; display: flex; flex-direction: column; gap: var(--s-5); }
+.dlg-foot { display: flex; justify-content: flex-end; gap: var(--s-2); padding: var(--s-4) var(--s-6); border-top: 1px solid var(--border); }
+.dlg-body ul { margin: var(--s-2) 0 0; padding-left: var(--s-5); }
+label.lbl, legend { display: block; padding: 0; font-weight: 500; color: var(--text); }
+.help { display: block; margin: 2px 0 var(--s-2); color: var(--text-muted); font-size: 13px; line-height: 18px; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.chipbox { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); min-height: 44px; cursor: text; }
+.chipbox:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.chipbox input { flex: 1; min-width: 160px; height: 30px; border: 0; background: none; outline: none; padding: 0 var(--s-1); }
+.chip { display: inline-flex; align-items: center; gap: 2px; height: 30px; padding: 0 2px 0 var(--s-2); border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--bg-subtle); font-size: 13px; max-width: 100%; }
+.chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip button { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 0; background: none; border-radius: var(--r-sm); cursor: pointer; color: inherit; }
+.chip button svg { width: 12px; height: 12px; }
+.chip.bad { background: var(--danger-subtle); border-color: var(--danger); color: var(--danger); }
+.err { color: var(--danger); font-size: 13px; line-height: 18px; margin: var(--s-2) 0 0; }
+.err ul { margin: 0; padding: 0; list-style: none; }
+.roles { display: flex; flex-direction: column; gap: var(--s-2); margin-top: var(--s-2); }
+.role-opt { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-3); border: 1px solid var(--border); border-radius: var(--r-md); cursor: pointer; }
+.role-opt:has(input:checked) { border-color: var(--accent); background: var(--accent-subtle); }
+.role-opt input { margin: 3px 0 0; width: 16px; height: 16px; accent-color: var(--accent); }
+.role-opt b { display: block; font-weight: 600; }
+.role-opt small { display: block; color: var(--text-muted); font-size: 13px; line-height: 18px; }
+textarea { width: 100%; padding: var(--s-2) var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); resize: vertical; min-height: 72px; }
+
+/* narrow desktop and tablet: hamburger shell */
+@media (max-width: 1100px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .side { position: fixed; inset: 0 auto 0 0; width: 280px; z-index: 40; visibility: hidden; transform: translateX(-100%); transition: transform var(--t-base) var(--ease), visibility 0s var(--t-base); }
+  .side.open { visibility: visible; transform: none; box-shadow: var(--shadow-pop); transition: transform var(--t-base) var(--ease), visibility 0s; }
+  .scrim.open { display: block; position: fixed; inset: 0; z-index: 35; background: var(--scrim); }
+  .topbar { display: flex; align-items: center; gap: var(--s-2); position: sticky; top: 0; z-index: 10; height: 56px; padding: 0 var(--s-2); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .topbar .logo { margin: 0; padding: 0; }
+  .topbar .icon-btn { width: 44px; height: 44px; }
+  th { top: 56px; }
+}
+/* stacked rows */
+@media (max-width: 900px) {
+  colgroup, thead { display: none; }
+  table, tbody { display: block; }
+  tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "member act" "role status" "num num" "seen seen"; gap: var(--s-1) var(--s-3); align-items: center; padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+  td { display: block; height: auto; padding: 0; border: 0; }
+  tbody tr:hover td, tbody tr.sel-row td { background: none; }
+  td.k-check { display: none; }
+  td.k-member { grid-area: member; } td.k-act { grid-area: act; padding: 0; } td.k-role { grid-area: role; } td.k-status { grid-area: status; justify-self: end; }
+  td.k-num { grid-area: num; } td.k-seen { grid-area: seen; }
+  td.k-num, td.k-seen { display: flex; justify-content: space-between; font-size: 13px; line-height: 20px; text-align: left; }
+  td.k-num::before, td.k-seen::before { content: attr(data-label); color: var(--text-muted); }
+  td.k-role .sel select { min-height: 44px; border-color: var(--border-strong); background: var(--surface); }
+  td.k-role .plain { padding-left: 0; }
+  .icon-btn { width: 44px; height: 44px; }
+  tr.empty { display: block; padding: 0; }
+  tr.empty td { display: block; height: auto; padding: var(--s-10) var(--s-4); text-align: center; }
+  td.k-num .muted { min-width: 0; }
+}
+@media (max-width: 640px) {
+  h1 { font-size: 26px; }
+  .page { padding: var(--s-6) var(--s-4) var(--s-16); }
+  .search input, textarea, .chipbox input, select { font-size: 16px; }
+  .search { width: 100%; }
+  .filters .sel.boxed { flex: 1; } .filters .sel.boxed select { width: 100%; }
+  .tabs { gap: var(--s-5); }
+  .pager { flex-wrap: wrap; padding-left: 0; padding-right: 0; }
+  .pg { min-height: 44px; min-width: 44px; }
+  .menu button { min-height: 44px; }
+  dialog { margin: auto 0 0; width: 100%; max-width: 100%; border-radius: var(--r-xl) var(--r-xl) 0 0; max-height: 92dvh; }
+  dialog.sm { width: 100%; }
+  .dlg-foot { flex-direction: column-reverse; }
+  .dlg-foot .btn { width: 100%; height: 44px; }
+  .dlg-head .icon-btn { width: 44px; height: 44px; }
+  .bulk .btn-text { min-height: 44px; }
+  .btn-text { min-height: 44px; }
+  .role-opt { padding: var(--s-3); }
+  .chip { height: 44px; padding-left: var(--s-3); }
+  .chip button { width: 44px; height: 44px; }
+  .chipbox input { height: 44px; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to members</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-reviews" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4 4v-4H5.5A1.5 1.5 0 0 1 4 14.5z"/><path d="m8.8 10 2.2 2.2 4.2-4.4"/></symbol>
+  <symbol id="i-projects" viewBox="0 0 24 24"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4.2l2 2.5H19A1.5 1.5 0 0 1 20.5 9v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z"/></symbol>
+  <symbol id="i-libraries" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 4 12L16 12h5"/></symbol>
+  <symbol id="i-members" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.4-3.2 2.6-5 5.5-5s5.1 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M16.5 14.3c2.3.1 3.8 1.6 4.2 4.2"/></symbol>
+  <symbol id="i-billing" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6.5 8h11v3.5a5.5 5.5 0 0 1-11 0zM12 17v4"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5.5" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="18.5" r="1.5" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="side-inner">
+      <a class="logo" href="#main" aria-label="Cobalt home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M7.5 8.5h13v8.5H15l-3.5 3v-3h-4z" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linejoin="round"/><path d="m10.6 12.6 2 1.9 3.6-3.8" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Cobalt
+      </a>
+      <nav class="nav" aria-label="Main">
+        <div class="nav-group">
+          <div class="nav-label">Design</div>
+          <a href="#main"><svg class="i"><use href="#i-reviews"/></svg>Reviews<span class="count">7</span></a>
+          <a href="#main"><svg class="i"><use href="#i-projects"/></svg>Projects</a>
+          <a href="#main"><svg class="i"><use href="#i-libraries"/></svg>Libraries</a>
+          <a href="#main"><svg class="i"><use href="#i-activity"/></svg>Activity</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Workspace</div>
+          <a href="#main" aria-current="page"><svg class="i"><use href="#i-members"/></svg>Team members</a>
+          <a href="#main"><svg class="i"><use href="#i-billing"/></svg>Billing</a>
+          <a href="#main"><svg class="i"><use href="#i-plug"/></svg>Integrations</a>
+          <a href="#main"><svg class="i"><use href="#i-settings"/></svg>Settings</a>
+        </div>
+      </nav>
+      <div class="acct">
+        <span class="av" id="acctAv" aria-hidden="true"></span>
+        <div><b id="acctName"></b><small id="acctSub"></small></div>
+      </div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="col">
+    <header class="topbar">
+      <button class="icon-btn" id="navBtn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="side"><svg class="i"><use href="#i-menu"/></svg></button>
+      <span class="logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="6" fill="var(--accent)"/><path d="M7.5 8.5h13v8.5H15l-3.5 3v-3h-4z" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linejoin="round"/><path d="m10.6 12.6 2 1.9 3.6-3.8" fill="none" stroke="var(--on-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Cobalt
+      </span>
+    </header>
+
+    <main class="page" id="main">
+      <div class="head">
+        <h1>Team members</h1>
+        <button class="btn btn-primary" id="inviteBtn" type="button">Invite members</button>
+        <p id="sub"></p>
+      </div>
+
+      <div class="banner" id="roBanner" hidden>
+        <svg class="i"><use href="#i-lock"/></svg>
+        <div><b>Only admins can manage members</b><span id="roText"></span></div>
+      </div>
+
+      <div class="tabs" id="tabs" role="group" aria-label="Filter by status"></div>
+
+      <div class="toolbar">
+        <div class="filters" id="filters">
+          <div class="search">
+            <svg class="i"><use href="#i-search"/></svg>
+            <label class="sr-only" for="q">Search members by name or email</label>
+            <input id="q" type="search" placeholder="Search by name or email" autocomplete="off">
+          </div>
+          <span class="sel boxed">
+            <select id="roleFilter" aria-label="Filter by role"></select>
+            <svg class="i"><use href="#i-chev"/></svg>
+          </span>
+          <button class="btn btn-text" id="clearBtn" type="button" hidden>Clear filters</button>
+        </div>
+        <div class="bulk" id="bulk" hidden>
+          <span class="grow" id="bulkCount"></span>
+          <span class="sel boxed">
+            <select id="bulkRole" aria-label="Change role of selected members"></select>
+            <svg class="i"><use href="#i-chev"/></svg>
+          </span>
+          <button class="btn btn-text danger" id="bulkRemove" type="button"></button>
+          <button class="btn btn-text" id="bulkClear" type="button">Clear selection</button>
+        </div>
+      </div>
+
+      <table>
+        <caption class="sr-only">Members of Northlight Studio</caption>
+        <colgroup><col class="k-check"><col><col class="k-role"><col class="k-status"><col class="k-num"><col class="k-seen"><col class="k-act"></colgroup>
+        <thead>
+          <tr>
+            <th class="k-check" scope="col"><input type="checkbox" id="all" aria-label="Select all members on this page"></th>
+            <th scope="col">Member</th>
+            <th scope="col" class="k-role">Role</th>
+            <th scope="col" class="k-status">Status</th>
+            <th scope="col" class="k-num">Open reviews</th>
+            <th scope="col" class="k-seen">Last active</th>
+            <th scope="col" class="k-act"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="pager"><span id="range"></span><nav id="pages" aria-label="Pagination"></nav></div>
+    </main>
+  </div>
+</div>
+
+<div class="menu" id="menu" role="menu" hidden></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="inviteDlg" aria-labelledby="inviteTitle">
+  <form id="inviteForm" novalidate>
+    <div class="dlg-head">
+      <h2 id="inviteTitle">Invite members</h2>
+      <button class="icon-btn" type="button" id="inviteX" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="dlg-body">
+      <div>
+        <label class="lbl" for="emailIn">Email addresses</label>
+        <span class="help" id="emailHelp">Separate with commas, spaces or new lines. Up to 20 at a time.</span>
+        <div class="chipbox" id="chipbox"><input id="emailIn" type="text" inputmode="email" autocomplete="off" aria-describedby="emailHelp inviteErr"></div>
+        <div class="err" id="inviteErr" role="alert"></div>
+      </div>
+      <fieldset>
+        <legend>Role</legend>
+        <div class="roles" id="roleOpts"></div>
+      </fieldset>
+      <div>
+        <label class="lbl" for="msg">Message (optional)</label>
+        <textarea id="msg" rows="3" placeholder="Add a note for the people you invite"></textarea>
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn btn-secondary" type="button" id="inviteCancel">Cancel</button>
+      <button class="btn btn-primary" type="submit" id="inviteSend">Send invites</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="confirmDlg" class="sm" aria-labelledby="cTitle">
+  <form method="dialog" id="confirmForm">
+    <div class="dlg-head"><h2 id="cTitle"></h2></div>
+    <div class="dlg-body" id="cBody"></div>
+    <div class="dlg-foot">
+      <button class="btn btn-secondary" type="button" id="cCancel" autofocus>Cancel</button>
+      <button class="btn btn-danger" type="button" id="cGo"></button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const TODAY = new Date('2026-11-27T10:30:00Z');
+const STATE = new URLSearchParams(location.search).get('state') || '';
+const READONLY = STATE === 'readonly';
+const PAGE_SIZE = 25;
+const SEATS = 50;
+const DOMAIN = 'northlight.example';
+
+const ROLES = [
+  { id: 'Admin', blurb: 'Manage members, billing and every project' },
+  { id: 'Editor', blurb: 'Upload designs and open reviews' },
+  { id: 'Reviewer', blurb: 'Comment on designs and approve them' },
+  { id: 'Viewer', blurb: 'See designs and comments, nothing else' },
+];
+
+// name|role|status|open reviews|projects|minutes since last active. A leading ~ means an invite with no name yet.
+const RAW = `Amara Okafor|Owner|active|4|18|0
+Daniel Reyes|Admin|active|9|12|120
+Sofia Lindqvist|Admin|active|6|15|35
+Kwame Mensah|Admin|active|2|9|1500
+Priya Raman|Reviewer|active|11|14|8
+Tomasz Nowak|Editor|active|5|7|300
+Hannah Brandt|Editor|active|3|8|1560
+Luca Moretti|Reviewer|active|7|11|2900
+Ines Carvalho|Reviewer|active|8|10|45
+Noor Haddad|Editor|active|1|5|4400
+Ethan Walsh|Viewer|active|0|3|9000
+Yuki Tanaka|Reviewer|active|6|13|200
+Chidi Eze|Editor|active|4|6|5800
+Marta Kowalska|Reviewer|active|10|9|15
+Oliver Grant|Viewer|active|0|2|20000
+Fatima Rahman|Reviewer|active|5|12|700
+Mateo Alvarez|Editor|active|2|4|1700
+Sana Qureshi|Reviewer|active|3|8|3100
+Jonas Berg|Editor|active|6|10|90
+Amina Diallo|Reviewer|active|4|7|400
+Rhys Pritchard|Viewer|active|0|1|31000
+Anika Sharma|Reviewer|active|9|15|25
+Felix Hoffmann|Editor|active|3|5|2200
+Zara Whitfield|Reviewer|active|1|6|6500
+Diego Fernandes|Editor|active|5|9|150
+Grace Adeyemi|Reviewer|active|7|11|500
+Samuel Okoye|Viewer|active|0|2|12000
+Elise Dubois|Editor|active|2|6|2700
+Ravi Menon|Reviewer|active|6|8|80
+Clara Jensen|Viewer|active|0|3|18000
+Mia Tran|Reviewer|active|4|10|3600
+Hugo Marchand|Reviewer|active|3|7|600
+Tariq Aziz|Editor|active|2|5|1000
+Bram de Vries|Editor|suspended|0|0|40000
+Selin Aydin|Reviewer|suspended|0|0|52000
+~mei.lin.tan|Reviewer|invited|0|0|
+~oscar.wright|Editor|invited|0|0|
+~lena.koch|Viewer|invited|0|0|`;
+
+let uid = 0;
+const slug = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.|\.$/g, '');
+const members = RAW.split('\n').map((line) => {
+  const [n, role, status, open, projects, mins] = line.split('|');
+  const named = !n.startsWith('~');
+  return { id: ++uid, name: named ? n : '', email: `${named ? slug(n) : n.slice(1)}@${DOMAIN}`, role, status,
+    open: +open, projects: +projects, mins: mins === '' ? null : +mins };
+});
+if (STATE === 'stress') {
+  members.push(
+    { id: ++uid, name: 'Maximilian Alessandro Featherstonehaugh-Montgomery-Okonkwo', email: 'maximilian.featherstonehaugh-montgomery-okonkwo@northlight.example', role: 'Reviewer', status: 'active', open: 12480, projects: 1, mins: 5 },
+    { id: ++uid, name: 'Sade', email: 'sade@northlight.example', role: 'Viewer', status: 'active', open: 0, projects: 0, mins: null },
+    { id: ++uid, name: '', email: 'procurement.and.vendor.onboarding.team.lead@northlight.example', role: 'Editor', status: 'invited', open: 0, projects: 0, mins: null });
+}
+const ME = members.find((m) => m.name === (READONLY ? 'Priya Raman' : 'Amara Okafor'));
+const CAN = !READONLY;
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = (n) => n.toLocaleString('en-GB');
+const plural = (n, w) => `${num(n)} ${w}${n === 1 ? '' : 's'}`;
+const disp = (m) => m.name || m.email;
+const initials = (n) => { const p = n.split(/\s+/); return (p.length > 1 ? p[0][0] + p[p.length - 1][0] : n.slice(0, 2)).toUpperCase(); };
+const byId = (id) => members.find((m) => m.id === id);
+const STATUS_LABEL = { active: 'Active', invited: 'Invited', suspended: 'Suspended' };
+
+const dfDay = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const dfFull = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long', timeStyle: 'medium', timeZone: 'UTC' });
+function seen(m) {
+  if (m.mins == null) return { text: 'Never', iso: '', title: 'No sign-in yet', muted: true };
+  const d = new Date(TODAY - m.mins * 60000), k = m.mins;
+  const text = k < 1 ? 'Now' : k < 60 ? `${k} min ago` : k < 1440 ? `${Math.round(k / 60)} h ago` : k < 2880 ? 'Yesterday'
+    : k < 7 * 1440 ? `${Math.floor(k / 1440)} days ago` : dfDay.format(d) + (d.getUTCFullYear() !== TODAY.getUTCFullYear() ? ` ${d.getUTCFullYear()}` : '');
+  return { text, iso: d.toISOString(), title: `${dfFull.format(d)} UTC`, muted: false };
+}
+
+/* ---------- state ---------- */
+const view = { status: 'all', role: 'all', q: '', page: 1 };
+const selected = new Set();
+
+function filtered() {
+  const q = view.q.trim().toLowerCase();
+  return members.filter((m) => (view.status === 'all' || m.status === view.status) && (view.role === 'all' || m.role === view.role)
+      && (!q || disp(m).toLowerCase().includes(q) || m.email.includes(q)))
+    .sort((a, b) => (b === ME) - (a === ME) || disp(a).localeCompare(disp(b)));
+}
+const owners = () => members.filter((m) => m.role === 'Owner');
+
+/* ---------- render ---------- */
+function rowHtml(m) {
+  const you = m === ME, manage = CAN && !you && m.role !== 'Owner', name = disp(m), s = seen(m);
+  const av = m.name ? `<span class="av" aria-hidden="true">${esc(initials(m.name))}</span>`
+    : `<span class="av pend" aria-hidden="true"><svg class="i"><use href="#i-mail"/></svg></span>`;
+  const role = manage
+    ? `<span class="sel"><select data-role="${m.id}" aria-label="Role for ${esc(name)}">${ROLES.map((r) => `<option${r.id === m.role ? ' selected' : ''}>${r.id}</option>`).join('')}</select><svg class="i"><use href="#i-chev"/></svg></span>`
+    : `<span class="plain">${m.role}</span>${m.role === 'Owner' && owners().length === 1 ? '<span class="hint plain">Only owner</span>' : ''}`;
+  const open = m.status === 'active' ? num(m.open) : '<span class="muted" aria-label="None">–</span>';
+  return `<tr data-id="${m.id}"${selected.has(m.id) ? ' class="sel-row"' : ''}>
+    <td class="k-check">${manage ? `<input type="checkbox" data-sel="${m.id}" aria-label="Select ${esc(name)}"${selected.has(m.id) ? ' checked' : ''}>` : ''}</td>
+    <td class="k-member"><div class="who">${av}<div class="who-text"><div class="name-line"><span class="name" title="${esc(name)}">${esc(name)}</span>${you ? '<span class="you">You</span>' : ''}</div>${m.name ? `<span class="email" title="${esc(m.email)}">${esc(m.email)}</span>` : ''}</div></div></td>
+    <td class="k-role">${role}</td>
+    <td class="k-status"><span class="badge b-${m.status}">${STATUS_LABEL[m.status]}</span></td>
+    <td class="k-num" data-label="Open reviews">${open}</td>
+    <td class="k-seen" data-label="Last active">${s.iso ? `<time datetime="${s.iso}" title="${esc(s.title)}">${s.text}</time>` : `<span class="muted" title="${esc(s.title)}">${s.text}</span>`}</td>
+    <td class="k-act">${manage ? `<button class="icon-btn" type="button" data-menu="${m.id}" aria-label="Actions for ${esc(name)}" aria-haspopup="menu" aria-expanded="false"><svg class="i"><use href="#i-more"/></svg></button>` : ''}</td>
+  </tr>`;
+}
+
+function render() {
+  const total = members.length, count = (s) => members.filter((m) => m.status === s).length;
+  const seatsUsed = count('active') + count('invited');
+  $('#sub').innerHTML = `<b>${num(total)}</b> people in Northlight Studio. <b>${num(seatsUsed)}</b> of ${SEATS} seats used.`;
+  $('#tabs').innerHTML = [['all', 'All', total], ['active', 'Active', count('active')], ['invited', 'Invited', count('invited')], ['suspended', 'Suspended', count('suspended')]]
+    .map(([k, l, n]) => `<button type="button" data-tab="${k}" aria-pressed="${view.status === k}">${l} <span class="n">${num(n)}</span></button>`).join('');
+
+  const list = filtered(), pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  view.page = Math.min(view.page, pages);
+  const start = (view.page - 1) * PAGE_SIZE, slice = list.slice(start, start + PAGE_SIZE);
+  const isFiltered = view.status !== 'all' || view.role !== 'all' || view.q.trim();
+  $('#clearBtn').hidden = !isFiltered;
+  $('#rows').innerHTML = slice.length ? slice.map(rowHtml).join('')
+    : `<tr class="empty"><td colspan="7"><p>No members match these filters</p><button class="btn btn-secondary" type="button" data-clear>Clear filters</button></td></tr>`;
+  $('#range').textContent = list.length ? `${num(start + 1)}–${num(start + slice.length)} of ${num(list.length)} members` : '0 members';
+  $('#pages').innerHTML = pages > 1
+    ? `<button class="pg" type="button" data-page="${view.page - 1}"${view.page === 1 ? ' disabled' : ''}>Previous</button>`
+      + Array.from({ length: pages }, (_, i) => `<button class="pg" type="button" data-page="${i + 1}"${i + 1 === view.page ? ' aria-current="page"' : ''}>${i + 1}</button>`).join('')
+      + `<button class="pg" type="button" data-page="${view.page + 1}"${view.page === pages ? ' disabled' : ''}>Next</button>` : '';
+
+  const selectable = slice.filter((m) => CAN && m !== ME && m.role !== 'Owner');
+  const all = $('#all'), n = selectable.filter((m) => selected.has(m.id)).length;
+  all.hidden = !CAN; all.checked = n > 0 && n === selectable.length; all.indeterminate = n > 0 && n < selectable.length;
+  $('#filters').hidden = selected.size > 0; $('#bulk').hidden = selected.size === 0;
+  $('#bulkCount').textContent = `${num(selected.size)} selected`;
+  $('#bulkRemove').textContent = `Remove ${plural(selected.size, 'member')}`;
+}
+
+/* ---------- chrome that depends on the viewer ---------- */
+$('#acctAv').textContent = initials(ME.name);
+$('#acctName').textContent = ME.name;
+$('#acctSub').textContent = `${ME.role} at Northlight Studio`;
+$('#inviteBtn').hidden = !CAN;
+$('#roBanner').hidden = CAN;
+$('#roText').textContent = `You can see everyone in the workspace. Ask ${owners()[0].name} or another admin to invite people or change roles.`;
+const fill = (sel, first) => { sel.innerHTML = `<option value="${first[0]}">${first[1]}</option>` + ROLES.map((r) => `<option>${r.id}</option>`).join(''); };
+fill($('#roleFilter'), ['all', 'All roles']);
+$('#roleFilter').insertAdjacentHTML('beforeend', '<option>Owner</option>');
+fill($('#bulkRole'), ['', 'Change role…']);
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg, action) {
+  const el = $('#toast');
+  el.innerHTML = `<div class="toast"><span>${esc(msg)}</span>${action ? `<button type="button">${esc(action.label)}</button>` : ''}</div>`;
+  if (action) el.querySelector('button').onclick = () => { clearTimeout(toastTimer); el.innerHTML = ''; action.run(); };
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.innerHTML = ''; }, 7000);
+}
+
+/* ---------- table events ---------- */
+$('#tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-tab]'); if (b) { view.status = b.dataset.tab; view.page = 1; selected.clear(); render(); } });
+$('#q').addEventListener('input', (e) => { view.q = e.target.value; view.page = 1; selected.clear(); render(); });
+$('#roleFilter').addEventListener('change', (e) => { view.role = e.target.value; view.page = 1; selected.clear(); render(); });
+function clearFilters() { view.status = 'all'; view.role = 'all'; view.q = ''; view.page = 1; $('#q').value = ''; $('#roleFilter').value = 'all'; render(); }
+$('#clearBtn').onclick = clearFilters;
+$('#pages').addEventListener('click', (e) => { const b = e.target.closest('[data-page]'); if (b && !b.disabled) { view.page = +b.dataset.page; render(); window.scrollTo({ top: 0 }); } });
+$('#bulkClear').onclick = () => { selected.clear(); render(); };
+
+$('#all').addEventListener('change', (e) => {
+  const list = filtered().slice((view.page - 1) * PAGE_SIZE, view.page * PAGE_SIZE).filter((m) => CAN && m !== ME && m.role !== 'Owner');
+  list.forEach((m) => (e.target.checked ? selected.add(m.id) : selected.delete(m.id)));
+  render();
+});
+
+function setRole(ms, role) {
+  const prev = ms.map((m) => [m, m.role]);
+  ms.forEach((m) => { m.role = role; });
+  render();
+  toast(ms.length === 1 ? `${disp(ms[0])} is now ${role}.` : `${plural(ms.length, 'member')} are now ${role}.`,
+    { label: 'Undo', run: () => { prev.forEach(([m, r]) => { m.role = r; }); render(); } });
+}
+$('#rows').addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.dataset.role) setRole([byId(+t.dataset.role)], t.value);
+  if (t.dataset.sel) { t.checked ? selected.add(+t.dataset.sel) : selected.delete(+t.dataset.sel); render(); }
+});
+$('#bulkRole').addEventListener('change', (e) => { const v = e.target.value; e.target.value = ''; if (v) { const ms = [...selected].map(byId); selected.clear(); setRole(ms, v); } });
+$('#rows').addEventListener('click', (e) => {
+  if (e.target.closest('[data-clear]')) return clearFilters();
+  const b = e.target.closest('[data-menu]'); if (b) openMenu(b, byId(+b.dataset.menu));
+});
+
+/* ---------- row menu ---------- */
+const menu = $('#menu'); let menuBtn = null;
+function openMenu(btn, m) {
+  if (menuBtn === btn) return closeMenu(true);
+  closeMenu();
+  const items = m.status === 'invited' ? [['resend', 'Resend invite'], null, ['revoke', 'Revoke invite', 1]]
+    : m.status === 'suspended' ? [['reactivate', 'Reactivate access'], null, ['remove', 'Remove from workspace', 1]]
+    : [['suspend', 'Suspend access'], null, ['remove', 'Remove from workspace', 1]];
+  menu.innerHTML = items.map((i) => (i ? `<button type="button" role="menuitem" data-act="${i[0]}"${i[2] ? ' class="danger"' : ''}>${i[1]}</button>` : '<hr>')).join('');
+  menu.dataset.id = m.id; menu.hidden = false; menuBtn = btn; btn.setAttribute('aria-expanded', 'true');
+  const r = btn.getBoundingClientRect(), h = menu.offsetHeight, w = menu.offsetWidth;
+  menu.style.left = `${Math.max(8, Math.min(innerWidth - w - 8, r.right - w))}px`;
+  menu.style.top = `${r.bottom + 4 + h > innerHeight ? Math.max(8, r.top - h - 4) : r.bottom + 4}px`;
+  menu.querySelector('button').focus();
+}
+function closeMenu(refocus) {
+  if (!menuBtn) return;
+  menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false');
+  if (refocus) menuBtn.focus();
+  menuBtn = null;
+}
+menu.addEventListener('keydown', (e) => {
+  const b = [...menu.querySelectorAll('button')], i = b.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); b[(i + 1) % b.length].focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); b[(i - 1 + b.length) % b.length].focus(); }
+  else if (e.key === 'Escape') { e.preventDefault(); closeMenu(true); }
+  else if (e.key === 'Tab') closeMenu();
+});
+document.addEventListener('click', (e) => { if (menuBtn && !menu.contains(e.target) && !menuBtn.contains(e.target)) closeMenu(); });
+addEventListener('resize', () => closeMenu());
+addEventListener('scroll', () => closeMenu(), { passive: true });
+menu.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const m = byId(+menu.dataset.id), act = b.dataset.act; closeMenu();
+  if (act === 'suspend' || act === 'reactivate') {
+    const prev = m.status; m.status = act === 'suspend' ? 'suspended' : 'active'; render();
+    toast(act === 'suspend' ? `${disp(m)} is suspended.` : `${disp(m)} has access again.`, { label: 'Undo', run: () => { m.status = prev; render(); } });
+  } else if (act === 'resend') toast(`Invite resent to ${m.email}.`);
+  else if (act === 'revoke') removeMembers([m], `Invite to ${m.email} revoked.`);
+  else if (act === 'remove') askRemove([m]);
+});
+
+/* ---------- confirm and remove ---------- */
+const cdlg = $('#confirmDlg');
+function removeMembers(ms, msg) {
+  const spots = ms.map((m) => [m, members.indexOf(m)]);
+  ms.forEach((m) => { members.splice(members.indexOf(m), 1); selected.delete(m.id); });
+  render();
+  toast(msg, { label: 'Undo', run: () => { spots.sort((a, b) => a[1] - b[1]).forEach(([m, i]) => members.splice(i, 0, m)); render(); } });
+}
+function askRemove(ms) {
+  const one = ms.length === 1, m = ms[0];
+  $('#cTitle').textContent = one ? `Remove ${disp(m)}?` : `Remove ${plural(ms.length, 'member')}?`;
+  const projects = ms.reduce((s, x) => s + x.projects, 0), open = ms.reduce((s, x) => s + x.open, 0);
+  const effect = one
+    ? `${esc(disp(m))} loses access to ${plural(m.projects, 'project')} now.${m.open ? ` Their ${plural(m.open, 'open review')} become unassigned.` : ''} Comments and files stay.`
+    : `They lose access to ${plural(projects, 'project')} now.${open ? ` ${plural(open, 'open review')} become unassigned.` : ''} Comments and files stay.`;
+  $('#cBody').innerHTML = `<p>${effect}</p>${one ? '' : `<ul>${ms.map((x) => `<li>${esc(disp(x))}</li>`).join('')}</ul>`}`;
+  $('#cGo').textContent = one ? `Remove ${disp(m)}` : `Remove ${plural(ms.length, 'member')}`;
+  cdlg._run = () => removeMembers(ms, one ? `${disp(m)} removed from Northlight Studio.` : `${plural(ms.length, 'member')} removed from Northlight Studio.`);
+  cdlg.showModal();
+}
+$('#bulkRemove').onclick = () => askRemove([...selected].map(byId));
+$('#cCancel').onclick = () => cdlg.close();
+$('#cGo').onclick = () => { const run = cdlg._run; cdlg.close(); run(); };
+
+/* ---------- invite dialog ---------- */
+const idlg = $('#inviteDlg'), cin = $('#emailIn'), box = $('#chipbox'), ierr = $('#inviteErr');
+let chips = [], busy = false;
+const EMAIL = /^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/;
+const problem = (e) => !EMAIL.test(e) ? `${e} is not a valid email address. Edit it or remove it.`
+  : members.some((m) => m.email === e.toLowerCase()) ? `${e} is already in this workspace. Remove it from the list.` : '';
+$('#roleOpts').innerHTML = ROLES.map((r) => `<label class="role-opt"><input type="radio" name="inviteRole" value="${r.id}"${r.id === 'Reviewer' ? ' checked' : ''}><span><b>${r.id}</b><small>${r.blurb}</small></span></label>`).join('');
+
+function showChips() {
+  box.querySelectorAll('.chip').forEach((c) => c.remove());
+  cin.insertAdjacentHTML('beforebegin', chips.map((c, i) => `<span class="chip${c.problem ? ' bad' : ''}"><span title="${esc(c.email)}">${esc(c.email)}</span><button type="button" data-rm="${i}" aria-label="Remove ${esc(c.email)}"><svg class="i"><use href="#i-x"/></svg></button></span>`).join(''));
+  const bad = chips.filter((c) => c.problem);
+  ierr.innerHTML = bad.length ? `<ul>${bad.map((c) => `<li>${esc(c.problem)}</li>`).join('')}</ul>` : '';
+  $('#inviteSend').textContent = chips.length ? `Send ${plural(chips.length, 'invite')}` : 'Send invites';
+}
+function commit() {
+  const parts = cin.value.split(/[\s,;]+/).filter(Boolean);
+  parts.forEach((e) => { if (!chips.some((c) => c.email.toLowerCase() === e.toLowerCase())) chips.push({ email: e, problem: problem(e) }); });
+  cin.value = ''; showChips();
+}
+box.addEventListener('click', (e) => {
+  const rm = e.target.closest('[data-rm]');
+  if (rm) { chips.splice(+rm.dataset.rm, 1); showChips(); cin.focus(); } else cin.focus();
+});
+cin.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ',' || e.key === ' ') && cin.value.trim()) { e.preventDefault(); commit(); }
+  else if (e.key === 'Backspace' && !cin.value && chips.length) { cin.value = chips.pop().email; showChips(); }
+});
+cin.addEventListener('paste', () => setTimeout(commit));
+cin.addEventListener('blur', () => { if (cin.value.trim()) commit(); });
+
+function openInvite(prefill) {
+  chips = (prefill || []).map((e) => ({ email: e, problem: problem(e) }));
+  cin.value = ''; $('#msg').value = ''; showChips(); idlg.showModal(); cin.focus();
+}
+$('#inviteBtn').onclick = () => openInvite();
+const closeInvite = () => { if (!busy) idlg.close(); };
+$('#inviteX').onclick = closeInvite; $('#inviteCancel').onclick = closeInvite;
+idlg.addEventListener('cancel', (e) => { if (busy) e.preventDefault(); });
+$('#inviteForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (busy) return;
+  if (cin.value.trim()) commit();
+  if (!chips.length) { ierr.innerHTML = '<ul><li>Add at least one email address.</li></ul>'; cin.focus(); return; }
+  if (chips.some((c) => c.problem)) { box.querySelector('.chip.bad button').focus(); return; }
+  busy = true; const send = $('#inviteSend'), n = chips.length; send.disabled = true; send.textContent = 'Sending…';
+  setTimeout(() => {
+    const role = $('#inviteForm').elements.inviteRole.value;
+    chips.forEach((c) => members.push({ id: ++uid, name: '', email: c.email.toLowerCase(), role, status: 'invited', open: 0, projects: 0, mins: null }));
+    busy = false; send.disabled = false; idlg.close(); render();
+    toast(`${plural(n, 'invite')} sent as ${role}.`, { label: 'Show invited', run: () => { view.status = 'invited'; view.page = 1; render(); } });
+  }, 600);
+});
+
+/* ---------- phone navigation ---------- */
+const side = $('#side'), scrim = $('#scrim'), navBtn = $('#navBtn');
+function navOpen(open) { side.classList.toggle('open', open); scrim.classList.toggle('open', open); navBtn.setAttribute('aria-expanded', open); if (!open) navBtn.focus(); }
+navBtn.onclick = () => navOpen(true);
+scrim.onclick = () => navOpen(false);
+side.addEventListener('click', (e) => { if (e.target.closest('a') && side.classList.contains('open')) navOpen(false); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && side.classList.contains('open')) navOpen(false); });
+
+render();
+if (STATE === 'invite' && CAN) openInvite(['sam.okeke@northlight.example', 'jules.martin@northlight.example', 'priya.raman@northlight.example', 'kofi.boateng@northlight']);
+</script>
+</body>
+</html>

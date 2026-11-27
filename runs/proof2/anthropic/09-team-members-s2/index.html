@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members - Cobalt</title>
+<style>
+:root{
+  --bg:#F3F5FA; --surface:#FFFFFF; --sunk:#EDF0F7; --ink:#101B35; --muted:#566384; --line:#DCE2EF; --line-strong:#C3CCE0;
+  --cobalt:#1B43C6; --cobalt-ink:#FFFFFF; --cobalt-soft:#E5EBFC; --cobalt-line:#B9C7F4;
+  --danger:#B3261E; --danger-soft:#FCEAE8; --ok:#17744A; --warn:#94550A;
+  --shadow:0 1px 2px rgba(16,27,53,.06),0 8px 24px -12px rgba(16,27,53,.18);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0B1120; --surface:#121A2E; --sunk:#0E1527; --ink:#E7ECF8; --muted:#97A3C0; --line:#243050; --line-strong:#34426A;
+    --cobalt:#7F9DFF; --cobalt-ink:#0B1120; --cobalt-soft:#1B2749; --cobalt-line:#33477F;
+    --danger:#FF8E85; --danger-soft:#3A1B1D; --ok:#5FD39A; --warn:#F0B25E;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh;background:linear-gradient(90deg,var(--surface) 248px,var(--line) 248px 249px,transparent 249px)}
+.side{padding:22px 16px;display:flex;flex-direction:column;gap:28px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;font-weight:650;font-size:17px;letter-spacing:-.01em;padding:0 8px}
+.brand svg{width:26px;height:26px;color:var(--cobalt)}
+.ws{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--sunk)}
+.ws b{display:block;font-size:14px;line-height:1.2}
+.ws span{font-size:13px;color:var(--muted)}
+.ws i{flex:none;width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--surface);display:grid;place-items:center;font-style:normal;font-weight:650;font-size:13px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav h2{margin:0 10px 6px;font-size:13px;font-weight:600;color:var(--muted)}
+.nav a{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:14.5px}
+.nav a:hover{background:var(--sunk)}
+.nav a[aria-current=page]{background:var(--cobalt-soft);color:var(--cobalt);font-weight:600}
+.nav small{font-size:12.5px;color:var(--muted)}
+
+main{padding:44px clamp(20px,4vw,56px) 80px;max-width:1120px;width:100%}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+h1{margin:0;font:500 38px/1.1 var(--serif);letter-spacing:-.015em}
+.lede{margin:10px 0 0;color:var(--muted);max-width:52ch}
+.seats{min-width:230px}
+.seats p{margin:0 0 8px;font-size:14px}
+.seats p b{font-size:20px;font-weight:650;letter-spacing:-.01em}
+.pips{display:grid;grid-template-columns:repeat(15,1fr);gap:3px;height:10px}
+.pips span{border-radius:2px;background:var(--line)}
+.pips .m{background:var(--cobalt)}
+.pips .p{background:repeating-linear-gradient(135deg,var(--cobalt) 0 2px,transparent 2px 4px);outline:1px solid var(--cobalt);outline-offset:-1px}
+.seats small{display:block;margin-top:8px;color:var(--muted);font-size:13px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.invite{padding:20px 22px;margin-bottom:28px}
+.invite h2{margin:0 0 2px;font-size:16px}
+.invite>p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.irow{display:grid;grid-template-columns:minmax(0,1fr) 190px auto;gap:12px;align-items:start}
+.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+.inp,.sel select{width:100%;height:42px;padding:0 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface)}
+.inp::placeholder{color:var(--muted);opacity:.8}
+.inp:hover,.sel select:hover{border-color:var(--muted)}
+.inp[aria-invalid=true]{border-color:var(--danger);box-shadow:0 0 0 3px var(--danger-soft)}
+.sel{position:relative;display:block}
+.sel select{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:pointer}
+.sel::after{content:"";position:absolute;right:14px;top:50%;width:7px;height:7px;border:solid var(--muted);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.btn{height:42px;padding:0 18px;border-radius:8px;border:1px solid var(--line-strong);background:var(--surface);font-weight:600;white-space:nowrap}
+.btn:hover{background:var(--sunk)}
+.btn.primary{background:var(--cobalt);border-color:var(--cobalt);color:var(--cobalt-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.danger{background:var(--danger);border-color:var(--danger);color:var(--surface)}
+.irow .btn{margin-top:25px}
+.hint{margin:8px 0 0;font-size:13.5px;color:var(--muted);min-height:20px}
+.hint.err{color:var(--danger)}
+
+.tools{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.tools .search{flex:1 1 260px;position:relative}
+.tools .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.tools .search .inp{padding-left:36px}
+.tools .sel{width:180px}
+.count{margin-left:auto;color:var(--muted);font-size:14px}
+
+.tablewrap{overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-size:13.5px;font-weight:600;color:var(--muted);text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--sunk)}
+td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:color-mix(in srgb,var(--sunk) 55%,transparent)}
+.who{display:flex;align-items:center;gap:12px;min-width:0}
+.av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:650;font-size:13.5px;background:var(--h-bg);color:var(--h-fg)}
+.av.pend{background:transparent;border:1.5px dashed var(--line-strong);color:var(--muted)}
+.nm{font-weight:600;line-height:1.25;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.em{color:var(--muted);font-size:13.5px;overflow-wrap:anywhere}
+.tag{font-size:12.5px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--cobalt-soft);color:var(--cobalt)}
+.tag.ext{background:var(--sunk);color:var(--muted);border:1px solid var(--line)}
+td .sel{width:150px}
+td .sel select{height:36px;font-size:14.5px}
+td .sel select:disabled{background:var(--sunk);color:var(--muted);cursor:not-allowed}
+.st{display:flex;align-items:center;gap:8px;font-size:14px}
+.st i{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.st.p i{background:transparent;border:2px solid var(--warn)}
+.st span{color:var(--muted)}
+.acts{display:flex;gap:4px;justify-content:flex-end}
+.link{border:0;background:none;padding:6px 10px;border-radius:6px;font-size:14px;font-weight:600;color:var(--cobalt)}
+.link:hover{background:var(--cobalt-soft)}
+.link.rm{color:var(--danger)}
+.link.rm:hover{background:var(--danger-soft)}
+.link:disabled{color:var(--muted);opacity:.55;cursor:not-allowed;background:none}
+.empty{padding:48px 20px;text-align:center}
+.empty p{margin:0 0 14px;color:var(--muted)}
+.empty b{display:block;font-size:16px;color:var(--ink);margin-bottom:4px}
+.foot{margin:14px 4px 0;color:var(--muted);font-size:13.5px;max-width:70ch}
+
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:0;width:min(440px,calc(100vw - 32px));box-shadow:0 24px 64px -16px rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(8,13,28,.55)}
+dialog form{padding:24px}
+dialog h2{margin:0 0 8px;font:500 24px/1.2 var(--serif)}
+dialog p{margin:0 0 22px;color:var(--muted)}
+.dbtn{display:flex;gap:10px;justify-content:flex-end}
+
+.toasts{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;align-items:center;z-index:20;width:max-content;max-width:calc(100vw - 32px)}
+.toast{background:var(--ink);color:var(--bg);padding:10px 10px 10px 16px;border-radius:10px;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow);font-size:14.5px;animation:pop .18s ease-out}
+.toast button{border:0;background:rgba(127,127,127,.25);color:inherit;font-weight:600;padding:5px 12px;border-radius:6px}
+@keyframes pop{from{transform:translateY(8px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.toast{animation:none}}
+
+@media (max-width:900px){
+  .shell{grid-template-columns:minmax(0,1fr);background:none}
+  .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .ws{display:none}
+  .nav{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;width:100%;gap:4px;order:3}
+  .nav h2,.nav small{display:none}
+  .nav a{white-space:nowrap}
+  main{padding-top:28px}
+}
+@media (max-width:760px){
+  h1{font-size:32px}
+  .irow{grid-template-columns:1fr}
+  .irow .btn{margin-top:0;width:100%}
+  .tools .sel{width:100%}
+  .count{margin-left:0;width:100%}
+  .seats{width:100%}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  table,tbody,tr,td{display:block}
+  tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 12px;padding:16px;border-bottom:1px solid var(--line)}
+  tbody tr:last-child{border-bottom:0}
+  td{padding:0;border:0}
+  td.c-who{grid-column:1/-1}
+  td.c-role .sel{width:150px}
+  td.c-st{grid-column:1/-1;order:3}
+  td.c-act{grid-row:2;grid-column:2;align-self:center}
+  td.c-act .acts{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M14 2 25 8v12l-11 6L3 20V8z" fill="currentColor"/><path d="M14 2v24M3 8l11 6 11-6" stroke="var(--surface)" stroke-width="1.6" opacity=".55"/></svg>
+      Cobalt
+    </div>
+    <div class="ws"><i>N</i><div><b>Northwind Studio</b><span>Team plan</span></div></div>
+    <nav class="nav" aria-label="Workspace settings">
+      <h2>Workspace settings</h2>
+      <a href="#">General</a>
+      <a href="#" aria-current="page">Team members</a>
+      <a href="#">Billing <small>Next bill Dec 1</small></a>
+      <a href="#">Integrations</a>
+      <a href="#">Audit log</a>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="head">
+      <div>
+        <h1>Team members</h1>
+        <p class="lede">Everyone here can open Northwind Studio's design reviews. Roles decide who can edit, comment and approve.</p>
+      </div>
+      <div class="seats" id="seats"></div>
+    </header>
+
+    <section class="card invite" aria-labelledby="inv-h">
+      <h2 id="inv-h">Invite people</h2>
+      <p>Add one or more email addresses, separated by commas. Each person gets a link that expires in 7 days.</p>
+      <form id="invite" class="irow" novalidate>
+        <div class="field">
+          <label for="emails">Email addresses</label>
+          <input class="inp" id="emails" type="text" autocomplete="off" placeholder="name@company.com, another@company.com" aria-describedby="ihint">
+        </div>
+        <div class="field">
+          <label for="irole">Role</label>
+          <span class="sel"><select id="irole"></select></span>
+        </div>
+        <button class="btn primary" type="submit">Send invites</button>
+      </form>
+      <p class="hint" id="ihint" aria-live="polite"></p>
+    </section>
+
+    <div class="tools">
+      <label class="search"><span class="sr">Search members</span>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3.5 3.5" stroke-linecap="round"/></svg>
+        <input class="inp" id="q" type="search" placeholder="Search by name or email" autocomplete="off">
+      </label>
+      <label class="sel"><span class="sr">Filter by role</span><select id="rf"></select></label>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+
+    <div class="card tablewrap">
+      <table>
+        <thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col"><span class="sr">Actions</span></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>
+        <b id="empty-t"></b>
+        <p id="empty-d"></p>
+        <button class="btn" id="clear" type="button">Clear search and filter</button>
+      </div>
+    </div>
+    <p class="foot">A workspace needs at least one Owner. To change or remove the last Owner, make someone else an Owner first.</p>
+  </main>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-h">
+  <form method="dialog" id="dform">
+    <h2 id="dlg-h"></h2>
+    <p id="dlg-p"></p>
+    <div class="dbtn">
+      <button class="btn" value="cancel" id="dcancel">Cancel</button>
+      <button class="btn danger" value="ok" id="dok"></button>
+    </div>
+  </form>
+</dialog>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+const SEATS = 15;
+const ROLES = [
+  {id:"Owner", d:"Full control, including billing and removing the workspace."},
+  {id:"Admin", d:"Manages members, projects and integrations."},
+  {id:"Designer", d:"Uploads designs, starts reviews and resolves comments."},
+  {id:"Reviewer", d:"Comments on designs and approves or requests changes."},
+  {id:"Viewer", d:"Reads designs and comments. Cannot approve."}
+];
+let members = [
+  {id:1, name:"Priya Raman", email:"priya@northwind.studio", role:"Owner", seen:"online now", me:true},
+  {id:2, name:"Marcus Oyelaran", email:"marcus@northwind.studio", role:"Owner", seen:"last seen Yesterday"},
+  {id:3, name:"Elena Vasquez", email:"elena.vasquez@northwind.studio", role:"Admin", seen:"last seen 2 hours ago"},
+  {id:4, name:"Tomasz Kowalski", email:"tomasz@northwind.studio", role:"Designer", seen:"last seen Today, 9:14"},
+  {id:5, name:"Aiko Tanaka", email:"aiko.tanaka@northwind.studio", role:"Designer", seen:"last seen 3 days ago"},
+  {id:6, name:"Jamal Whitfield", email:"jamal@northwind.studio", role:"Designer", seen:"last seen Nov 21"},
+  {id:7, name:"Sofia Marchetti", email:"sofia@northwind.studio", role:"Reviewer", seen:"last seen Nov 24"},
+  {id:8, name:"Daniel Okafor", email:"daniel.okafor@northwind.studio", role:"Reviewer", seen:"last seen Nov 12"},
+  {id:9, name:"Hannah Lindqvist", email:"hannah@brightline.co", role:"Viewer", seen:"last seen Nov 19", ext:true},
+  {id:10, name:"", email:"ravi.menon@northwind.studio", role:"Designer", pending:"Invited Nov 25"},
+  {id:11, name:"", email:"j.park@brightline.co", role:"Viewer", pending:"Invited Nov 20, expires Nov 27", ext:true}
+];
+let nextId = 12, query = "", rfilter = "all", prev = null;
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const label = m => m.name || m.email;
+const initials = m => (m.name ? m.name.split(" ").map(w => w[0]).slice(0,2).join("") : m.email[0]).toUpperCase();
+const hue = m => { let h = 0; for (const c of m.email) h = (h*31 + c.charCodeAt(0)) % 360; return h; };
+const owners = () => members.filter(m => m.role === "Owner" && !m.pending).length;
+const isLastOwner = m => m.role === "Owner" && !m.pending && owners() === 1;
+const roleOpts = sel => ROLES.map(r => `<option${r.id===sel?" selected":""}>${r.id}</option>`).join("");
+
+function renderSeats(){
+  const act = members.filter(m => !m.pending).length, pen = members.length - act, free = SEATS - members.length;
+  $("#seats").innerHTML = `<p><b>${members.length} of ${SEATS}</b> seats used</p>
+    <div class="pips" aria-hidden="true">${Array.from({length:SEATS},(_,i)=>`<span class="${i<act?"m":i<act+pen?"p":""}"></span>`).join("")}</div>
+    <small>${act} active, ${pen} pending. ${free ? free + " free" : "No seats free"}.</small>`;
+}
+
+function visible(){
+  const q = query.trim().toLowerCase();
+  return members.filter(m => (rfilter === "all" || m.role === rfilter) && (!q || (m.name + " " + m.email).toLowerCase().includes(q)));
+}
+
+function render(){
+  renderSeats();
+  const list = visible();
+  $("#rows").innerHTML = list.map(m => {
+    const last = isLastOwner(m), who = esc(label(m));
+    const h = hue(m);
+    return `<tr data-id="${m.id}">
+      <td class="c-who"><div class="who">
+        <span class="av${m.pending?" pend":""}" style="--h-bg:hsl(${h} 70% 90%);--h-fg:hsl(${h} 60% 28%)" aria-hidden="true">${esc(initials(m))}</span>
+        <div><div class="nm">${m.pending ? "Pending invite" : who}${m.me?'<span class="tag">You</span>':""}${m.ext?'<span class="tag ext">External</span>':""}</div>
+        <div class="em">${esc(m.email)}</div></div></div></td>
+      <td class="c-role"><label class="sel"><span class="sr">Role for ${who}</span>
+        <select data-role ${last?'disabled title="Make someone else an Owner first"':""}>${roleOpts(m.role)}</select></label></td>
+      <td class="c-st">${m.pending ? `<div class="st p"><i></i>${esc(m.pending)}</div>` : `<div class="st"><i></i>Active <span>${esc(m.seen)}</span></div>`}</td>
+      <td class="c-act"><div class="acts">
+        ${m.pending ? `<button class="link" data-act="resend" aria-label="Resend invite to ${who}">Resend</button><button class="link rm" data-act="revoke" aria-label="Revoke invite for ${who}">Revoke</button>`
+          : `<button class="link rm" data-act="remove" aria-label="Remove ${who}" ${last||m.me?'disabled title="'+(last?"Make someone else an Owner first":"Ask another Owner to remove you")+'"':""}>Remove</button>`}
+      </div></td></tr>`;
+  }).join("");
+  $("#count").textContent = list.length === members.length ? `${members.length} people` : `${list.length} of ${members.length} people`;
+  const empty = !list.length;
+  $("#empty").hidden = !empty;
+  document.querySelector("table").hidden = empty;
+  if (empty){
+    $("#empty-t").textContent = members.length ? "No one matches" : "No team members yet";
+    $("#empty-d").textContent = members.length ? "Check the spelling, or try a different role." : "Invite your first teammate above.";
+    $("#clear").hidden = !members.length;
+  }
+}
+
+function toast(msg, undo){
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.innerHTML = `<span>${esc(msg)}</span>`;
+  if (undo){
+    const b = document.createElement("button");
+    b.textContent = "Undo"; b.type = "button";
+    b.onclick = () => { members = JSON.parse(prev); render(); t.remove(); toast("Change undone."); };
+    t.append(b);
+  }
+  $("#toasts").append(t);
+  setTimeout(() => t.remove(), undo ? 7000 : 3500);
+}
+const snap = () => { prev = JSON.stringify(members); };
+
+// Invite form
+$("#irole").innerHTML = roleOpts("Designer");
+const ihint = $("#ihint"), emails = $("#emails");
+function roleHint(){ ihint.className = "hint"; ihint.textContent = ROLES.find(r => r.id === $("#irole").value).d; }
+roleHint();
+$("#irole").addEventListener("change", roleHint);
+emails.addEventListener("input", () => { emails.removeAttribute("aria-invalid"); roleHint(); });
+function fail(msg){ emails.setAttribute("aria-invalid","true"); ihint.className = "hint err"; ihint.textContent = msg; emails.focus(); }
+$("#invite").addEventListener("submit", e => {
+  e.preventDefault();
+  const list = [...new Set(emails.value.split(/[\s,;]+/).map(s => s.trim().toLowerCase()).filter(Boolean))];
+  if (!list.length) return fail("Enter at least one email address.");
+  const bad = list.find(s => !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s));
+  if (bad) return fail(`"${bad}" is not a valid email address. Check it and try again.`);
+  const dup = list.find(s => members.some(m => m.email.toLowerCase() === s));
+  if (dup) return fail(`${dup} is already on the team or has a pending invite.`);
+  const free = SEATS - members.length;
+  if (list.length > free) return fail(`You have ${free} free ${free===1?"seat":"seats"} and tried to invite ${list.length}. Remove a member or invite fewer people.`);
+  snap();
+  const role = $("#irole").value;
+  list.forEach(s => members.push({id:nextId++, name:"", email:s, role, pending:"Invited Nov 27", ext:!s.endsWith("@northwind.studio")}));
+  emails.value = ""; roleHint(); render();
+  toast(list.length === 1 ? `Invite sent to ${list[0]} as ${role}.` : `${list.length} invites sent as ${role}.`, true);
+});
+
+// Filters
+$("#q").addEventListener("input", e => { query = e.target.value; render(); });
+$("#rf").innerHTML = `<option value="all">All roles</option>` + ROLES.map(r => `<option>${r.id}</option>`).join("");
+$("#rf").addEventListener("change", e => { rfilter = e.target.value; render(); });
+$("#clear").addEventListener("click", () => { query = ""; rfilter = "all"; $("#q").value = ""; $("#rf").value = "all"; render(); $("#q").focus(); });
+
+// Role change
+$("#rows").addEventListener("change", e => {
+  if (!e.target.matches("[data-role]")) return;
+  const m = members.find(x => x.id == e.target.closest("tr").dataset.id);
+  snap();
+  m.role = e.target.value;
+  render();
+  toast(m.pending ? `Invite for ${m.email} changed to ${m.role}.` : `${m.name} is now ${/^[AEIOU]/.test(m.role) ? "an" : "a"} ${m.role}.`, true);
+});
+
+// Row actions
+const dlg = $("#dlg");
+let pendingRemove = null, opener = null;
+$("#rows").addEventListener("click", e => {
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const m = members.find(x => x.id == b.closest("tr").dataset.id);
+  if (b.dataset.act === "resend") return toast(`Invite resent to ${m.email}.`);
+  if (b.dataset.act === "revoke"){
+    snap(); members = members.filter(x => x !== m); render();
+    return toast(`Invite for ${m.email} revoked.`, true);
+  }
+  pendingRemove = m; opener = b;
+  const first = m.name.split(" ")[0];
+  $("#dlg-h").textContent = `Remove ${m.name}?`;
+  $("#dlg-p").textContent = `${first} loses access to all Northwind Studio reviews right away. Their comments and approvals stay on each design. This frees one seat.`;
+  $("#dok").textContent = `Remove ${first}`;
+  dlg.showModal();
+});
+dlg.addEventListener("close", () => {
+  if (dlg.returnValue === "ok" && pendingRemove){
+    const m = pendingRemove, i = members.indexOf(m);
+    snap(); members = members.filter(x => x !== m); render();
+    toast(`${m.name} removed from the team.`, true);
+    const rows = document.querySelectorAll("#rows tr");
+    (rows[Math.min(i, rows.length - 1)]?.querySelector("select") || $("#emails")).focus();
+  } else if (opener && document.contains(opener)) opener.focus();
+  pendingRemove = null; dlg.returnValue = "";
+});
+render();
+</script>
+</body>
+</html>

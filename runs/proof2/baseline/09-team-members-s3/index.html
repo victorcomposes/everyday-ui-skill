@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members - Cobalt</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f1f3f6;
+  --border: #e1e4ea;
+  --text: #171a21;
+  --muted: #5b6272;
+  --accent: #2f5bea;
+  --accent-hover: #2449c4;
+  --accent-soft: #e8eefe;
+  --on-accent: #ffffff;
+  --danger: #c42b3a;
+  --danger-soft: #fdecee;
+  --ok: #17803d;
+  --ok-soft: #e4f5ea;
+  --warn: #9a5b00;
+  --warn-soft: #fdf1dc;
+  --shadow: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+  --shadow-lg: 0 20px 50px rgba(16,24,40,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1117;
+    --surface: #161b24;
+    --surface-2: #1d2430;
+    --border: #2a3342;
+    --text: #e8ebf1;
+    --muted: #9aa3b5;
+    --accent: #6b8cff;
+    --accent-hover: #86a1ff;
+    --accent-soft: #1d2a52;
+    --on-accent: #0b1020;
+    --danger: #ff7480;
+    --danger-soft: #3a1c22;
+    --ok: #4cc27a;
+    --ok-soft: #14301f;
+    --warn: #f0b255;
+    --warn-soft: #3a2b10;
+    --shadow: 0 1px 2px rgba(0,0,0,.4);
+    --shadow-lg: 0 20px 50px rgba(0,0,0,.6);
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* shell */
+.topbar {
+  display: flex; align-items: center; gap: 12px; padding: 0 24px; height: 56px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+.crumb { color: var(--muted); }
+.crumb b { color: var(--text); font-weight: 600; }
+.topbar .me { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--muted); }
+.layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); max-width: 1200px; margin: 0 auto; gap: 32px; padding: 32px 24px 64px; }
+.nav { display: flex; flex-direction: column; gap: 2px; align-self: start; }
+.nav h2 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; padding: 0 10px; }
+.nav a { display: block; padding: 7px 10px; border-radius: 6px; color: var(--muted); text-decoration: none; }
+.nav a:hover { background: var(--surface-2); color: var(--text); }
+.nav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+main { min-width: 0; }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -.02em; }
+.sub { margin: 4px 0 0; color: var(--muted); max-width: 52ch; }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-weight: 500;
+}
+.btn:hover { background: var(--surface-2); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn.danger { color: #1a0509; } }
+.btn.sm { height: 30px; padding: 0 10px; font-size: 13px; }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.btn.ghost:hover { background: var(--surface-2); color: var(--text); }
+.btn.ghost.del:hover { background: var(--danger-soft); color: var(--danger); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+svg { flex: none; }
+
+/* summary */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-bottom: 20px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); }
+.stat .k { color: var(--muted); font-size: 13px; }
+.stat .v { font-size: 22px; font-weight: 650; letter-spacing: -.02em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.stat .v small { font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+.bar { height: 6px; border-radius: 3px; background: var(--surface-2); margin-top: 8px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+
+/* panel */
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+.panel-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.panel-head h2 { margin: 0; font-size: 15px; font-weight: 600; }
+.count { color: var(--muted); font-weight: 400; margin-left: 4px; }
+.tools { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.field { position: relative; }
+.field svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.input, .select {
+  height: 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface);
+  padding: 0 10px; min-width: 0;
+}
+.field .input { padding-left: 32px; width: 240px; }
+.select { padding-right: 6px; cursor: pointer; }
+.input::placeholder { color: var(--muted); }
+
+/* table */
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-weight: 500; font-size: 12px; color: var(--muted); padding: 10px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
+td.act { text-align: right; white-space: nowrap; width: 1%; }
+.who { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.who div { min-width: 0; }
+.name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mail { color: var(--muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.you { font-size: 11px; font-weight: 600; color: var(--muted); background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; padding: 0 6px; margin-left: 6px; vertical-align: 1px; }
+.av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 13px; flex: none; color: #fff; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.active { color: var(--ok); background: var(--ok-soft); }
+.pill.pending { color: var(--warn); background: var(--warn-soft); }
+.muted { color: var(--muted); }
+.role-static { padding: 0 10px; font-weight: 500; }
+
+.empty { padding: 36px 16px; text-align: center; color: var(--muted); }
+.empty b { display: block; color: var(--text); margin-bottom: 4px; }
+
+/* dialogs */
+dialog {
+  border: 1px solid var(--border); border-radius: 14px; padding: 0; background: var(--surface); color: var(--text);
+  box-shadow: var(--shadow-lg); width: min(480px, calc(100vw - 32px));
+}
+dialog::backdrop { background: rgba(8,10,16,.55); }
+.dlg { padding: 22px 22px 18px; }
+.dlg h3 { margin: 0 0 4px; font-size: 18px; letter-spacing: -.01em; }
+.dlg p { margin: 0 0 16px; color: var(--muted); }
+.dlg label { display: block; font-weight: 500; margin: 14px 0 6px; }
+.dlg .input, .dlg .select { width: 100%; }
+.hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.err { color: var(--danger); font-size: 13px; margin-top: 6px; min-height: 0; }
+.roles { display: grid; gap: 8px; }
+.roles label { display: flex; gap: 10px; align-items: flex-start; margin: 0; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; font-weight: 400; }
+.roles label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.roles input { margin-top: 3px; accent-color: var(--accent); }
+.roles b { display: block; font-weight: 600; }
+.roles span { color: var(--muted); font-size: 13px; }
+.foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+
+/* toast */
+#toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; box-shadow: var(--shadow-lg);
+  transition: opacity .2s, transform .2s; max-width: calc(100vw - 32px); z-index: 10;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+
+/* responsive */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px 48px; }
+  .nav { flex-direction: row; overflow-x: auto; gap: 4px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+  .nav h2 { display: none; }
+  .nav a { white-space: nowrap; }
+}
+@media (max-width: 640px) {
+  .topbar { padding: 0 16px; }
+  .topbar .me .who-label, .crumb .sep, .crumb .team { display: none; }
+  .stats { grid-template-columns: 1fr; gap: 8px; }
+  .head .btn { width: 100%; justify-content: center; }
+  .tools { margin-left: 0; width: 100%; }
+  .tools .field { flex: 1 1 100%; }
+  .field .input { width: 100%; }
+  .tools .select { flex: 1; }
+  table, tbody, tr, td { display: block; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  tr { padding: 14px 16px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; align-items: center; }
+  tbody tr:last-child { border-bottom: 0; }
+  td { padding: 0; border: 0; }
+  td.who-cell { grid-column: 1 / -1; }
+  td.act { width: auto; grid-column: 2; grid-row: 2; }
+  td.role-cell { grid-column: 1; grid-row: 2; }
+  td.status-cell, td.seen-cell { display: none; }
+  .m-meta { display: block; }
+}
+.m-meta { display: none; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="var(--accent)"/><path d="M12 5.5 18 9v6l-6 3.5L6 15V9z" fill="none" stroke="var(--on-accent)" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="2" fill="var(--on-accent)"/></svg>
+    Cobalt
+  </div>
+  <div class="crumb"><span class="sep">/</span> <span class="team">Northwind Studio</span></div>
+  <div class="me"><span class="who-label">Priya Raman</span><span class="av" style="background:#7a5af8;width:30px;height:30px;font-size:12px" aria-hidden="true">PR</span></div>
+</header>
+
+<div class="layout">
+  <nav class="nav" aria-label="Workspace settings">
+    <h2>Workspace</h2>
+    <a href="#">General</a>
+    <a href="#" aria-current="page">Team members</a>
+    <a href="#">Review templates</a>
+    <a href="#">Integrations</a>
+    <a href="#">Billing</a>
+    <a href="#">Audit log</a>
+  </nav>
+
+  <main>
+    <div class="head">
+      <div>
+        <h1>Team members</h1>
+        <p class="sub">Invite reviewers and designers to Northwind Studio, set what each person can do, and remove people who have left.</p>
+      </div>
+      <button class="btn primary" id="openInvite" type="button">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>
+        Invite people
+      </button>
+    </div>
+
+    <section class="stats" aria-label="Summary">
+      <div class="stat"><div class="k">Seats used</div><div class="v"><span id="seatUsed">0</span> <small>of 25</small></div><div class="bar"><i id="seatBar"></i></div></div>
+      <div class="stat"><div class="k">Active members</div><div class="v" id="activeCount">0</div></div>
+      <div class="stat"><div class="k">Pending invitations</div><div class="v" id="pendingCount">0</div></div>
+    </section>
+
+    <section class="panel" aria-labelledby="mh">
+      <div class="panel-head">
+        <h2 id="mh">Members<span class="count" id="memberCount"></span></h2>
+        <div class="tools">
+          <div class="field">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+            <label class="sr" for="q">Search members</label>
+            <input class="input" id="q" type="search" placeholder="Search name or email" autocomplete="off">
+          </div>
+          <label class="sr" for="roleFilter">Filter by role</label>
+          <select class="select" id="roleFilter">
+            <option value="">All roles</option>
+            <option>Owner</option><option>Admin</option><option>Designer</option><option>Reviewer</option><option>Viewer</option>
+          </select>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Last active</th><th scope="col"><span class="sr">Actions</span></th></tr></thead>
+        <tbody id="members"></tbody>
+      </table>
+      <div class="empty" id="noMatch" hidden><b>No members match</b>Try a different name, email or role.</div>
+    </section>
+
+    <section class="panel" aria-labelledby="ph" id="pendingPanel">
+      <div class="panel-head"><h2 id="ph">Pending invitations<span class="count" id="pendCountHead"></span></h2></div>
+      <table>
+        <thead><tr><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Invited</th><th scope="col"><span class="sr">Actions</span></th></tr></thead>
+        <tbody id="invites"></tbody>
+      </table>
+      <div class="empty" id="noInvites" hidden><b>No pending invitations</b>People you invite will wait here until they accept.</div>
+    </section>
+  </main>
+</div>
+
+<!-- invite dialog -->
+<dialog id="inviteDlg" aria-labelledby="invT">
+  <form class="dlg" id="inviteForm" method="dialog" novalidate>
+    <h3 id="invT">Invite people</h3>
+    <p>They will get an email with a link to join Northwind Studio.</p>
+    <label for="emails">Email addresses</label>
+    <input class="input" id="emails" type="text" placeholder="name@company.com, name2@company.com" autocomplete="off">
+    <div class="hint">Separate several addresses with commas or spaces.</div>
+    <div class="err" id="invErr" role="alert"></div>
+    <label id="roleLbl">Role</label>
+    <div class="roles" role="radiogroup" aria-labelledby="roleLbl">
+      <label><input type="radio" name="role" value="Admin"><div><b>Admin</b><span>Manage members, billing and workspace settings.</span></div></label>
+      <label><input type="radio" name="role" value="Designer"><div><b>Designer</b><span>Upload designs and start reviews.</span></div></label>
+      <label><input type="radio" name="role" value="Reviewer" checked><div><b>Reviewer</b><span>Comment on and approve designs.</span></div></label>
+      <label><input type="radio" name="role" value="Viewer"><div><b>Viewer</b><span>Read-only access to reviews.</span></div></label>
+    </div>
+    <div class="foot">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn primary" type="submit" id="sendInv">Send invitations</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- remove dialog -->
+<dialog id="rmDlg" aria-labelledby="rmT">
+  <form class="dlg" method="dialog">
+    <h3 id="rmT">Remove member?</h3>
+    <p id="rmBody"></p>
+    <div class="foot">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn danger" type="button" id="rmConfirm">Remove</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var COLORS = ["#2f5bea", "#7a5af8", "#0e8a7d", "#c2410c", "#b4235a", "#4d7c0f", "#0369a1", "#a16207"];
+  var ROLES = ["Owner", "Admin", "Designer", "Reviewer", "Viewer"];
+  var SEATS = 25;
+
+  var members = [
+    { id: 1, name: "Priya Raman", email: "priya@northwind.studio", role: "Owner", seen: "Active now", you: true },
+    { id: 2, name: "Marcus Oyelaran", email: "marcus@northwind.studio", role: "Admin", seen: "12 minutes ago" },
+    { id: 3, name: "Elena Vasquez", email: "elena.vasquez@northwind.studio", role: "Designer", seen: "Today, 9:41 AM" },
+    { id: 4, name: "Tomasz Kowalski", email: "tomasz@northwind.studio", role: "Designer", seen: "Yesterday" },
+    { id: 5, name: "Aisha Khan", email: "aisha.khan@brightpath.io", role: "Reviewer", seen: "Yesterday" },
+    { id: 6, name: "Daniel Okafor", email: "daniel@northwind.studio", role: "Reviewer", seen: "Nov 24, 2026" },
+    { id: 7, name: "Hannah Lindqvist", email: "hannah@northwind.studio", role: "Designer", seen: "Nov 22, 2026" },
+    { id: 8, name: "Rafael Costa", email: "rafael.costa@brightpath.io", role: "Viewer", seen: "Nov 18, 2026" },
+    { id: 9, name: "Mei-Ling Zhou", email: "meiling@northwind.studio", role: "Admin", seen: "Nov 12, 2026" },
+    { id: 10, name: "Oliver Grant", email: "oliver.grant@northwind.studio", role: "Viewer", seen: "Oct 30, 2026" }
+  ];
+  var invites = [
+    { id: 101, email: "sofia.mendes@brightpath.io", role: "Reviewer", sent: "2 days ago" },
+    { id: 102, email: "jamal.price@northwind.studio", role: "Designer", sent: "5 days ago" },
+    { id: 103, email: "ines.fischer@gmail.com", role: "Viewer", sent: "Nov 17, 2026" }
+  ];
+  var nextId = 200, pendingRemove = null, lastFocus = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var initials = function (s) {
+    var p = s.replace(/@.*/, "").split(/[\s._-]+/).filter(Boolean);
+    return ((p[0] || "?")[0] + (p.length > 1 ? p[p.length - 1][0] : "")).toUpperCase();
+  };
+  var color = function (s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return COLORS[h % COLORS.length]; };
+  var avatar = function (s) { return '<span class="av" style="background:' + color(s) + '" aria-hidden="true">' + esc(initials(s)) + "</span>"; };
+  var owners = function () { return members.filter(function (m) { return m.role === "Owner"; }).length; };
+
+  var toastT;
+  function toast(msg) {
+    var t = $("toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("show"); }, 3200);
+  }
+
+  function render() {
+    var q = $("q").value.trim().toLowerCase(), rf = $("roleFilter").value;
+    var list = members.filter(function (m) {
+      return (!rf || m.role === rf) && (!q || m.name.toLowerCase().indexOf(q) > -1 || m.email.toLowerCase().indexOf(q) > -1);
+    });
+    $("members").innerHTML = list.map(function (m) {
+      var lastOwner = m.role === "Owner" && owners() < 2;
+      var roleCell = lastOwner
+        ? '<span class="role-static" title="A workspace needs at least one owner">Owner</span>'
+        : '<label class="sr" for="r' + m.id + '">Role for ' + esc(m.name) + '</label><select class="select" id="r' + m.id + '" data-role="' + m.id + '">' +
+          ROLES.map(function (r) { return "<option" + (r === m.role ? " selected" : "") + ">" + r + "</option>"; }).join("") + "</select>";
+      var rm = lastOwner
+        ? '<button class="btn ghost del sm" type="button" disabled title="The only owner cannot be removed" aria-label="Remove ' + esc(m.name) + '">Remove</button>'
+        : '<button class="btn ghost del sm" type="button" data-remove="' + m.id + '" aria-label="Remove ' + esc(m.name) + '">Remove</button>';
+      return '<tr><td class="who-cell"><div class="who">' + avatar(m.name) + '<div><div class="name">' + esc(m.name) + (m.you ? '<span class="you">You</span>' : "") +
+        '</div><div class="mail">' + esc(m.email) + '</div></div></div></td>' +
+        '<td class="role-cell">' + roleCell + '</td>' +
+        '<td class="status-cell"><span class="pill active">Active</span></td>' +
+        '<td class="seen-cell muted">' + esc(m.seen) + '</td>' +
+        '<td class="act">' + rm + '</td></tr>';
+    }).join("");
+    $("noMatch").hidden = list.length > 0;
+    $("memberCount").textContent = (q || rf) ? list.length + " of " + members.length : members.length;
+
+    $("invites").innerHTML = invites.map(function (i) {
+      return '<tr><td class="who-cell"><div class="who">' + avatar(i.email) + '<div><div class="name">' + esc(i.email) + '</div><div class="mail"><span class="pill pending">Pending</span></div></div></div></td>' +
+        '<td class="role-cell">' + esc(i.role) + '</td><td class="seen-cell muted">' + esc(i.sent) + '</td>' +
+        '<td class="act"><button class="btn ghost sm" type="button" data-resend="' + i.id + '" aria-label="Resend invitation to ' + esc(i.email) + '">Resend</button>' +
+        '<button class="btn ghost del sm" type="button" data-revoke="' + i.id + '" aria-label="Revoke invitation to ' + esc(i.email) + '">Revoke</button></td></tr>';
+    }).join("");
+    $("noInvites").hidden = invites.length > 0;
+    $("pendCountHead").textContent = invites.length || "";
+
+    var used = members.length + invites.length;
+    $("seatUsed").textContent = used;
+    $("seatBar").style.width = Math.min(100, used / SEATS * 100) + "%";
+    $("activeCount").textContent = members.length;
+    $("pendingCount").textContent = invites.length;
+  }
+
+  /* dialogs */
+  function open(d) { lastFocus = document.activeElement; d.showModal(); }
+  function closeD(d) { d.close(); if (lastFocus && lastFocus.isConnected) lastFocus.focus(); }
+  document.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", function () { closeD(b.closest("dialog")); }); });
+  document.querySelectorAll("dialog").forEach(function (d) {
+    d.addEventListener("click", function (e) { if (e.target === d) closeD(d); });
+  });
+
+  $("openInvite").addEventListener("click", function () { $("emails").value = ""; $("invErr").textContent = ""; open($("inviteDlg")); $("emails").focus(); });
+
+  $("inviteForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var raw = $("emails").value.split(/[\s,;]+/).filter(Boolean), role = document.querySelector('input[name="role"]:checked').value;
+    if (!raw.length) { $("invErr").textContent = "Enter at least one email address."; $("emails").focus(); return; }
+    var bad = raw.filter(function (x) { return !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(x); });
+    if (bad.length) { $("invErr").textContent = "Check this address: " + bad[0]; $("emails").focus(); return; }
+    var known = members.map(function (m) { return m.email.toLowerCase(); }).concat(invites.map(function (i) { return i.email.toLowerCase(); }));
+    var seen = {}, fresh = [], skipped = 0;
+    raw.forEach(function (x) { var k = x.toLowerCase(); if (known.indexOf(k) > -1 || seen[k]) skipped++; else { seen[k] = 1; fresh.push(x); } });
+    if (!fresh.length) { $("invErr").textContent = raw.length > 1 ? "Everyone here is already a member or invited." : raw[0] + " is already a member or invited."; return; }
+    if (members.length + invites.length + fresh.length > SEATS) { $("invErr").textContent = "Not enough seats: " + (SEATS - members.length - invites.length) + " left of " + SEATS + "."; return; }
+    fresh.forEach(function (x) { invites.unshift({ id: nextId++, email: x, role: role, sent: "Just now" }); });
+    closeD($("inviteDlg")); render();
+    toast(fresh.length === 1 ? "Invitation sent to " + fresh[0] : fresh.length + " invitations sent" + (skipped ? " (" + skipped + " skipped as duplicates)" : ""));
+  });
+
+  $("rmConfirm").addEventListener("click", function () {
+    if (!pendingRemove) return;
+    var m = pendingRemove; pendingRemove = null;
+    members = members.filter(function (x) { return x.id !== m.id; });
+    $("rmDlg").close(); lastFocus = $("openInvite"); render(); $("openInvite").focus();
+    toast(m.name + " was removed from the team");
+  });
+
+  /* table events */
+  document.addEventListener("change", function (e) {
+    var id = e.target.getAttribute && e.target.getAttribute("data-role");
+    if (!id) return;
+    var m = members.filter(function (x) { return x.id == id; })[0];
+    if (m.role === "Owner" && owners() < 2) { render(); return; }
+    var old = m.role; m.role = e.target.value; render();
+    toast(m.name + " is now " + (/^[AEIOU]/.test(m.role) ? "an " : "a ") + m.role + " (was " + old + ")");
+  });
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var rid = b.getAttribute("data-remove"), res = b.getAttribute("data-resend"), rev = b.getAttribute("data-revoke");
+    if (rid) {
+      pendingRemove = members.filter(function (x) { return x.id == rid; })[0];
+      $("rmBody").textContent = pendingRemove.name + " will lose access to Northwind Studio and all open reviews right away. Their comments stay in place.";
+      open($("rmDlg"));
+    } else if (res) {
+      var i = invites.filter(function (x) { return x.id == res; })[0]; i.sent = "Just now"; render(); toast("Invitation resent to " + i.email);
+    } else if (rev) {
+      var r = invites.filter(function (x) { return x.id == rev; })[0];
+      invites = invites.filter(function (x) { return x !== r; }); render(); toast("Invitation to " + r.email + " revoked");
+    }
+  });
+  $("q").addEventListener("input", render);
+  $("roleFilter").addEventListener("change", render);
+
+  render();
+})();
+</script>
+</body>
+</html>

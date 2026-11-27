@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 16
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 16
+      }
+    },
+    "contrastFailures": 16
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "segoe ui variable display",
+    "segoe ui variable text"
+  ],
+  "textColors": 7,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(18, 32, 43)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(11, 110, 106)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 47,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Gigwell",
+        "w": 102,
+        "h": 26
+      },
+      {
+        "tag": "a",
+        "text": "7",
+        "w": 38,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 175,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Preferences",
+        "w": 175,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "All\n7",
+        "w": 77,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Unread\n7",
+        "w": 108,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Offers and invites\n3",
+        "w": 178,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Messages\n1",
+        "w": 124,
+        "h": 39
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "axe": {
+    "rules": {
+      "aria-allowed-role": {
+        "impact": "minor",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "minor": {
+        "rules": 1,
+        "nodes": 1
+      },
+      "moderate": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "ui-sans-serif"
+  ],
+  "textColors": 7,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(26, 35, 48)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(11, 90, 115)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 12,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Harborline",
+        "w": 104,
+        "h": 23
+      },
+      {
+        "tag": "button",
+        "text": "Inbox",
+        "w": 56,
+        "h": 29
+      },
+      {
+        "tag": "button",
+        "text": "Snooze",
+        "w": 175,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Resolve",
+        "w": 175,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Reply",
+        "w": 58,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Internal note",
+        "w": 103,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Tracking link",
+        "w": 90,
+        "h": 27
+      },
+      {
+        "tag": "button",
+        "text": "Refund done",
+        "w": 93,
+        "h": 27
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

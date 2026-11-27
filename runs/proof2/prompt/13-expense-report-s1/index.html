@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lisbon client visit - New expense report - Outlay</title>
+<style>
+:root{
+  --bg:#F5F4EF; --surface:#FFFFFF; --surface-2:#F0EFE9; --ink:#15201B; --muted:#56615B;
+  --line:#DAD8CF; --field:#7C8781; --accent:#17604A; --accent-ink:#FFFFFF; --accent-soft:#E1EFE8;
+  --ok-bg:#DFF1E7; --ok:#0F4D39; --warn-bg:#FBEFD2; --warn:#6B4300; --err-bg:#FBE4E0; --err:#8A1F17;
+  --focus:#0B57D0; --shadow:0 1px 2px rgba(21,32,27,.06),0 8px 24px -12px rgba(21,32,27,.12);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0E1411; --surface:#161E1A; --surface-2:#1C2622; --ink:#E9EEEB; --muted:#9DABA4;
+    --line:#2B3731; --field:#74827B; --accent:#5FCB9F; --accent-ink:#08150F; --accent-soft:#1B3128;
+    --ok-bg:#173A2C; --ok:#93E0BC; --warn-bg:#3A2C10; --warn:#F2C877; --err-bg:#3F1C19; --err:#FFB5AB;
+    --focus:#8AB4FF; --shadow:none; color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums}
+h1,h2,h3,p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;background:var(--surface);padding:8px 12px;border-radius:8px;z-index:20;border:1px solid var(--line)}
+.skip:focus{top:12px}
+
+/* top bar */
+.bar{background:var(--surface);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1240px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.brand svg{width:26px;height:26px}
+.nav{display:flex;gap:4px;margin-left:8px}
+.nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:500}
+.nav a:hover{background:var(--surface-2);color:var(--ink)}
+.nav a[aria-current]{color:var(--ink);background:var(--surface-2)}
+.me{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+.av{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+
+/* page */
+main{max-width:1240px;margin:0 auto;padding:28px 20px 120px}
+.crumb{font-size:14px;color:var(--muted);margin-bottom:10px}
+.crumb a{color:var(--muted)}
+.head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px}
+h1{font-size:30px;line-height:1.15;letter-spacing:-.02em}
+.head p{color:var(--muted);margin-top:6px;max-width:56ch}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:600;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.chip.err{background:var(--err-bg);color:var(--err)}
+.chip.plain::before{display:none}
+.head-r{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:14px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:20px}
+.panel-h{padding:20px 24px 0}
+.panel-h h2{font-size:17px;letter-spacing:-.01em}
+.panel-h p{color:var(--muted);font-size:14px;margin-top:2px}
+.panel-b{padding:18px 24px 24px}
+.fields{display:grid;grid-template-columns:repeat(6,1fr);gap:18px 16px}
+.f{grid-column:span 3;min-width:0}
+.f.w2{grid-column:span 2}
+.f.full{grid-column:1/-1}
+label,.lbl{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.hint{font-size:13px;color:var(--muted);margin-top:5px;font-weight:400}
+input,select,textarea{width:100%;min-height:42px;padding:9px 12px;background:var(--surface);border:1px solid var(--field);border-radius:8px}
+textarea{resize:vertical;min-height:76px}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
+input:hover,select:hover,textarea:hover{border-color:var(--ink)}
+input[aria-invalid=true],select[aria-invalid=true]{border-color:var(--err);box-shadow:inset 0 0 0 1px var(--err)}
+.err-msg{color:var(--err);font-size:13px;font-weight:600;margin-top:5px}
+
+.alert{display:flex;gap:14px;background:var(--err-bg);color:var(--err);border-radius:12px;padding:16px 20px;margin-bottom:20px;border:1px solid var(--err)}
+.alert h2{font-size:16px;margin-bottom:6px}
+.alert ul{margin:0;padding-left:18px}
+.alert a{color:inherit;font-weight:600}
+.alert svg{flex:none;width:22px;height:22px;margin-top:1px}
+.done{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok);border-radius:12px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px}
+.done svg{flex:none;width:24px;height:24px}
+.done h2{font-size:17px}
+[hidden]{display:none!important}
+
+/* lines */
+.lines-head{display:none}
+.line{border-top:1px solid var(--line);padding:16px 0;display:grid;gap:12px 10px;grid-template-columns:1fr 1fr;position:relative}
+.line:first-of-type{border-top:0}
+.line .c-merch,.line .c-note,.line .c-rc,.line .c-amt{grid-column:1/-1}
+.line label{font-size:13px;color:var(--muted);font-weight:600}
+.conv{font-size:12.5px;color:var(--muted);margin-top:4px;min-height:18px}
+.amt{display:grid;grid-template-columns:1fr 84px;gap:6px}
+.amt input{text-align:right}
+.rc{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:42px}
+.attach{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:6px 12px;border:1px solid var(--field);border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;background:var(--surface);margin:0;color:var(--ink)}
+.attach:hover{border-color:var(--ink);background:var(--surface-2)}
+.attach:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.attach input{position:absolute;width:1px;height:1px;opacity:0;min-height:0;padding:0}
+.attach svg,.rm svg,.btn svg{width:16px;height:16px;flex:none}
+.file{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--ok);background:var(--ok-bg);padding:4px 10px;border-radius:999px;max-width:100%}
+.file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:170px}
+.file svg{width:14px;height:14px;flex:none}
+.rm{position:absolute;bottom:14px;right:0;width:36px;height:36px;border:0;background:transparent;border-radius:8px;color:var(--muted);display:grid;place-items:center;cursor:pointer;padding:0}
+.rm:hover{background:var(--err-bg);color:var(--err)}
+.line .c-rc{padding-right:40px}
+.line-foot{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:8px 18px;border-radius:10px;border:1px solid var(--field);background:var(--surface);font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink);background:var(--surface-2)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.primary:disabled{opacity:.55;cursor:not-allowed;filter:none}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--accent)}
+.btn.ghost:hover{background:var(--accent-soft)}
+.btn.lg{min-height:48px;width:100%}
+.sum-line{color:var(--muted);font-size:14px}
+.sum-line b{color:var(--ink);font-size:17px}
+
+/* summary */
+.side{position:sticky;top:20px}
+.total{padding:22px 24px 18px}
+.total .k{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.total .v{font-size:38px;font-weight:700;letter-spacing:-.025em;line-height:1.1;margin:4px 0 2px}
+.total .s{color:var(--muted);font-size:14px}
+.cats{list-style:none;margin:0;padding:0 24px 18px;display:grid;gap:10px}
+.cats li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:14px}
+.cats .bar-t{grid-column:1/-1;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.cats .bar-t i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.sec{border-top:1px solid var(--line);padding:18px 24px}
+.sec h3{font-size:14px;margin-bottom:10px}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14px}
+.checks li{display:grid;grid-template-columns:20px 1fr;gap:8px;align-items:start}
+.checks svg{width:20px;height:20px}
+.checks .ok{color:var(--ok)}.checks .warn{color:var(--warn)}
+.checks span.t{color:var(--ink)}
+.checks small{display:block;color:var(--muted);font-size:13px}
+.appr{display:flex;align-items:center;gap:12px}
+.appr .av{width:40px;height:40px;font-size:14px}
+.appr p{font-size:14px;line-height:1.35}
+.appr .m{color:var(--muted);font-size:13px}
+.actions{padding:0 24px 24px;display:grid;gap:10px}
+.saved{font-size:13px;color:var(--muted);text-align:center;min-height:20px}
+
+.mbar{display:none}
+
+@media (min-width:760px){
+  .lines-head{display:grid;gap:10px;grid-template-columns:136px 150px minmax(0,1fr) 170px 28px;font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding-bottom:10px;border-bottom:1px solid var(--line);margin-top:18px}
+  .lines-head .r{text-align:right}
+  .line{grid-template-columns:136px 150px minmax(0,1fr) 170px 28px;align-items:start;padding:14px 0 0;border-top:0;gap:10px}
+  .line .c-date{grid-area:1/1;padding-right:0}
+  .line .c-cat{grid-area:1/2}
+  .line .c-merch{grid-area:1/3}
+  .line .c-amt{grid-area:1/4}
+  .line .rm{grid-area:1/5;position:static;margin-top:3px}
+  .line .c-note{grid-area:2/1/3/4;margin-bottom:2px}
+  .line .c-rc{grid-area:2/4/3/6}
+  .line label.v{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .line .c-note input{min-height:38px;font-size:14px}
+  .line-rule{grid-area:3/1/4/-1;border-bottom:1px solid var(--line);margin-top:8px}
+  .c-rc .rc{min-height:38px}
+  .c-rc .rc{flex-wrap:nowrap}
+  .file{min-width:0;flex:0 1 auto}
+  .file span{min-width:0;max-width:none}
+  .attach{flex:none}
+}
+@media (max-width:1100px){
+  .grid{grid-template-columns:1fr}
+  .side{position:static}
+}
+@media (max-width:759px){
+  .nav,.me .nm{display:none}
+  .bar-in{padding:0 16px}
+  main{padding:20px 16px 130px}
+  h1{font-size:25px}
+  .panel-h{padding:18px 18px 0}.panel-b{padding:16px 18px 20px}
+  .f,.f.w2{grid-column:1/-1}
+  .fields{gap:16px}
+  .f.half{grid-column:span 3}
+  .line-rule{display:none}
+  .total,.sec{padding-left:18px;padding-right:18px}.cats,.actions{padding-left:18px;padding-right:18px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));align-items:center;justify-content:space-between;gap:12px}
+  .mbar .btn{min-height:46px;padding:8px 22px}
+  .mbar .k{font-size:12.5px;color:var(--muted);line-height:1.2}
+  .mbar .v{font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+  .actions .submit-d{display:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  .btn,.attach,input,select,textarea{transition:border-color .12s,background-color .12s}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to report</a>
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="#" aria-label="Outlay home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><path d="M9 21.5V10.5M9 16h8.5a4.5 4.5 0 0 1 0 0M23 10.5v11M17.5 10.5h5.5" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      Outlay
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Overview</a>
+      <a href="#" aria-current="page">Reports</a>
+      <a href="#">Cards</a>
+      <a href="#">Approvals</a>
+    </nav>
+    <div class="me"><span class="nm">Priya Raman</span><span class="av" aria-hidden="true">PR</span></div>
+  </div>
+</header>
+
+<main id="main">
+  <p class="crumb"><a href="#">Reports</a> / New report</p>
+  <div class="head">
+    <div>
+      <h1>Lisbon client visit</h1>
+      <p>Itemise each cost, attach a receipt for anything over &pound;25, then send the report to your approver.</p>
+    </div>
+    <div class="head-r"><span class="chip warn" id="status">Draft</span><span id="rid">Report ER-2611-0482</span></div>
+  </div>
+
+  <div id="alert" class="alert" role="alert" tabindex="-1" hidden></div>
+  <div id="done" class="done" role="status" tabindex="-1" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m7.5 12.5 3 3 6-7"/></svg>
+    <div><h2>Sent to Daniel Okafor</h2><p id="done-t"></p></div>
+  </div>
+
+  <form id="form" novalidate class="grid">
+    <div>
+      <section class="panel" aria-labelledby="h-details">
+        <div class="panel-h"><h2 id="h-details">Trip details</h2><p>Finance uses this to code the spend to the right budget.</p></div>
+        <div class="panel-b"><div class="fields">
+          <div class="f full"><label for="title">Report title</label><input id="title" value="Lisbon client visit - Northwind Logistics" autocomplete="off"></div>
+          <div class="f w2 half"><label for="start">First day</label><input id="start" type="date" value="2026-11-17"></div>
+          <div class="f w2 half"><label for="end">Last day</label><input id="end" type="date" value="2026-11-19"></div>
+          <div class="f w2"><label for="cc">Cost centre</label>
+            <select id="cc"><option>EMEA Sales - 4120</option><option>EMEA Customer Success - 4135</option><option>Marketing Events - 5010</option></select></div>
+          <div class="f"><label for="client">Client</label><input id="client" value="Northwind Logistics" autocomplete="off"></div>
+          <div class="f"><label for="cur">Report currency</label>
+            <select id="cur"><option>GBP - pound sterling</option></select>
+            <p class="hint" id="fxhint">Euro lines convert at 0.86, the rate on 19 Nov.</p></div>
+          <div class="f full"><label for="purpose">Business purpose</label>
+            <textarea id="purpose" aria-describedby="p-h">Renewal workshop with Northwind's operations team at their Lisbon depot, plus dinner with their COO to agree the 2027 volume tier.</textarea>
+            <p class="hint" id="p-h">Approvers read this first. Say who you met and why.</p></div>
+        </div></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-lines">
+        <div class="panel-h"><h2 id="h-lines">Expenses</h2><p>One row for each receipt. Enter the amount in the currency you paid.</p></div>
+        <div class="panel-b">
+          <div class="lines-head" aria-hidden="true"><span>Date</span><span>Category</span><span>Merchant</span><span class="r">Amount</span><span></span></div>
+          <div id="lines"></div>
+          <div class="line-foot">
+            <button type="button" class="btn" id="add"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>Add expense</button>
+            <p class="sum-line"><span id="cnt">0 expenses</span> &middot; <b id="foot-total">&pound;0.00</b></p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side" aria-label="Report summary">
+      <div class="panel">
+        <div class="total">
+          <p class="k">Total to reimburse</p>
+          <p class="v" id="total" aria-live="polite">&pound;0.00</p>
+          <p class="s" id="total-s"></p>
+        </div>
+        <ul class="cats" id="cats" aria-label="Spend by category"></ul>
+        <div class="sec"><h3>Policy checks</h3><ul class="checks" id="checks"></ul></div>
+        <div class="sec"><h3>Approver</h3>
+          <div class="appr"><span class="av" aria-hidden="true">DO</span><p><b>Daniel Okafor</b><br><span class="m">Head of EMEA Sales &middot; usually replies in 1 day</span></p></div>
+        </div>
+        <div class="sec actions" style="padding-left:0;padding-right:0;padding-bottom:0;border:0"></div>
+        <div class="actions" style="padding-top:18px;border-top:1px solid var(--line)">
+          <button type="submit" class="btn primary lg submit-d" id="submit-d">Submit for approval</button>
+          <button type="button" class="btn lg" id="save">Save draft</button>
+          <p class="saved" id="saved" role="status"></p>
+        </div>
+      </div>
+    </aside>
+  </form>
+</main>
+
+<div class="mbar">
+  <div><p class="k">Total to reimburse</p><p class="v" id="mtotal">&pound;0.00</p></div>
+  <button type="submit" form="form" class="btn primary" id="submit-m">Submit</button>
+</div>
+
+<script>
+const FX = {GBP:1, EUR:0.86}, SYM = {GBP:"£", EUR:"€"}, LIMIT = 25, MEAL_CAP = 60;
+const CATS = ["Flights and rail","Lodging","Ground transport","Meals","Client entertainment","Other"];
+let nid = 1;
+const L = (d,cat,m,amt,cur,note,rc) => ({id:nid++,d,cat,m,amt,cur,note,rc:rc||""});
+let lines = [
+  L("2026-11-17","Flights and rail","TAP Air Portugal LHR-LIS",212.40,"GBP","Return fare, economy, booked 3 Nov","tap-confirmation.pdf"),
+  L("2026-11-17","Ground transport","Bolt - airport to hotel",18.50,"EUR","Airport to hotel","bolt-1117.jpg"),
+  L("2026-11-17","Meals","Time Out Market Lisboa",31.80,"EUR","Dinner, travelling alone","time-out-market.jpg"),
+  L("2026-11-18","Lodging","Hotel Avenida Palace",142.00,"EUR","Night of 17 Nov, room rate incl. breakfast","avenida-folio.pdf"),
+  L("2026-11-18","Meals","Pastelaria Santa Maria",9.40,"EUR","Coffee and pastries before the workshop",""),
+  L("2026-11-18","Client entertainment","Cervejaria Ramiro",164.00,"EUR","Dinner for 3: Priya Raman, Marta Silva (COO) and Tiago Alves (Northwind)",""),
+  L("2026-11-19","Lodging","Hotel Avenida Palace",142.00,"EUR","Night of 18 Nov","avenida-folio.pdf"),
+  L("2026-11-19","Ground transport","Bolt - hotel to airport",24.00,"EUR","Early flight, no metro","bolt-1119.jpg"),
+  L("2026-11-19","Meals","Pret A Manger Heathrow T5",8.75,"GBP","Lunch on return","")
+];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const gbp = n => "£" + n.toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2});
+const inGBP = l => (+l.amt||0) * FX[l.cur];
+const fmtDay = iso => new Date(iso+"T12:00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+const ICON = {
+  clip:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 7.5-5 5a3 3 0 0 1-4.2-4.2l5.3-5.3a2 2 0 0 1 2.8 2.8L6.6 11a1 1 0 0 1-1.4-1.4L10 4.8"/></svg>',
+  tick:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7"/></svg>',
+  bin:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8h5.8l.6-8"/></svg>',
+  ok:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="m6.5 10.2 2.4 2.4 4.6-5"/></svg>',
+  warn:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.8 18 16.5H2z"/><path d="M10 8v3.7M10 14.2v.1"/></svg>'
+};
+
+function rowHTML(l, n){
+  const need = inGBP(l) > LIMIT && !l.rc;
+  return `<div class="line" data-id="${l.id}" role="group" aria-label="Expense ${n}">
+    <div class="c-date"><label class="v" for="d${l.id}">Date</label><input id="d${l.id}" data-k="d" type="date" value="${l.d}"></div>
+    <div class="c-cat"><label class="v" for="c${l.id}">Category</label><select id="c${l.id}" data-k="cat">${CATS.map(c=>`<option${c===l.cat?" selected":""}>${c}</option>`).join("")}</select></div>
+    <div class="c-merch"><label class="v" for="m${l.id}">Merchant</label><input id="m${l.id}" data-k="m" value="${esc(l.m)}" placeholder="Merchant" autocomplete="off"></div>
+    <div class="c-amt"><label class="v" for="a${l.id}">Amount</label>
+      <div class="amt"><input id="a${l.id}" data-k="amt" inputmode="decimal" value="${l.amt===""?"":(+l.amt).toFixed(2)}" placeholder="0.00" aria-label="Amount">
+      <select data-k="cur" aria-label="Currency"><option${l.cur==="GBP"?" selected":""}>GBP</option><option${l.cur==="EUR"?" selected":""}>EUR</option></select></div>
+      <p class="conv" data-conv>${l.cur==="EUR"&&l.amt?"= "+gbp(inGBP(l)):""}</p></div>
+    <button type="button" class="rm" data-rm aria-label="Remove expense ${n}">${ICON.bin}</button>
+    <div class="c-note"><label class="v" for="n${l.id}">Note</label><input id="n${l.id}" data-k="note" value="${esc(l.note)}" placeholder="Business purpose or who attended" autocomplete="off"></div>
+    <div class="c-rc"><span class="v sr">Receipt</span><div class="rc">
+      ${l.rc?`<span class="file">${ICON.tick}<span title="${esc(l.rc)}">${esc(l.rc)}</span></span>`:""}
+      <label class="attach" id="rl${l.id}">${ICON.clip}<span>${l.rc?"Replace":"Attach"}<span class="sr"> receipt for expense ${n}</span></span><input type="file" data-k="rc" accept="image/*,.pdf" id="r${l.id}"></label>
+      ${need?`<span class="chip warn plain" data-need>Required</span>`:""}
+    </div></div>
+    <div class="line-rule"></div>
+  </div>`;
+}
+function renderLines(focusId){
+  $("lines").innerHTML = lines.map((l,i)=>rowHTML(l,i+1)).join("");
+  if(focusId && $(focusId)) $(focusId).focus();
+  summary();
+}
+
+function summary(){
+  const tot = lines.reduce((s,l)=>s+inGBP(l),0);
+  const byCat = CATS.map(c=>[c,lines.filter(l=>l.cat===c).reduce((s,l)=>s+inGBP(l),0)]).filter(x=>x[1]>0);
+  const eur = lines.filter(l=>l.cur==="EUR").length;
+  $("total").textContent = $("foot-total").textContent = $("mtotal").textContent = gbp(tot);
+  $("cnt").textContent = lines.length + (lines.length===1?" expense":" expenses");
+  $("total-s").textContent = eur ? `${lines.length} expenses, ${eur} paid in euros` : `${lines.length} expenses`;
+  $("cats").innerHTML = byCat.map(([c,v])=>`<li><span>${c}</span><b>${gbp(v)}</b><span class="bar-t" aria-hidden="true"><i style="width:${(v/tot*100).toFixed(1)}%"></i></span></li>`).join("");
+  const need = lines.filter(l=>inGBP(l)>LIMIT);
+  const miss = need.filter(l=>!l.rc);
+  const days = {};
+  lines.filter(l=>l.cat==="Meals").forEach(l=>days[l.d]=(days[l.d]||0)+inGBP(l));
+  const over = Object.entries(days).filter(([,v])=>v>MEAL_CAP);
+  const noAtt = lines.filter(l=>l.cat==="Client entertainment" && l.note.trim().length<12);
+  const s=$("start").value, e=$("end").value;
+  const outside = lines.filter(l=>l.d && ((s&&l.d<s)||(e&&l.d>e)));
+  const row=(ok,t,sm)=>`<li><span class="${ok?"ok":"warn"}">${ok?ICON.ok:ICON.warn}</span><span class="t">${t}${sm?`<small>${sm}</small>`:""}</span></li>`;
+  $("checks").innerHTML =
+    row(!miss.length, miss.length?`${miss.length} receipt${miss.length>1?"s":""} missing`:"All receipts attached", `${need.length-miss.length} of ${need.length} expenses over ${gbp(LIMIT)} have one`) +
+    row(!over.length, over.length?`Meals over ${gbp(MEAL_CAP)} on ${fmtDay(over[0][0])}`:`Meals within ${gbp(MEAL_CAP)} a day`, over.length?`${gbp(over[0][1])} claimed that day`:"") +
+    row(!noAtt.length, noAtt.length?"Name the guests for client entertainment":"Guests named for client entertainment","") +
+    row(!outside.length, outside.length?`${outside.length} expense${outside.length>1?"s":""} dated outside the trip`:"All dates fall inside the trip","");
+  $("lines").querySelectorAll(".line").forEach(r=>{
+    const l = lines.find(x=>x.id==r.dataset.id);
+    r.querySelector("[data-conv]").textContent = l.cur==="EUR"&&l.amt ? "= "+gbp(inGBP(l)) : "";
+    const need = inGBP(l)>LIMIT && !l.rc, rc = r.querySelector(".rc"), chip = r.querySelector("[data-need]");
+    if(need && !chip) rc.insertAdjacentHTML("beforeend",'<span class="chip warn plain" data-need>Required</span>');
+    if(!need && chip) chip.remove();
+  });
+}
+
+$("lines").addEventListener("input", e=>{
+  const k=e.target.dataset.k; if(!k||k==="rc") return;
+  const l = lines.find(x=>x.id==e.target.closest(".line").dataset.id);
+  l[k] = k==="amt" ? e.target.value.replace(",",".") : e.target.value;
+  if(k==="amt"){ e.target.removeAttribute("aria-invalid"); }
+  summary();
+});
+$("lines").addEventListener("change", e=>{
+  if(e.target.dataset.k!=="rc") return;
+  const l = lines.find(x=>x.id==e.target.closest(".line").dataset.id);
+  if(e.target.files[0]){ l.rc = e.target.files[0].name; renderLines("r"+l.id); }
+});
+$("lines").addEventListener("click", e=>{
+  const b=e.target.closest("[data-rm]"); if(!b) return;
+  const i = lines.findIndex(x=>x.id==b.closest(".line").dataset.id);
+  lines.splice(i,1);
+  renderLines(lines.length ? "m"+lines[Math.min(i,lines.length-1)].id : "add");
+});
+$("add").addEventListener("click",()=>{
+  const last = lines[lines.length-1];
+  const l = L(last?last.d:$("start").value,"Meals","","","GBP","","");
+  lines.push(l); renderLines("m"+l.id);
+});
+["start","end"].forEach(i=>$(i).addEventListener("input",summary));
+
+$("save").addEventListener("click",()=>{
+  const t = new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+  $("saved").textContent = "Draft saved at " + t;
+});
+
+$("form").addEventListener("submit", e=>{
+  e.preventDefault();
+  document.querySelectorAll("[aria-invalid]").forEach(x=>x.removeAttribute("aria-invalid"));
+  const errs=[];
+  const bad=(id,msg)=>{ $(id).setAttribute("aria-invalid","true"); errs.push([id,msg]); };
+  if(!$("title").value.trim()) bad("title","Give the report a title");
+  if(!$("purpose").value.trim()) bad("purpose","Explain the business purpose");
+  if(!$("start").value) bad("start","Enter the first day of the trip");
+  if(!$("end").value) bad("end","Enter the last day of the trip");
+  lines.forEach((l,i)=>{
+    const n=i+1;
+    if(!l.m.trim()) bad("m"+l.id,`Expense ${n}: add a merchant`);
+    if(!(+l.amt>0)) bad("a"+l.id,`Expense ${n}: enter an amount`);
+    else if(inGBP(l)>LIMIT && !l.rc) errs.push(["r"+l.id,`Expense ${n}: attach a receipt for ${esc(l.m||"this expense")} (${gbp(inGBP(l))})`]);
+  });
+  if(!lines.length) errs.push(["add","Add at least one expense"]);
+  const a=$("alert");
+  if(errs.length){
+    a.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v6M12 16.5v.1"/></svg><div><h2>${errs.length} thing${errs.length>1?"s":""} to fix before you submit</h2><ul>${errs.map(([id,m])=>`<li><a href="#${id}" data-f="${id}">${m}</a></li>`).join("")}</ul></div>`;
+    a.hidden=false; a.focus(); a.scrollIntoView({block:"center"});
+    return;
+  }
+  a.hidden=true;
+  $("status").className="chip ok"; $("status").textContent="Waiting for approval";
+  $("done-t").textContent = `${gbp(lines.reduce((s,l)=>s+inGBP(l),0))} for ${$("title").value}. You will get an email when it is approved.`;
+  $("done").hidden=false; $("done").focus(); $("done").scrollIntoView({block:"center"});
+  document.querySelectorAll("#form input,#form select,#form textarea,#form button").forEach(x=>x.disabled=true);
+});
+$("alert").addEventListener("click",e=>{
+  const a=e.target.closest("[data-f]"); if(!a) return;
+  e.preventDefault(); const t=$(a.dataset.f); t.scrollIntoView({block:"center"}); t.focus();
+});
+
+renderLines();
+</script>
+</body>
+</html>

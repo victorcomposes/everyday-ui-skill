@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 5,
+  "minFontPx": 10,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(52, 71, 201)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 8,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to the report form",
+        "w": 180,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Outlay",
+        "w": 87,
+        "h": 26
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "button",
+        "text": "Add expense",
+        "w": 146,
+        "h": 40
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 20,
+        "h": 20
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

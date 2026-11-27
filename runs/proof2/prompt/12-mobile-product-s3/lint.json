@@ -1,0 +1,79 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "avenir next"
+  ],
+  "textColors": 4,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(22, 24, 26)",
+      "outlineVisible": false,
+      "boxShadow": "rgba(0, 0, 0, 0.15) 0px 1px 2px 0px"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "rgba(0, 0, 0, 0.15) 0px 1px 2px 0px"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 5,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Show photo 1",
+        "w": 28,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Show photo 2",
+        "w": 28,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Show photo 3",
+        "w": 28,
+        "h": 28
+      },
+      {
+        "tag": "a",
+        "text": "1,284 reviews",
+        "w": 83,
+        "h": 24
+      },
+      {
+        "tag": "button",
+        "text": "Size guide",
+        "w": 63,
+        "h": 24
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

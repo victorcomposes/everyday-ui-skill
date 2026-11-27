@@ -1,0 +1,99 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(23, 32, 27)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(11, 122, 90)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": true,
+    "px": 100
+  },
+  "smallTapTargets": {
+    "count": 59,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "All",
+        "w": 45,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "Unread\n4",
+        "w": 88,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "All types\n4\nunread",
+        "w": 89,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Offers\n1\nunread",
+        "w": 75,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Messages\n1\nunread",
+        "w": 96,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Payments\n1\nunread",
+        "w": 95,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Contracts\n1\nunread",
+        "w": 94,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Reviews",
+        "w": 73,
+        "h": 30
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

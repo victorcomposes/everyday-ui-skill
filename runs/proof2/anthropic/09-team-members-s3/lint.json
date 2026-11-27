@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 3
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 3
+      }
+    },
+    "contrastFailures": 3
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "bahnschrift",
+    "segoe ui variable text"
+  ],
+  "textColors": 18,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(74, 82, 112)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(23, 67, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 24,
+    "examples": [
+      {
+        "tag": "input",
+        "text": "",
+        "w": 316,
+        "h": 40
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nDesigner\nReviewer\nViewer",
+        "w": 316,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Send invite",
+        "w": 316,
+        "h": 40
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 324,
+        "h": 34
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nDesigner\nReviewer\nViewer",
+        "w": 250,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Remove",
+        "w": 66,
+        "h": 33
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nDesigner\nReviewer\nViewer",
+        "w": 250,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Remove",
+        "w": 66,
+        "h": 33
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

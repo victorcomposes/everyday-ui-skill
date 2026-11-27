@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "segoe ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(0, 0, 238)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(11, 87, 208)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 70,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to report",
+        "w": 117,
+        "h": 41
+      },
+      {
+        "tag": "a",
+        "text": "Outlay",
+        "w": 91,
+        "h": 27
+      },
+      {
+        "tag": "input",
+        "text": "Lisbon client visit - Northwin",
+        "w": 320,
+        "h": 43
+      },
+      {
+        "tag": "select",
+        "text": "EMEA Sales - 4120\nEMEA Custome",
+        "w": 320,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "Northwind Logistics",
+        "w": 320,
+        "h": 43
+      },
+      {
+        "tag": "select",
+        "text": "GBP - pound sterling",
+        "w": 320,
+        "h": 42
+      },
+      {
+        "tag": "select",
+        "text": "Flights and rail\nLodging\nGroun",
+        "w": 149,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "TAP Air Portugal LHR-LIS",
+        "w": 320,
+        "h": 43
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

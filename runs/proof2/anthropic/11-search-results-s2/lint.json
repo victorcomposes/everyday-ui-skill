@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 1
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "charter",
+    "segoe ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(20, 41, 31)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(27, 95, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 13,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Saltbox Kitchen",
+        "w": 205,
+        "h": 26
+      },
+      {
+        "tag": "a",
+        "text": "Recipes",
+        "w": 51,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Collections",
+        "w": 72,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Meal plans",
+        "w": 72,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Techniques",
+        "w": 73,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Saved recipes\n3",
+        "w": 120,
+        "h": 35
+      },
+      {
+        "tag": "select",
+        "text": "Best match\nHighest rated\nQuick",
+        "w": 132,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "chana masala",
+        "w": 123,
+        "h": 43
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

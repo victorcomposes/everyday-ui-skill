@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 14
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 14
+      }
+    },
+    "contrastFailures": 14
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 6,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(91, 98, 114)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(47, 91, 234)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 33,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "General",
+        "w": 68,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Team members",
+        "w": 117,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Review templates",
+        "w": 128,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Integrations",
+        "w": 94,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Billing",
+        "w": 58,
+        "h": 35
+      },
+      {
+        "tag": "a",
+        "text": "Audit log",
+        "w": 77,
+        "h": 35
+      },
+      {
+        "tag": "button",
+        "text": "Invite people",
+        "w": 358,
+        "h": 36
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 324,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

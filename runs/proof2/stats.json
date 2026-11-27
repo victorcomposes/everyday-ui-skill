@@ -1,0 +1,283 @@
+{
+  "seed": 2026,
+  "draws": 10000,
+  "arms": [
+    "baseline",
+    "prompt",
+    "anthropic",
+    "skill"
+  ],
+  "armMeans": {
+    "baseline": 6.194,
+    "prompt": 7.799,
+    "anthropic": 7.393,
+    "skill": 6.417
+  },
+  "diff": {
+    "baseline": {
+      "mean": 0.223,
+      "lo": -0.409,
+      "hi": 0.828,
+      "tasks": 8,
+      "groups": 24
+    },
+    "prompt": {
+      "mean": -1.383,
+      "lo": -1.72,
+      "hi": -1.051,
+      "tasks": 8,
+      "groups": 24
+    },
+    "anthropic": {
+      "mean": -0.977,
+      "lo": -1.368,
+      "hi": -0.496,
+      "tasks": 8,
+      "groups": 24
+    }
+  },
+  "wins": {
+    "win": 0,
+    "tie": 0,
+    "loss": 24,
+    "groups": 24
+  },
+  "perTask": {
+    "09-team-members": {
+      "baseline": {
+        "mean": 5.531,
+        "min": 5.438,
+        "max": 5.594,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 7.917,
+        "min": 7.875,
+        "max": 7.969,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 7.438,
+        "min": 7.188,
+        "max": 7.594,
+        "n": 3
+      },
+      "skill": {
+        "mean": 6.635,
+        "min": 6.375,
+        "max": 6.813,
+        "n": 3
+      }
+    },
+    "10-notifications": {
+      "baseline": {
+        "mean": 6.219,
+        "min": 6.031,
+        "max": 6.531,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 7.708,
+        "min": 7.688,
+        "max": 7.719,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 7.802,
+        "min": 7.75,
+        "max": 7.906,
+        "n": 3
+      },
+      "skill": {
+        "mean": 6.448,
+        "min": 6.063,
+        "max": 6.75,
+        "n": 3
+      }
+    },
+    "11-search-results": {
+      "baseline": {
+        "mean": 6.688,
+        "min": 6.375,
+        "max": 7.063,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 7.948,
+        "min": 7.719,
+        "max": 8.156,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 7.083,
+        "min": 6.656,
+        "max": 7.469,
+        "n": 3
+      },
+      "skill": {
+        "mean": 5.771,
+        "min": 5.594,
+        "max": 6.094,
+        "n": 3
+      }
+    },
+    "12-mobile-product": {
+      "baseline": {
+        "mean": 6.271,
+        "min": 5.906,
+        "max": 6.844,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 8.125,
+        "min": 7.875,
+        "max": 8.281,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 7.229,
+        "min": 6.563,
+        "max": 7.813,
+        "n": 3
+      },
+      "skill": {
+        "mean": 6.635,
+        "min": 5.906,
+        "max": 7.5,
+        "n": 3
+      }
+    },
+    "13-expense-report": {
+      "baseline": {
+        "mean": 7.094,
+        "min": 6.594,
+        "max": 7.813,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 7.313,
+        "min": 6.438,
+        "max": 7.875,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 7.49,
+        "min": 7.094,
+        "max": 7.75,
+        "n": 3
+      },
+      "skill": {
+        "mean": 6.135,
+        "min": 5.875,
+        "max": 6.469,
+        "n": 3
+      }
+    },
+    "14-support-conversation": {
+      "baseline": {
+        "mean": 5.927,
+        "min": 5.719,
+        "max": 6.156,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 8.146,
+        "min": 7.813,
+        "max": 8.344,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 6.969,
+        "min": 6.469,
+        "max": 7.281,
+        "n": 3
+      },
+      "skill": {
+        "mean": 7.302,
+        "min": 6.875,
+        "max": 7.656,
+        "n": 3
+      }
+    },
+    "15-mobile-booking": {
+      "baseline": {
+        "mean": 5.344,
+        "min": 5.313,
+        "max": 5.375,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 7.573,
+        "min": 6.844,
+        "max": 8.031,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 7.656,
+        "min": 7.438,
+        "max": 7.969,
+        "n": 3
+      },
+      "skill": {
+        "mean": 6.406,
+        "min": 6.313,
+        "max": 6.594,
+        "n": 3
+      }
+    },
+    "16-stock-levels": {
+      "baseline": {
+        "mean": 6.479,
+        "min": 6.313,
+        "max": 6.688,
+        "n": 3
+      },
+      "prompt": {
+        "mean": 7.667,
+        "min": 7.406,
+        "max": 8,
+        "n": 3
+      },
+      "anthropic": {
+        "mean": 7.479,
+        "min": 7.25,
+        "max": 7.813,
+        "n": 3
+      },
+      "skill": {
+        "mean": 6,
+        "min": 5.844,
+        "max": 6.219,
+        "n": 3
+      }
+    }
+  },
+  "byFamily": {
+    "opus": {
+      "judges": [
+        "opus1",
+        "opus2"
+      ],
+      "diffVsAnthropic": {
+        "mean": -0.716,
+        "lo": -1.148,
+        "hi": -0.198,
+        "tasks": 8,
+        "groups": 24
+      }
+    },
+    "sonnet": {
+      "judges": [
+        "sonnet1",
+        "sonnet2"
+      ],
+      "diffVsAnthropic": {
+        "mean": -1.237,
+        "lo": -1.622,
+        "hi": -0.776,
+        "tasks": 8,
+        "groups": 24
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "13-expense-report-s1": {
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 8, "mobile": 7, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: receipt chips are truncated to 'ta...', 'b...' so filenames are unreadable" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 6, "colour": 6, "craft": 6, "realism": 7, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the one missing receipt is only a small blue link and receipt filenames are truncated, so the blocking problem does not stand out" },
+    "B": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 9, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the 'Client entertainme' category select text is clipped" },
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the attendees and note field on Expense 7 clips its text ('M. Alvar')" }
+  },
+  "13-expense-report-s2": {
+    "D": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 6, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the Submit button is not on the first screen and the sidebar is mostly empty space" },
+    "C": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: description boxes are tall and leave empty space under one-line text, so row heights look uneven" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: receipt chips are truncated ('united-it...') and the note inputs clip their text" },
+    "A": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 9, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: note inputs clip their text ('econ', 'CFO of H')" }
+  },
+  "13-expense-report-s3": {
+    "D": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 7, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: merchant fields clip their text ('Avanti West Coast, Eu') and Save draft appears twice in the fold" },
+    "C": { "hierarchy": 9, "layout": 8, "typography": 9, "colour": 8, "craft": 9, "realism": 9, "mobile": 8, "dark": 8, "overall": 9, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the static Last day and Currency text sits on a different baseline from the First day input" },
+    "B": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 6, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: expense rows are read-only text with a separate Add an expense form below, so editing a row is unclear" },
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the avatar sits next to the logo instead of at the right edge and there is no navigation" }
+  }
+}

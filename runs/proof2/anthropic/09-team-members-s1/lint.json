@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 1
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "avenir next"
+  ],
+  "textColors": 12,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(86, 96, 130)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 43,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Team",
+        "w": 60,
+        "h": 35
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 324,
+        "h": 42
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nDesigner\nReviewer\nViewer",
+        "w": 324,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "text": "Send invites",
+        "w": 324,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "text": "All 17",
+        "w": 58,
+        "h": 31
+      },
+      {
+        "tag": "button",
+        "text": "Active 14",
+        "w": 81,
+        "h": 31
+      },
+      {
+        "tag": "button",
+        "text": "Invited 3",
+        "w": 80,
+        "h": 31
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 324,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 8,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(22, 32, 27)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(29, 95, 180)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": true,
+    "px": 404
+  },
+  "smallTapTargets": {
+    "count": 54,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "G\nGigwell",
+        "w": 98,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Mark all as read",
+        "w": 175,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Preferences",
+        "w": 175,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "All activity\n5\nunread",
+        "w": 133,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Proposals\n1\nunread",
+        "w": 128,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Messages\n1\nunread",
+        "w": 128,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Payments\n1\nunread",
+        "w": 128,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Contracts\n1\nunread",
+        "w": 127,
+        "h": 38
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a check-up - Fernlea</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #0b7671; --accent-hover: #085f5b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f1f8f7; --brand-deep: #0b3a37; --on-deep: #ffffff; --on-deep-muted: #a6d8d2; --accent-on-deep: #4fc7bd;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  /* soft shape */
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+  --control-h-touch: 44px; --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-dialog: 0 16px 48px rgb(16 24 40 / 0.18);
+  --ease: cubic-bezier(0.2, 0, 0, 1); --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #4fc7bd; --accent-hover: #7dd8d0; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c; --brand-deep: #0a2a28; --on-deep: #e9ebef; --on-deep-muted: #9fd3cd; --accent-on-deep: #4fc7bd;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5); --shadow-dialog: 0 16px 48px rgb(0 0 0 / 0.6);
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--frame); color: var(--text);
+  font: 400 var(--text-md)/1.5 var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 700 28px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* phone column: full screen on a phone, a centred screen on a wide window */
+.screen { position: relative; max-width: 430px; min-height: 100dvh; margin: 0 auto; background: var(--surface); display: flex; flex-direction: column; overflow: clip; }
+@media (min-width: 641px) {
+  body { padding: var(--s-6) 0; }
+  .screen { min-height: calc(100dvh - 48px); border-radius: var(--r-xl); border: 1px solid var(--border); box-shadow: var(--shadow-pop); }
+}
+
+.topbar { display: flex; align-items: center; gap: var(--s-1); min-height: var(--h-topbar); padding: 0 var(--s-4) 0 var(--s-1);
+  background: var(--frame); border-bottom: 1px solid var(--border); }
+.back { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: var(--r-full); color: var(--accent); }
+.back:hover { background: var(--accent-subtle); }
+.brand { display: inline-flex; align-items: center; gap: var(--s-2); font: 700 18px/1 var(--font-display); letter-spacing: -0.01em; }
+
+main { flex: 1; padding: var(--s-5) var(--s-4) var(--s-6); scroll-padding-bottom: 96px; }
+.head p { margin-top: var(--rhythm-title); color: var(--text-muted); }
+.head .price { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+section { margin-top: var(--s-8); }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+legend { padding: 0; }
+.sec-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); min-height: 44px; margin-bottom: var(--s-1); }
+.sec-head .sub { color: var(--text-muted); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+.hint { color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--rhythm-tight); }
+
+/* option pattern: a transparent radio covers its label, a sibling face draws the state */
+.opt { position: relative; display: block; min-width: 0; }
+.opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.opt input:disabled { cursor: default; }
+.opt input:focus-visible + .face { outline: 2px solid var(--focus); outline-offset: 2px; }
+.face { transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
+
+/* dentists */
+.dentists { display: grid; gap: var(--s-2); }
+.dentist .face { display: flex; align-items: center; gap: var(--s-3); min-height: 64px; padding: var(--s-2) var(--s-4); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
+.dentist input:checked + .face { border-color: var(--accent); background: var(--accent-subtle); box-shadow: inset 0 0 0 1px var(--accent); }
+.avatar { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font: 600 var(--text-sm)/1 var(--font); }
+.dentist input:checked + .face .avatar { background: var(--surface); }
+.who { flex: 1; min-width: 0; }
+.who strong { display: block; font-weight: 600; overflow-wrap: anywhere; }
+.who span { display: block; color: var(--text-muted); font-size: var(--text-sm); }
+.dot { flex: none; width: 22px; height: 22px; border-radius: var(--r-full); border: 2px solid var(--border-strong); display: grid; place-items: center; }
+.dentist input:checked + .face .dot { border-color: var(--accent); }
+.dentist input:checked + .face .dot::after { content: ""; width: 10px; height: 10px; border-radius: var(--r-full); background: var(--accent); }
+
+/* week strip */
+.weeknav { display: flex; gap: var(--s-1); }
+.iconbtn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: var(--r-full); background: var(--surface); color: var(--text); cursor: pointer; }
+.iconbtn:hover:not(:disabled) { background: var(--bg-subtle); }
+.iconbtn:disabled { color: var(--text-muted); opacity: 0.5; cursor: default; }
+.days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--s-1); }
+.day .face { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 68px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+.day .dow { font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); }
+.day .dn { font-size: var(--text-md); line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.day .free { font-size: var(--text-xs); line-height: 16px; font-weight: 500; color: var(--accent); font-variant-numeric: tabular-nums; }
+.day.off .face { background: var(--bg-subtle); border-color: transparent; }
+.day.off .dn, .day.off .free { color: var(--text-muted); font-weight: 400; }
+.day.full .free { color: var(--text-muted); }
+.day.today .dow { color: var(--text); font-weight: 600; }
+.day input:checked + .face { background: var(--accent); border-color: var(--accent); }
+.day input:checked + .face .dow, .day input:checked + .face .dn, .day input:checked + .face .free { color: var(--on-accent); }
+.nextfree { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); border-radius: var(--r-md); background: var(--accent-subtle); font-size: var(--text-sm); }
+.nextfree b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.textbtn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); border: 0; background: none; color: var(--accent); font-weight: 600; font-size: var(--text-sm); border-radius: var(--r-md); cursor: pointer; white-space: nowrap; }
+.textbtn:hover { background: var(--surface); }
+
+/* time slots */
+.group + .group { margin-top: var(--s-4); }
+.group h3 { margin: 0 0 var(--s-2); font: 500 var(--text-sm)/1.4 var(--font); color: var(--text-muted); }
+.slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+.slot .face { display: grid; place-items: center; min-height: 48px; border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); font-weight: 500; font-variant-numeric: tabular-nums; }
+.slot input:checked + .face { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.error { margin-bottom: var(--s-3); padding: var(--s-3) var(--s-4); border-radius: var(--r-md); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); color: var(--danger); font-size: var(--text-sm); font-weight: 500; }
+.empty { padding: var(--s-4); border-radius: var(--r-lg); border: 1px dashed var(--border-strong); }
+.empty strong { display: block; font-weight: 600; }
+.empty p { margin-top: var(--s-1); color: var(--text-muted); font-size: var(--text-sm); }
+.empty .btn { margin-top: var(--s-3); }
+.policy { margin-top: var(--rhythm-group); color: var(--text-muted); font-size: var(--text-sm); }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 48px; padding: 0 var(--s-5); border: 1px solid transparent; border-radius: var(--r-md); font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary[aria-busy="true"] { cursor: progress; }
+.btn-secondary { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+.btn-secondary:hover { background: var(--bg-subtle); }
+
+/* sticky booking bar */
+.bar { position: sticky; bottom: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
+  padding: var(--s-3) var(--s-4) calc(var(--s-3) + env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--border); }
+.bar .sum { min-width: 0; }
+.bar .sum small { display: block; color: var(--text-muted); font-size: var(--text-sm); line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar .sum strong { display: block; font-size: var(--text-md); line-height: 24px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bar .btn { flex: none; min-width: 148px; }
+
+/* confirmation sheet */
+dialog { width: min(100%, 430px); max-width: 430px; margin: auto auto 0; padding: var(--s-2) var(--s-4) calc(var(--s-6) + env(safe-area-inset-bottom)); border: 0; border-radius: var(--r-xl) var(--r-xl) 0 0; background: var(--surface); color: var(--text); box-shadow: var(--shadow-dialog); }
+dialog::backdrop { background: rgb(10 20 20 / 0.5); }
+.grab { width: 40px; height: 4px; margin: 0 auto var(--s-4); border-radius: var(--r-full); background: var(--border-strong); }
+.done-head { display: flex; align-items: center; gap: var(--s-3); }
+.tick { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r-full); background: var(--success-subtle); color: var(--success); }
+.sheet-sub { margin-top: var(--rhythm-tight); color: var(--text-muted); font-size: var(--text-sm); }
+dl.facts { margin: var(--rhythm-content) 0; display: grid; gap: 0; }
+dl.facts div { display: flex; justify-content: space-between; gap: var(--s-4); padding: var(--s-3) 0; border-top: 1px solid var(--border); }
+dl.facts div:last-child { border-bottom: 1px solid var(--border); }
+dl.facts dt { color: var(--text-muted); font-size: var(--text-sm); }
+dl.facts dd { margin: 0; text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sheet-actions { display: grid; gap: var(--s-2); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to booking</a>
+<div class="screen">
+  <header class="topbar">
+    <a class="back" href="#" aria-label="Back to appointments">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+    </a>
+    <span class="brand">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="9" fill="var(--accent)"/><path d="M14 7.5v13M7.5 14h13" stroke="var(--on-accent)" stroke-width="3.25" stroke-linecap="round"/></svg>
+      Fernlea
+    </span>
+  </header>
+
+  <main id="main">
+    <div class="head">
+      <h1>Book a check-up</h1>
+      <p>30 minutes, <span class="price">£68</span> at the clinic</p>
+    </div>
+
+    <section aria-labelledby="h-dentist">
+      <fieldset>
+        <legend class="sec-head"><h2 id="h-dentist">Dentist</h2></legend>
+        <div class="dentists" id="dentists"></div>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="h-date">
+      <div class="sec-head">
+        <div>
+          <h2 id="h-date">Date</h2>
+        </div>
+        <div class="weeknav" role="group" aria-label="Change week">
+          <button class="iconbtn" id="prev" type="button" aria-label="Earlier week">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg>
+          </button>
+          <button class="iconbtn" id="next" type="button" aria-label="Later week">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      <fieldset>
+        <legend class="sr-only">Choose a day</legend>
+        <div class="days" id="days"></div>
+      </fieldset>
+      <p class="hint" id="range"></p>
+      <div id="nextfree"></div>
+    </section>
+
+    <section aria-labelledby="h-time">
+      <div class="sec-head">
+        <h2 id="h-time">Time</h2>
+        <span class="sub" id="time-sub"></span>
+      </div>
+      <div id="time-error" role="alert"></div>
+      <div id="times"></div>
+    </section>
+
+    <p class="policy">Free to change or cancel up to 24 hours before your visit.</p>
+  </main>
+
+  <div class="bar">
+    <div class="sum" aria-live="polite"><small id="bar-label"></small><strong id="bar-value"></strong></div>
+    <button class="btn btn-primary" id="book" type="button">Book check-up</button>
+  </div>
+</div>
+
+<dialog id="sheet" aria-labelledby="sheet-title">
+  <div class="grab" aria-hidden="true"></div>
+  <div class="done-head">
+    <span class="tick" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+    <h2 id="sheet-title">Check-up booked</h2>
+  </div>
+  <p class="sheet-sub" id="sheet-sub"></p>
+  <dl class="facts" id="facts"></dl>
+  <div class="sheet-actions">
+    <button class="btn btn-primary" id="done" type="button">Done</button>
+    <button class="btn btn-secondary" id="change" type="button">Change time</button>
+  </div>
+</dialog>
+
+<script>
+/* data: one module, everything on screen is derived from it */
+const TODAY = '2026-11-27', NOW = '10:30';
+const stateParam = new URLSearchParams(location.search).get('state');
+const DENTISTS = [
+  { id: 'okonkwo', name: 'Dr Amara Okonkwo', role: 'Principal dentist', days: [1, 2, 3, 4, 5] },
+  { id: 'wieczorek', name: 'Dr Tomasz Wieczorek', role: 'General dentist', days: [2, 4, 6] },
+  { id: 'raman', name: 'Dr Priya Raman', role: 'General dentist, children welcome', days: [1, 3, 5] },
+];
+if (stateParam === 'stress') DENTISTS[1].name = 'Dr Maria-Concepción Fitzgerald-Oyelaran';
+const TIMES = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','14:00','14:30','15:00','15:30','16:00','16:30'];
+const SAT_LAST = '12:30';
+const PRICE = 68;
+let emptyDate = null; // ?state=empty makes the first chosen day fully booked
+
+const utc = (iso) => { const [y, m, d] = iso.split('-').map(Number); return new Date(Date.UTC(y, m - 1, d)); };
+const addDays = (iso, n) => { const d = utc(iso); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const fmt = (iso, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: 'UTC', ...opts }).format(utc(iso));
+const short = (iso) => `${fmt(iso, { weekday: 'short' })} ${fmt(iso, { day: 'numeric' })} ${fmt(iso, { month: 'short' })}`;
+const long = (iso) => `${fmt(iso, { weekday: 'long' })} ${fmt(iso, { day: 'numeric' })} ${fmt(iso, { month: 'long' })}`;
+const hash = (s) => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return (h >>> 0) % 100; };
+const dentist = (id) => DENTISTS.find((d) => d.id === id);
+const initials = (n) => n.replace(/^Dr /, '').split(/[ -]/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('');
+
+function slotsFor(did, iso) {
+  const d = dentist(did), dow = utc(iso).getUTCDay();
+  if (iso < TODAY || !d.days.includes(dow)) return null; // null = does not work that day
+  if (iso === emptyDate) return [];
+  return TIMES.filter((t) => (dow !== 6 || t <= SAT_LAST) && !(iso === TODAY && t <= NOW) && hash(did + iso + t) >= 38);
+}
+function nextFree(did) {
+  for (let i = 0; i < 28; i++) { const iso = addDays(TODAY, i), s = slotsFor(did, iso); if (s && s.length) return { iso, time: s[0] }; }
+  return null;
+}
+
+/* state */
+const S = { dentist: 'okonkwo', week: 0, date: null, time: null, saving: false, booked: false };
+S.date = nextFree(S.dentist).iso;
+if (stateParam === 'empty') { emptyDate = S.date; }
+const $ = (id) => document.getElementById(id);
+
+function renderDentists() {
+  $('dentists').innerHTML = DENTISTS.map((d) => `
+    <label class="opt dentist"><input type="radio" name="dentist" value="${d.id}" ${d.id === S.dentist ? 'checked' : ''}>
+      <span class="face"><span class="avatar" aria-hidden="true">${initials(d.name)}</span>
+      <span class="who"><strong>${d.name}</strong><span>${d.role}</span></span><span class="dot" aria-hidden="true"></span></span></label>`).join('');
+}
+function renderDays() {
+  const start = addDays(TODAY, S.week * 7);
+  $('days').innerHTML = Array.from({ length: 7 }, (_, i) => {
+    const iso = addDays(start, i), s = slotsFor(S.dentist, iso);
+    const off = s === null, full = s !== null && s.length === 0;
+    const cls = ['opt', 'day', off && 'off', full && 'full', iso === TODAY && 'today'].filter(Boolean).join(' ');
+    const free = off ? '–' : full ? 'Full' : s.length;
+    const say = off ? 'not working' : full ? 'fully booked' : `${s.length} free`;
+    return `<label class="${cls}"><input type="radio" name="day" value="${iso}" ${iso === S.date ? 'checked' : ''} ${off ? 'disabled' : ''}>
+      <span class="face"><span class="dow">${iso === TODAY ? 'Today' : fmt(iso, { weekday: 'short' })}</span><span class="dn">${fmt(iso, { day: 'numeric' })}</span><span class="free" aria-hidden="true">${free}</span></span>
+      <span class="sr-only">${long(iso)}, ${say}</span></label>`;
+  }).join('');
+  const end = addDays(start, 6);
+  $('range').textContent = `${short(start)} to ${short(end)}. Numbers show free times.`;
+  $('prev').disabled = S.week === 0;
+  $('next').disabled = S.week === 3;
+}
+function renderNextFree() {
+  const nf = nextFree(S.dentist), d = dentist(S.dentist);
+  const here = nf && S.date === nf.iso;
+  $('nextfree').innerHTML = nf && !here ? `<div class="nextfree"><span>Next free with Dr ${d.name.split(' ').pop()}: <b>${short(nf.iso)}, ${nf.time}</b></span><button class="textbtn" type="button" id="usenext">Use it</button></div>` : '';
+}
+function renderTimes() {
+  const s = S.date && slotsFor(S.dentist, S.date);
+  const grp = (title, list) => list.length ? `<div class="group"><h3>${title}</h3><div class="slots">${list.map((t) => `
+    <label class="opt slot"><input type="radio" name="time" value="${t}" ${t === S.time ? 'checked' : ''}><span class="face">${t}</span></label>`).join('')}</div></div>` : '';
+  if (!S.date) { $('time-sub').textContent = ''; $('times').innerHTML = '<p class="hint">Choose a day to see free times.</p>'; return; }
+  $('time-sub').textContent = `${short(S.date)}, ${s.length} free`;
+  if (!s.length) {
+    const nf = nextFree(S.dentist), d = dentist(S.dentist);
+    const other = nf && nf.iso === S.date ? (() => { for (let i = 1; i < 28; i++) { const iso = addDays(S.date, i), x = slotsFor(S.dentist, iso); if (x && x.length) return { iso, time: x[0] }; } })() : nf;
+    $('times').innerHTML = `<div class="empty"><strong>No free times on ${short(S.date)}</strong>
+      <p>${d.name} is fully booked that day.${other ? ` The next free time is ${short(other.iso)} at ${other.time}.` : ''}</p>
+      ${other ? `<button class="btn btn-secondary" type="button" data-pick="${other.iso}">Show ${short(other.iso)}</button>` : ''}</div>`;
+    return;
+  }
+  $('times').innerHTML = grp('Morning', s.filter((t) => t < '13:00')) + grp('Afternoon', s.filter((t) => t >= '13:00'));
+}
+function renderBar() {
+  const d = dentist(S.dentist);
+  $('bar-label').textContent = S.booked ? 'Booked with Dr ' + d.name.split(' ').pop() : 'Check-up with Dr ' + d.name.split(' ').pop();
+  $('bar-value').textContent = S.time ? `${short(S.date)} at ${S.time}` : 'Choose a time';
+  const b = $('book');
+  b.textContent = S.saving ? 'Booking…' : S.booked ? 'View booking' : 'Book check-up';
+  b.setAttribute('aria-busy', S.saving);
+}
+function clearErr() { $('time-error').innerHTML = ''; }
+function resetBooked() { S.booked = false; }
+function goToDate(iso) {
+  S.date = iso; S.week = Math.floor((utc(iso) - utc(TODAY)) / 864e5 / 7);
+  const s = slotsFor(S.dentist, iso); if (!s || !s.includes(S.time)) S.time = null;
+  resetBooked(); clearErr(); renderDays(); renderNextFree(); renderTimes(); renderBar();
+}
+
+/* events */
+document.addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.name === 'dentist') {
+    S.dentist = t.value; resetBooked(); clearErr();
+    const s = slotsFor(S.dentist, S.date);
+    if (!s || !s.length) { const nf = nextFree(S.dentist); S.date = nf ? nf.iso : null; if (nf) S.week = Math.floor((utc(nf.iso) - utc(TODAY)) / 864e5 / 7); }
+    const ok = S.date && slotsFor(S.dentist, S.date); if (!ok || !ok.includes(S.time)) S.time = null;
+    renderDays(); renderNextFree(); renderTimes(); renderBar();
+  } else if (t.name === 'day') {
+    S.date = t.value; resetBooked(); clearErr();
+    const s = slotsFor(S.dentist, S.date); if (!s.includes(S.time)) S.time = null;
+    renderNextFree(); renderTimes(); renderBar();
+  } else if (t.name === 'time') {
+    S.time = t.value; resetBooked(); clearErr(); renderNextFree(); renderBar();
+  }
+});
+document.addEventListener('click', (e) => {
+  const pick = e.target.closest('[data-pick]'); if (pick) goToDate(pick.dataset.pick);
+  if (e.target.closest('#usenext')) { const nf = nextFree(S.dentist); goToDate(nf.iso); S.time = nf.time; renderTimes(); renderNextFree(); renderBar(); }
+});
+$('prev').addEventListener('click', () => { S.week = Math.max(0, S.week - 1); renderDays(); });
+$('next').addEventListener('click', () => { S.week = Math.min(3, S.week + 1); renderDays(); });
+
+function openSheet() {
+  const d = dentist(S.dentist);
+  $('sheet-sub').textContent = 'We have sent the details to your phone. You can change it up to 24 hours before.';
+  $('facts').innerHTML = [['Dentist', d.name], ['Date', long(S.date)], ['Time', `${S.time}, 30 minutes`], ['Place', 'Fernlea Dental, 14 Hartley Road'], ['Cost', `£${PRICE.toFixed(2)}, pay at the clinic`]]
+    .map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+  if (!$('sheet').open) $('sheet').showModal();
+}
+$('book').addEventListener('click', () => {
+  if (S.saving) return;
+  if (S.booked) return openSheet();
+  if (!S.time) {
+    $('time-error').innerHTML = '<div class="error">Choose a time for your check-up. Free times are listed above the Book check-up button.</div>';
+    const first = document.querySelector('input[name="time"]');
+    (first || $('time-error')).scrollIntoView({ block: 'center' });
+    if (first) first.focus();
+    return;
+  }
+  S.saving = true; renderBar();
+  setTimeout(() => { S.saving = false; S.booked = true; renderBar(); openSheet(); }, 700);
+});
+$('done').addEventListener('click', () => $('sheet').close());
+$('change').addEventListener('click', () => { S.booked = false; renderBar(); $('sheet').close(); });
+$('sheet').addEventListener('close', () => $('book').focus({ preventScroll: true }));
+
+renderDentists(); renderDays(); renderNextFree(); renderTimes(); renderBar();
+if (stateParam === 'sheet') {
+  const s = slotsFor(S.dentist, S.date); S.time = s[0]; S.booked = true;
+  renderTimes(); renderNextFree(); renderBar(); openSheet();
+}
+</script>
+</body>
+</html>

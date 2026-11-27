@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>New expense report - Outlay</title>
+<style>
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --surface-2:#f0f2f5; --text:#14181f; --muted:#576170;
+  --border:#d8dde5; --border-strong:#b9c1cc;
+  --accent:#0f6b63; --accent-hover:#0b564f; --on-accent:#ffffff; --accent-soft:#e1f3f0;
+  --warn:#7d4a00; --warn-bg:#fff3dc; --warn-line:#f0cf92;
+  --danger:#b3261e; --danger-bg:#fde8e6; --danger-line:#f2b5b0;
+  --ok:#17703d; --ok-bg:#e3f5ea;
+  --focus:#1d4ed8; --shadow:0 1px 2px rgba(20,24,31,.06),0 4px 16px rgba(20,24,31,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1217; --surface:#161b22; --surface-2:#1d232c; --text:#e8ebf0; --muted:#9ba5b3;
+    --border:#2a323d; --border-strong:#404b59;
+    --accent:#3fc6b7; --accent-hover:#6fdacd; --on-accent:#06211e; --accent-soft:#12312e;
+    --warn:#f2b85b; --warn-bg:#33260d; --warn-line:#5c4417;
+    --danger:#ff8f86; --danger-bg:#3b1c1a; --danger-line:#6a2c28;
+    --ok:#6fd49a; --ok-bg:#12301f;
+    --focus:#7aa2ff; --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg{flex:none}
+
+/* top bar */
+.top{background:var(--surface);border-bottom:1px solid var(--border)}
+.top-in{max-width:1240px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:18px;letter-spacing:-.01em;color:var(--text);text-decoration:none}
+.nav{display:flex;gap:4px;flex:1}
+.nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:500}
+.nav a:hover{background:var(--surface-2);color:var(--text)}
+.nav a[aria-current]{color:var(--text);background:var(--surface-2)}
+.me{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700;font-size:13px}
+
+.wrap{max-width:1240px;margin:0 auto;padding:24px 24px 64px}
+.crumbs{font-size:14px;color:var(--muted);margin-bottom:12px}
+.crumbs a{color:var(--muted)}
+.crumbs span{margin:0 6px}
+.page-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+h1{font-size:28px;line-height:1.2;letter-spacing:-.02em}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:600;background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
+.chip.ok{background:var(--ok-bg);color:var(--ok);border-color:transparent}
+.sub{color:var(--muted);margin-bottom:24px}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}
+.sec{padding:24px;margin-bottom:24px}
+.sec-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
+h2{font-size:18px;letter-spacing:-.01em}
+.sec-head p{color:var(--muted);font-size:14px;margin-top:2px}
+
+/* fields */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.span2{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label,.lbl{font-size:13px;font-weight:600}
+.opt{color:var(--muted);font-weight:400}
+.hint{font-size:13px;color:var(--muted)}
+input[type=text],input[type=date],input[type=number],select,textarea{
+  width:100%;min-height:42px;padding:9px 12px;background:var(--surface);border:1px solid var(--border-strong);border-radius:9px;
+}
+textarea{resize:vertical;min-height:84px}
+select{appearance:none;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23788496' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+input:hover,select:hover,textarea:hover{border-color:var(--muted)}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--focus);outline-offset:0;border-color:var(--focus)}
+[aria-invalid=true]{border-color:var(--danger)!important}
+.err{font-size:13px;color:var(--danger);display:flex;gap:6px;align-items:flex-start}
+.money{position:relative}
+.money span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.money input{padding-left:26px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* items */
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.item{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.item.flag{border-color:var(--warn-line)}
+.item-head{grid-column:1/-1;display:flex;align-items:center;gap:10px}
+.badge{width:24px;height:24px;border-radius:7px;background:var(--surface-2);border:1px solid var(--border);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--muted)}
+.item-title{font-size:14px;font-weight:600;flex:1}
+.f-date{grid-column:span 3}.f-cat{grid-column:span 3}.f-merch{grid-column:span 4}.f-amt{grid-column:span 2}
+.row2{grid-column:1/-1;display:flex;gap:14px;align-items:flex-start}
+.row2 .f-note{flex:1}
+.row2 .f-att{width:130px}
+.row2 .f-att[hidden]{display:none}
+.f-receipt{width:260px}
+.msgs{grid-column:1/-1;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.msgs:empty{display:none}
+.msg{display:flex;gap:8px;align-items:flex-start;font-size:13px;padding:8px 10px;border-radius:8px;background:var(--warn-bg);color:var(--warn)}
+.msg.bad{background:var(--danger-bg);color:var(--danger)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 16px;border-radius:9px;border:1px solid var(--border-strong);background:var(--surface);font-weight:600;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn.block{width:100%}
+.btn-icon{width:36px;height:36px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--muted);display:grid;place-items:center;cursor:pointer}
+.btn-icon:hover{background:var(--danger-bg);color:var(--danger)}
+.btn-link{background:none;border:0;padding:0;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:underline}
+
+.attach{display:flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 12px;border:1.5px dashed var(--border-strong);border-radius:9px;color:var(--accent);font-weight:600;cursor:pointer;background:transparent;width:100%}
+.attach:hover,.attach.drag{background:var(--accent-soft);border-color:var(--accent)}
+.f-receipt input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.f-receipt input[type=file]:focus-visible+.attach{outline:2px solid var(--focus);outline-offset:2px}
+.f-receipt[data-invalid] .attach{border-color:var(--danger);color:var(--danger)}
+.file{display:flex;align-items:center;gap:8px;min-height:42px;padding:4px 4px 4px 10px;border:1px solid var(--border-strong);border-radius:9px;background:var(--surface-2)}
+.file svg.ic{color:var(--ok)}
+.file-name{flex:1;min-width:0}
+.file-name b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-name small{display:block;font-size:12px;color:var(--muted);line-height:1.2}
+
+.empty{border:1.5px dashed var(--border-strong);border-radius:12px;padding:32px 16px;text-align:center;color:var(--muted)}
+.add-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;flex-wrap:wrap}
+
+/* summary */
+.aside{position:sticky;top:16px}
+.sum{padding:22px}
+.total-lbl{font-size:13px;color:var(--muted);font-weight:600}
+.total{font-size:36px;line-height:1.15;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.total-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.sum hr{border:0;border-top:1px solid var(--border);margin:18px 0}
+.sum h3{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.cats{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.cats li{display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:14px}
+.cats .amt{font-variant-numeric:tabular-nums;font-weight:600}
+.bar{grid-column:1/-1;height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.checks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:14px}
+.checks li{display:flex;gap:10px;align-items:flex-start}
+.dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex:none;margin-top:1px;background:var(--ok-bg);color:var(--ok)}
+.dot.warn{background:var(--warn-bg);color:var(--warn)}
+.who{display:flex;align-items:center;gap:10px;font-size:14px}
+.who small{display:block;color:var(--muted);font-size:13px;line-height:1.3}
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.fine{font-size:12.5px;color:var(--muted);margin-top:14px}
+
+.issues{margin-bottom:24px;padding:16px 20px;border:1px solid var(--danger-line);background:var(--danger-bg);border-radius:12px;color:var(--text)}
+.issues h2{font-size:16px;color:var(--danger);margin-bottom:8px}
+.issues ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.issues a{color:var(--text)}
+
+.mbar{display:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:10px;display:flex;gap:14px;align-items:center;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:30;max-width:calc(100vw - 32px)}
+.toast[hidden]{display:none}
+.toast button{background:none;border:0;color:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:0}
+
+/* done */
+.done{max-width:720px;margin:24px auto 0;padding:32px}
+.done-ic{width:52px;height:52px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;margin-bottom:16px}
+.done h1{font-size:26px;margin-bottom:6px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0;padding:16px;background:var(--surface-2);border-radius:12px}
+.facts dt{font-size:12px;color:var(--muted);font-weight:600}
+.facts dd{margin:2px 0 0;font-weight:700;font-variant-numeric:tabular-nums}
+.steps{list-style:none;margin:0 0 24px;padding:0}
+.steps li{position:relative;padding:0 0 18px 30px;font-size:14px}
+.steps li::before{content:"";position:absolute;left:5px;top:6px;width:10px;height:10px;border-radius:50%;border:2px solid var(--border-strong);background:var(--surface)}
+.steps li::after{content:"";position:absolute;left:9px;top:20px;bottom:-4px;width:2px;background:var(--border)}
+.steps li:last-child::after{display:none}
+.steps li.now::before{background:var(--accent);border-color:var(--accent)}
+.steps b{display:block}
+.steps span{color:var(--muted)}
+.done-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+@media (max-width:1020px){
+  .layout{grid-template-columns:1fr}
+  .aside{position:static}
+  .aside .actions{display:none}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;gap:14px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--border)}
+  .mbar .mt{flex:1;min-width:0}
+  .mbar .mt small{display:block;font-size:12px;color:var(--muted);line-height:1.2}
+  .mbar .mt b{font-size:20px;font-variant-numeric:tabular-nums}
+  body{padding-bottom:76px}
+  .toast{bottom:92px}
+}
+@media (max-width:760px){
+  .nav,.me span{display:none}
+  .top-in{padding:0 16px}
+  .top-in .me{margin-left:auto}
+  .wrap{padding:16px 16px 40px}
+  h1{font-size:24px}
+  .sec{padding:16px;margin-bottom:16px}
+  .grid2{grid-template-columns:1fr}
+  .item{grid-template-columns:1fr 1fr;padding:14px;gap:12px}
+  .f-date,.f-amt{grid-column:span 1}
+  .f-cat,.f-merch{grid-column:1/-1}
+  .row2{flex-direction:column;align-items:stretch}
+  .row2 .f-att,.f-receipt{width:100%}
+  .sec-head{flex-direction:column}
+  .add-row .btn{width:100%}
+  .facts{grid-template-columns:1fr 1fr}
+  .done{padding:20px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .btn,.attach,input,select,textarea{transition:background-color .12s,border-color .12s}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#" aria-label="Outlay home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M8 14a6 6 0 1 1 6 6" fill="none" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round"/><path d="M14 20l-3.6-3.2M14 20l-3.2 3.6" stroke="var(--on-accent)" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
+      Outlay
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Overview</a><a href="#">Cards</a><a href="#" aria-current="page">Expenses</a><a href="#">Approvals</a><a href="#">Reports</a>
+    </nav>
+    <div class="me"><span>Amara Okafor</span><div class="avatar" aria-hidden="true">AO</div></div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div id="formView">
+    <p class="crumbs"><a href="#">Expenses</a><span aria-hidden="true">/</span>New expense report</p>
+    <div class="page-head">
+      <h1>New expense report</h1>
+      <span class="chip" id="status">Draft</span>
+    </div>
+    <p class="sub">Report OUT-2026-0418. Itemise each cost, attach receipts and send it to your approver.</p>
+
+    <div id="issues" class="issues" role="alert" tabindex="-1" hidden></div>
+
+    <form id="report" novalidate>
+      <div class="layout">
+        <div>
+          <section class="card sec" aria-labelledby="h-trip">
+            <div class="sec-head"><div><h2 id="h-trip">Trip details</h2><p>Your approver reads this first.</p></div></div>
+            <div class="grid2">
+              <div class="field span2">
+                <label for="title">Report title</label>
+                <input type="text" id="title" value="Brightwell Foods renewal visit, Chicago" autocomplete="off">
+              </div>
+              <div class="field span2">
+                <label for="purpose">Business purpose</label>
+                <textarea id="purpose">Three-day on-site with Brightwell Foods to negotiate the 2027 renewal, meet their new procurement lead and walk through the Chicago distribution centre rollout.</textarea>
+              </div>
+              <div class="field"><label for="start">Trip starts</label><input type="date" id="start" value="2026-11-17"></div>
+              <div class="field"><label for="end">Trip ends</label><input type="date" id="end" value="2026-11-19"></div>
+              <div class="field">
+                <label for="client">Client or project</label>
+                <select id="client">
+                  <option>Brightwell Foods - 2027 renewal</option>
+                  <option>Brightwell Foods - DC rollout</option>
+                  <option>Internal - no client</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="cc">Cost centre</label>
+                <select id="cc">
+                  <option>4120 - Enterprise Sales</option>
+                  <option>4130 - Mid-market Sales</option>
+                  <option>5010 - Customer Success</option>
+                </select>
+              </div>
+              <div class="field span2">
+                <label for="approver">Approver</label>
+                <select id="approver">
+                  <option value="Daniel Reyes|Regional Sales Director">Daniel Reyes - Regional Sales Director</option>
+                  <option value="Priya Nair|VP Sales">Priya Nair - VP Sales</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="card sec" aria-labelledby="h-items">
+            <div class="sec-head">
+              <div><h2 id="h-items">Expenses</h2>
+              <p>One line per receipt. Over $25 needs a receipt. Lodging is capped at $220 a night, meals at $75.</p></div>
+            </div>
+            <ol class="items" id="items"></ol>
+            <div class="empty" id="empty" hidden>No expenses yet. Add the first cost from your trip.</div>
+            <div class="add-row">
+              <button type="button" class="btn" id="add">
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Add expense
+              </button>
+              <span class="hint">JPG, PNG, HEIC or PDF, up to 10 MB each.</span>
+            </div>
+          </section>
+        </div>
+
+        <aside class="aside" aria-label="Report summary">
+          <div class="card sum">
+            <p class="total-lbl">Report total</p>
+            <p class="total" id="total" aria-live="polite">$0.00</p>
+            <p class="total-sub" id="totalSub"></p>
+            <hr>
+            <h3>By category</h3>
+            <ul class="cats" id="cats"></ul>
+            <hr>
+            <h3>Checks</h3>
+            <ul class="checks" id="checks"></ul>
+            <hr>
+            <h3>Goes to</h3>
+            <div class="who"><div class="avatar" id="apAv" aria-hidden="true">DR</div><div><b id="apName">Daniel Reyes</b><small id="apRole">Regional Sales Director</small></div></div>
+            <div class="actions">
+              <button type="submit" class="btn primary block" id="submit">Submit for approval</button>
+              <button type="button" class="btn block" data-save>Save draft</button>
+            </div>
+            <p class="fine">After approval, Outlay pays you back to the account ending 4417 within 5 working days.</p>
+          </div>
+        </aside>
+      </div>
+      <div class="mbar">
+        <div class="mt"><small id="mCount">0 expenses</small><b id="mTotal">$0.00</b></div>
+        <button type="button" class="btn" data-save>Save</button>
+        <button type="submit" class="btn primary">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <section id="doneView" class="card done" hidden aria-labelledby="doneH">
+    <div class="done-ic"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1 id="doneH" tabindex="-1">Report submitted</h1>
+    <p class="sub" id="doneSub" style="margin-bottom:0"></p>
+    <dl class="facts">
+      <div><dt>Report</dt><dd>OUT-2026-0418</dd></div>
+      <div><dt>Total</dt><dd id="dTotal"></dd></div>
+      <div><dt>Expenses</dt><dd id="dCount"></dd></div>
+      <div><dt>Receipts</dt><dd id="dRec"></dd></div>
+    </dl>
+    <ol class="steps">
+      <li class="now"><b>Submitted</b><span id="dWhen"></span></li>
+      <li><b id="dApprover"></b><span>Reviews the report, usually within 2 working days</span></li>
+      <li><b>Finance check</b><span>Receipts and policy, usually 1 working day</span></li>
+      <li><b>Paid to your account</b><span>Within 5 working days of approval</span></li>
+    </ol>
+    <div class="done-actions">
+      <button type="button" class="btn" id="recall">Recall and edit</button>
+      <a class="btn" href="#">Back to expenses</a>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden><span id="toastMsg"></span><button type="button" id="toastAct" hidden>Undo</button></div>
+
+<template id="rowTpl">
+  <li class="item">
+    <div class="item-head">
+      <span class="badge" data-n></span>
+      <h3 class="item-title">Expense <span data-n></span></h3>
+      <button type="button" class="btn-icon" data-remove>
+        <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M8 6V4h4v2M6 6l.7 10h6.6L14 6M8.5 9v4M11.5 9v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="field f-date"><label>Date</label><input type="date" data-f="date"></div>
+    <div class="field f-cat"><label>Category</label>
+      <select data-f="cat">
+        <option>Airfare</option><option>Lodging</option><option>Meals</option><option>Ground transport</option><option>Client entertainment</option><option>Other</option>
+      </select>
+    </div>
+    <div class="field f-merch"><label>Paid to</label><input type="text" data-f="merchant" autocomplete="off" placeholder="Merchant name"></div>
+    <div class="field f-amt"><label>Amount (USD)</label><div class="money"><span aria-hidden="true">$</span><input type="text" inputmode="decimal" data-f="amt" autocomplete="off" placeholder="0.00"></div></div>
+    <div class="row2">
+      <div class="field f-att" hidden><label>Attendees</label><input type="number" min="1" max="30" data-f="att" inputmode="numeric" placeholder="e.g. 4"></div>
+      <div class="field f-note"><label>Note <span class="opt">(optional)</span></label><input type="text" data-f="note" autocomplete="off" placeholder="Route, who attended, why"></div>
+      <div class="field f-receipt"><span class="lbl" data-rl>Receipt</span>
+        <div data-rbox></div>
+      </div>
+    </div>
+    <ul class="msgs" data-msgs></ul>
+  </li>
+</template>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+  const RECEIPT_MIN = 25, CAPS = { Lodging: 220, Meals: 75 }, ENT_PP = 90, MAX_BYTES = 10 * 1024 * 1024;
+  const OK_TYPES = /^(image\/(jpeg|png|heic)|application\/pdf)$/;
+  const ICON_WARN = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style="margin-top:2px"><path d="M8 2l6.5 11.5h-13zM8 6.5v3M8 11.2v.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const ICON_TICK = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.3l2.4 2.4 4.6-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const ICON_BANG = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5v4.2M6 9.2v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  const ICON_FILE = '<svg class="ic" width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h6.5L15 6v11.5H5zM11.5 2.5V6H15M7.5 10h5M7.5 13h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  const ICON_CLIP = '<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 9.5l-5.6 5.6a3.2 3.2 0 0 1-4.5-4.5l6-6a2.1 2.1 0 0 1 3 3l-6 6a1 1 0 0 1-1.5-1.5l5.4-5.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const ICON_X = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+
+  const seed = [
+    { date: '2026-11-17', cat: 'Airfare', merchant: 'United Airlines', amt: '412.60', note: 'SFO to ORD, UA 1427', file: { name: 'united-ua1427-receipt.pdf', size: 84213 } },
+    { date: '2026-11-17', cat: 'Ground transport', merchant: 'Uber', amt: '58.40', note: 'ORD airport to hotel', file: { name: 'uber-nov17.pdf', size: 52480 } },
+    { date: '2026-11-17', cat: 'Lodging', merchant: 'Hotel Lasalle Chicago', amt: '231.40', note: '', file: { name: 'lasalle-night1.pdf', size: 118770 } },
+    { date: '2026-11-17', cat: 'Meals', merchant: 'Giordano’s', amt: '42.18', note: 'Dinner', file: { name: 'IMG_2291.jpg', size: 1840211 } },
+    { date: '2026-11-18', cat: 'Lodging', merchant: 'Hotel Lasalle Chicago', amt: '198.00', note: '', file: { name: 'lasalle-night2.pdf', size: 117992 } },
+    { date: '2026-11-18', cat: 'Ground transport', merchant: 'Yellow Cab', amt: '24.50', note: 'Hotel to Brightwell HQ', file: null },
+    { date: '2026-11-18', cat: 'Client entertainment', merchant: 'RPM Italian', amt: '286.00', note: 'Dinner with Brightwell procurement: M. Alvarez, T. Chen, R. Singh', att: '4', file: null },
+    { date: '2026-11-19', cat: 'Meals', merchant: 'Intelligentsia Coffee', amt: '16.80', note: 'Breakfast', file: null },
+    { date: '2026-11-19', cat: 'Ground transport', merchant: 'Uber', amt: '61.20', note: 'Hotel to ORD', file: { name: 'uber-nov19.pdf', size: 51330 } }
+  ];
+
+  const form = $('#report'), list = $('#items'), tpl = $('#rowTpl');
+  let rows = [], uid = 0, attempted = false, toastTimer;
+
+  const fmtDay = iso => iso ? new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+  const fmtSize = b => b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+  const num = s => { const n = parseFloat(String(s).replace(/[^0-9.]/g, '')); return isNaN(n) ? 0 : n; };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function toast(msg, actLabel, act) {
+    $('#toastMsg').textContent = msg;
+    const b = $('#toastAct');
+    b.hidden = !act; b.textContent = actLabel || '';
+    b.onclick = () => { act && act(); $('#toast').hidden = true; };
+    $('#toast').hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { $('#toast').hidden = true; }, act ? 7000 : 3500);
+  }
+
+  function setErr(input, msg) {
+    const wrap = input.closest('.field');
+    let e = wrap.querySelector('.err');
+    if (!msg) { if (e) e.remove(); input.removeAttribute('aria-invalid'); input.removeAttribute('aria-describedby'); wrap.removeAttribute('data-invalid'); return; }
+    if (!e) { e = document.createElement('p'); e.className = 'err'; e.id = 'err' + (++uid); wrap.appendChild(e); }
+    e.textContent = msg;
+    input.setAttribute('aria-invalid', 'true'); input.setAttribute('aria-describedby', e.id); wrap.setAttribute('data-invalid', '');
+  }
+
+  /* rows */
+  function makeRow(d) {
+    const el = tpl.content.firstElementChild.cloneNode(true);
+    const r = { el, file: d.file || null, f: {} };
+    const n = ++uid;
+    el.querySelectorAll('[data-f]').forEach(inp => {
+      const k = inp.dataset.f; r.f[k] = inp;
+      inp.id = `f-${k}-${n}`;
+      const lab = inp.closest('.field').querySelector('label'); if (lab) lab.htmlFor = inp.id;
+    });
+    r.f.date.value = d.date || $('#start').value;
+    r.f.cat.value = d.cat || 'Meals';
+    r.f.merchant.value = d.merchant || '';
+    r.f.amt.value = d.amt || '';
+    r.f.att.value = d.att || '';
+    r.f.note.value = d.note || '';
+    r.f.amt.addEventListener('blur', () => { if (r.f.amt.value.trim()) r.f.amt.value = num(r.f.amt.value).toFixed(2); });
+    el.querySelector('[data-remove]').addEventListener('click', () => removeRow(r));
+    renderReceipt(r, n);
+    return r;
+  }
+
+  function renderReceipt(r, n) {
+    n = n || r.n || (r.n = ++uid); r.n = n;
+    const box = r.el.querySelector('[data-rbox]');
+    const label = r.el.querySelector('[data-rl]');
+    const inputId = `rec-${n}`;
+    if (r.file) {
+      box.innerHTML = `<div class="file">${ICON_FILE}<div class="file-name"><b title="${esc(r.file.name)}">${esc(r.file.name)}</b><small>${fmtSize(r.file.size)} attached</small></div><button type="button" class="btn-icon" aria-label="Remove receipt ${esc(r.file.name)}">${ICON_X}</button></div>`;
+      box.querySelector('button').addEventListener('click', () => { r.file = null; renderReceipt(r); refresh(); box.querySelector('input').focus(); });
+      label.removeAttribute('id');
+    } else {
+      box.innerHTML = `<input type="file" id="${inputId}" accept="image/jpeg,image/png,image/heic,application/pdf" aria-describedby="rec-help-${n}"><label class="attach" for="${inputId}">${ICON_CLIP}Attach receipt</label><span class="sr" id="rec-help-${n}">JPG, PNG, HEIC or PDF up to 10 megabytes</span>`;
+      const inp = box.querySelector('input'), lab = box.querySelector('label');
+      r.f.receipt = inp;
+      inp.addEventListener('change', () => take(r, inp.files[0]));
+      ['dragenter', 'dragover'].forEach(t => lab.addEventListener(t, e => { e.preventDefault(); lab.classList.add('drag'); }));
+      ['dragleave', 'drop'].forEach(t => lab.addEventListener(t, e => { e.preventDefault(); lab.classList.remove('drag'); }));
+      lab.addEventListener('drop', e => take(r, e.dataTransfer.files[0]));
+    }
+  }
+
+  function take(r, f) {
+    if (!f) return;
+    const inp = r.f.receipt;
+    if (!OK_TYPES.test(f.type)) { setErr(inp, `${f.name} is not a supported file. Use JPG, PNG, HEIC or PDF.`); return; }
+    if (f.size > MAX_BYTES) { setErr(inp, `${f.name} is ${fmtSize(f.size)}. The limit is 10 MB.`); return; }
+    r.file = { name: f.name, size: f.size };
+    renderReceipt(r); refresh();
+    toast(`Attached ${f.name}`);
+  }
+
+  function renumber() {
+    rows.forEach((r, i) => {
+      r.el.querySelectorAll('[data-n]').forEach(s => s.textContent = i + 1);
+      r.el.querySelector('[data-remove]').setAttribute('aria-label', `Remove expense ${i + 1}`);
+    });
+    $('#empty').hidden = rows.length > 0;
+  }
+
+  function addRow(d, at) {
+    const r = makeRow(d || {});
+    if (at == null || at >= rows.length) { rows.push(r); list.appendChild(r.el); }
+    else { list.insertBefore(r.el, rows[at].el); rows.splice(at, 0, r); }
+    renumber(); return r;
+  }
+
+  function removeRow(r) {
+    const i = rows.indexOf(r), snap = readRow(r);
+    r.el.remove(); rows.splice(i, 1); renumber(); refresh();
+    toast(`Removed expense ${i + 1}`, 'Undo', () => { addRow({ ...snap, file: r.file }, i); refresh(); });
+  }
+
+  const readRow = r => ({ date: r.f.date.value, cat: r.f.cat.value, merchant: r.f.merchant.value.trim(), amt: r.f.amt.value, att: r.f.att.value, note: r.f.note.value.trim() });
+
+  /* checks */
+  function evaluate(r) {
+    const v = readRow(r), amt = num(v.amt), s = $('#start').value, e = $('#end').value;
+    const errs = {}, warns = [];
+    if (!v.date) errs.date = 'Enter the date.';
+    else if (s && e && (v.date < s || v.date > e)) errs.date = `Outside the trip, ${fmtDay(s)} to ${fmtDay(e)}.`;
+    if (!v.merchant) errs.merchant = 'Enter who you paid.';
+    if (!(amt > 0)) errs.amt = 'Enter an amount above $0.00.';
+    let over = false;
+    if (v.cat === 'Client entertainment') {
+      const att = parseInt(v.att, 10);
+      if (!(att >= 2)) errs.att = 'Enter attendees, including you.';
+      else if (amt / att > ENT_PP) { over = true; warns.push(`${money.format(amt / att)} a head is over the ${money.format(ENT_PP)} limit.`); }
+    } else if (CAPS[v.cat] && amt > CAPS[v.cat]) {
+      over = true;
+      warns.push(`${money.format(amt - CAPS[v.cat])} over the ${money.format(CAPS[v.cat])} ${v.cat === 'Lodging' ? 'nightly' : 'per-meal'} limit.${v.note ? '' : ' Add a note explaining why.'}`);
+    }
+    if (over && !v.note) errs.note = 'Explain why this is over the limit.';
+    const needsReceipt = amt > RECEIPT_MIN && !r.file;
+    if (needsReceipt) errs.receipt = `Attach a receipt. One is required over ${money.format(RECEIPT_MIN)}.`;
+    return { v, amt, errs, warns, over, needsReceipt };
+  }
+
+  const FIELD_OF = { date: 'date', merchant: 'merchant', amt: 'amt', att: 'att', note: 'note', receipt: 'receipt' };
+
+  function paintRow(r, ev) {
+    ['date', 'merchant', 'amt', 'att', 'note'].forEach(k => setErr(r.f[k], attempted ? ev.errs[k] : null));
+    if (r.f.receipt && r.f.receipt.isConnected && !(r.f.receipt.getAttribute('aria-invalid') && !attempted)) setErr(r.f.receipt, attempted ? ev.errs.receipt : null);
+    r.el.querySelector('.f-att').hidden = r.f.cat.value !== 'Client entertainment';
+    const msgs = r.el.querySelector('[data-msgs]'); msgs.innerHTML = '';
+    ev.warns.forEach(w => msgs.insertAdjacentHTML('beforeend', `<li class="msg">${ICON_WARN}<span>${esc(w)}</span></li>`));
+    if (ev.needsReceipt && !attempted) msgs.insertAdjacentHTML('beforeend', `<li class="msg">${ICON_WARN}<span>Receipt needed. Anything over ${money.format(RECEIPT_MIN)} requires one.</span></li>`);
+    r.el.classList.toggle('flag', ev.over);
+  }
+
+  function reportErrors() {
+    const out = [], s = $('#start').value, e = $('#end').value;
+    const chk = (id, bad, msg) => { const inp = $('#' + id); setErr(inp, attempted && bad ? msg : null); if (bad) out.push({ el: inp, msg }); };
+    chk('title', !$('#title').value.trim(), 'Enter a report title.');
+    chk('purpose', $('#purpose').value.trim().length < 15, 'Describe the business purpose in a sentence.');
+    chk('start', !s, 'Enter the first day of the trip.');
+    chk('end', !e || (s && e < s), !e ? 'Enter the last day of the trip.' : 'The trip cannot end before it starts.');
+    return out;
+  }
+
+  function refresh() {
+    const evs = rows.map(evaluate);
+    rows.forEach((r, i) => paintRow(r, evs[i]));
+    const s = $('#start').value, e = $('#end').value;
+    rows.forEach(r => { r.f.date.min = s || ''; r.f.date.max = e || ''; });
+    const rep = reportErrors();
+
+    const total = evs.reduce((a, x) => a + x.amt, 0);
+    $('#total').textContent = $('#mTotal').textContent = money.format(total);
+    const cnt = `${rows.length} ${rows.length === 1 ? 'expense' : 'expenses'}`;
+    $('#mCount').textContent = cnt;
+    $('#totalSub').textContent = `${cnt}${s && e ? ' · ' + fmtDay(s) + ' to ' + fmtDay(e) : ''}`;
+
+    const by = {}; evs.forEach(x => { by[x.v.cat] = (by[x.v.cat] || 0) + x.amt; });
+    $('#cats').innerHTML = Object.entries(by).sort((a, b) => b[1] - a[1]).map(([k, v]) =>
+      `<li><span>${esc(k)}</span><span class="amt">${money.format(v)}</span><span class="bar"><i style="width:${total ? (v / total * 100).toFixed(1) : 0}%"></i></span></li>`).join('') ||
+      '<li><span class="hint">Nothing added yet.</span></li>';
+
+    const need = evs.filter(x => x.amt > RECEIPT_MIN), have = need.filter((x, i) => rows[evs.indexOf(x)].file).length;
+    const flags = evs.filter(x => x.over).length;
+    const row = (ok, t) => `<li><span class="dot ${ok ? '' : 'warn'}">${ok ? ICON_TICK : ICON_BANG}</span><span>${t}</span></li>`;
+    $('#checks').innerHTML =
+      row(have === need.length, `${have} of ${need.length} required receipts attached`) +
+      row(!flags, flags ? `${flags} ${flags === 1 ? 'item' : 'items'} over policy limits` : 'Everything within policy limits') +
+      row(rows.length > 0 && !rep.length, rep.length ? 'Trip details incomplete' : 'Trip details complete');
+
+    const [name, role] = $('#approver').value.split('|');
+    $('#apName').textContent = name; $('#apRole').textContent = role;
+    $('#apAv').textContent = name.split(' ').map(w => w[0]).join('');
+
+    if (attempted) renderIssues(evs, rep);
+  }
+
+  function collect(evs, rep) {
+    const out = rep.map(x => ({ el: x.el, msg: x.msg, where: 'Trip details' }));
+    if (!rows.length) out.push({ el: $('#add'), msg: 'Add at least one expense.', where: 'Expenses' });
+    evs.forEach((x, i) => {
+      Object.entries(x.errs).forEach(([k, msg]) => {
+        const el = rows[i].f[FIELD_OF[k]];
+        if (el) out.push({ el, msg, where: `Expense ${i + 1}` });
+      });
+    });
+    return out;
+  }
+
+  function renderIssues(evs, rep) {
+    const list_ = collect(evs, rep), box = $('#issues');
+    if (!list_.length) { box.hidden = true; return list_; }
+    box.hidden = false;
+    box.innerHTML = `<h2>${list_.length} ${list_.length === 1 ? 'thing needs' : 'things need'} fixing before you can submit</h2><ul>` +
+      list_.map((x, i) => `<li><a href="#" data-i="${i}">${esc(x.where)}: ${esc(x.msg)}</a></li>`).join('') + '</ul>';
+    box.querySelectorAll('a').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); const t = list_[a.dataset.i].el; t.scrollIntoView({ block: 'center' }); t.focus({ preventScroll: true }); }));
+    return list_;
+  }
+
+  /* events */
+  form.addEventListener('input', e => { if (e.target.dataset && e.target.dataset.f === 'cat') {} refresh(); });
+  form.addEventListener('change', refresh);
+
+  $('#add').addEventListener('click', () => {
+    const r = addRow({ date: $('#start').value });
+    refresh(); r.el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    r.f.merchant.focus({ preventScroll: true });
+  });
+
+  document.querySelectorAll('[data-save]').forEach(b => b.addEventListener('click', () => {
+    const t = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    toast(`Draft saved at ${t}`);
+  }));
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    attempted = true; refresh();
+    const evs = rows.map(evaluate), found = collect(evs, reportErrors());
+    if (found.length) {
+      const box = $('#issues'); box.scrollIntoView({ block: 'start' }); box.focus({ preventScroll: true });
+      return;
+    }
+    const total = evs.reduce((a, x) => a + x.amt, 0);
+    const [name] = $('#approver').value.split('|');
+    $('#doneSub').textContent = `${name} will review it next. We will email you when it is approved or if there is a question.`;
+    $('#dTotal').textContent = money.format(total);
+    $('#dCount').textContent = rows.length;
+    $('#dRec').textContent = rows.filter(r => r.file).length + ' attached';
+    $('#dApprover').textContent = `${name} reviews`;
+    $('#dWhen').textContent = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    $('#formView').hidden = true; $('#doneView').hidden = false;
+    $('#doneH').focus(); window.scrollTo(0, 0);
+  });
+
+  $('#recall').addEventListener('click', () => {
+    $('#doneView').hidden = true; $('#formView').hidden = false; attempted = false; refresh();
+    toast('Report recalled. It is a draft again.'); window.scrollTo(0, 0);
+  });
+
+  seed.forEach(d => addRow(d));
+  refresh();
+})();
+</script>
+</body>
+</html>

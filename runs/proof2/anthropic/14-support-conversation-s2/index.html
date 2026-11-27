@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harborline - Order 48213 still not here</title>
+<style>
+:root{
+  --bg:#eef3f4; --panel:#ffffff; --sunk:#f4f7f8; --ink:#12262f; --muted:#51666d; --line:#d6e0e3;
+  --accent:#0c5c88; --accent-ink:#ffffff; --accent-soft:#e1f0f8;
+  --warn-bg:#fff2cf; --warn-ink:#5e3f00; --warn-line:#e6c36a;
+  --late:#a8231b; --late-soft:#fde8e5; --ok:#1f6b45;
+  --focus:#0c5c88;
+  --font:"Avenir Next","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0d171c; --panel:#142027; --sunk:#101b21; --ink:#e4eef1; --muted:#9bb0b6; --line:#27393f;
+    --accent:#62b8e8; --accent-ink:#06202d; --accent-soft:#17323f;
+    --warn-bg:#352b0f; --warn-ink:#f1ce82; --warn-line:#6b5718;
+    --late:#ff9a90; --late-soft:#3a1c1a; --ok:#6fd0a0; --focus:#62b8e8;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+button,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* shell */
+.app{display:grid;grid-template-columns:300px minmax(0,1fr) 320px;height:100vh;height:100dvh}
+.col{min-height:0;overflow:auto;background:var(--panel)}
+.queue{border-right:1px solid var(--line)}
+.context{border-left:1px solid var(--line)}
+.main{display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+
+/* queue */
+.brand{display:flex;align-items:center;gap:10px;padding:16px 18px 12px;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand svg{width:26px;height:26px;color:var(--accent)}
+.q-tabs{display:flex;gap:4px;padding:0 12px 10px;border-bottom:1px solid var(--line)}
+.q-tabs button{border:0;background:none;padding:6px 10px;border-radius:6px;color:var(--muted);font-weight:600;font-size:13.5px}
+.q-tabs button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.q-list{list-style:none;margin:0;padding:0}
+.q-item a{display:block;padding:12px 18px 12px 15px;border-left:3px solid transparent;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.q-item a:hover{background:var(--sunk)}
+.q-item.on a{background:var(--accent-soft);border-left-color:var(--accent)}
+.q-top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.q-top b{color:var(--ink);font-weight:650}
+.q-sub{margin:2px 0;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-prev{color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{display:inline-block;font-size:12px;font-weight:650;padding:1px 7px;border-radius:99px;background:var(--sunk);color:var(--muted);border:1px solid var(--line)}
+.chip.late{background:var(--late-soft);color:var(--late);border-color:transparent}
+
+/* header */
+.head{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 24px 16px}
+.crumb{font-size:13px;color:var(--muted);margin:0 0 2px}
+.crumb a{color:var(--accent);text-decoration:none;font-weight:600}
+.title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+h1{margin:0;font-size:22px;line-height:1.25;letter-spacing:-.015em}
+.meta{margin:4px 0 0;color:var(--muted);font-size:13.5px}
+.ctx-btn{display:none;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:7px 12px;font-weight:600;font-size:13.5px;white-space:nowrap}
+
+/* route: the delay, shown where the agent starts reading */
+.route{margin:16px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(5,1fr);position:relative}
+.route li{position:relative;text-align:center;font-size:12.5px;color:var(--muted);padding-top:22px}
+.route li::before{content:"";position:absolute;top:6px;left:0;right:0;height:3px;background:var(--accent)}
+.route li:first-child::before{left:50%}
+.route li:last-child::before{right:50%}
+.route li.todo::before{background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 10px)}
+.route li:nth-child(4)::before{background:repeating-linear-gradient(90deg,var(--line) 0 6px,transparent 6px 10px)}
+.route li:nth-child(3)::before{right:50%;background:var(--accent)}
+.route li:nth-child(4)::before{left:50%}
+.route li::after{content:"";position:absolute;top:0;left:50%;width:15px;height:15px;margin-left:-7.5px;border-radius:50%;background:var(--accent);border:3px solid var(--panel);box-shadow:0 0 0 1.5px var(--accent)}
+.route li.todo::after{background:var(--panel);box-shadow:0 0 0 1.5px var(--line)}
+.route li.stuck{color:var(--late);font-weight:700}
+.route li.stuck::after{background:var(--late);box-shadow:0 0 0 1.5px var(--late),0 0 0 6px var(--late-soft);width:17px;height:17px;margin-left:-8.5px;top:-1px}
+.route small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.route li.stuck small{color:var(--late)}
+
+/* thread */
+.thread{flex:1;min-height:0;overflow:auto;padding:20px 24px 8px}
+.thread ol{list-style:none;margin:0 auto;padding:0;max-width:760px}
+.msg{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;margin:0 0 18px}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;background:var(--sunk);color:var(--ink);border:1px solid var(--line)}
+.agent .av{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px 14px}
+.agent .card{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.note .card{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-ink)}
+.who{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;margin-bottom:6px;font-size:13px;color:var(--muted)}
+.who b{color:var(--ink);font-weight:650;font-size:14px}
+.note .who,.note .who b{color:var(--warn-ink)}
+.card p{margin:0 0 .7em;max-width:66ch}
+.card p:last-child{margin-bottom:0}
+.event{display:flex;align-items:center;gap:10px;margin:0 0 18px 48px;font-size:13.5px;color:var(--muted)}
+.event::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--late)}
+.event b{color:var(--ink);font-weight:650}
+.event.ok::before{background:var(--ok)}
+
+/* composer */
+.composer{background:var(--panel);border-top:1px solid var(--line);padding:12px 24px 16px}
+.composer form{max-width:760px;margin:0 auto}
+.mode{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:8px}
+.mode button{border:0;background:none;padding:5px 14px;font-weight:600;font-size:13.5px;color:var(--muted)}
+.mode button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}
+.box{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}
+.box:focus-within{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.composer.is-note .box{background:var(--warn-bg);border-color:var(--warn-line)}
+.box textarea{display:block;width:100%;min-height:128px;border:0;resize:vertical;padding:12px 14px;background:transparent;line-height:1.5;outline:none}
+.inserts{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;border-top:1px solid var(--line);background:var(--sunk)}
+.inserts span{font-size:13px;color:var(--muted);align-self:center;margin-right:2px}
+.inserts button{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:3px 11px;font-size:13px;font-weight:600}
+.inserts button:hover{border-color:var(--accent);color:var(--accent)}
+.send-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.send-row label{font-size:13.5px;color:var(--muted)}
+.send-row select{margin-left:6px;border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:6px 8px}
+.send{border:0;background:var(--accent);color:var(--accent-ink);padding:9px 20px;border-radius:8px;font-weight:700}
+.send:hover{filter:brightness(1.08)}
+.send:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.status{min-height:1.3em;margin:6px 0 0;font-size:13px;color:var(--ok)}
+
+/* context */
+.ctx{padding:18px 20px 28px}
+.ctx h2{margin:0 0 8px;font-size:14.5px;letter-spacing:0}
+.ctx section{padding:0 0 18px;margin:0 0 18px;border-bottom:1px solid var(--line)}
+.ctx section:last-child{border:0;margin:0;padding:0}
+.person{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.person .av{width:42px;height:42px}
+.person b{display:block}
+.person span{font-size:13.5px;color:var(--muted)}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:14px}
+dt{color:var(--muted)}
+dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+dd.late{color:var(--late);font-weight:700}
+.items{list-style:none;margin:0;padding:0;font-size:14px}
+.items li{display:flex;justify-content:space-between;gap:10px;padding:5px 0}
+.items span:last-child{font-variant-numeric:tabular-nums;color:var(--muted)}
+.policy{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:13.5px;margin:0 0 10px}
+.acts{display:grid;gap:8px}
+.acts button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 12px;text-align:left;font-weight:600;font-size:14px}
+.acts button:hover{border-color:var(--accent);color:var(--accent)}
+.acts small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
+
+/* tablet: drop the queue */
+@media (max-width:1180px){
+  .app{grid-template-columns:minmax(0,1fr) 300px}
+  .queue{display:none}
+}
+/* phone: one column, order details on demand */
+@media (max-width:820px){
+  .app{display:block;height:auto}
+  .main{overflow:visible}
+  .col{overflow:visible}
+  .context{display:none;border:0;border-top:1px solid var(--line)}
+  .app.show-ctx .context{display:block}
+  .app.show-ctx .thread,.app.show-ctx .composer{display:none}
+  .ctx-btn{display:block}
+  .head{padding:12px 16px 14px}
+  h1{font-size:19px}
+  .thread{padding:16px 16px 4px;overflow:visible}
+  .msg{grid-template-columns:30px minmax(0,1fr);gap:9px}
+  .av{width:30px;height:30px;font-size:12px}
+  .event{margin-left:39px}
+  .composer{padding:12px 16px 18px}
+  .route li{font-size:12px}
+  .route small{font-size:11.5px}
+  .send-row{flex-direction:column;align-items:stretch}
+  .send{width:100%}
+}
+@media (prefers-reduced-motion:no-preference){
+  .send{transition:filter .15s}
+  .msg.fresh{animation:in .25s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <nav class="col queue" aria-label="Inbox">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4v14M11 8h10"/><circle cx="16" cy="6" r="1.6"/><path d="M5 17c0 6 5 10 11 10s11-4 11-10M5 17l3 2M27 17l-3 2"/></svg>
+      Harborline
+    </div>
+    <div class="q-tabs" role="group" aria-label="Filter">
+      <button aria-pressed="true">Mine (7)</button>
+      <button aria-pressed="false">Unassigned (12)</button>
+      <button aria-pressed="false">Late (4)</button>
+    </div>
+    <ul class="q-list">
+      <li class="q-item on"><a href="#" aria-current="true">
+        <div class="q-top"><b>Imogen Barrett</b><span>9:41</span></div>
+        <div class="q-sub">Order 48213 still not here</div>
+        <div class="q-prev"><span class="chip late">Reply due 11:15</span> It is Saturday I need it</div></a></li>
+      <li class="q-item"><a href="#">
+        <div class="q-top"><b>Kofi Mensah</b><span>9:12</span></div>
+        <div class="q-sub">Wrong size on the linen shirt</div>
+        <div class="q-prev">Can I swap the medium for a large?</div></a></li>
+      <li class="q-item"><a href="#">
+        <div class="q-top"><b>Hanna Lindqvist</b><span>8:50</span></div>
+        <div class="q-sub">Discount code not applying</div>
+        <div class="q-prev">I typed WINTER15 at checkout and</div></a></li>
+      <li class="q-item"><a href="#">
+        <div class="q-top"><b>Declan Ryan</b><span>8:31</span></div>
+        <div class="q-sub">Parcel marked delivered, not received</div>
+        <div class="q-prev"><span class="chip late">Overdue 2h</span> The photo shows a different door</div></a></li>
+      <li class="q-item"><a href="#">
+        <div class="q-top"><b>Priya Raman</b><span>Yesterday</span></div>
+        <div class="q-sub">Change delivery address</div>
+        <div class="q-prev">I moved flats on Monday, can you</div></a></li>
+      <li class="q-item"><a href="#">
+        <div class="q-top"><b>Tomasz Nowak</b><span>Yesterday</span></div>
+        <div class="q-sub">Invoice for order 48102</div>
+        <div class="q-prev">Our accounts team needs a VAT invoice</div></a></li>
+      <li class="q-item"><a href="#">
+        <div class="q-top"><b>Mei Ling Tan</b><span>Tue</span></div>
+        <div class="q-sub">Thank you, the mug arrived</div>
+        <div class="q-prev">Just wanted to say it is lovely</div></a></li>
+    </ul>
+  </nav>
+
+  <main class="main">
+    <header class="head">
+      <p class="crumb"><a href="#">Mine</a> / Tidewell Goods / #20418</p>
+      <div class="title-row">
+        <div>
+          <h1>Order 48213 still not here</h1>
+          <p class="meta">Imogen Barrett wrote 3 times since Nov 24. Assigned to you.</p>
+        </div>
+        <button class="ctx-btn" id="ctxBtn" aria-expanded="false" aria-controls="context">Order details</button>
+      </div>
+      <ol class="route" aria-label="Parcel route. The parcel has been at Daventry hub for 6 days.">
+        <li>Packed<small>Nov 15</small></li>
+        <li>Leeds<small>Nov 17</small></li>
+        <li class="stuck">Daventry<small>Stuck 6 days</small></li>
+        <li class="todo">Local depot<small>Not yet</small></li>
+        <li class="todo">Her door<small>Promised Nov 21</small></li>
+      </ol>
+    </header>
+
+    <section class="thread" aria-label="Conversation" id="thread" tabindex="-1">
+      <ol id="msgs">
+        <li class="msg">
+          <div class="av" aria-hidden="true">IB</div>
+          <div class="card">
+            <div class="who"><b>Imogen Barrett</b><time>Nov 24, 10:02</time></div>
+            <p>Hi, my order 48213 was due last Friday and the tracking page has said "At hub" since the 21st. Can you tell me where it is?</p>
+          </div>
+        </li>
+        <li class="event"><span><b>Carrier update.</b> Parcelway scanned the parcel at Daventry hub, no scan since. Nov 21, 06:48</span></li>
+        <li class="msg agent">
+          <div class="av" aria-hidden="true">DO</div>
+          <div class="card">
+            <div class="who"><b>Dara Okafor</b><time>Nov 24, 11:30</time></div>
+            <p>Hello Imogen, sorry for the wait. I have asked Parcelway to trace it and I will write again by tomorrow evening.</p>
+          </div>
+        </li>
+        <li class="msg note">
+          <div class="av" aria-hidden="true">DO</div>
+          <div class="card">
+            <div class="who"><b>Internal note, Dara Okafor</b><time>Nov 25, 16:10</time></div>
+            <p>Parcelway says a sorting belt at Daventry failed on Nov 21. The backlog should clear by Nov 28. No new date from them in writing.</p>
+          </div>
+        </li>
+        <li class="msg">
+          <div class="av" aria-hidden="true">IB</div>
+          <div class="card">
+            <div class="who"><b>Imogen Barrett</b><time>Today, 9:41</time></div>
+            <p>Nobody wrote back yesterday. It is now Friday and this is a birthday present for my sister on Saturday. I need to know today if it is coming or I will buy another one elsewhere.</p>
+            <p>If it does not come, I want my money back, including the delivery fee.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <div class="composer" id="composer">
+      <form id="form" autocomplete="off">
+        <div class="mode" role="group" aria-label="Message type">
+          <button type="button" aria-pressed="true" data-mode="reply">Reply to customer</button>
+          <button type="button" aria-pressed="false" data-mode="note">Internal note</button>
+        </div>
+        <div class="box">
+          <label class="sr" for="body">Message</label>
+          <textarea id="body" placeholder="Tell Imogen what is happening and what you will do. She asked for a yes or no on delivery by Saturday."></textarea>
+          <div class="inserts" id="inserts">
+            <span>Insert</span>
+            <button type="button" data-text="Parcelway scanned your parcel at their Daventry hub on Nov 21 and it has not moved since. A sorting belt failed there and they expect to clear the backlog by Nov 28.">Tracking facts</button>
+            <button type="button" data-text="I cannot promise it will reach you by Saturday. If you would rather not wait, I can send a replacement by next-day delivery today, at no cost to you.">Offer replacement</button>
+            <button type="button" data-text="Because your order is more than 5 days late, I have refunded the £4.95 delivery fee to your original card. It should show in 3 to 5 working days.">Refund delivery fee</button>
+          </div>
+        </div>
+        <div class="send-row">
+          <label>After sending, set status to
+            <select id="next">
+              <option>Pending customer</option>
+              <option>Open</option>
+              <option>Solved</option>
+            </select>
+          </label>
+          <button class="send" id="send" type="submit" disabled>Send reply</button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </main>
+
+  <aside class="col context" id="context" aria-label="Order details">
+    <div class="ctx">
+      <section>
+        <div class="person">
+          <div class="av" aria-hidden="true">IB</div>
+          <div><b>Imogen Barrett</b><span>imogen.barrett@mailbox.example</span></div>
+        </div>
+        <dl>
+          <dt>Orders</dt><dd>6 since 2023</dd>
+          <dt>Spent</dt><dd>£412.80</dd>
+          <dt>Past tickets</dt><dd>1, solved</dd>
+        </dl>
+      </section>
+      <section>
+        <h2>Order 48213 from Tidewell Goods</h2>
+        <dl>
+          <dt>Placed</dt><dd>Nov 14</dd>
+          <dt>Promised</dt><dd>Nov 21</dd>
+          <dt>Days late</dt><dd class="late">6</dd>
+          <dt>Carrier</dt><dd>Parcelway Standard</dd>
+          <dt>Tracking</dt><dd>PW 7731 0482 19</dd>
+        </dl>
+      </section>
+      <section>
+        <h2>Items</h2>
+        <ul class="items">
+          <li><span>Stoneware teapot, sage</span><span>£38.00</span></li>
+          <li><span>Teapot warmer</span><span>£14.50</span></li>
+          <li><span>Delivery</span><span>£4.95</span></li>
+          <li><b>Total paid</b><b>£57.45</b></li>
+        </ul>
+      </section>
+      <section>
+        <h2>Shop policy</h2>
+        <p class="policy">Orders more than 5 days late qualify for a delivery refund. A replacement needs stock: 3 teapots are available.</p>
+        <div class="acts">
+          <button type="button" data-text="Refund delivery fee" data-ins="3">Refund delivery fee<small>£4.95 to original card</small></button>
+          <button type="button" data-text="Send replacement" data-ins="2">Send replacement<small>Next-day, from Tidewell Goods stock</small></button>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var body=$('#body'),send=$('#send'),status=$('#status'),comp=$('#composer'),msgs=$('#msgs'),thread=$('#thread');
+  var mode='reply';
+
+  function sync(){send.disabled=!body.value.trim()}
+  body.addEventListener('input',sync);
+
+  function insert(text){
+    var v=body.value;
+    body.value=v.trim()?v.replace(/\s+$/,'')+'\n\n'+text:text;
+    body.focus();sync();
+  }
+  $('#inserts').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(b)insert(b.dataset.text);
+  });
+  // sidebar actions insert the matching snippet from the composer chips
+  document.querySelectorAll('[data-ins]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var chip=document.querySelectorAll('#inserts button')[+b.dataset.ins-1];
+      document.getElementById('app').classList.remove('show-ctx');
+      $('#ctxBtn').setAttribute('aria-expanded','false');
+      insert(chip.dataset.text);
+    });
+  });
+
+  document.querySelectorAll('.mode button').forEach(function(b){
+    b.addEventListener('click',function(){
+      mode=b.dataset.mode;
+      document.querySelectorAll('.mode button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+      comp.classList.toggle('is-note',mode==='note');
+      send.textContent=mode==='note'?'Add note':'Send reply';
+      $('#next').disabled=mode==='note';
+    });
+  });
+
+  $('#form').addEventListener('submit',function(e){
+    e.preventDefault();
+    var text=body.value.trim();if(!text)return;
+    var note=mode==='note';
+    var li=document.createElement('li');
+    li.className='msg fresh '+(note?'note':'agent');
+    var av=document.createElement('div');av.className='av';av.setAttribute('aria-hidden','true');av.textContent='DO';
+    var card=document.createElement('div');card.className='card';
+    var who=document.createElement('div');who.className='who';
+    var b=document.createElement('b');b.textContent=note?'Internal note, Dara Okafor':'Dara Okafor';
+    var t=document.createElement('time');t.textContent='Today, 9:58';
+    who.append(b,t);card.appendChild(who);
+    text.split(/\n{2,}/).forEach(function(part){var p=document.createElement('p');p.textContent=part;card.appendChild(p)});
+    li.append(av,card);msgs.appendChild(li);
+    body.value='';sync();
+    status.textContent=note?'Note added. Only your team can see it.':'Reply sent to Imogen. Status set to '+$('#next').value+'.';
+    thread.scrollTo({top:thread.scrollHeight});
+    if(window.matchMedia('(max-width:820px)').matches)li.scrollIntoView({block:'center'});
+  });
+
+  var app=$('#app'),btn=$('#ctxBtn');
+  btn.addEventListener('click',function(){
+    var on=app.classList.toggle('show-ctx');
+    btn.setAttribute('aria-expanded',on);
+    btn.textContent=on?'Back to thread':'Order details';
+    window.scrollTo(0,0);
+  });
+  document.querySelectorAll('.q-tabs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.q-tabs button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});
+    });
+  });
+  // keep the newest message in view on load
+  thread.scrollTop=thread.scrollHeight;
+})();
+</script>
+</body>
+</html>

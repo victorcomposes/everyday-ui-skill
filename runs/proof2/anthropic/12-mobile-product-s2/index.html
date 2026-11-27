@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tern Runner 2 - Halden</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --ground: #eef1f3;
+    --surface: #ffffff;
+    --ink: #121c26;
+    --ink-2: #4a5866;
+    --line: #d5dce2;
+    --accent: #1f4fd8;
+    --on-accent: #ffffff;
+    --good: #1b7a4b;
+    --warn: #a35a00;
+    --hue: #4f86c6;
+    --upper: #3f74b8;
+    --toe: #16222e;
+    --flash: #f4f6f8;
+    --sole: #f7f8fa;
+    --outsole: #1a232d;
+    --shadow: rgba(18, 28, 38, .22);
+    --font: "Bahnschrift", "Avenir Next", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0f151b;
+      --surface: #18212a;
+      --ink: #eef2f6;
+      --ink-2: #a3b0bd;
+      --line: #2b3844;
+      --accent: #7ea3ff;
+      --on-accent: #0b1220;
+      --good: #5fd39a;
+      --warn: #f0b45a;
+      --shadow: rgba(0, 0, 0, .5);
+      --sole: #e9edf1;
+    }
+  }
+  [data-c="tidal"] { --hue: #4f86c6; --upper: #3f74b8; --toe: #16222e; --flash: #f4f6f8; }
+  [data-c="moss"]  { --hue: #8fae6a; --upper: #5d7f3f; --toe: #1c2a17; --flash: #f0f3e6; }
+  [data-c="pomelo"]{ --hue: #e9c241; --upper: #f1cc4a; --toe: #26303b; --flash: #26303b; }
+  [data-c="plum"]  { --hue: #9b6bc2; --upper: #7a4aa3; --toe: #1f1a2b; --flash: #f3eef8; }
+
+  * { box-sizing: border-box; margin: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font: 16px/1.45 var(--font);
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  .screen {
+    max-width: 430px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--ground);
+    position: relative;
+    box-shadow: 0 0 0 1px var(--line);
+  }
+
+  /* hero */
+  .hero {
+    background: color-mix(in oklab, var(--hue) 34%, var(--ground));
+    border-radius: 0 0 36px 36px;
+    padding: 12px 16px 20px;
+    transition: background .35s ease;
+    overflow: hidden;
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; }
+  .icon-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 0; background: color-mix(in oklab, var(--surface) 70%, transparent);
+    display: grid; place-items: center; position: relative;
+  }
+  .icon-btn svg { width: 22px; height: 22px; fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-btn[aria-pressed="true"] svg { fill: #e0384f; stroke: #e0384f; }
+  .bar-right { display: flex; gap: 8px; }
+  .count {
+    position: absolute; top: 2px; right: 0; min-width: 18px; height: 18px; padding: 0 5px;
+    border-radius: 9px; background: var(--accent); color: var(--on-accent);
+    font-size: 11px; font-weight: 700; display: grid; place-items: center;
+  }
+
+  .stage { position: relative; margin: 8px -6px 0; }
+  .stage svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .shoe { transform: rotate(-6deg); transform-origin: 50% 80%; }
+  .tag {
+    position: absolute; left: 4px; top: 6px;
+    font-size: 13px; color: var(--ink);
+    background: color-mix(in oklab, var(--surface) 75%, transparent);
+    padding: 4px 10px; border-radius: 999px;
+  }
+
+  .swatches { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+  .swatches .lg { font-size: 14px; color: var(--ink-2); margin-right: auto; }
+  .swatches legend b { color: var(--ink); font-weight: 600; }
+  fieldset { border: 0; padding: 0; min-width: 0; }
+  .sw { position: relative; }
+  .sw input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .sw span {
+    display: block; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--c); border: 3px solid var(--surface);
+    box-shadow: 0 0 0 1.5px transparent;
+    transition: box-shadow .15s;
+  }
+  .sw input:checked + span { box-shadow: 0 0 0 2px var(--ink); }
+  .sw input:focus-visible + span { box-shadow: 0 0 0 2px var(--accent); }
+
+  /* body */
+  main { padding: 22px 20px 120px; }
+  .title { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .brand { font-size: 14px; color: var(--ink-2); }
+  h1 { font-size: 30px; line-height: 1.05; font-weight: 700; letter-spacing: -.01em; margin-top: 2px; }
+  .price { font-size: 26px; font-weight: 700; text-align: right; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .price s { display: block; font-size: 14px; font-weight: 400; color: var(--ink-2); margin-bottom: 2px; }
+  .rating { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 14px; color: var(--ink-2); }
+  .rating .stars { display: flex; gap: 2px; }
+  .rating svg { width: 16px; height: 16px; fill: #f2a516; }
+  .rating svg.half { fill: url(#half); }
+  .rating a { color: var(--ink); text-underline-offset: 3px; }
+  .blurb { margin-top: 14px; color: var(--ink-2); max-width: 36em; }
+
+  section { margin-top: 28px; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  h2 { font-size: 18px; font-weight: 700; }
+  .row button, .row a { background: none; border: 0; padding: 4px 0; color: var(--accent); font-size: 14px; text-underline-offset: 3px; text-decoration: underline; }
+
+  .sizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .size { position: relative; }
+  .size input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .size span {
+    display: grid; place-items: center; height: 48px; border-radius: 12px;
+    background: var(--surface); border: 1.5px solid var(--line);
+    font-variant-numeric: tabular-nums; font-weight: 500;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .size input:checked + span { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .size input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .size input:disabled { cursor: not-allowed; }
+  .size input:disabled + span {
+    color: var(--ink-2); opacity: .55; background:
+      linear-gradient(to top right, transparent calc(50% - 1px), var(--line) 50%, transparent calc(50% + 1px)), var(--surface);
+  }
+  .stock { margin-top: 10px; min-height: 22px; font-size: 14px; color: var(--ink-2); }
+  .stock.low { color: var(--warn); }
+  .stock.err { color: #d23b3b; }
+
+  .fit-track { position: relative; height: 6px; border-radius: 3px; background: var(--line); margin: 18px 0 10px; }
+  .fit-track::before { content: ""; position: absolute; left: 36%; width: 28%; top: 0; bottom: 0; background: color-mix(in oklab, var(--accent) 45%, var(--line)); border-radius: 3px; }
+  .fit-dot { position: absolute; left: 41%; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: var(--accent); border: 3px solid var(--ground); box-shadow: 0 0 0 1.5px var(--accent); }
+  .fit-scale { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-2); }
+  .fit-note { margin-top: 12px; color: var(--ink-2); font-size: 15px; }
+  .fit-note b { color: var(--ink); font-weight: 600; }
+
+  .perks { list-style: none; padding: 0; display: grid; gap: 1px; background: var(--line); border-radius: 16px; overflow: hidden; }
+  .perks li { background: var(--surface); padding: 14px 16px; display: flex; gap: 14px; align-items: center; }
+  .perks svg { width: 24px; height: 24px; flex: none; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .perks strong { display: block; font-weight: 600; font-size: 15px; }
+  .perks span { font-size: 14px; color: var(--ink-2); }
+
+  details { border-top: 1px solid var(--line); }
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+  summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 16px 0; font-weight: 600; cursor: pointer; min-height: 52px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: ""; width: 9px; height: 9px; border: solid var(--ink-2); border-width: 0 2px 2px 0; transform: rotate(45deg) translateY(-2px); transition: transform .2s; }
+  details[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+  details p, details ul { padding: 0 0 16px; color: var(--ink-2); font-size: 15px; }
+  details ul { padding-left: 20px; display: grid; gap: 6px; }
+  dl.spec { display: grid; grid-template-columns: 9em 1fr; gap: 8px 12px; padding-bottom: 16px; font-size: 15px; }
+  dl.spec dt { color: var(--ink-2); }
+  dl.spec dd { margin: 0; }
+
+  .review { background: var(--surface); border-radius: 16px; padding: 16px; }
+  .review .who { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-2); margin-bottom: 6px; }
+  .review .who b { color: var(--ink); font-weight: 600; }
+  .review p { font-size: 15px; }
+  .score { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .score big { font-size: 40px; font-weight: 700; line-height: 1; }
+  .bars { flex: 1; display: grid; gap: 4px; font-size: 12px; color: var(--ink-2); }
+  .bars div { display: grid; grid-template-columns: 10px 1fr; gap: 8px; align-items: center; }
+  .bars i { display: block; height: 6px; border-radius: 3px; background: var(--line); position: relative; overflow: hidden; }
+  .bars i::after { content: ""; position: absolute; inset: 0; width: var(--w); background: #f2a516; border-radius: 3px; }
+
+  /* buy bar */
+  .buy {
+    position: sticky; bottom: 0; z-index: 5;
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+    background: color-mix(in oklab, var(--ground) 88%, transparent);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+  }
+  .buy .p { font-size: 13px; color: var(--ink-2); line-height: 1.2; }
+  .buy .p b { display: block; font-size: 22px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .add {
+    flex: 1; height: 54px; border: 0; border-radius: 16px;
+    background: var(--ink); color: var(--ground); font-weight: 700; font-size: 17px;
+    transition: transform .12s, background .2s;
+  }
+  .add:active { transform: scale(.98); }
+  .add.done { background: var(--good); color: #fff; }
+  .add[aria-disabled="true"] { background: var(--line); color: var(--ink-2); }
+
+  @media (min-width: 700px) {
+    body { padding: 24px 0; }
+    .screen { min-height: 0; border-radius: 36px; overflow: clip; }
+    .buy { border-radius: 0 0 36px 36px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="screen" data-c="tidal" id="screen">
+
+  <header class="hero">
+    <div class="bar">
+      <button class="icon-btn" aria-label="Back to running shoes">
+        <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="bar-right">
+        <button class="icon-btn" id="fav" aria-pressed="false" aria-label="Save to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></svg>
+        </button>
+        <button class="icon-btn" aria-label="Bag, 1 item">
+          <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <span class="count" id="count">1</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <span class="tag">New for autumn</span>
+      <svg viewBox="0 0 420 260" role="img" aria-label="Side view of the Tern Runner 2 in the selected colour">
+        <ellipse cx="206" cy="226" rx="170" ry="12" fill="var(--shadow)"/>
+        <g class="shoe">
+          <!-- midsole -->
+          <path d="M22 160 L22 180 Q22 200 46 200 L338 200 Q384 200 392 170 L392 160 Q336 170 272 160 L124 154 Q62 150 22 160 Z" fill="var(--sole)"/>
+          <path d="M24 192 Q26 202 46 202 L338 202 Q380 202 390 178" fill="none" stroke="var(--outsole)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M60 186 L330 186" stroke="var(--line)" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round" opacity=".9"/>
+          <!-- upper -->
+          <path d="M40 158 C34 122 38 88 52 66 C58 58 72 58 80 64 C94 74 112 78 128 76 C152 74 170 60 192 62 C212 64 224 82 252 102 C292 114 354 122 392 152 L392 163 Q336 172 272 162 L124 156 Q68 154 40 158 Z" fill="var(--upper)"/>
+          <!-- heel counter -->
+          <path d="M40 158 C34 122 38 90 52 68 L78 66 C68 100 68 132 74 156 Q56 155 40 158 Z" fill="var(--toe)"/>
+          <!-- toe cap -->
+          <path d="M300 112 C346 118 380 136 392 154 L392 163 Q352 168 318 163 C324 146 318 126 300 112 Z" fill="var(--toe)"/>
+          <!-- collar and tongue -->
+          <path d="M54 68 C66 54 90 58 100 72 C86 80 66 78 54 68 Z" fill="var(--toe)"/>
+          <path d="M150 74 C162 46 192 40 206 56 L196 78 Z" fill="var(--upper)"/>
+          <path d="M150 74 C162 46 192 40 206 56" fill="none" stroke="var(--toe)" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+          <!-- laces -->
+          <g stroke="var(--flash)" stroke-width="5" stroke-linecap="round">
+            <path d="M172 74 l14 -12"/><path d="M188 82 l14 -12"/><path d="M204 90 l14 -12"/><path d="M220 98 l14 -12"/><path d="M236 106 l14 -12"/>
+          </g>
+          <!-- side flash -->
+          <path d="M92 148 C150 142 210 134 290 138" fill="none" stroke="var(--flash)" stroke-width="13" stroke-linecap="round"/>
+          <!-- heel pull tab -->
+          <path d="M50 66 l-4 -14 q10 -4 18 2 l-2 12z" fill="var(--flash)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="swatches" role="radiogroup" aria-label="Colour">
+      <span class="lg">Colour: <b id="cname">Tidal blue</b></span>
+      <label class="sw"><input type="radio" name="c" value="tidal" data-n="Tidal blue" aria-label="Tidal blue" checked><span style="--c:#3f74b8"></span></label>
+      <label class="sw"><input type="radio" name="c" value="moss" data-n="Moss green" aria-label="Moss green"><span style="--c:#5d7f3f"></span></label>
+      <label class="sw"><input type="radio" name="c" value="pomelo" data-n="Pomelo yellow" aria-label="Pomelo yellow"><span style="--c:#f1cc4a"></span></label>
+      <label class="sw"><input type="radio" name="c" value="plum" data-n="Plum" aria-label="Plum"><span style="--c:#7a4aa3"></span></label>
+    </div>
+  </header>
+
+  <main>
+    <div class="title">
+      <div>
+        <p class="brand">Halden</p>
+        <h1>Tern Runner 2</h1>
+      </div>
+      <p class="price"><s>$148</s>$129</p>
+    </div>
+
+    <div class="rating">
+      <span class="stars" aria-hidden="true">
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .8-4.4 4.2 1.1 6L10 15l-5.3 3 1.1-6L1.4 7.8l6-.8z"/></svg>
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .8-4.4 4.2 1.1 6L10 15l-5.3 3 1.1-6L1.4 7.8l6-.8z"/></svg>
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .8-4.4 4.2 1.1 6L10 15l-5.3 3 1.1-6L1.4 7.8l6-.8z"/></svg>
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .8-4.4 4.2 1.1 6L10 15l-5.3 3 1.1-6L1.4 7.8l6-.8z"/></svg>
+        <svg viewBox="0 0 20 20" style="fill:var(--line)"><path d="M10 1.5l2.6 5.5 6 .8-4.4 4.2 1.1 6L10 15l-5.3 3 1.1-6L1.4 7.8l6-.8z"/></svg>
+      </span>
+      <span>4.6 out of 5</span>
+      <a href="#reviews">312 reviews</a>
+    </div>
+
+    <p class="blurb">A daily trainer for tarmac and towpaths. Foam that stays lively past 400 miles, and an upper that dries fast after rain.</p>
+
+    <section aria-labelledby="size-h">
+      <div class="row">
+        <h2 id="size-h">Size (US men's)</h2>
+        <button type="button" id="guide">Size guide</button>
+      </div>
+      <fieldset class="sizes" id="sizes">
+        <legend class="sr" style="position:absolute;left:-9999px">Choose a size</legend>
+      </fieldset>
+      <p class="stock" id="stock" role="status" aria-live="polite">Choose a size to add to your bag.</p>
+    </section>
+
+    <section aria-labelledby="fit-h">
+      <h2 id="fit-h">How it fits</h2>
+      <div class="fit-track" aria-hidden="true"><span class="fit-dot"></span></div>
+      <div class="fit-scale"><span>Runs small</span><span>True to size</span><span>Runs large</span></div>
+      <p class="fit-note"><b>71% of 312 runners</b> kept their usual size. The toe box is roomy, so go up half a size only if you wear thick socks.</p>
+    </section>
+
+    <section aria-label="Delivery and returns">
+      <ul class="perks">
+        <li>
+          <svg viewBox="0 0 24 24"><path d="M2 7h12v9H2z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
+          <div><strong>Free delivery</strong><span>Arrives Tue 1 Dec to Wed 2 Dec</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v4.5h4.5"/></svg>
+          <div><strong>60 days to return them</strong><span>Free, even after a few runs</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-label="Product details">
+      <details open>
+        <summary>What's inside</summary>
+        <ul>
+          <li>Recycled mesh upper with a stitched heel cradle</li>
+          <li>32 mm midsole, 8 mm drop</li>
+          <li>Rubber outsole with 3 mm lugs for wet roads</li>
+          <li>Removable insole</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Specs</summary>
+        <dl class="spec">
+          <dt>Weight</dt><dd>264 g (size 9)</dd>
+          <dt>Best for</dt><dd>Daily miles, 5 to 15 km</dd>
+          <dt>Width</dt><dd>Standard (D)</dd>
+          <dt>Style code</dt><dd>HLD-TR2-0412</dd>
+        </dl>
+      </details>
+      <details>
+        <summary>Care</summary>
+        <p>Rinse with cool water and a soft brush. Air dry away from heat. Do not machine wash.</p>
+      </details>
+    </section>
+
+    <section id="reviews" aria-labelledby="rev-h">
+      <div class="row"><h2 id="rev-h">Reviews</h2><a href="#reviews">Read all 312</a></div>
+      <div class="score">
+        <big>4.6</big>
+        <div class="bars" aria-hidden="true">
+          <div>5<i style="--w:72%"></i></div>
+          <div>4<i style="--w:19%"></i></div>
+          <div>3<i style="--w:6%"></i></div>
+          <div>2<i style="--w:2%"></i></div>
+          <div>1<i style="--w:1%"></i></div>
+        </div>
+      </div>
+      <article class="review">
+        <div class="who"><b>Priya N.</b><span>Bought size 8, 3 weeks ago</span></div>
+        <p>Did my first half marathon in these. No hot spots, and the heel stayed put the whole way. They still look clean after a muddy canal path.</p>
+      </article>
+    </section>
+  </main>
+
+  <div class="buy">
+    <div class="p">Total<b>$129</b></div>
+    <button class="add" id="add" type="button" aria-disabled="true">Select a size</button>
+  </div>
+</div>
+
+<script>
+  const screen = document.getElementById('screen');
+  const sizes = [
+    ['7', 4], ['7.5', 0], ['8', 9], ['8.5', 6],
+    ['9', 12], ['9.5', 8], ['10', 2], ['10.5', 5],
+    ['11', 7], ['11.5', 0], ['12', 3], ['13', 1]
+  ];
+  const grid = document.getElementById('sizes');
+  grid.insertAdjacentHTML('beforeend', sizes.map(([s, n]) =>
+    `<label class="size"><input type="radio" name="size" value="${s}" data-left="${n}"${n ? '' : ' disabled'}><span>${s}</span></label>`
+  ).join(''));
+
+  const stock = document.getElementById('stock');
+  const add = document.getElementById('add');
+  const count = document.getElementById('count');
+  let picked = null, bag = 1, t;
+
+  function label() {
+    add.classList.remove('done');
+    add.setAttribute('aria-disabled', picked ? 'false' : 'true');
+    add.textContent = picked ? 'Add to bag' : 'Select a size';
+  }
+
+  grid.addEventListener('change', e => {
+    const i = e.target;
+    picked = i.value;
+    const n = +i.dataset.left;
+    stock.className = 'stock' + (n <= 3 ? ' low' : '');
+    stock.textContent = n <= 3 ? `Only ${n} left in size ${picked}.` : `Size ${picked} is in stock.`;
+    label();
+  });
+
+  add.addEventListener('click', () => {
+    if (!picked) {
+      stock.className = 'stock err';
+      stock.textContent = 'Choose a size first.';
+      grid.querySelector('input:not(:disabled)').focus();
+      return;
+    }
+    bag++;
+    count.textContent = bag;
+    add.classList.add('done');
+    add.textContent = `Added, size ${picked}`;
+    clearTimeout(t);
+    t = setTimeout(label, 2200);
+  });
+
+  document.querySelectorAll('input[name="c"]').forEach(r => r.addEventListener('change', () => {
+    screen.dataset.c = r.value;
+    document.getElementById('cname').textContent = r.dataset.n;
+  }));
+
+  const fav = document.getElementById('fav');
+  fav.addEventListener('click', () => {
+    const on = fav.getAttribute('aria-pressed') !== 'true';
+    fav.setAttribute('aria-pressed', on);
+    fav.setAttribute('aria-label', on ? 'Remove from favourites' : 'Save to favourites');
+  });
+</script>
+</body>
+</html>

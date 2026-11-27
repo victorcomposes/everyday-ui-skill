@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notifications - Gigwell</title>
+<style>
+:root{
+  --bg:#f5f7f5; --surface:#fff; --surface-2:#f0f3f1; --text:#16201b; --muted:#59675f; --border:#dfe5e1;
+  --accent:#0b6b52; --accent-ink:#fff; --accent-soft:#e3f3ed; --unread:#f1f9f6;
+  --danger:#b3261e; --danger-soft:#fbeae8; --warn:#8a5a00; --warn-soft:#fdf3dc; --info:#1d5fb4; --info-soft:#e6eefa;
+  --shadow:0 1px 2px rgba(20,35,28,.06),0 4px 16px rgba(20,35,28,.06);
+  --focus:#1d5fb4;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0e1311; --surface:#161c19; --surface-2:#1e2622; --text:#e8efeb; --muted:#9aa9a1; --border:#28332e;
+    --accent:#4cc9a0; --accent-ink:#06231a; --accent-soft:#17342a; --unread:#14231e;
+    --danger:#f2918a; --danger-soft:#3a1c1a; --warn:#e7b85a; --warn-soft:#352a12; --info:#8ab6f2; --info-soft:#18283f;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+    --focus:#8ab6f2;
+  }
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* top bar */
+.top{background:var(--surface);border-bottom:1px solid var(--border)}
+.top-in{max-width:1120px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;letter-spacing:-.01em;color:var(--text);text-decoration:none}
+.logo-mark{width:28px;height:28px;border-radius:8px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:800;font-size:16px}
+.nav{display:flex;gap:4px;margin-left:8px}
+.nav a{padding:8px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--surface-2);color:var(--text)}
+.nav a[aria-current]{color:var(--text);background:var(--surface-2)}
+.top-r{margin-left:auto;display:flex;align-items:center;gap:12px}
+.bell{position:relative;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.bell b{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;line-height:18px;text-align:center}
+.bell b[hidden]{display:none}
+.me{width:36px;height:36px;border-radius:50%;background:#e9c46a;color:#3a2b00;font-weight:700;display:grid;place-items:center;font-size:13px}
+
+/* layout */
+main{max-width:1120px;margin:0 auto;padding:32px 24px 64px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+h1{margin:0;font-size:28px;line-height:1.2;letter-spacing:-.02em}
+.sub{margin:4px 0 0;color:var(--muted)}
+.head-actions{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-weight:600;font-size:14px}
+.btn:hover{background:var(--surface-2)}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{min-height:34px;padding:0 12px}
+
+.grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}
+.side{position:sticky;top:16px;display:flex;flex-direction:column;gap:4px}
+.cat{display:flex;align-items:center;gap:10px;width:100%;min-height:42px;padding:0 12px;border:0;border-radius:10px;background:none;text-align:left;color:var(--muted);font-weight:500}
+.cat:hover{background:var(--surface-2);color:var(--text)}
+.cat[aria-pressed=true]{background:var(--surface);color:var(--text);box-shadow:inset 0 0 0 1px var(--border);font-weight:600}
+.cat[aria-pressed=true] svg{color:var(--accent)}
+.cat .n{margin-left:auto;font-size:12px;font-weight:700;min-width:22px;padding:1px 7px;border-radius:11px;background:var(--accent);color:var(--accent-ink);text-align:center}
+.cat .n[hidden]{display:none}
+
+/* panel */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.tools{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tabs{display:flex;gap:4px;background:var(--surface-2);padding:3px;border-radius:10px}
+.tabs button{border:0;background:none;padding:6px 14px;border-radius:8px;font-weight:600;font-size:14px;color:var(--muted)}
+.tabs button[aria-selected=true]{background:var(--surface);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.search{margin-left:auto;position:relative;flex:1 1 180px;max-width:280px}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search input{width:100%;height:38px;padding:0 12px 0 36px;border:1px solid var(--border);border-radius:10px;background:var(--bg)}
+.search input::placeholder{color:var(--muted)}
+.day{margin:0;padding:10px 20px;background:var(--surface-2);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+ul.list{list-style:none;margin:0;padding:0}
+.item{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border)}
+ul.list:last-child .item:last-child{border-bottom:0}
+.item.unread{background:var(--unread)}
+.item.unread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;position:relative}
+.av .ic{position:absolute;right:-4px;bottom:-4px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--surface)}
+.item.unread .av .ic{border-color:var(--unread)}
+.av .ic svg{width:12px;height:12px;stroke-width:2.4}
+.t-pay{background:var(--accent-soft);color:var(--accent)}
+.t-msg{background:var(--info-soft);color:var(--info)}
+.t-warn{background:var(--warn-soft);color:var(--warn)}
+.t-bad{background:var(--danger-soft);color:var(--danger)}
+.t-neu{background:var(--surface-2);color:var(--muted)}
+.body{min-width:0}
+.title{margin:0;font-size:15px;line-height:1.4}
+.item.unread .title{font-weight:600}
+.title b{font-weight:700}
+.desc{margin:2px 0 0;color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.quote{margin:8px 0 0;padding:8px 12px;border-left:3px solid var(--border);background:var(--surface-2);border-radius:0 8px 8px 0;font-size:14px;color:var(--text)}
+.meta{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.tag{padding:1px 8px;border-radius:6px;background:var(--surface-2);font-size:12px;font-weight:600}
+.cta{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.done{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--accent)}
+.row-tools{display:flex;gap:2px;align-items:flex-start}
+.ib{width:36px;height:36px;border-radius:8px;border:0;background:none;color:var(--muted);display:grid;place-items:center}
+.ib:hover{background:var(--surface-2);color:var(--text)}
+
+.empty{padding:64px 24px;text-align:center}
+.empty svg.art{width:96px;height:96px;margin:0 auto 12px;display:block;color:var(--accent)}
+.empty h2{margin:0 0 4px;font-size:18px}
+.empty p{margin:0 0 16px;color:var(--muted)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.2s;background:var(--text);color:var(--bg);padding:10px 12px 10px 16px;border-radius:12px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);z-index:30;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{background:none;border:0;color:inherit;font-weight:700;text-decoration:underline;padding:4px 8px;border-radius:6px}
+.toast button[hidden]{display:none}
+
+/* dialog */
+dialog{border:1px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text);padding:0;width:min(560px,calc(100vw - 24px));box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(8,14,11,.55)}
+.d-h{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border)}
+.d-h h2{margin:0;font-size:18px}
+.d-b{padding:8px 20px 4px;max-height:60vh;overflow:auto}
+.d-f{display:flex;justify-content:flex-end;gap:8px;padding:16px 20px;border-top:1px solid var(--border)}
+table.pref{width:100%;border-collapse:collapse}
+.pref th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;padding:10px 0;text-align:center}
+.pref th:first-child{text-align:left}
+.pref td{padding:12px 0;border-top:1px solid var(--border);text-align:center}
+.pref td:first-child{text-align:left}
+.pref td small{display:block;color:var(--muted);font-size:13px}
+.pref input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}
+.quiet{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--border)}
+.quiet input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent)}
+.quiet small{display:block;color:var(--muted);font-size:13px}
+
+@media (max-width:860px){
+  .nav{display:none}
+  .grid{grid-template-columns:minmax(0,1fr);gap:16px}
+  .side{position:static;flex-direction:row;overflow-x:auto;gap:8px;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}
+  .side::-webkit-scrollbar{display:none}
+  .cat{width:auto;flex:none;border:1px solid var(--border);background:var(--surface);border-radius:20px;min-height:38px;padding:0 14px;white-space:nowrap}
+  .cat svg{display:none}
+  .cat[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:none}
+  .cat[aria-pressed=true] .n{background:var(--accent-ink);color:var(--accent)}
+}
+@media (max-width:560px){
+  .top-in{padding:0 16px;gap:12px}
+  main{padding:20px 16px 48px}
+  h1{font-size:24px}
+  .head-actions{width:100%}
+  .head-actions .btn{flex:1;justify-content:center}
+  .search{max-width:none;flex-basis:100%;margin-left:0;order:3}
+  .tabs{flex:1}.tabs button{flex:1}
+  .item{grid-template-columns:40px minmax(0,1fr);padding:14px 16px;gap:12px}
+  .av{width:40px;height:40px}
+  .row-tools{grid-column:2;margin:-4px 0 0 -8px}
+  .toast{bottom:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-all" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+    <symbol id="i-prop" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></symbol>
+    <symbol id="i-pay" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></symbol>
+    <symbol id="i-con" viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M12 8v4M12 15v.01"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 1 1 12 0c0 6 2 7 2 7H4s2-1 2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-checks" viewBox="0 0 24 24"><path d="M2 12.5L6.5 17 15 8M11 16l1 1 9-9"/></symbol>
+    <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#"><span class="logo-mark" aria-hidden="true">G</span>Gigwell</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Find work</a><a href="#">Proposals</a><a href="#">Contracts</a><a href="#">Earnings</a><a href="#" aria-current="page">Notifications</a>
+    </nav>
+    <div class="top-r">
+      <span class="bell" role="img" aria-label="Notifications"><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg><b id="bellN" hidden></b></span>
+      <span class="me" role="img" aria-label="Signed in as Maya Okafor">MO</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <h1>Notifications</h1>
+      <p class="sub" id="sub">Updates on your proposals, contracts and payments.</p>
+    </div>
+    <div class="head-actions">
+      <button class="btn" id="markAll"><svg class="i" aria-hidden="true"><use href="#i-checks"/></svg>Mark all as read</button>
+      <button class="btn" id="openPrefs"><svg class="i" aria-hidden="true"><use href="#i-gear"/></svg>Preferences</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <nav class="side" id="cats" aria-label="Filter by type"></nav>
+
+    <section class="panel" aria-label="Notification list">
+      <div class="tools">
+        <div class="tabs" role="tablist" aria-label="Read state">
+          <button role="tab" id="tab-all" data-tab="all" aria-selected="true">All</button>
+          <button role="tab" id="tab-unread" data-tab="unread" aria-selected="false">Unread <span id="tabN"></span></button>
+        </div>
+        <label class="search">
+          <span class="sr">Search notifications</span>
+          <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+          <input id="q" type="search" placeholder="Search notifications" autocomplete="off">
+        </label>
+      </div>
+      <div id="list" role="tabpanel" aria-labelledby="tab-all"></div>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="toastUndo" hidden>Undo</button></div>
+
+<dialog id="prefs" aria-labelledby="prefsT">
+  <form method="dialog">
+    <div class="d-h"><h2 id="prefsT">Notification preferences</h2><button class="ib" value="cancel" aria-label="Close"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <div class="d-b">
+      <table class="pref">
+        <thead><tr><th scope="col">Send me</th><th scope="col">In-app</th><th scope="col">Email</th><th scope="col">Push</th></tr></thead>
+        <tbody id="prefRows"></tbody>
+      </table>
+      <label class="quiet"><input type="checkbox" id="quietChk" checked><span>Pause push notifications at night<small>No push between 22:00 and 07:00 (Lagos time). Email and in-app still arrive.</small></span></label>
+    </div>
+    <div class="d-f"><button class="btn" value="cancel">Cancel</button><button class="btn primary" value="save">Save preferences</button></div>
+  </form>
+</dialog>
+
+<script>
+(function(){
+  var MIN=60000, now=Date.now();
+  var CATS=[
+    {id:'all',label:'All activity',icon:'i-all'},
+    {id:'proposals',label:'Proposals',icon:'i-prop',desc:'Views, shortlists and invitations'},
+    {id:'messages',label:'Messages',icon:'i-msg',desc:'Client replies and mentions'},
+    {id:'payments',label:'Payments',icon:'i-pay',desc:'Escrow, releases and withdrawals'},
+    {id:'contracts',label:'Contracts',icon:'i-con',desc:'Offers, milestones and deadlines'},
+    {id:'reviews',label:'Reviews',icon:'i-star',desc:'Feedback from clients'},
+    {id:'account',label:'Account',icon:'i-shield',desc:'Security and policy notices'}
+  ];
+  var TONE={proposals:'t-neu',messages:'t-msg',payments:'t-pay',contracts:'t-pay',reviews:'t-warn',account:'t-bad'};
+  var ICON={proposals:'i-prop',messages:'i-msg',payments:'i-pay',contracts:'i-con',reviews:'i-star',account:'i-shield'};
+
+  var items=[
+    {id:1,cat:'contracts',init:'LP',t:'<b>Lumen Pay</b> sent you a contract offer for <b>Checkout flow redesign</b>',d:'Fixed price $3,200 in 3 milestones. The offer expires in 2 days.',ago:8,unread:1,act:[{l:'Accept offer',p:1,done:'Offer accepted'},{l:'Review details'}],tag:'Offer'},
+    {id:2,cat:'messages',init:'DK',t:'<b>Daniel Kessler</b> replied in <b>Landing page for Brightside Dental</b>',quote:'"The new hero looks great. Can you swap the testimonial order and send the Figma link before Friday?"',ago:34,unread:1,act:[{l:'Reply',p:1}],tag:'Brightside Dental'},
+    {id:3,cat:'payments',init:'$',t:'<b>$1,450.00</b> was released to your balance',d:'Milestone 2 of Mobile onboarding screens was approved by Northfield Health.',ago:95,unread:1,tag:'Payment'},
+    {id:4,cat:'proposals',init:'AR',t:'<b>Aroha Studio</b> shortlisted your proposal for <b>Brand identity refresh</b>',d:'You are one of 4 freelancers they shortlisted out of 31 proposals.',ago:170,unread:1,act:[{l:'View proposal'}],tag:'Proposal'},
+    {id:5,cat:'contracts',init:'NH',t:'Milestone 3 for <b>Mobile onboarding screens</b> is due tomorrow',d:'Due 17:00 tomorrow. Upload your files so Northfield Health can review before the deadline.',ago:310,unread:0,act:[{l:'Submit work',p:1,done:'Work submitted'}],tag:'Deadline'},
+    {id:6,cat:'reviews',init:'SM',t:'<b>Sofia Marin</b> left you a 5-star review',quote:'"Maya understood the brief instantly and delivered ahead of schedule. Would hire again."',ago:1260,unread:1,act:[{l:'View review'}],tag:'Review'},
+    {id:7,cat:'proposals',init:'TV',t:'<b>Tideview Analytics</b> invited you to interview for <b>Dashboard UI designer</b>',d:'Budget $60 to $80 per hour. They suggested a 20-minute call on Monday.',ago:1500,unread:0,act:[{l:'Accept invitation',p:1,done:'Invitation accepted'},{l:'Decline',done:'Invitation declined'}],tag:'Invitation'},
+    {id:8,cat:'payments',init:'$',t:'Your withdrawal of <b>$2,000.00</b> to Access Bank ****4821 is complete',d:'Funds usually show in your account within 1 business day.',ago:1700,unread:0,tag:'Withdrawal'},
+    {id:9,cat:'account',init:'!',t:'New sign-in to your account from <b>Chrome on Windows</b>',d:'Lagos, Nigeria. If this was not you, secure your account now.',ago:1980,unread:0,act:[{l:'Secure account',p:1,done:'Password reset email sent'},{l:'This was me',done:'Marked as you'}],tag:'Security'},
+    {id:10,cat:'messages',init:'PN',t:'<b>Priya Nair</b> mentioned you in <b>Subscription app, sprint 4</b>',quote:'"@Maya the empty states still need a decision. Are you free for a quick sync?"',ago:3100,unread:0,act:[{l:'Reply'}],tag:'Mention'},
+    {id:11,cat:'contracts',init:'BR',t:'<b>Brightside Dental</b> approved milestone 1 of <b>Landing page</b>',d:'$600.00 will move from escrow to your balance after the 3-day security hold.',ago:4400,unread:0,tag:'Milestone'},
+    {id:12,cat:'proposals',init:'KW',t:'Your proposal for <b>Packaging illustrations</b> was not selected',d:'The client hired another freelancer. Similar jobs are open in your category.',ago:5900,unread:0,act:[{l:'See similar jobs'}],tag:'Proposal'},
+    {id:13,cat:'account',init:'G',t:'Updated service fee terms start on <b>1 December</b>',d:'The fee on contracts over $10,000 drops from 10% to 8%. No action needed.',ago:8700,unread:0,tag:'Policy'},
+    {id:14,cat:'reviews',init:'EJ',t:'Reminder: rate your experience with <b>Emeka Johnson</b>',d:'Contract Podcast cover art ended 4 days ago. Reviews close after 14 days.',ago:9800,unread:0,act:[{l:'Write review'}],tag:'Reminder'}
+  ];
+  items.forEach(function(n){n.at=now-n.ago*MIN;n.state=null;});
+
+  var prefs={proposals:[1,1,0],messages:[1,1,1],payments:[1,1,1],contracts:[1,1,1],reviews:[1,0,0],account:[1,1,1]};
+  try{var sp=JSON.parse(localStorage.getItem('gigwell-prefs'));if(sp)prefs=sp;}catch(e){}
+
+  var st={tab:'all',cat:'all',q:''}, dismissed=[], toastTimer;
+  var $=function(s){return document.querySelector(s)};
+
+  function visible(n){
+    if(n.gone)return false;
+    if(st.cat!=='all'&&n.cat!==st.cat)return false;
+    if(st.tab==='unread'&&!n.unread)return false;
+    if(st.q){
+      var h=(n.t+' '+(n.d||'')+' '+(n.quote||'')+' '+n.tag).replace(/<[^>]+>/g,'').toLowerCase();
+      if(h.indexOf(st.q)<0)return false;
+    }
+    return true;
+  }
+  function day(n){
+    var d=new Date(n.at),t=new Date(now);d.setHours(0,0,0,0);t.setHours(0,0,0,0);
+    var diff=Math.round((t-d)/864e5);
+    return diff<=0?'Today':diff===1?'Yesterday':diff<7?'Earlier this week':'Older';
+  }
+  function when(n){
+    var m=Math.round((now-n.at)/MIN);
+    if(m<60)return m+' min ago';
+    if(m<60*24)return Math.round(m/60)+' h ago';
+    var d=new Date(n.at);
+    return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  function render(){
+    var unread=items.filter(function(n){return !n.gone&&n.unread}).length;
+    $('#bellN').hidden=!unread;$('#bellN').textContent=unread;
+    $('#tabN').textContent=unread?'('+unread+')':'';
+    $('#markAll').disabled=!unread;
+    $('#sub').textContent=unread?'You have '+unread+' unread '+(unread===1?'notification':'notifications')+'.':'You are all caught up.';
+    document.title=(unread?'('+unread+') ':'')+'Notifications - Gigwell';
+
+    $('#cats').innerHTML=CATS.map(function(c){
+      var k=items.filter(function(n){return !n.gone&&n.unread&&(c.id==='all'||n.cat===c.id)}).length;
+      return '<button class="cat" data-cat="'+c.id+'" aria-pressed="'+(st.cat===c.id)+'"><svg class="i" aria-hidden="true"><use href="#'+c.icon+'"/></svg>'+c.label+
+        '<span class="n"'+(k?'':' hidden')+'>'+k+'<span class="sr"> unread</span></span></button>';
+    }).join('');
+
+    var list=items.filter(visible),html='',last='';
+    list.forEach(function(n){
+      var g=day(n);
+      if(g!==last){if(last)html+='</ul>';html+='<h2 class="day">'+g+'</h2><ul class="list">';last=g;}
+      html+=row(n);
+    });
+    if(last)html+='</ul>';
+    if(!list.length)html=empty();
+    $('#list').innerHTML=html;
+  }
+
+  function row(n){
+    var acts='';
+    if(n.state){acts='<div class="cta"><span class="done"><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>'+n.state+'</span></div>';}
+    else if(n.act){acts='<div class="cta">'+n.act.map(function(a,i){return '<button class="btn sm'+(a.p?' primary':'')+'" data-act="'+i+'">'+a.l+'</button>'}).join('')+'</div>';}
+    var lbl=n.unread?'Mark as read':'Mark as unread';
+    return '<li class="item'+(n.unread?' unread':'')+'" data-id="'+n.id+'">'+
+      '<div class="av '+TONE[n.cat]+'" aria-hidden="true">'+n.init+'<span class="ic '+TONE[n.cat]+'"><svg class="i"><use href="#'+ICON[n.cat]+'"/></svg></span></div>'+
+      '<div class="body"><p class="title">'+(n.unread?'<span class="sr">Unread: </span>':'')+n.t+'</p>'+
+      (n.d?'<p class="desc">'+n.d+'</p>':'')+(n.quote?'<p class="quote">'+n.quote+'</p>':'')+
+      '<div class="meta"><span class="tag">'+n.tag+'</span><time datetime="'+new Date(n.at).toISOString()+'">'+when(n)+'</time></div>'+acts+'</div>'+
+      '<div class="row-tools">'+
+        '<button class="ib" data-do="toggle" aria-label="'+lbl+'" title="'+lbl+'"><svg class="i" aria-hidden="true"><use href="#'+(n.unread?'i-check':'i-dot')+'"/></svg></button>'+
+        '<button class="ib" data-do="dismiss" aria-label="Dismiss notification" title="Dismiss"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>'+
+      '</div></li>';
+  }
+
+  function empty(){
+    var filtered=st.q||st.cat!=='all'||st.tab==='unread';
+    var caughtUp=!st.q&&st.tab==='unread';
+    var q=st.q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    var h=st.q?'No matches for "'+q+'"':caughtUp?'You are all caught up':filtered?'Nothing here yet':'No notifications';
+    var p=st.q?'Try a client name, a project or a different word.':caughtUp?'New proposals, messages and payments will show up here.':filtered?'Try another type or switch back to all activity.':'New activity will show up here.';
+    return '<div class="empty"><svg class="art" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="48" cy="48" r="38" fill="var(--accent-soft)" stroke="none"/><path d="M30 60h36s-5-3-5-14a13 13 0 0 0-26 0c0 11-5 14-5 14z" fill="var(--surface)"/><path d="M43 68a5 5 0 0 0 10 0"/><path d="M40 44l6 6 11-12"/></svg><h2>'+h+'</h2><p>'+p+'</p>'+
+      (filtered?'<button class="btn" data-do="reset">Clear filters</button>':'')+'</div>';
+  }
+
+  function toast(msg,undo){
+    $('#toastMsg').textContent=msg;$('#toastUndo').hidden=!undo;
+    $('#toast').classList.add('on');clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){$('#toast').classList.remove('on')},undo?6000:3000);
+  }
+  function find(el){var li=el.closest('.item');return li&&items.filter(function(n){return n.id==li.dataset.id})[0]}
+  function tabs(){
+    document.querySelectorAll('.tabs button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.tab===st.tab)});
+    $('#list').setAttribute('aria-labelledby','tab-'+st.tab);
+  }
+
+  $('#list').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    if(b.dataset.do==='reset'){st.tab='all';st.cat='all';st.q='';$('#q').value='';tabs();return render();}
+    var n=find(b);if(!n)return;
+    if(b.dataset.do==='toggle'){n.unread=n.unread?0:1;render();}
+    else if(b.dataset.do==='dismiss'){n.gone=1;dismissed.push(n);render();toast('Notification dismissed',1);}
+    else if(b.dataset.act!==undefined){
+      var a=n.act[+b.dataset.act];n.unread=0;
+      if(a.done){n.state=a.done;toast(a.done);}else{toast('Opening "'+a.l+'"');}
+      render();
+    }
+  });
+  $('#toastUndo').addEventListener('click',function(){var n=dismissed.pop();if(n)n.gone=0;$('#toast').classList.remove('on');render();});
+  $('#cats').addEventListener('click',function(e){var b=e.target.closest('.cat');if(b){st.cat=b.dataset.cat;render();}});
+  document.querySelector('.tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(b){st.tab=b.dataset.tab;tabs();render();}});
+  $('#q').addEventListener('input',function(e){st.q=e.target.value.trim().toLowerCase();render();});
+  $('#markAll').addEventListener('click',function(){
+    var k=0;items.forEach(function(n){if(!n.gone&&n.unread){n.unread=0;k++}});render();toast(k+' marked as read');
+  });
+
+  /* preferences */
+  var dlg=$('#prefs');
+  function fillPrefs(){
+    $('#prefRows').innerHTML=CATS.slice(1).map(function(c){
+      return '<tr><td><strong>'+c.label+'</strong><small>'+c.desc+'</small></td>'+
+        [0,1,2].map(function(i){return '<td><input type="checkbox" data-c="'+c.id+'" data-i="'+i+'"'+(prefs[c.id][i]?' checked':'')+' aria-label="'+c.label+' by '+['in-app','email','push'][i]+'"></td>'}).join('')+'</tr>';
+    }).join('');
+  }
+  $('#openPrefs').addEventListener('click',function(){fillPrefs();dlg.showModal();});
+  dlg.addEventListener('close',function(){
+    if(dlg.returnValue!=='save')return;
+    dlg.querySelectorAll('input[data-c]').forEach(function(c){prefs[c.dataset.c][+c.dataset.i]=c.checked?1:0});
+    try{localStorage.setItem('gigwell-prefs',JSON.stringify(prefs));}catch(e){}
+    toast('Preferences saved');
+  });
+  dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close('cancel')});
+
+  render();
+})();
+</script>
+</body>
+</html>

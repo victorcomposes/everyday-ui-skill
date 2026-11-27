@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 5,
+  "minFontPx": 12.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(42, 33, 24)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 95, 209)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 17,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Saltbox Kitchen",
+        "w": 177,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "2",
+        "w": 70,
+        "h": 36
+      },
+      {
+        "tag": "a",
+        "text": "chana masala",
+        "w": 109,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "coconut chickpea stew",
+        "w": 166,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "vegan curry",
+        "w": 98,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "sweet potato curry",
+        "w": 141,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "Filters",
+        "w": 108,
+        "h": 40
+      },
+      {
+        "tag": "select",
+        "text": "Best match\nHighest rated\nMost ",
+        "w": 160,
+        "h": 38
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

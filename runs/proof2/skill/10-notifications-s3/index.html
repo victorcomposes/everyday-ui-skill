@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notifications - Gigwell</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #c2410c; --accent-hover: #9a3412; --accent-subtle: #fdeee5; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f7f7f8; --brand-deep: #1c1f26; --on-deep: #ffffff; --on-deep-muted: #b4b9c4;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px;  --lh-xs: 16px;
+  --text-sm: 14px;  --lh-sm: 20px;
+  --text-md: 16px;  --lh-md: 24px;
+  --text-xl: 20px;  --lh-xl: 28px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --w-sidebar: 248px; --w-rail: 360px; --w-content: 1200px;
+  --h-topbar: 56px; --h-bottomnav: 64px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #ff9a5c; --accent-hover: #ffb88a; --accent-subtle: #36210f; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #17191d; --brand-deep: #0f1115; --on-deep: #e9ebef; --on-deep-muted: #a0a6b2;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+.ico { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.ico-sm { width: 16px; height: 16px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.sidebar { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-5) var(--s-3) var(--s-4); }
+.logo { display: inline-flex; align-items: center; gap: 10px; padding: 0 var(--s-2); font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; }
+.nav { margin-top: var(--s-8); display: grid; gap: 2px; }
+.nav a { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text-muted); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav a:hover { background: var(--bg-subtle); color: var(--text); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text); }
+.nav a[aria-current="page"] .ico { color: var(--accent); }
+.nav-sep { height: 1px; background: var(--border); margin: var(--s-3) var(--s-2); }
+.count { margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: var(--r-full); background: var(--accent); color: var(--on-accent); font-size: var(--text-xs); font-weight: 600; line-height: 20px; text-align: center; font-variant-numeric: tabular-nums; }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-2) 0; border-top: 1px solid var(--border); }
+.account strong { display: block; font-weight: 600; }
+.account span { color: var(--text-muted); font-size: 13px; }
+.av { width: 40px; height: 40px; flex: none; display: grid; place-items: center; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: var(--text-sm); }
+.av.org { border-radius: var(--r-lg); }
+.av.sys { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border); border-radius: var(--r-lg); }
+.av.sys.bad { background: var(--danger-subtle); color: var(--danger); border-color: transparent; }
+.av.sys.good { background: var(--success-subtle); color: var(--success); border-color: transparent; }
+.account .av { width: 32px; height: 32px; font-size: 13px; }
+
+.topbar, .bottomnav { display: none; }
+
+.page { max-width: var(--w-content); margin: 0 auto; padding: var(--s-8) var(--s-8) var(--s-16); }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-6); margin-bottom: var(--rhythm-content); }
+.sub { margin-top: var(--rhythm-title); color: var(--text-muted); font-size: var(--text-md); line-height: var(--lh-md); font-variant-numeric: tabular-nums; }
+.actions { display: flex; gap: var(--s-2); flex: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 14px; border-radius: var(--r-md); border: 1px solid transparent; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease); }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--surface); border-color: var(--border-strong); }
+.btn-secondary:hover { background: var(--bg-subtle); }
+.btn-sm { min-height: var(--control-h-sm); padding: 0 12px; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); gap: var(--s-10); align-items: start; }
+
+/* tabs */
+.tabs { display: flex; gap: var(--s-1); border-bottom: 1px solid var(--border); margin-bottom: var(--s-4); overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { min-width: 44px; justify-content: center; display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-3); background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: var(--text-muted); font-weight: 500; cursor: pointer; white-space: nowrap; }
+.tab:hover { color: var(--text); }
+.tab[aria-pressed="true"] { color: var(--text); font-weight: 600; border-bottom-color: var(--accent); }
+.pill { display: inline-block; min-width: 20px; height: 20px; padding: 0 6px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-xs); font-weight: 600; line-height: 20px; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* feed */
+.feed { border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); overflow: hidden; }
+.day { padding: var(--s-2) var(--s-4); background: var(--bg-subtle); border-bottom: 1px solid var(--border); font: 500 13px/20px var(--font); letter-spacing: 0; color: var(--text-muted); }
+.group + .group .day { border-top: 1px solid var(--border); }
+.row { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr) 44px; gap: var(--s-3); padding: var(--s-4) var(--s-2) var(--s-4) var(--s-4); border-bottom: 1px solid var(--border); }
+.group:last-child .row:last-child { border-bottom: 0; }
+.row.unread { background: color-mix(in srgb, var(--accent-subtle) 45%, var(--surface)); }
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); }
+.what { min-width: 0; overflow-wrap: anywhere; }
+.what b { font-weight: 600; }
+time { flex: none; color: var(--text-muted); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.detail { margin-top: 2px; color: var(--text-muted); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.act { margin-top: var(--s-3); }
+.dot-btn { width: 44px; height: 44px; margin-top: -6px; display: grid; place-items: center; background: none; border: 0; border-radius: var(--r-full); cursor: pointer; }
+.dot-btn:hover { background: var(--bg-subtle); }
+.dot-btn i { width: 10px; height: 10px; border-radius: var(--r-full); border: 2px solid var(--border-strong); }
+.unread .dot-btn i { background: var(--accent); border-color: var(--accent); }
+.feed-note { margin-top: var(--s-4); color: var(--text-muted); font-size: 13px; }
+
+/* rail */
+.rail { position: sticky; top: var(--s-8); display: grid; gap: var(--rhythm-group); }
+.rail h2.label { font: 500 14px/20px var(--font); letter-spacing: 0; color: var(--text-muted); }
+.key { margin-top: var(--s-1); font: 700 40px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.key-sub { margin-top: var(--s-2); color: var(--text-muted); }
+.help { margin-top: var(--rhythm-tight); color: var(--text-muted); }
+.prefs { margin-top: var(--s-4); border-top: 1px solid var(--border); }
+.sw-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); min-height: 52px; border-bottom: 1px solid var(--border); }
+.sw { position: relative; width: 48px; height: 44px; flex: none; background: none; border: 0; cursor: pointer; }
+.sw::before { content: ""; position: absolute; left: 4px; top: 10px; width: 40px; height: 24px; border-radius: var(--r-full); background: var(--border-strong); transition: background-color var(--t-base) var(--ease); }
+.sw::after { content: ""; position: absolute; left: 8px; top: 14px; width: 16px; height: 16px; border-radius: var(--r-full); background: var(--surface); transition: transform var(--t-base) var(--ease); }
+.sw[aria-checked="true"]::before { background: var(--accent); }
+.sw[aria-checked="true"]::after { transform: translateX(16px); background: var(--on-accent); }
+.saved { margin-top: var(--s-3); color: var(--text-muted); font-size: 13px; min-height: 20px; }
+
+/* banner, empty, skeleton */
+.banner { display: flex; align-items: flex-start; gap: var(--s-3); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-4); border-radius: var(--r-lg); background: var(--danger-subtle); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); }
+.banner .ico { color: var(--danger); margin-top: 2px; }
+.banner div { flex: 1; min-width: 0; }
+.banner strong { font-weight: 600; }
+.empty { display: grid; justify-items: center; text-align: center; padding: var(--s-12) var(--s-6); border: 1px solid var(--border); border-radius: var(--r-lg); }
+.empty svg.art { width: 140px; height: 120px; }
+.empty h2 { margin-top: var(--s-5); }
+.empty p { margin-top: var(--rhythm-tight); max-width: 40ch; color: var(--text-muted); text-wrap: pretty; }
+.empty .btn { margin-top: var(--s-6); }
+.skel { height: 14px; border-radius: var(--r-sm); background: var(--bg-subtle); }
+.skel.c { width: 40px; height: 40px; border-radius: var(--r-full); }
+
+/* toast */
+.toasts { position: fixed; z-index: 30; left: calc(var(--w-sidebar) + var(--s-6)); bottom: var(--s-6); display: grid; gap: var(--s-2); width: min(360px, calc(100vw - 32px)); }
+.toast { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); min-height: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.toast .ico:first-child { color: var(--success); }
+.toast p { flex: 1; min-width: 0; }
+.toast .link { font-weight: 600; min-height: 44px; padding: 0 var(--s-2); }
+.x { display: grid; place-items: center; width: 44px; height: 44px; background: none; border: 0; border-radius: var(--r-md); color: var(--text-muted); cursor: pointer; }
+.x:hover { background: var(--bg-subtle); }
+
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; }
+}
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: var(--h-topbar); padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .bottomnav { display: grid; grid-template-columns: repeat(4, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; height: calc(var(--h-bottomnav) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: var(--frame); border-top: 1px solid var(--border); }
+  .bottomnav a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 44px; color: var(--text-muted); font-size: var(--text-xs); font-weight: 500; }
+  .bottomnav a[aria-current="page"] { color: var(--accent); }
+  .bn-ico { position: relative; display: inline-flex; }
+  .bn-ico .count { position: absolute; top: -6px; left: 12px; margin: 0; min-width: 20px; height: 20px; line-height: 16px; border: 2px solid var(--frame); padding: 0 3px; font-size: 11px; }
+  .page { padding: var(--s-6) var(--s-4) calc(var(--h-bottomnav) + var(--s-12)); }
+  .toasts { left: var(--s-4); right: var(--s-4); width: auto; bottom: calc(var(--h-bottomnav) + var(--s-3) + env(safe-area-inset-bottom)); }
+  html { scroll-padding-bottom: calc(var(--h-bottomnav) + var(--s-4)); }
+}
+@media (max-width: 640px) {
+  h1 { font-size: 28px; }
+  .head { flex-direction: column; gap: var(--s-4); }
+  .sub { font-size: var(--text-sm); }
+  .tabs { margin-right: calc(var(--s-4) * -1); padding-right: var(--s-6); -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+  .logo { min-height: 44px; }
+  .row { grid-template-columns: 32px minmax(0, 1fr) 44px; padding: var(--s-4) var(--s-1) var(--s-4) var(--s-3); gap: var(--s-2); }
+  .row .av { width: 32px; height: 32px; font-size: 12px; }
+  .top { flex-direction: column-reverse; gap: 2px; }
+  .rail .sum { display: none; }
+  .empty { padding: var(--s-10) var(--s-4); }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to notifications</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18M16 15h2"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 1 1 12 0c0 6 2 7.5 2 7.5H4S6 15 6 9z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 7-8M14 7h6v6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  </defs>
+</svg>
+
+<div class="shell">
+  <aside>
+    <div class="sidebar">
+      <a class="logo" href="#">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><text x="14" y="20" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="16" fill="var(--on-accent)">G</text></svg>
+        Gigwell
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#"><svg class="ico"><use href="#i-home"/></svg>Home</a>
+        <a href="#"><svg class="ico"><use href="#i-briefcase"/></svg>Find jobs</a>
+        <a href="#"><svg class="ico"><use href="#i-file"/></svg>Contracts</a>
+        <a href="#"><svg class="ico"><use href="#i-message"/></svg>Messages</a>
+        <a href="#"><svg class="ico"><use href="#i-wallet"/></svg>Payments</a>
+        <a href="#" aria-current="page"><svg class="ico"><use href="#i-bell"/></svg>Notifications <span class="count" data-unread-count hidden></span></a>
+        <div class="nav-sep" role="presentation"></div>
+        <a href="#"><svg class="ico"><use href="#i-sliders"/></svg>Settings</a>
+      </nav>
+      <div class="account">
+        <span class="av" aria-hidden="true">AO</span>
+        <div><strong>Amara Okafor</strong><span>Illustrator</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <a class="logo" href="#" style="padding:0">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><text x="14" y="20" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="16" fill="var(--on-accent)">G</text></svg>
+        Gigwell
+      </a>
+      <span class="av" style="width:32px;height:32px;font-size:13px" aria-hidden="true">AO</span>
+    </header>
+
+    <main id="main" class="page">
+      <div class="head">
+        <div>
+          <h1>Notifications</h1>
+          <p class="sub" id="sub"></p>
+        </div>
+        <div class="actions" id="actions">
+          <a class="btn btn-secondary" href="#delivery"><svg class="ico ico-sm"><use href="#i-sliders"/></svg>Settings</a>
+          <button class="btn btn-primary" type="button" id="markall">Mark all as read</button>
+        </div>
+      </div>
+
+      <div class="layout">
+        <section aria-label="Notification list">
+          <div id="banner"></div>
+          <div class="tabs" id="tabs" role="group" aria-label="Filter notifications"></div>
+          <div id="feed"></div>
+          <p class="feed-note" id="note">Notifications stay for 30 days, then Gigwell deletes them.</p>
+        </section>
+
+        <aside class="rail" aria-label="Summary and delivery">
+          <section class="sum" id="sum">
+            <h2 class="label">Unread</h2>
+            <p class="key" id="key"></p>
+            <p class="key-sub" id="keysub"></p>
+          </section>
+          <section id="delivery" style="scroll-margin-top:24px">
+            <h2>Delivery</h2>
+            <p class="help">In-app notifications are always on. Choose where else Gigwell reaches you.</p>
+            <div class="prefs" id="prefs"></div>
+            <p class="saved" id="saved" role="status"></p>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="bottomnav" aria-label="Main">
+  <a href="#"><svg class="ico"><use href="#i-home"/></svg>Home</a>
+  <a href="#"><svg class="ico"><use href="#i-briefcase"/></svg>Jobs</a>
+  <a href="#"><svg class="ico"><use href="#i-message"/></svg>Messages</a>
+  <a href="#" aria-current="page"><span class="bn-ico"><svg class="ico"><use href="#i-bell"/></svg><span class="count" data-unread-count hidden></span></span>Notifications</a>
+</nav>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+const TODAY = new Date('2026-11-27T10:30:00');
+const state = new URLSearchParams(location.search).get('state');
+
+const KIND = {
+  job:     { cat: 'job',     icon: 'i-briefcase' },
+  contract:{ cat: 'job',     icon: 'i-file' },
+  payment: { cat: 'payment', icon: 'i-wallet' },
+  failed:  { cat: 'payment', icon: 'i-alert', tone: 'bad' },
+  message: { cat: 'message', icon: 'i-message' },
+  info:    { cat: 'other',   icon: 'i-trend' },
+};
+
+let items = [
+  { id: 1,  kind: 'job',      actor: 'Priya Nair',        verb: 'sent you an offer for', object: 'Brand refresh at Lumen Health', detail: 'Fixed price $3,200.00. Starts 7 Dec.', at: '2026-11-27T10:12', read: false, action: 'Review offer' },
+  { id: 2,  kind: 'payment',  actor: 'Tidewater Coffee',  org: true, verb: 'paid $1,450.00 for', object: 'Milestone 2 of Menu redesign', detail: 'Released from escrow to your Gigwell balance.', at: '2026-11-27T09:30', read: false },
+  { id: 3,  kind: 'message',  actor: 'Jonas Weber',       verb: 'replied in', object: 'Landing page copy', detail: '“Can you send the revised hero text before Monday?”', at: '2026-11-27T08:55', read: false, action: 'Reply' },
+  { id: 4,  kind: 'contract', actor: 'Elena Petrova',     verb: 'asked to move the deadline of', object: 'Milestone 3 of Onboarding illustrations', detail: 'From 2 Dec to 9 Dec. You can accept or suggest another date.', at: '2026-11-26T16:40', read: false, action: 'Respond' },
+  { id: 5,  kind: 'failed',   lead: 'Withdrawal of $2,100.00 failed', detail: 'Your bank rejected the account number. The money is back in your balance.', at: '2026-11-26T11:05', read: false, action: 'Update bank details' },
+  { id: 6,  kind: 'info',     actor: 'Sam Brooks',        verb: 'left you a 5-star review on', object: 'Menu redesign', detail: '“Fast, careful and easy to work with.”', at: '2026-11-26T09:20', read: true },
+  { id: 7,  kind: 'payment',  actor: 'Kestrel Logistics', org: true, verb: 'funded escrow with $2,400.00 for', object: 'Milestone 1 of Route map set', detail: 'Gigwell holds the money until you deliver.', at: '2026-11-25T14:10', read: true },
+  { id: 8,  kind: 'job',      actor: 'Mei Lin Tan',       verb: 'invited you to apply for', object: 'Packaging illustrations', detail: 'Budget $1,800.00 to $2,500.00. Closes 4 Dec.', at: '2026-11-25T10:00', read: true, action: 'View job' },
+  { id: 9,  kind: 'info',     lead: 'Your profile appeared in 48 searches this week', detail: 'That is 17 more than last week.', at: '2026-11-24T08:00', read: true },
+  { id: 10, kind: 'message',  actor: 'Ahmed Siddiqui',    verb: 'sent a file in', object: 'Annual report layout', detail: 'report-v3.pdf, 4.2 MB', at: '2026-11-23T17:25', read: true },
+  { id: 11, kind: 'job',      actor: 'Daniel Reyes',      verb: 'viewed your proposal for', object: 'Invoice template set', at: '2026-11-23T12:00', read: true },
+  { id: 12, kind: 'payment',  lead: 'Withdrawal of $3,600.00 sent', detail: 'Arrives at Northline Bank, account ending 4417.', at: '2026-11-18T15:00', read: true },
+  { id: 13, kind: 'contract', actor: 'Tidewater Coffee',  org: true, verb: 'accepted your delivery of', object: 'Milestone 1 of Menu redesign', at: '2026-11-17T13:45', read: true },
+];
+
+if (state === 'empty') items = [];
+if (state === 'stress') {
+  items[0] = { ...items[0], actor: 'Bartholomew Featherstonehaugh-Wainwright', object: 'Rebrand of https://www.lumenhealthgroup.example.com/patient-portal/onboarding/illustrations-v2' };
+  items[1] = { ...items[1], verb: 'paid $1,284,900.50 for' };
+  items[2] = { ...items[2], actor: 'Ng' };
+  const names = ['Oluwaseun Adebayo-Clarke', 'Li', 'Marguerite Delacroix-Hallworth', 'Tomasz Kowalczyk'];
+  for (let i = 0; i < 30; i++) items.push({ id: 100 + i, kind: 'message', actor: names[i % 4], verb: 'replied in', object: 'Job ' + (i + 1), detail: 'Thanks, that works for me.', at: '2026-11-' + String(16 - (i % 12)).padStart(2, '0') + 'T09:' + String(10 + i).padStart(2, '0'), read: true });
+}
+
+const prefs = [
+  { id: 'email', label: 'Email for offers and payments', on: true },
+  { id: 'push',  label: 'Push on my phone',              on: true },
+  { id: 'digest',label: 'Monday summary email',          on: false },
+];
+
+let tab = 'all';
+let lastSnapshot = null;
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const initials = (n) => n.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+const hm = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' });
+const wd = new Intl.DateTimeFormat('en-GB', { weekday: 'short' });
+const dm = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
+const full = new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+
+const dayDiff = (d) => Math.round((new Date(TODAY.toDateString()) - new Date(d.toDateString())) / 864e5);
+const group = (d) => { const n = dayDiff(d); return n === 0 ? 'Today' : n === 1 ? 'Yesterday' : n < 7 ? 'Earlier this week' : 'Earlier'; };
+const when = (d) => { const n = dayDiff(d); return n < 2 ? hm.format(d) : n < 7 ? wd.format(d) + ' ' + hm.format(d) : dm.format(d); };
+const plural = (n, one, many) => n + ' ' + (n === 1 ? one : many);
+
+const unreadItems = () => items.filter((i) => !i.read);
+const needsYou = () => unreadItems().filter((i) => i.action);
+
+function rowHtml(i) {
+  const k = KIND[i.kind], d = new Date(i.at);
+  const av = i.actor
+    ? `<span class="av${i.org ? ' org' : ''}" aria-hidden="true">${esc(initials(i.actor))}</span>`
+    : `<span class="av sys ${k.tone === 'bad' ? 'bad' : ''}" aria-hidden="true"><svg class="ico"><use href="#${k.icon}"/></svg></span>`;
+  const what = i.actor
+    ? `<b>${esc(i.actor)}</b> ${esc(i.verb)} ${esc(i.object)}`
+    : `<b>${esc(i.lead)}</b>`;
+  return `<li class="row${i.read ? '' : ' unread'}">
+    ${av}
+    <div>
+      <div class="top"><p class="what">${i.read ? '' : '<span class="sr-only">Unread. </span>'}${what}</p><time datetime="${i.at}" title="${esc(full.format(d))}">${when(d)}</time></div>
+      ${i.detail ? `<p class="detail">${esc(i.detail)}</p>` : ''}
+      ${i.action ? `<div class="act"><button class="btn btn-secondary btn-sm" type="button">${esc(i.action)}</button></div>` : ''}
+    </div>
+    <button class="dot-btn" type="button" data-toggle="${i.id}" aria-label="${i.read ? 'Mark as unread' : 'Mark as read'}" title="${i.read ? 'Mark as unread' : 'Mark as read'}"><i></i></button>
+  </li>`;
+}
+
+function emptyHtml(kind) {
+  const art = `<svg class="art" viewBox="0 0 140 120" aria-hidden="true">
+    <rect x="14" y="12" width="112" height="28" rx="8" fill="none" stroke="var(--border)" stroke-width="2"/>
+    <circle cx="30" cy="26" r="7" fill="var(--accent-subtle)"/><rect x="44" y="20" width="52" height="5" rx="2.5" fill="var(--border)"/><rect x="44" y="29" width="34" height="5" rx="2.5" fill="var(--border)"/>
+    <rect x="14" y="80" width="112" height="28" rx="8" fill="none" stroke="var(--border)" stroke-width="2"/>
+    <circle cx="30" cy="94" r="7" fill="var(--accent-subtle)"/><rect x="44" y="88" width="46" height="5" rx="2.5" fill="var(--border)"/><rect x="44" y="97" width="28" height="5" rx="2.5" fill="var(--border)"/>
+    <circle cx="70" cy="60" r="19" fill="var(--accent-subtle)"/>
+    <g fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M62 57a8 8 0 1 1 16 0c0 7 3 9 3 9H59s3-2 3-9z"/><path d="M67 70a3 3 0 0 0 6 0"/></g></svg>`;
+  if (kind === 'none') return `<div class="empty">${art}<h2>No notifications yet</h2><p>You'll see offers, messages and payment updates here.</p><a class="btn btn-primary" href="#">Browse open jobs</a></div>`;
+  return `<div class="empty">${art}<h2>${kind === 'unread' ? 'You are all caught up' : 'Nothing in this view'}</h2><p>${kind === 'unread' ? 'Every notification is read. Your read ones are still under All.' : 'No notifications match this filter in the last 30 days.'}</p><button class="btn btn-secondary" type="button" data-tab="all">Show all notifications</button></div>`;
+}
+
+function skeleton() {
+  const row = `<li class="row"><span class="skel c"></span><div><div class="skel" style="width:70%"></div><div class="skel" style="width:45%;margin-top:10px"></div></div><span></span></li>`;
+  return `<div class="feed" aria-busy="true"><div class="group"><h2 class="day">Loading</h2><ul>${row.repeat(6)}</ul></div></div>`;
+}
+
+function render() {
+  const un = unreadItems().length, need = needsYou().length;
+  document.querySelectorAll('[data-unread-count]').forEach((el) => { el.hidden = !un; el.textContent = un > 9 ? '9+' : un; el.setAttribute('aria-label', un + ' unread'); });
+  document.title = (un ? '(' + un + ') ' : '') + 'Notifications - Gigwell';
+  const none = items.length === 0;
+
+  $('#sub').textContent = state === 'loading' ? 'Loading your notifications' : none ? 'Nothing yet' : `${un} unread of ${items.length} in the last 30 days`;
+  $('#markall').hidden = none || state === 'loading';
+  $('#sum').hidden = none || state === 'loading';
+  $('#note').hidden = none || state === 'loading';
+  $('#key').textContent = un;
+  $('#keysub').textContent = un === 0 ? 'Everything is read.' : need ? `${plural(need, 'needs', 'need')} your reply or a decision. The rest are updates.` : 'No decisions waiting. These are updates.';
+
+  const tabs = [['all', 'All'], ['unread', 'Unread'], ['job', 'Jobs'], ['payment', 'Payments'], ['message', 'Messages']];
+  $('#tabs').hidden = none || state === 'loading';
+  $('#tabs').innerHTML = tabs.map(([k, l]) => `<button class="tab" type="button" data-tab="${k}" aria-pressed="${tab === k}">${l}${k === 'unread' && un ? ` <span class="pill">${un}</span>` : ''}</button>`).join('');
+
+  $('#banner').innerHTML = state === 'error'
+    ? `<div class="banner" role="alert"><svg class="ico"><use href="#i-alert"/></svg><div><strong>Gigwell could not refresh your notifications.</strong> You are seeing the list from 10:12. New items may be missing.</div><button class="btn btn-secondary btn-sm" type="button" id="retry">Try again</button></div>` : '';
+
+  if (state === 'loading') { $('#feed').innerHTML = skeleton(); return; }
+  if (none) { $('#feed').innerHTML = emptyHtml('none'); return; }
+
+  const shown = items.filter((i) => tab === 'all' || (tab === 'unread' ? !i.read : KIND[i.kind].cat === tab)).sort((a, b) => b.at.localeCompare(a.at));
+  if (!shown.length) { $('#feed').innerHTML = emptyHtml(tab === 'unread' ? 'unread' : 'filter'); return; }
+  const groups = [];
+  shown.forEach((i) => { const g = group(new Date(i.at)); (groups.find((x) => x.g === g) || groups[groups.push({ g, rows: [] }) - 1]).rows.push(i); });
+  $('#feed').innerHTML = `<div class="feed">${groups.map((x) => `<section class="group"><h2 class="day">${x.g}</h2><ul>${x.rows.map(rowHtml).join('')}</ul></section>`).join('')}</div>`;
+}
+
+function toast(text, undo) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<svg class="ico"><use href="#i-check"/></svg><p>${esc(text)}</p>${undo ? '<button class="link" type="button" data-undo>Undo</button>' : ''}<button class="x" type="button" aria-label="Dismiss"><svg class="ico"><use href="#i-x"/></svg></button>`;
+  const box = $('#toasts');
+  while (box.children.length >= 3) box.firstChild.remove();
+  box.append(el);
+  let timer;
+  const close = () => { clearTimeout(timer); el.remove(); };
+  const start = () => { timer = setTimeout(close, 6000); };
+  el.addEventListener('mouseenter', () => clearTimeout(timer));
+  el.addEventListener('mouseleave', start);
+  el.addEventListener('focusin', () => clearTimeout(timer));
+  el.addEventListener('focusout', start);
+  el.querySelector('.x').addEventListener('click', close);
+  if (undo) el.querySelector('[data-undo]').addEventListener('click', () => { undo(); close(); });
+  start();
+}
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-toggle], [data-tab], #markall, #retry');
+  if (!t) return;
+  if (t.dataset.tab) { tab = t.dataset.tab; render(); $(`[data-tab="${tab}"]`)?.focus(); return; }
+  if (t.dataset.toggle) {
+    const i = items.find((x) => x.id === +t.dataset.toggle);
+    i.read = !i.read; render();
+    document.querySelector(`[data-toggle="${i.id}"]`)?.focus();
+    return;
+  }
+  if (t.id === 'retry') { location.search = ''; return; }
+  const un = unreadItems();
+  if (!un.length) { toast('Everything is already read.'); return; }
+  lastSnapshot = un.map((i) => i.id);
+  un.forEach((i) => { i.read = true; });
+  render();
+  toast(`Marked ${plural(un.length, 'notification', 'notifications')} as read`, () => {
+    items.forEach((i) => { if (lastSnapshot.includes(i.id)) i.read = false; });
+    render();
+  });
+});
+
+$('#prefs').innerHTML = prefs.map((p) => `<div class="sw-row"><span id="lbl-${p.id}">${p.label}</span><button class="sw" type="button" role="switch" aria-checked="${p.on}" aria-labelledby="lbl-${p.id}" data-pref="${p.id}"></button></div>`).join('');
+$('#prefs').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-pref]'); if (!b) return;
+  const p = prefs.find((x) => x.id === b.dataset.pref);
+  p.on = !p.on; b.setAttribute('aria-checked', p.on);
+  $('#saved').textContent = 'Saved';
+});
+$('#saved').textContent = 'Changes save as you make them.';
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halden Trail 2 - Northfall</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --backdrop:#e8e5dd; --surface:#ffffff; --sunken:#f5f3ee;
+  --ink:#16181a; --muted:#5b5f64; --line:#e4e1d8; --line-strong:#8f8c83;
+  --accent:#c2380f; --on-ink:#ffffff; --star:#b0500a; --good:#17693f;
+  --focus:#1d4ed8; --toast:#16181a; --on-toast:#fff;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --backdrop:#0a0b0c; --surface:#151719; --sunken:#1e2124;
+    --ink:#f2f0eb; --muted:#a9adb2; --line:#2b2f33; --line-strong:#80858b;
+    --accent:#ff8257; --on-ink:#15171a; --star:#f2a64b; --good:#5fd08f;
+    --focus:#8ab4ff; --toast:#f2f0eb; --on-toast:#15171a;
+  }
+}
+/* colourways: shoe paint + stage tint */
+.cw-bone{--upper:#ece7db;--tongue:#d6cfbc;--cap:#cdc5ae;--trim:#d9461a;--sole:#fbfaf6;--outsole:#3a3a3a;--lace:#fff;--stage:#e9e3d3;--sw1:#ece7db;--sw2:#d9461a}
+.cw-slate{--upper:#4a5662;--tongue:#36404a;--cap:#2c353e;--trim:#c9e23a;--sole:#eef0f2;--outsole:#20262b;--lace:#e8ecef;--stage:#dce3e9;--sw1:#4a5662;--sw2:#c9e23a}
+.cw-forest{--upper:#3d6b53;--tongue:#2c5140;--cap:#254537;--trim:#e9d9ae;--sole:#f3efe3;--outsole:#1f2a24;--lace:#f3efe3;--stage:#dbe7de;--sw1:#3d6b53;--sw2:#e9d9ae}
+.cw-ink{--upper:#2a2c31;--tongue:#1a1b1e;--cap:#3d4047;--trim:#e4e7ea;--sole:#f4f4f2;--outsole:#111;--lace:#e4e7ea;--stage:#e2e2df;--sw1:#2a2c31;--sw2:#e4e7ea}
+@media (prefers-color-scheme: dark){
+  .cw-bone{--stage:#2b2924}.cw-slate{--stage:#20282f}.cw-forest{--stage:#1d2b23}.cw-ink{--stage:#2d2e32}
+}
+
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--backdrop); color:var(--ink);
+  font:15px/1.5 "Avenir Next","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  font-variant-numeric:tabular-nums;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg{display:block}
+.ico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.app{max-width:430px;margin:0 auto;background:var(--surface);min-height:100dvh;overflow:clip;position:relative}
+@media (min-width:600px){
+  .app{margin:24px auto;min-height:0;border-radius:32px;box-shadow:0 1px 0 var(--line),0 30px 60px -20px rgba(0,0,0,.28)}
+}
+
+/* gallery */
+.stage{background:var(--stage);position:relative;transition:background .3s}
+.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.slides::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:1/.86;display:grid;place-items:center;padding:60px 6px 40px}
+.slide svg{width:100%;height:auto;max-height:100%}
+.topbar{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:2;pointer-events:none}
+.topbar>*{pointer-events:auto}
+.group{display:flex;gap:8px}
+.round{width:44px;height:44px;border-radius:50%;background:var(--surface);color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 2px rgba(0,0,0,.15);position:relative}
+.round[aria-pressed="true"] .ico{fill:var(--accent);stroke:var(--accent)}
+.count{position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:10px;padding:0 5px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;line-height:20px;text-align:center}
+:root .count{color:#fff}
+@media (prefers-color-scheme: dark){.count{color:#15171a}}
+.tag{position:absolute;left:16px;bottom:16px;background:var(--ink);color:var(--on-ink);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:99px}
+.dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:0}
+.dots button{width:28px;height:28px;display:grid;place-items:center}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--ink);opacity:.3;transition:all .2s}
+.dots button[aria-current="true"] i{opacity:1;width:20px;border-radius:4px}
+.cap{position:absolute;right:16px;bottom:16px;font-size:13px;color:var(--ink);background:color-mix(in srgb,var(--surface) 78%,transparent);padding:4px 10px;border-radius:99px;backdrop-filter:blur(6px)}
+
+/* body */
+.pad{padding:0 20px}
+.head{padding-top:20px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:28px;line-height:1.12;letter-spacing:-.025em;font-weight:800;margin-top:4px}
+.sub{color:var(--muted);margin-top:2px}
+.rate{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px}
+.stars{display:flex;gap:1px;color:var(--star)}
+.stars svg{width:16px;height:16px;fill:currentColor}
+.rate a{color:var(--ink);text-underline-offset:3px;min-height:24px;display:inline-flex;align-items:center}
+.price{display:flex;align-items:baseline;gap:10px;margin-top:14px;flex-wrap:wrap}
+.price strong{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.price s{color:var(--muted)}
+.save{font-size:13px;font-weight:700;color:var(--good);background:color-mix(in srgb,var(--good) 13%,transparent);padding:2px 8px;border-radius:6px}
+.bnpl{font-size:13px;color:var(--muted);margin-top:2px}
+
+.sect{padding-top:26px}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.lbl{font-weight:700}
+.lbl span{font-weight:400;color:var(--muted)}
+.link{color:var(--ink);font-size:14px;text-decoration:underline;text-underline-offset:3px;min-height:24px;padding:0}
+
+.swatches{display:flex;gap:12px;margin-top:12px}
+.sw{position:relative}
+.sw input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.sw span{display:block;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--sw1) 50%,var(--sw2) 50%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);outline:2px solid transparent;outline-offset:3px;transition:outline-color .15s}
+.sw input:checked+span{outline-color:var(--ink)}
+.sw input:focus-visible+span{outline:3px solid var(--focus)}
+
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.sz{position:relative}
+.sz input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.sz span{display:grid;place-items:center;min-height:48px;border:1px solid var(--line-strong);border-radius:12px;font-weight:600;transition:background .15s,color .15s}
+.sz input:checked+span{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.sz input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.sz input:disabled{cursor:not-allowed}
+.sz input:disabled+span{border-style:dashed;border-color:var(--line);color:var(--muted);text-decoration:line-through;background:var(--sunken)}
+.hint{font-size:14px;margin-top:10px;color:var(--muted);min-height:21px}
+.hint.low{color:var(--accent);font-weight:600}
+.hint.err{color:var(--accent);font-weight:700}
+
+.fit{margin-top:16px;background:var(--sunken);border-radius:var(--r);padding:14px 16px}
+.fit p{font-size:14px}
+.meter{position:relative;height:6px;border-radius:3px;background:var(--line);margin:14px 0 8px}
+.meter:before{content:"";position:absolute;left:33%;right:33%;top:0;bottom:0;background:var(--ink);border-radius:3px;opacity:.9}
+.meter b{position:absolute;top:-5px;left:calc(52% - 8px);width:16px;height:16px;border-radius:50%;background:var(--surface);border:3px solid var(--ink)}
+.scale{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+
+.deliver{margin-top:24px;padding:0;border:1px solid var(--line);border-radius:var(--r)}
+.deliver li{list-style:none;display:flex;gap:14px;padding:14px 16px;align-items:flex-start}
+.deliver li+li{border-top:1px solid var(--line)}
+.deliver .ico{margin-top:1px;flex:none}
+.deliver b{display:block;font-size:15px}
+.deliver small{color:var(--muted);font-size:14px}
+
+details{border-bottom:1px solid var(--line)}
+.acc{margin-top:20px;border-top:1px solid var(--line)}
+summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:56px;font-weight:700;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary .ico{transition:transform .2s}
+details[open] summary .ico{transform:rotate(180deg)}
+details .body{padding:0 0 18px;color:var(--muted)}
+details .body p+p{margin-top:10px}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:8px 20px}
+.spec dt{color:var(--muted)}
+.spec dd{color:var(--ink);font-weight:600;margin:0;text-align:right}
+.checks{padding:0;margin-top:12px}
+.checks li{list-style:none;position:relative;padding-left:24px}
+.checks li+li{margin-top:6px}
+.checks li:before{content:"";position:absolute;left:3px;top:.45em;width:10px;height:6px;border-left:2px solid var(--good);border-bottom:2px solid var(--good);transform:rotate(-45deg)}
+
+.reviews{padding-top:30px}
+.sum{display:flex;gap:20px;align-items:center;margin-top:14px}
+.big{text-align:center;flex:none}
+.big strong{font-size:44px;line-height:1;font-weight:800;letter-spacing:-.03em;display:block}
+.big small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.bars{flex:1;display:grid;gap:5px}
+.bar{display:grid;grid-template-columns:14px 1fr 34px;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.bar i{height:6px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
+.bar i:after{content:"";position:absolute;inset:0;width:var(--w);background:var(--ink);border-radius:3px}
+.bar span:last-child{text-align:right}
+.rev{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.rev .who{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-top:6px}
+.rev h3{font-size:16px;margin-top:8px}
+.rev p{margin-top:4px}
+.ver{color:var(--good);font-weight:600}
+.btn2{margin-top:16px;width:100%;min-height:48px;border:1px solid var(--ink);border-radius:12px;font-weight:700}
+
+.more{padding-top:34px;padding-bottom:28px}
+.cards{display:flex;gap:12px;overflow-x:auto;margin:14px -20px 0;padding:0 20px 4px;scroll-snap-type:x proximity;scrollbar-width:none}
+.cards::-webkit-scrollbar{display:none}
+.card{flex:0 0 150px;scroll-snap-align:start;color:inherit;text-decoration:none}
+.card .pic{background:var(--stage);border-radius:var(--r);aspect-ratio:1/1;display:grid;place-items:center;padding:10px}
+.card b{display:block;font-size:14px;margin-top:8px;line-height:1.3}
+.card small{color:var(--muted);font-size:13px}
+
+/* buy bar */
+.buy{position:sticky;bottom:0;z-index:5;display:flex;gap:16px;align-items:center;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.buy .p{line-height:1.2}
+.buy .p b{font-size:20px;font-weight:800;display:block}
+.buy .p small{font-size:12px;color:var(--muted)}
+.add{flex:1;min-height:52px;border-radius:14px;background:var(--ink);color:var(--on-ink);font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s}
+.add:active{transform:scale(.98)}
+.add.done{background:var(--good);color:#fff}
+@media (prefers-color-scheme: dark){.add.done{color:#08130d}}
+.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--toast);color:var(--on-toast);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;transition:all .25s;z-index:9;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></symbol>
+    <symbol id="shoe" viewBox="0 0 400 240">
+      <ellipse cx="206" cy="226" rx="176" ry="8" fill="#000" opacity=".14"/>
+      <!-- outsole + midsole -->
+      <path d="M52 205 H346 Q374 205 372 212 Q370 218 340 218 H60 Q40 218 52 205Z" fill="var(--outsole)"/>
+      <path d="M30 182 Q28 207 56 207 H342 Q384 205 382 180 Q381 168 362 168 H48 Q31 168 30 182Z" fill="var(--sole)"/>
+      <path d="M40 192 H372" stroke="var(--outsole)" stroke-opacity=".16" stroke-width="2" fill="none"/>
+      <!-- upper -->
+      <path d="M50 172 L43 112 Q42 84 62 78 Q92 74 108 96 L150 84 L184 92 Q210 114 252 120 Q332 132 368 158 Q382 168 382 172Z" fill="var(--upper)"/>
+      <!-- toe cap -->
+      <path d="M298 128 Q350 138 372 158 Q382 168 382 172 H294 Q306 150 298 128Z" fill="var(--cap)"/>
+      <!-- heel counter -->
+      <path d="M50 172 L43 112 Q42 84 62 78 L70 92 Q58 106 62 172Z" fill="var(--cap)"/>
+      <!-- tongue -->
+      <path d="M108 98 L128 48 Q144 38 162 50 L188 94Z" fill="var(--tongue)"/>
+      <!-- trim stripe -->
+      <path d="M92 166 Q172 158 228 124 Q248 113 262 121 Q228 152 156 172Z" fill="var(--trim)"/>
+      <path d="M64 90 Q86 84 98 104" stroke="var(--trim)" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <!-- laces -->
+      <g stroke="var(--lace)" stroke-width="5" stroke-linecap="round" fill="none">
+        <path d="M138 86 L156 74"/><path d="M155 94 L173 80"/><path d="M172 102 L192 88"/>
+        <path d="M192 110 L214 96"/><path d="M214 116 L238 102"/>
+      </g>
+      <path d="M108 100 L130 80" stroke="var(--upper)" stroke-opacity=".5" stroke-width="3" fill="none"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="app cw-bone" id="app">
+
+  <section class="stage" aria-label="Product photos">
+    <div class="topbar">
+      <button class="round" aria-label="Back to running shoes" type="button">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="group">
+        <button class="round" id="fav" aria-pressed="false" aria-label="Save to wishlist" type="button">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 20.5s-8-4.8-8-10.6A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 2.9c0 5.800-8 10.600-8 10.600z"/></svg>
+        </button>
+        <button class="round" type="button" aria-label="Bag, 0 items" id="bagBtn">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.500a3 3 0 0 1 6 0V8"/></svg>
+          <span class="count" id="count" hidden>0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="slides" id="slides" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Photos of Halden Trail 2, swipe or use arrow keys">
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="1 of 3: side view" data-cap="Side view">
+        <svg viewBox="16 30 380 200" role="img" aria-label="Halden Trail 2 running shoe, side view"><use href="#shoe"/></svg>
+      </div>
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 3: toe and lacing detail" data-cap="Toe and lacing">
+        <svg viewBox="130 30 270 180" role="img" aria-label="Close-up of the toe cap and lacing"><use href="#shoe" width="400" height="240"/></svg>
+      </div>
+      <div class="slide" role="group" aria-roledescription="slide" aria-label="3 of 3: the pair" data-cap="The pair">
+        <svg viewBox="0 0 400 300" role="img" aria-label="The pair, one shoe in front of the other">
+          <use href="#shoe" x="10" y="0" width="340" height="204" opacity=".55"/>
+          <use href="#shoe" x="50" y="80" width="340" height="204"/>
+        </svg>
+      </div>
+    </div>
+    <span class="tag">New season</span>
+    <span class="cap" id="cap" aria-hidden="true">Side view</span>
+    <div class="dots" id="dots">
+      <button type="button" aria-label="Show photo 1" aria-current="true"><i></i></button>
+      <button type="button" aria-label="Show photo 2"><i></i></button>
+      <button type="button" aria-label="Show photo 3"><i></i></button>
+    </div>
+  </section>
+
+  <div class="pad">
+    <header class="head">
+      <p class="eyebrow">Northfall Running</p>
+      <h1>Halden Trail 2</h1>
+      <p class="sub">Men's road-to-trail running shoe</p>
+      <div class="rate">
+        <span class="stars" role="img" aria-label="Rated 4.7 out of 5">
+          <svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg>
+        </span>
+        <strong>4.7</strong>
+        <a href="#reviews">1,284 reviews</a>
+      </div>
+      <div class="price">
+        <strong>$148.00</strong>
+        <s><span class="sr">Was </span>$165.00</s>
+        <span class="save">Save $17</span>
+      </div>
+      <p class="bnpl">or 4 payments of $37.00, interest free</p>
+    </header>
+
+    <section class="sect" aria-labelledby="colour-l">
+      <div class="row"><h2 class="lbl" id="colour-l" style="font-size:15px">Colour <span id="cname">Bone / Ember</span></h2></div>
+      <div class="swatches" role="radiogroup" aria-labelledby="colour-l" id="swatches"></div>
+    </section>
+
+    <section class="sect" aria-labelledby="size-l">
+      <div class="row">
+        <h2 class="lbl" id="size-l" style="font-size:15px">Size <span>US men's</span></h2>
+        <button class="link" type="button">Size guide</button>
+      </div>
+      <div class="sizes" role="radiogroup" aria-labelledby="size-l" id="sizes"></div>
+      <p class="hint" id="hint" role="status" aria-live="polite"></p>
+      <div class="fit">
+        <p><b>Fits true to size.</b> 78% of reviewers kept their usual size.</p>
+        <div class="meter" role="img" aria-label="Fit rating: true to size"><b></b></div>
+        <div class="scale"><span>Runs small</span><span>True to size</span><span>Runs large</span></div>
+      </div>
+    </section>
+
+    <ul class="deliver" aria-label="Delivery and returns">
+      <li>
+        <svg class="ico" viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 9h4l3 3v4h-7"/><circle cx="7" cy="17.500" r="1.800"/><circle cx="17" cy="17.500" r="1.800"/></svg>
+        <div><b>Free delivery, arrives Tue 1 - Thu 3 Dec</b><small>Order in the next 3 h 12 min. Free over $75.</small></div>
+      </li>
+      <li>
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 10l8-6 8 6v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9 20v-6h6v6"/></svg>
+        <div><b>Pick up today at Mission St</b><small>In stock in 4 sizes. Ready in 2 hours.</small></div>
+      </li>
+      <li>
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.500-5.800"/><path d="M4 4v4h4"/></svg>
+        <div><b>Free returns within 60 days</b><small>Run in them. Send them back if they don't fit.</small></div>
+      </li>
+    </ul>
+
+    <div class="acc">
+      <details open>
+        <summary>Description <svg class="ico" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="body">
+          <p>Built for the run that starts on pavement and ends in the woods. A 32 mm dual-density foam absorbs the road, and a 4 mm lug outsole grips wet gravel and packed dirt.</p>
+          <ul class="checks">
+            <li>Engineered mesh upper with a gusseted tongue</li>
+            <li>Rock plate in the forefoot, flexible at toe-off</li>
+            <li>Upper made from 62% recycled material</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary>Specifications <svg class="ico" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="body">
+          <dl class="spec">
+            <dt>Weight</dt><dd>262 g (US 9)</dd>
+            <dt>Heel to toe drop</dt><dd>8 mm</dd>
+            <dt>Stack height</dt><dd>32 mm / 24 mm</dd>
+            <dt>Lug depth</dt><dd>4 mm</dd>
+            <dt>Best for</dt><dd>Road, light trail</dd>
+          </dl>
+        </div>
+      </details>
+      <details>
+        <summary>Materials and care <svg class="ico" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>
+        <div class="body">
+          <p>Upper: 62% recycled polyester, 38% TPU. Midsole: EVA blend. Outsole: carbon rubber.</p>
+          <p>Brush off dry mud. Hand wash with cool water and mild soap, then air dry away from heat.</p>
+        </div>
+      </details>
+    </div>
+
+    <section class="reviews" id="reviews" aria-labelledby="rev-h">
+      <h2 id="rev-h" style="font-size:20px;letter-spacing:-.01em">Reviews</h2>
+      <div class="sum">
+        <div class="big"><strong>4.7</strong><small>1,284 ratings</small></div>
+        <div class="bars" aria-label="Rating breakdown">
+          <div class="bar"><span>5</span><i style="--w:74%"></i><span>74%</span></div>
+          <div class="bar"><span>4</span><i style="--w:17%"></i><span>17%</span></div>
+          <div class="bar"><span>3</span><i style="--w:6%"></i><span>6%</span></div>
+          <div class="bar"><span>2</span><i style="--w:2%"></i><span>2%</span></div>
+          <div class="bar"><span>1</span><i style="--w:1%"></i><span>1%</span></div>
+        </div>
+      </div>
+      <article class="rev">
+        <span class="stars" role="img" aria-label="5 out of 5"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span>
+        <h3>No break-in, straight to a 10k</h3>
+        <p>Wore them out of the box on a gravel loop. Grip held in the wet and my heels stayed put on the descents.</p>
+        <div class="who"><span>Marcus T. <span class="ver">Verified buyer</span></span><span>12 Nov 2026</span></div>
+      </article>
+      <article class="rev">
+        <span class="stars" role="img" aria-label="4 out of 5"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg style="opacity:.3"><use href="#star"/></svg></span>
+        <h3>Firm but comfortable on long days</h3>
+        <p>Firmer than my old pair, which I like on pavement. The toe box has room for wider feet. I'd size up half a size for socks in winter.</p>
+        <div class="who"><span>Priya N. <span class="ver">Verified buyer</span></span><span>3 Nov 2026</span></div>
+      </article>
+      <button class="btn2" type="button">Read all 1,284 reviews</button>
+    </section>
+
+    <section class="more" aria-labelledby="more-h">
+      <h2 id="more-h" style="font-size:20px;letter-spacing:-.01em">You may also like</h2>
+      <div class="cards">
+        <a class="card cw-slate" href="#"><div class="pic"><svg viewBox="0 0 400 240" aria-hidden="true"><use href="#shoe"/></svg></div><b>Halden Trail 2 GTX</b><small>$178.00</small></a>
+        <a class="card cw-forest" href="#"><div class="pic"><svg viewBox="0 0 400 240" aria-hidden="true"><use href="#shoe"/></svg></div><b>Ridgeline Low</b><small>$132.00</small></a>
+        <a class="card cw-ink" href="#"><div class="pic"><svg viewBox="0 0 400 240" aria-hidden="true"><use href="#shoe"/></svg></div><b>Pace 5 Road</b><small>$124.00</small></a>
+      </div>
+    </section>
+  </div>
+
+  <div class="buy">
+    <div class="p"><b>$148.00</b><small>Free returns</small></div>
+    <button class="add" id="add" type="button">Add to bag</button>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const colours = [
+  {id:'bone', name:'Bone / Ember', out:[7, 13], low:{9.5:2}},
+  {id:'slate', name:'Slate / Lime', out:[7, 7.5, 12], low:{9:3, 10:1}},
+  {id:'forest', name:'Forest / Sand', out:[8, 11.5, 13], low:{9:2}},
+  {id:'ink', name:'Black / Cloud', out:[7.5, 8.5, 10.5, 11], low:{}}
+];
+const sizes = [7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,13];
+let cur = colours[0], size = 9, bag = 0;
+
+// swatches
+$('#swatches').innerHTML = colours.map((c,i)=>
+  `<label class="sw cw-${c.id}"><input type="radio" name="colour" value="${c.id}" ${i?'':'checked'}><span></span><span class="sr">${c.name}</span></label>`).join('');
+// sizes
+$('#sizes').innerHTML = sizes.map(s=>
+  `<label class="sz"><input type="radio" name="size" value="${s}"><span>${s}</span></label>`).join('');
+const szInputs = [...document.querySelectorAll('[name=size]')];
+
+function paintSizes(){
+  szInputs.forEach(i=>{
+    const out = cur.out.includes(+i.value);
+    i.disabled = out;
+    i.parentNode.querySelector('span').setAttribute('aria-hidden','false');
+    i.setAttribute('aria-label', 'US ' + i.value + (out ? ', sold out' : ''));
+    if(out && +i.value === size) size = null;
+    i.checked = +i.value === size;
+  });
+  hint();
+}
+function hint(err){
+  const h = $('#hint');
+  h.className = 'hint';
+  if(err){ h.textContent = 'Select a size to add this to your bag.'; h.classList.add('err'); return; }
+  if(!size){ h.textContent = 'Pick your size. Sold out sizes are crossed out.'; return; }
+  const l = cur.low[size];
+  if(l){ h.textContent = `Only ${l} left in US ${size}.`; h.classList.add('low'); }
+  else h.textContent = `US ${size} is your usual size, based on your last order.`;
+}
+document.addEventListener('change', e=>{
+  if(e.target.name === 'colour'){
+    cur = colours.find(c=>c.id===e.target.value);
+    app.className = 'app cw-' + cur.id;
+    $('#cname').textContent = cur.name;
+    paintSizes();
+  }
+  if(e.target.name === 'size'){ size = +e.target.value; hint(); }
+});
+paintSizes();
+
+// gallery
+const slides = $('#slides'), dots = [...document.querySelectorAll('#dots button')];
+const slideEls = [...slides.children];
+function setDot(i){
+  dots.forEach((d,k)=>k===i ? d.setAttribute('aria-current','true') : d.removeAttribute('aria-current'));
+  $('#cap').textContent = slideEls[i].dataset.cap;
+}
+slides.addEventListener('scroll', ()=> setDot(Math.round(slides.scrollLeft / slides.clientWidth)), {passive:true});
+dots.forEach((d,i)=> d.addEventListener('click', ()=> slides.scrollTo({left:i*slides.clientWidth, behavior:'smooth'})));
+
+// wishlist
+$('#fav').addEventListener('click', e=>{
+  const b = e.currentTarget, on = b.getAttribute('aria-pressed') !== 'true';
+  b.setAttribute('aria-pressed', on);
+  b.setAttribute('aria-label', on ? 'Remove from wishlist' : 'Save to wishlist');
+  toast(on ? 'Saved to your wishlist' : 'Removed from wishlist');
+});
+
+// add to bag
+let t;
+function toast(msg){
+  const el = $('#toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(t); t = setTimeout(()=>el.classList.remove('show'), 2200);
+}
+$('#add').addEventListener('click', e=>{
+  if(!size){
+    hint(true);
+    $('#size-l').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  bag++;
+  const c = $('#count'); c.hidden = false; c.textContent = bag;
+  $('#bagBtn').setAttribute('aria-label', `Bag, ${bag} item${bag>1?'s':''}`);
+  const b = e.currentTarget; b.classList.add('done'); b.textContent = 'Added to bag';
+  toast(`Halden Trail 2, ${cur.name}, US ${size}`);
+  setTimeout(()=>{ b.classList.remove('done'); b.textContent = 'Add to bag'; }, 1800);
+});
+</script>
+</body>
+</html>

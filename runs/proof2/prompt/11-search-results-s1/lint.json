@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "label-content-name-mismatch": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "system-ui"
+  ],
+  "textColors": 4,
+  "minFontPx": 12.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(26, 79, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 9,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Larder Notes",
+        "w": 216,
+        "h": 30
+      },
+      {
+        "tag": "a",
+        "text": "Recipes",
+        "w": 71,
+        "h": 43
+      },
+      {
+        "tag": "a",
+        "text": "Collections",
+        "w": 95,
+        "h": 43
+      },
+      {
+        "tag": "a",
+        "text": "Meal plan",
+        "w": 87,
+        "h": 43
+      },
+      {
+        "tag": "a",
+        "text": "Shopping list",
+        "w": 110,
+        "h": 43
+      },
+      {
+        "tag": "a",
+        "text": "chana masala",
+        "w": 116,
+        "h": 36
+      },
+      {
+        "tag": "a",
+        "text": "coconut chickpea curry",
+        "w": 177,
+        "h": 36
+      },
+      {
+        "tag": "a",
+        "text": "chickpea and spinach",
+        "w": 167,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

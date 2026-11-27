@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chickpea curry - Saltbox recipes</title>
+<style>
+:root{
+  --paper:#f5f7f1; --card:#ffffff; --ink:#1b2a24; --muted:#56655d; --line:#d9dfd4;
+  --leaf:#2b6a4b; --leaf-ink:#ffffff; --turmeric:#c98a00; --chili:#b3361f; --tint:#e8efe3;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#121b17; --card:#1a2621; --ink:#e9efe8; --muted:#a2b0a7; --line:#2d3b34;
+  --leaf:#7fcf9f; --leaf-ink:#0f1a15; --turmeric:#e3a826; --chili:#ff8a73; --tint:#22312a;}
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--turmeric);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+header.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:20px;padding-block:14px}
+.logo{font:700 22px/1 var(--serif);text-decoration:none;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.logo svg{width:26px;height:26px}
+.bar nav{margin-left:auto;display:flex;gap:20px;font-size:15px}
+.bar nav a{text-decoration:none;color:var(--muted)}
+.bar nav a:hover{color:var(--ink);text-decoration:underline}
+.bar nav a[aria-current]{color:var(--ink);font-weight:600}
+
+.find{padding-block:36px 28px}
+.find h1{font:600 clamp(30px,4.4vw,52px)/1.1 var(--serif);margin:0 0 6px;letter-spacing:-.01em}
+.find p.n{margin:0 0 20px;color:var(--muted)}
+form.search{display:flex;gap:8px;max-width:640px}
+form.search input{flex:1;min-width:0;font:inherit;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+form.search input:focus-visible{border-color:var(--leaf)}
+button{font:inherit;cursor:pointer}
+form.search button{padding:0 20px;border:0;border-radius:10px;background:var(--leaf);color:var(--leaf-ink);font-weight:600}
+.alt{margin:14px 0 0;font-size:15px;color:var(--muted)}
+.alt a{color:var(--leaf);font-weight:600}
+
+.layout{display:grid;grid-template-columns:240px 1fr;gap:40px;padding-bottom:64px}
+aside.filters{align-self:start;position:sticky;top:16px}
+.filters fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:14px 0 12px}
+.filters legend{font:600 17px var(--serif);padding:0;float:left;width:100%;margin-bottom:8px}
+.filters label{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:15px;cursor:pointer;clear:both}
+.filters label span.c{margin-left:auto;color:var(--muted);font-size:13px}
+input[type=checkbox],input[type=radio]{accent-color:var(--leaf);width:18px;height:18px;margin:0}
+.clear{background:none;border:0;color:var(--leaf);font-weight:600;padding:8px 0;text-decoration:underline}
+details.mf{display:none}
+
+.listhead{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:8px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.listhead .count{margin:0;font-size:15px;color:var(--muted)}
+.listhead label{font-size:15px;color:var(--muted)}
+.listhead select{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;margin-left:6px}
+
+ol.results{list-style:none;margin:0;padding:0}
+.r{display:grid;grid-template-columns:168px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);position:relative}
+.r[hidden]{display:none}
+.pic{width:168px;height:168px;border-radius:14px;background:var(--tint);overflow:hidden}
+.pic svg{width:100%;height:100%;display:block}
+.r h2{font:600 22px/1.25 var(--serif);margin:0 0 4px}
+.r h2 a{text-decoration:none}
+.r h2 a::after{content:"";position:absolute;inset:0}
+.r h2 a:hover{text-decoration:underline;text-decoration-thickness:2px}
+.r h2 a:focus-visible{outline-offset:6px}
+.by{margin:0 0 8px;font-size:14px;color:var(--muted)}
+.r p.d{margin:0 0 12px;max-width:62ch}
+.d mark{background:color-mix(in srgb,var(--turmeric) 28%,transparent);color:inherit;border-radius:3px;padding:0 2px}
+.facts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;font-size:14px;margin:0;padding:0;list-style:none}
+.facts li{display:flex;align-items:center;gap:6px}
+.facts svg{width:16px;height:16px;flex:none}
+.stars{color:var(--turmeric)}
+.stars b{color:var(--ink);font-weight:600}
+.stars span{color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding:0;list-style:none}
+.tags li{font-size:13px;padding:2px 10px;border-radius:99px;background:var(--tint);color:var(--ink)}
+.tags li.v{background:var(--leaf);color:var(--leaf-ink);font-weight:600}
+.tags li.h{background:transparent;border:1px solid var(--chili);color:var(--chili)}
+
+/* The best match gets the larger picture. */
+.r.best{grid-template-columns:260px 1fr}
+.r.best .pic{width:260px;height:260px}
+.r.best h2{font-size:30px}
+.r.best p.d{font-size:17px}
+
+.empty{padding:48px 0;text-align:center;color:var(--muted)}
+.empty h2{font:600 22px var(--serif);color:var(--ink);margin:0 0 6px}
+.empty[hidden]{display:none}
+
+nav.pages{display:flex;align-items:center;justify-content:center;gap:6px;padding-top:28px}
+nav.pages a{min-width:40px;height:40px;display:grid;place-items:center;padding:0 12px;border-radius:10px;text-decoration:none;border:1.5px solid var(--line);background:var(--card)}
+nav.pages a[aria-current]{background:var(--leaf);border-color:var(--leaf);color:var(--leaf-ink);font-weight:700}
+nav.pages a:hover:not([aria-current]){border-color:var(--leaf)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;gap:0}
+  aside.filters{display:none}
+  details.mf{display:block;margin-bottom:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--card)}
+  details.mf summary{padding:12px 14px;font-weight:600;cursor:pointer}
+  details.mf .in{padding:0 14px 8px}
+  .bar nav{display:none}
+}
+@media (max-width:560px){
+  .wrap{padding-inline:16px}
+  .find{padding-block:24px 20px}
+  .listhead{flex-wrap:wrap}
+  .r,.r.best{grid-template-columns:104px 1fr;gap:6px 14px}
+  .pic,.r.best .pic{width:104px;height:104px;border-radius:10px}
+  .r h2,.r.best h2{font-size:19px}
+  .r .body{display:contents}
+  .r .head{grid-column:2;grid-row:1;align-self:center}
+  .r .rest{grid-column:1 / -1}
+  .r.best p.d{font-size:16px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bowl" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="56" fill="var(--rim,#e9e4d8)"/>
+      <circle cx="60" cy="60" r="56" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
+      <circle cx="60" cy="60" r="44" fill="var(--c,#d98a1d)"/>
+      <circle cx="60" cy="60" r="44" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="3"/>
+      <path d="M30 52c10-8 20-3 28-9M62 80c12 2 20-4 26-12M40 74c6 5 12 5 18 2" fill="none" stroke="var(--s,#f3c777)" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+      <g fill="var(--b,#e3b86a)" stroke="rgba(80,45,0,.35)" stroke-width="1.2">
+        <circle cx="45" cy="47" r="6.5"/><circle cx="64" cy="40" r="6"/><circle cx="76" cy="55" r="6.5"/>
+        <circle cx="52" cy="66" r="6.5"/><circle cx="70" cy="74" r="6"/><circle cx="38" cy="64" r="5.5"/>
+        <circle cx="60" cy="56" r="6"/>
+      </g>
+      <g fill="var(--g,#3f8a4f)"><path d="M82 38c5-1 9 2 10 6-5 1-9-1-10-6z"/><path d="M78 44c4 2 5 6 3 10-4-2-5-6-3-10z"/><path d="M30 78c2-4 6-5 10-4-1 4-5 6-10 4z"/></g>
+    </symbol>
+    <symbol id="clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="chili" viewBox="0 0 16 16"><path d="M3 5c3-2 8-1 10 3 1 2 0 4-2 5C8 14 3 11 3 5z" fill="currentColor"/><path d="M3 5c0-2 1-3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="star" viewBox="0 0 16 16"><path d="M8 1.2l2.1 4.4 4.8.6-3.5 3.3.9 4.8L8 11.9l-4.3 2.4.9-4.8L1.1 6.2l4.8-.6z" fill="currentColor"/></symbol>
+    <symbol id="pot" viewBox="0 0 16 16"><path d="M2 6h12v3a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5zM1 6h14M5 3.5c0-1 1-1 1-2M9 3.5c0-1 1-1 1-2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="logo" href="#"><svg viewBox="0 0 120 120" style="--c:#d98a1d" aria-hidden="true"><use href="#bowl"/></svg>Saltbox</a>
+    <nav aria-label="Main">
+      <a href="#" aria-current="page">Recipes</a>
+      <a href="#">Collections</a>
+      <a href="#">Meal plan</a>
+      <a href="#">Saved (7)</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="wrap find" aria-labelledby="h">
+    <h1 id="h">Chickpea curry</h1>
+    <p class="n">12 recipes found</p>
+    <form class="search" role="search" onsubmit="return false">
+      <input type="search" name="q" value="chickpea curry" aria-label="Search recipes" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <p class="alt">Also try <a href="#">chana masala</a>, <a href="#">chickpea stew</a> or <a href="#">coconut dal</a>.</p>
+  </section>
+
+  <div class="wrap layout">
+    <aside class="filters" aria-label="Filter recipes" id="f-desk">
+      <div class="fs">
+        <fieldset>
+          <legend>Diet</legend>
+          <label><input type="checkbox" data-f="vegan"> Vegan <span class="c" data-c="vegan"></span></label>
+          <label><input type="checkbox" data-f="gf"> Gluten free <span class="c" data-c="gf"></span></label>
+          <label><input type="checkbox" data-f="nf"> Nut free <span class="c" data-c="nf"></span></label>
+        </fieldset>
+        <fieldset>
+          <legend>Total time</legend>
+          <label><input type="radio" name="t" value="999" checked> Any time</label>
+          <label><input type="radio" name="t" value="30"> Under 30 minutes</label>
+          <label><input type="radio" name="t" value="45"> Under 45 minutes</label>
+          <label><input type="radio" name="t" value="60"> Under 1 hour</label>
+        </fieldset>
+        <fieldset>
+          <legend>Method</legend>
+          <label><input type="checkbox" data-f="one"> One pot <span class="c" data-c="one"></span></label>
+          <label><input type="checkbox" data-f="slow"> Slow cooker <span class="c" data-c="slow"></span></label>
+          <label><input type="checkbox" data-f="ip"> Instant Pot <span class="c" data-c="ip"></span></label>
+        </fieldset>
+        <fieldset>
+          <legend>Heat</legend>
+          <label><input type="checkbox" data-f="mild"> Mild <span class="c" data-c="mild"></span></label>
+          <label><input type="checkbox" data-f="hot"> Spicy <span class="c" data-c="hot"></span></label>
+        </fieldset>
+        <button type="button" class="clear" data-clear>Clear all filters</button>
+      </div>
+    </aside>
+
+    <section aria-label="Results">
+      <details class="mf"><summary>Filters</summary><div class="in" id="f-mob"></div></details>
+      <div class="listhead">
+        <p class="count" id="count" role="status" aria-live="polite">Showing 12 of 12 recipes</p>
+        <label>Sort by
+          <select id="sort">
+            <option value="best">Best match</option>
+            <option value="rating">Highest rated</option>
+            <option value="time">Quickest</option>
+          </select>
+        </label>
+      </div>
+
+      <ol class="results" id="list">
+        <li class="r best" data-tags="vegan gf nf one mild" data-time="40" data-rating="4.9" data-rank="1">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#cf7a1c;--s:#efb96a" role="img" aria-label="Bowl of chickpea curry from above"><use href="#bowl"/></svg></div>
+          <div class="body">
+            <div class="head">
+              <h2><a href="#">Weeknight chickpea curry with spinach</a></h2>
+              <p class="by">Amara Osei, Saltbox Test Kitchen</p>
+            </div>
+            <div class="rest">
+              <p class="d">Canned <mark>chickpeas</mark>, tomatoes and coconut milk simmer with garam masala and ginger for a <mark>curry</mark> that tastes slow-cooked after 40 minutes. Stir in spinach at the end.</p>
+              <ul class="facts">
+                <li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.9</b> <span>(2,184 ratings)</span></li>
+                <li><svg aria-hidden="true"><use href="#clock"/></svg>40 min</li>
+                <li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 4</li>
+              </ul>
+              <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li>One pot</li></ul>
+            </div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf one mild" data-time="25" data-rating="4.7" data-rank="2">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#c7501f;--s:#f19a63" role="img" aria-label="Bowl of tomato chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">25-minute tomato and chickpea curry</a></h2>
+            <p class="by">Dev Raman</p></div>
+            <div class="rest">
+            <p class="d">A pantry <mark>curry</mark> from one pan: onion, tinned tomatoes, <mark>chickpeas</mark> and a spoon of curry powder. Serve over rice or with naan.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.7</b> <span>(913)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>25 min</li><li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 3</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li>One pot</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf hot" data-time="55" data-rating="4.8" data-rank="3">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#a8321b;--s:#e57a50;--b:#d9a45a" role="img" aria-label="Bowl of red chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Punjabi chana masala</a></h2>
+            <p class="by">Simran Kaur</p></div>
+            <div class="rest">
+            <p class="d">Dried <mark>chickpeas</mark> cook with black tea for colour, then finish in a dark onion and tomato masala. Hot, tangy and worth the soak.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.8</b> <span>(1,462)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>55 min, plus overnight soak</li><li><svg aria-hidden="true"><use href="#chili"/></svg>Spicy</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li class="h">Spicy</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="gf one mild" data-time="35" data-rating="4.6" data-rank="4">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#e0a62c;--s:#f6d58b;--b:#e9c98a" role="img" aria-label="Bowl of creamy yellow chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Creamy coconut chickpea curry with yogurt</a></h2>
+            <p class="by">Hannah Lindqvist</p></div>
+            <div class="rest">
+            <p class="d">Turmeric, cumin seed and full-fat yogurt make a mellow, pale <mark>curry</mark>. Good for children and for anyone who dislikes heat.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.6</b> <span>(527)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>35 min</li><li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 4</li></ul>
+            <ul class="tags"><li>Vegetarian</li><li>Gluten free</li><li>One pot</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf slow mild" data-time="270" data-rating="4.5" data-rank="5">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#b9651c;--s:#e5a15a" role="img" aria-label="Bowl of slow cooker chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Slow cooker sweet potato and chickpea curry</a></h2>
+            <p class="by">Marcus Webb</p></div>
+            <div class="rest">
+            <p class="d">Load the slow cooker in the morning and come home to a thick <mark>curry</mark> of sweet potato, <mark>chickpeas</mark> and red lentils.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.5</b> <span>(688)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>4 h 30 min, 15 min hands-on</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li>Slow cooker</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf ip hot" data-time="30" data-rating="4.6" data-rank="6">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#8f2f1c;--s:#d9744a;--b:#d8a257" role="img" aria-label="Bowl of dark red chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Instant Pot chickpea curry, no soaking</a></h2>
+            <p class="by">Priya Nair</p></div>
+            <div class="rest">
+            <p class="d">Dried <mark>chickpeas</mark> go straight into the pressure cooker with tomato, green chili and kashmiri chili powder. Ready in 30 minutes of cook time.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.6</b> <span>(741)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>30 min</li><li><svg aria-hidden="true"><use href="#chili"/></svg>Spicy</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li>Instant Pot</li><li class="h">Spicy</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf one mild" data-time="30" data-rating="4.4" data-rank="7">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#6f8a2f;--s:#a9c25f;--b:#e1c378;--g:#2d6a3a" role="img" aria-label="Bowl of green chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Green chickpea curry with kale and lime</a></h2>
+            <p class="by">Tomás Herrera</p></div>
+            <div class="rest">
+            <p class="d">Blend cilantro, green chili and coconut milk into a bright sauce, then fold in <mark>chickpeas</mark> and kale. Finish with lime juice.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.4</b> <span>(305)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>30 min</li><li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 4</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li>One pot</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="gf nf mild" data-time="50" data-rating="4.7" data-rank="8">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#d1741c;--s:#f0b571" role="img" aria-label="Bowl of chicken and chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Chicken and chickpea curry</a></h2>
+            <p class="by">Grace Adeyemi</p></div>
+            <div class="rest">
+            <p class="d">Chicken thighs brown first, then braise with <mark>chickpeas</mark> in a tomato and cardamom sauce until the meat falls apart.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.7</b> <span>(1,096)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>50 min</li><li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 5</li></ul>
+            <ul class="tags"><li>Contains chicken</li><li>Gluten free</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf one hot" data-time="45" data-rating="4.3" data-rank="9">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#b44a1d;--s:#ec9561" role="img" aria-label="Bowl of Thai red chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Thai red chickpea curry with pumpkin</a></h2>
+            <p class="by">Lena Fischer</p></div>
+            <div class="rest">
+            <p class="d">Red curry paste, kabocha squash and <mark>chickpeas</mark> in coconut milk. Check the paste label if you cook vegan, many contain shrimp.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.3</b> <span>(212)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>45 min</li><li><svg aria-hidden="true"><use href="#chili"/></svg>Spicy</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li class="h">Spicy</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf one mild" data-time="40" data-rating="4.5" data-rank="10">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#c5841e;--s:#efc479" role="img" aria-label="Bowl of cauliflower chickpea curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Roasted cauliflower and chickpea curry</a></h2>
+            <p class="by">Noor Haddad</p></div>
+            <div class="rest">
+            <p class="d">Roast cauliflower and <mark>chickpeas</mark> with spices first for crisp edges, then stir them into a cashew-thickened sauce.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.5</b> <span>(398)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>40 min</li><li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 4</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li>Contains cashews</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf one mild" data-time="20" data-rating="4.2" data-rank="11">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#dba03a;--s:#f7dc97;--b:#e6c27e" role="img" aria-label="Bowl of quick curried chickpeas"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Curried chickpeas on toast</a></h2>
+            <p class="by">Ben Carroway</p></div>
+            <div class="rest">
+            <p class="d">A fast lunch: <mark>chickpeas</mark> mashed lightly into a mild <mark>curry</mark> sauce and spooned over thick sourdough.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.2</b> <span>(167)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>20 min</li><li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 2</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Nut free</li><li>One pot</li></ul></div>
+          </div>
+        </li>
+
+        <li class="r" data-tags="vegan gf nf one mild" data-time="60" data-rating="4.4" data-rank="12">
+          <div class="pic"><svg viewBox="0 0 120 120" style="--c:#a85b1c;--s:#dc9a58" role="img" aria-label="Bowl of chickpea and potato curry"><use href="#bowl"/></svg></div>
+          <div class="body"><div class="head">
+            <h2><a href="#">Aloo chickpea curry for a crowd</a></h2>
+            <p class="by">Roshni Patel</p></div>
+            <div class="rest">
+            <p class="d">Potato and <mark>chickpeas</mark> in a spiced tomato gravy, scaled for eight. It tastes better the next day.</p>
+            <ul class="facts"><li class="stars"><svg aria-hidden="true"><use href="#star"/></svg><b>4.4</b> <span>(254)</span></li><li><svg aria-hidden="true"><use href="#clock"/></svg>1 h</li><li><svg aria-hidden="true"><use href="#pot"/></svg>Serves 8</li></ul>
+            <ul class="tags"><li class="v">Vegan</li><li>Gluten free</li><li>One pot</li></ul></div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="empty" id="empty" hidden>
+        <h2>No chickpea curry matches those filters</h2>
+        <p>Remove a filter to see more recipes.</p>
+        <button type="button" class="clear" data-clear>Clear all filters</button>
+      </div>
+
+      <nav class="pages" aria-label="Pages">
+        <a href="#" aria-current="page" aria-label="Page 1">1</a>
+        <a href="#" aria-label="Page 2">2</a>
+        <a href="#">Next page</a>
+      </nav>
+    </section>
+  </div>
+</main>
+
+<script>
+(function(){
+  // The mobile panel reuses the desktop filter markup so both stay identical.
+  var desk=document.querySelector('#f-desk .fs'), mob=document.getElementById('f-mob');
+  mob.innerHTML=desk.innerHTML.replace(/name="t"/g,'name="tm"');
+  var list=document.getElementById('list'), items=[].slice.call(list.children);
+  var count=document.getElementById('count'), empty=document.getElementById('empty'), sort=document.getElementById('sort');
+  var order={best:function(a,b){return a.dataset.rank-b.dataset.rank},
+             rating:function(a,b){return b.dataset.rating-a.dataset.rating||a.dataset.rank-b.dataset.rank},
+             time:function(a,b){return a.dataset.time-b.dataset.time||a.dataset.rank-b.dataset.rank}};
+  function has(li,k){return li.dataset.tags.split(' ').indexOf(k)>-1}
+  function apply(){
+    var on=[].slice.call(desk.querySelectorAll('[data-f]:checked')).map(function(e){return e.dataset.f});
+    var t=+desk.querySelector('input[type=radio]:checked').value, shown=0;
+    items.forEach(function(li){
+      var ok=on.every(function(f){return has(li,f)}) && +li.dataset.time<=t;
+      li.hidden=!ok; if(ok)shown++;
+      li.classList.remove('best');
+    });
+    items.slice().sort(order[sort.value]).forEach(function(li){list.appendChild(li)});
+    var first=[].slice.call(list.children).filter(function(li){return !li.hidden})[0];
+    if(first&&sort.value==='best'&&!on.length&&t===999)first.classList.add('best');
+    count.textContent='Showing '+shown+' of '+items.length+' recipes';
+    empty.hidden=shown>0;
+  }
+  function sync(from){
+    var to=desk.contains(from)?mob:desk;
+    if(from.dataset.f)to.querySelector('[data-f="'+from.dataset.f+'"]').checked=from.checked;
+    else to.querySelector('input[type=radio][value="'+from.value+'"]').checked=true;
+  }
+  document.addEventListener('change',function(e){
+    if(e.target.matches('[data-f],input[type=radio]')){sync(e.target);apply()}
+    if(e.target===sort)apply();
+  });
+  document.addEventListener('click',function(e){
+    if(!e.target.matches('[data-clear]'))return;
+    document.querySelectorAll('[data-f]').forEach(function(i){i.checked=false});
+    document.querySelectorAll('input[type=radio][value="999"]').forEach(function(i){i.checked=true});
+    apply();
+  });
+  desk.querySelectorAll('[data-c]').forEach(function(c){
+    c.textContent=items.filter(function(li){return has(li,c.dataset.c)}).length;
+    mob.querySelector('[data-c="'+c.dataset.c+'"]').textContent=c.textContent;
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock levels - Larderly</title>
+<style>
+:root{
+  --bg:#ecf1ee; --surface:#fbfdfc; --sunk:#e3eae6; --ink:#15231e; --muted:#566660; --line:#d2dcd7;
+  --pine:#1d5a48; --pine-ink:#ffffff; --pine-soft:#d7e8e0;
+  --out:#b8302a; --out-soft:#f6dcd9; --low:#a86a0c; --low-soft:#f6e6c8; --ok:#2f7a5d;
+  --shadow:0 1px 0 rgba(21,35,30,.06);
+  --f:Bahnschrift,"Segoe UI Variable Text","Avenir Next","Helvetica Neue",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0f1714; --surface:#16211d; --sunk:#1d2b26; --ink:#e4eee9; --muted:#9bb0a8; --line:#2b3b35;
+    --pine:#6cc2a1; --pine-ink:#08150f; --pine-soft:#1f3a30;
+    --out:#ff8a80; --out-soft:#44201d; --low:#f0b45a; --low-soft:#3e2e12; --ok:#6cc2a1;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--f);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.top{background:var(--pine);color:var(--pine-ink)}
+.top-in{max-width:1360px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:32px;height:56px}
+.brand{font-weight:700;font-size:20px;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
+.brand svg{width:22px;height:22px}
+.top nav{display:flex;gap:4px;flex:1}
+.top nav a{color:inherit;text-decoration:none;padding:8px 12px;border-radius:6px;opacity:.8}
+.top nav a:hover{opacity:1;background:rgba(255,255,255,.12)}
+.top nav a[aria-current]{opacity:1;background:rgba(255,255,255,.18);font-weight:600}
+.kitchen{font-size:14px;opacity:.85}
+
+/* page */
+.wrap{max-width:1360px;margin:0 auto;padding:28px 24px 48px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:28px;align-items:start}
+h1{margin:0;font-size:34px;line-height:1.1;font-weight:700;letter-spacing:-.01em}
+.lede{margin:6px 0 0;color:var(--muted)}
+.lede b{color:var(--ink);font-weight:600}
+
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:22px 0 14px}
+.seg{display:flex;background:var(--sunk);border-radius:8px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:7px 12px;border-radius:6px;cursor:pointer;color:var(--muted);display:flex;gap:8px;align-items:baseline}
+.seg button span{font-size:13px}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.field{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-width:0}
+.field.search{flex:1;min-width:180px}
+select.field{padding-right:8px}
+
+.list{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.head,.row{display:grid;grid-template-columns:minmax(190px,1.3fr) minmax(220px,1.5fr) 150px 128px;gap:20px;align-items:center;padding:14px 20px}
+.head{padding-top:10px;padding-bottom:10px;background:var(--sunk);color:var(--muted);font-size:14px;border-bottom:1px solid var(--line)}
+.row{border-top:1px solid var(--line)}
+#rows .row:first-child{border-top:0}
+.name{font-weight:600;font-size:17px}
+.sub{color:var(--muted);font-size:14px}
+.lvl{display:flex;flex-direction:column;gap:6px}
+.qty{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.qty b{font-size:17px;font-weight:700}
+.qty span{color:var(--muted);font-size:14px}
+.gauge{position:relative;height:10px;border-radius:3px;background:var(--sunk)}
+.gauge i{position:absolute;inset:0 auto 0 0;width:var(--fill);border-radius:3px;background:var(--ok)}
+.gauge::after{content:"";position:absolute;left:var(--par);top:-4px;bottom:-4px;width:2px;background:var(--ink);opacity:.75}
+.low .gauge i{background:var(--low)}
+.out .gauge i{background:var(--out)}
+.days{font-size:15px;display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+.days b{font-size:17px;font-weight:700}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:1px 8px;border-radius:99px}
+.out .tag{background:var(--out-soft);color:var(--out)}
+.low .tag{background:var(--low-soft);color:var(--low)}
+.ok .tag{background:var(--pine-soft);color:var(--ok)}
+.out .tag.warn,.low .tag.warn{background:var(--out-soft);color:var(--out)}
+.act{justify-self:end}
+.add{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;cursor:pointer;min-width:118px;font-weight:600;color:var(--pine)}
+.add:hover{border-color:var(--pine)}
+.add[aria-pressed=true]{background:var(--pine);border-color:var(--pine);color:var(--pine-ink)}
+.empty{padding:36px 20px;text-align:center;color:var(--muted)}
+
+/* order panel */
+.order{position:sticky;top:20px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 84px)}
+.order header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.order h2{margin:0;font-size:20px}
+.order .close{display:none}
+#panel{display:flex;flex-direction:column;min-height:0;flex:1}
+.lines{overflow:auto;padding:4px 20px 8px}
+.sup{padding:12px 0;border-bottom:1px solid var(--line)}
+.sup:last-child{border-bottom:0}
+.sup-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sup-h strong{font-size:16px}
+.sup-h span{font-size:13px;color:var(--muted)}
+.line{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 0 0}
+.line .t{min-width:0}
+.line .t div:first-child{font-size:15px}
+.line .t div+div{font-size:13px;color:var(--muted)}
+.step{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px}
+.step button{width:30px;height:32px;border:0;background:none;cursor:pointer;font-size:18px;line-height:1;color:var(--pine)}
+.step output{min-width:22px;text-align:center;font-weight:600}
+.cost{min-width:62px;text-align:right;font-size:15px}
+.none{padding:28px 20px;color:var(--muted)}
+.foot{padding:16px 20px;border-top:1px solid var(--line);background:var(--sunk)}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.total b{font-size:24px}
+.send{width:100%;border:0;border-radius:8px;background:var(--pine);color:var(--pine-ink);padding:12px;font-weight:700;font-size:16px;cursor:pointer}
+.send:disabled{opacity:.45;cursor:not-allowed}
+.done{padding:20px}
+.done h3{margin:0 0 8px;font-size:18px}
+.done ul{margin:0 0 14px;padding-left:18px;color:var(--muted)}
+.done button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}
+
+.mbar{display:none}
+
+@media (max-width:980px){
+  .wrap{grid-template-columns:1fr;padding:20px 16px 110px}
+  .top-in{padding:0 16px;gap:16px}
+  .top nav a:not([aria-current]){display:none}
+  .kitchen{display:none}
+  .top nav{flex:0}
+  h1{font-size:28px}
+  .head{display:none}
+  .row{grid-template-columns:1fr auto;grid-template-areas:"n a" "l l" "d d";gap:10px 12px;padding:16px}
+  .row>.nm{grid-area:n}.row>.lvl{grid-area:l}.row>.days{grid-area:d;flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:8px}
+  .row>.act{grid-area:a}
+  .controls .seg{width:100%;overflow-x:auto}
+  .seg button{flex:1;justify-content:center;white-space:nowrap}
+  .field.search{flex:1 1 100%}
+  select.field{flex:1 1 100%}
+  .order{display:none;position:fixed;inset:0;z-index:20;max-height:none;border-radius:0;border:0}
+  body.sheet .order{display:flex}
+  .order .close{display:block;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:600}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:12px 16px;gap:12px;align-items:center;justify-content:space-between}
+  .mbar div{font-size:14px;color:var(--muted)}
+  .mbar div b{display:block;color:var(--ink);font-size:18px}
+  .mbar button{border:0;border-radius:8px;background:var(--pine);color:var(--pine-ink);padding:12px 18px;font-weight:700;cursor:pointer}
+}
+</style>
+</head>
+<body>
+<div class="top"><div class="top-in">
+  <div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M3 9l2-5h14l2 5"/><path d="M10 14h4"/></svg>Larderly</div>
+  <nav aria-label="Main"><a href="#" aria-current="page">Stock</a><a href="#">Orders</a><a href="#">Suppliers</a><a href="#">Recipes</a></nav>
+  <div class="kitchen">Marlow Street kitchen</div>
+</div></div>
+
+<div class="wrap">
+  <main>
+    <h1>Stock levels</h1>
+    <p class="lede" id="lede"></p>
+    <div class="controls">
+      <div class="seg" id="tabs" role="group" aria-label="Filter by status"></div>
+      <input class="field search" id="q" type="search" placeholder="Search ingredients" aria-label="Search ingredients">
+      <select class="field" id="store" aria-label="Storage area">
+        <option value="">All storage</option><option>Walk-in</option><option>Dry store</option><option>Freezer</option>
+      </select>
+    </div>
+    <div class="list">
+      <div class="head"><div>Ingredient</div><div>On hand against par</div><div>Days left</div><div></div></div>
+      <div id="rows"></div>
+    </div>
+  </main>
+
+  <aside class="order" id="order" aria-label="Reorder list">
+    <header><h2>Reorder list</h2><button class="close" id="close">Close</button></header>
+    <div id="panel"></div>
+  </aside>
+</div>
+
+<div class="mbar"><div><span id="mcount"></span><b class="num" id="mtotal"></b></div><button id="open">Review order</button></div>
+
+<script>
+const TODAY = new Date(2026,10,27); // Fri 27 Nov 2026
+const gbp = n => new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(n);
+const fmt = n => String(Math.round(n*10)/10);
+// id, name, store, unit, onHand, par, perDay, supplier, pack label, pack size, pack price, lead days
+const raw = [
+ ['cream','Double cream','Walk-in','L',0,6,1.5,'Hollis Dairy','6 L tub',6,21.00,1],
+ ['milk','Whole milk','Walk-in','L',8,24,6,'Hollis Dairy','12 L case',12,11.40,1],
+ ['butter','Unsalted butter','Walk-in','kg',7.5,6,1.1,'Hollis Dairy','5 kg block',5,42.50,1],
+ ['eggs','Free-range eggs','Walk-in','eggs',90,360,70,'Hollis Dairy','180 tray',180,38.00,1],
+ ['thighs','Chicken thighs','Walk-in','kg',16,15,4,'Marsh & Son Butchers','5 kg box',5,24.50,1],
+ ['parm','Parmesan','Walk-in','kg',1.2,2,0.35,'Fiori Imports','2 kg wedge',2,46.00,3],
+ ['parsley','Flat-leaf parsley','Walk-in','bunches',4,12,3,'Covent Greens','6 bunches',6,5.40,1],
+ ['lemons','Lemons','Walk-in','each',42,40,9,'Covent Greens','36 box',36,14.00,1],
+ ['prawns','Raw king prawns','Freezer','kg',2,6,1.6,'Tidewater Fish','2 kg box',2,38.00,2],
+ ['peas','Frozen peas','Freezer','kg',11,10,1.4,'Brindle Cash & Carry','10 kg bag',10,17.80,2],
+ ['flour','00 flour','Dry store','kg',18,50,8,'Fiori Imports','25 kg sack',25,21.00,3],
+ ['oil','Extra virgin olive oil','Dry store','L',9,10,1.2,'Fiori Imports','5 L can',5,38.00,3],
+ ['tomato','San Marzano tomatoes','Dry store','tins',14,12,2.5,'Fiori Imports','6 tin case',6,27.00,3],
+ ['rice','Arborio rice','Dry store','kg',22,15,1.8,'Fiori Imports','10 kg bag',10,19.00,3],
+ ['sfoil','Sunflower oil','Dry store','L',22,20,3.5,'Brindle Cash & Carry','20 L drum',20,29.00,2],
+ ['salt','Sea salt flakes','Dry store','kg',3,2,0.2,'Brindle Cash & Carry','1.5 kg box',1.5,6.20,2],
+];
+const items = raw.map(([id,name,store,unit,on,par,perDay,sup,pack,ps,pp,lead])=>{
+  const status = on===0?'out':on<par?'low':'ok';
+  const days = on/perDay;
+  return {id,name,store,unit,on,par,perDay,sup,pack,ps,pp,lead,status,days,
+    packs:Math.max(1,Math.ceil((par-on)/ps)), urgent:days<lead};
+}).sort((a,b)=>a.days/a.lead-b.days/b.lead);
+
+const order = new Map(items.filter(i=>i.status!=='ok').map(i=>[i.id,i.packs]));
+let tab='all', sent=null;
+const $ = s=>document.querySelector(s);
+const label = {all:'All',out:'Out',low:'Low',ok:'OK'};
+const count = s=>s==='all'?items.length:items.filter(i=>i.status===s).length;
+const day = n=>{const d=new Date(TODAY);d.setDate(d.getDate()+n);return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})};
+
+function lede(){
+  const out=count('out'), low=count('low'), urg=items.filter(i=>i.status!=='ok'&&i.urgent).length;
+  $('#lede').innerHTML=`Counted today at 07:40. <b>${out+low} of ${items.length} ingredients</b> are below par, and <b>${urg}</b> will run out before a delivery could arrive.`;
+}
+function tabs(){
+  $('#tabs').innerHTML=Object.keys(label).map(k=>`<button data-t="${k}" aria-pressed="${tab===k}">${label[k]} <span class="num">${count(k)}</span></button>`).join('');
+}
+function rows(){
+  const q=$('#q').value.trim().toLowerCase(), st=$('#store').value;
+  const list=items.filter(i=>(tab==='all'||i.status===tab)&&(!st||i.store===st)&&(!q||i.name.toLowerCase().includes(q)||i.sup.toLowerCase().includes(q)));
+  $('#rows').innerHTML=list.length?list.map(i=>{
+    const max=i.par*1.5, fill=Math.min(100,i.on/max*100);
+    const inOrder=order.has(i.id);
+    const stat={out:'Out of stock',low:'Low',ok:'OK'}[i.status];
+    const warn=i.status!=='ok'&&i.urgent?`<span class="tag warn">Gone before delivery</span>`:'';
+    return `<div class="row ${i.status}">
+      <div class="nm"><div class="name">${i.name}</div><div class="sub">${i.store} &ndash; ${i.sup}</div></div>
+      <div class="lvl"><div class="qty num"><span><b>${fmt(i.on)}</b> ${i.unit}</span><span>par ${fmt(i.par)}</span></div>
+        <div class="gauge" style="--fill:${fill}%;--par:${i.par/max*100}%" role="img" aria-label="${fmt(i.on)} of ${fmt(i.par)} ${i.unit} par"><i></i></div></div>
+      <div class="days num"><span><b>${fmt(i.days)}</b> days</span><span class="tags"><span class="tag">${stat}</span>${warn}</span></div>
+      <div class="act"><button class="add" data-id="${i.id}" aria-pressed="${inOrder}" aria-label="${inOrder?'Remove':'Add'} ${i.name} ${inOrder?'from':'to'} reorder list">${inOrder?'In order':'Add to order'}</button></div>
+    </div>`}).join(''):`<div class="empty">No ingredients match these filters.</div>`;
+}
+function panel(){
+  const p=$('#panel');
+  if(sent){
+    p.innerHTML=`<div class="done"><h3>${sent.length} order${sent.length>1?'s':''} sent</h3><ul>${sent.map(s=>`<li>${s.sup}: delivers ${s.when}</li>`).join('')}</ul><button id="again">Start a new list</button></div>`;
+    $('#mcount').textContent='Orders sent';$('#mtotal').textContent='';
+    return;
+  }
+  const by={};
+  for(const [id,n] of order){const i=items.find(x=>x.id===id);(by[i.sup]??=[]).push([i,n])}
+  const sups=Object.keys(by);
+  let total=0;
+  const html=sups.map(s=>{
+    const lead=Math.max(...by[s].map(([i])=>i.lead));
+    const sub=by[s].reduce((a,[i,n])=>a+n*i.pp,0); total+=sub;
+    return `<div class="sup"><div class="sup-h"><strong>${s}</strong><span>Delivers ${day(lead)}</span></div>`+
+    by[s].map(([i,n])=>`<div class="line"><div class="t"><div>${i.name}</div><div>${n} &times; ${i.pack}</div></div>
+      <div class="step"><button data-d="-1" data-id="${i.id}" aria-label="Fewer ${i.name}">&minus;</button><output class="num">${n}</output><button data-d="1" data-id="${i.id}" aria-label="More ${i.name}">+</button></div>
+      <div class="cost num">${gbp(n*i.pp)}</div></div>`).join('')+`</div>`}).join('');
+  const summary=`${order.size} item${order.size===1?'':'s'}, ${sups.length} supplier${sups.length===1?'':'s'}`;
+  p.innerHTML=(sups.length?`<div class="lines">${html}</div>`:`<div class="none">Nothing in the list yet. Choose Add to order on an ingredient.</div>`)+
+    `<div class="foot"><div class="total"><span>${summary}</span><b class="num">${gbp(total)}</b></div>
+     <button class="send" id="send" ${sups.length?'':'disabled'}>Send ${sups.length||''} order${sups.length===1?'':'s'}</button></div>`;
+  $('#mcount').textContent=summary;
+  $('#mtotal').textContent=gbp(total);
+}
+function all(){lede();tabs();rows();panel()}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  if(t.dataset.t){tab=t.dataset.t;tabs();rows()}
+  else if(t.classList.contains('add')){const id=t.dataset.id;order.has(id)?order.delete(id):order.set(id,items.find(i=>i.id===id).packs);rows();panel()}
+  else if(t.dataset.d){const n=order.get(t.dataset.id)+ +t.dataset.d; n<1?order.delete(t.dataset.id):order.set(t.dataset.id,n);rows();panel()}
+  else if(t.id==='send'){
+    const by={};for(const id of order.keys()){const i=items.find(x=>x.id===id);by[i.sup]=Math.max(by[i.sup]||0,i.lead)}
+    sent=Object.entries(by).map(([sup,l])=>({sup,when:day(l)}));order.clear();rows();panel()}
+  else if(t.id==='again'){sent=null;panel()}
+  else if(t.id==='open')document.body.classList.add('sheet');
+  else if(t.id==='close')document.body.classList.remove('sheet');
+});
+$('#q').addEventListener('input',rows);
+$('#store').addEventListener('change',rows);
+all();
+</script>
+</body>
+</html>

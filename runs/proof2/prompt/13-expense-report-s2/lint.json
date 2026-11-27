@@ -1,0 +1,119 @@
+{
+  "axe": {
+    "rules": {
+      "label-title-only": {
+        "impact": "serious",
+        "nodes": 8
+      },
+      "label": {
+        "impact": "critical",
+        "nodes": 16
+      },
+      "select-name": {
+        "impact": "critical",
+        "nodes": 8
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 8
+      },
+      "critical": {
+        "rules": 2,
+        "nodes": 24
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "ui-sans-serif"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(26, 31, 28)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(21, 86, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 18,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Outlay",
+        "w": 89,
+        "h": 27
+      },
+      {
+        "tag": "input",
+        "text": "SFO to ORD and return, economy",
+        "w": 290,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Remove receipt united-receipt-",
+        "w": 24,
+        "h": 24
+      },
+      {
+        "tag": "input",
+        "text": "O'Hare to hotel",
+        "w": 290,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Remove receipt uber-nov17.pdf",
+        "w": 24,
+        "h": 24
+      },
+      {
+        "tag": "input",
+        "text": "Night 1, room and tax",
+        "w": 290,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "Remove receipt gray-hotel-foli",
+        "w": 24,
+        "h": 24
+      },
+      {
+        "tag": "input",
+        "text": "Dinner, 4 attendees, CFO of Ha",
+        "w": 290,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

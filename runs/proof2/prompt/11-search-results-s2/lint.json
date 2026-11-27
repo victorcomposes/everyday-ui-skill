@@ -1,0 +1,98 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "georgia",
+    "system-ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(250, 246, 238)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 22,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Saltbox Kitchen",
+        "w": 208,
+        "h": 30
+      },
+      {
+        "tag": "button",
+        "text": "Search",
+        "w": 80,
+        "h": 34
+      },
+      {
+        "tag": "a",
+        "text": "7",
+        "w": 75,
+        "h": 36
+      },
+      {
+        "tag": "a",
+        "text": "chana masala",
+        "w": 111,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "coconut chickpea stew",
+        "w": 168,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "dal and chickpea",
+        "w": 132,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "vegan tikka masala",
+        "w": 145,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "Filters",
+        "w": 104,
+        "h": 42
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

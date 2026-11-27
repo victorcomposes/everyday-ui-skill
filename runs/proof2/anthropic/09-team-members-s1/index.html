@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members - Cobalt</title>
+<style>
+:root {
+  --bg: #edf0f6;
+  --surface: #ffffff;
+  --sunken: #f4f6fb;
+  --ink: #111a38;
+  --muted: #566082;
+  --line: #d8deec;
+  --cobalt: #1d4ed8;
+  --cobalt-ink: #ffffff;
+  --cobalt-wash: #e4ebfd;
+  --danger: #b42318;
+  --danger-wash: #fdeceb;
+  --ok: #17703f;
+  --focus: #1d4ed8;
+  --shadow: 0 1px 2px rgba(17,26,56,.06), 0 8px 24px -12px rgba(17,26,56,.18);
+  --font: "Avenir Next", "Segoe UI Variable Text", "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1020;
+    --surface: #131a30;
+    --sunken: #0f1527;
+    --ink: #e8ecf8;
+    --muted: #97a1c0;
+    --line: #28314d;
+    --cobalt: #7a98ff;
+    --cobalt-ink: #0b1020;
+    --cobalt-wash: #1b2750;
+    --danger: #ff9188;
+    --danger-wash: #3a1b1d;
+    --ok: #62d394;
+    --focus: #9db3ff;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 var(--font); -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+
+/* top bar */
+.bar { background: var(--surface); border-bottom: 1px solid var(--line); }
+.bar-in { max-width: 1120px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 28px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: 17px; }
+.brand svg { display: block; }
+.nav { display: flex; gap: 4px; margin-left: 4px; }
+.nav a { color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 8px; font-weight: 500; }
+.nav a:hover { color: var(--ink); background: var(--sunken); }
+.nav a[aria-current] { color: var(--ink); background: var(--sunken); }
+.me { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; }
+
+main { max-width: 1120px; margin: 0 auto; padding: 36px 24px 72px; }
+h1 { margin: 0; font-size: 32px; line-height: 1.15; letter-spacing: -.025em; font-weight: 700; }
+.lede { margin: 8px 0 0; color: var(--muted); max-width: 56ch; }
+
+/* seats */
+.seats { margin-top: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow); }
+.seats-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.seats-count { font-size: 20px; font-weight: 650; letter-spacing: -.01em; }
+.seats-count small { font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.seats-plan { color: var(--muted); font-size: 14px; }
+.seats-plan a { color: var(--cobalt); font-weight: 600; text-decoration: none; }
+.seats-plan a:hover { text-decoration: underline; }
+.meter { display: grid; grid-template-columns: repeat(20, 1fr); gap: 5px; margin-top: 14px; }
+.cell { height: 28px; border-radius: 5px; border: 1.5px solid var(--line); background: transparent; }
+.cell.used { background: var(--cobalt); border-color: var(--cobalt); }
+.cell.held {
+  border-color: var(--cobalt);
+  background: repeating-linear-gradient(135deg, var(--cobalt-wash) 0 4px, transparent 4px 8px);
+}
+.key { display: flex; gap: 6px 20px; margin-top: 12px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+.key span { display: inline-flex; align-items: center; gap: 0; }
+.key i { margin-right: 7px; }
+.key b { margin-right: .3em; }
+.key i { width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid var(--line); display: inline-block; }
+.key .used { background: var(--cobalt); border-color: var(--cobalt); }
+.key .held { border-color: var(--cobalt); background: repeating-linear-gradient(135deg, var(--cobalt-wash) 0 3px, transparent 3px 6px); }
+
+/* invite */
+.card { margin-top: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.invite { padding: 20px 22px 22px; }
+.invite h2, .list-head h2 { margin: 0; font-size: 17px; letter-spacing: -.01em; }
+.invite p.sub { margin: 2px 0 14px; color: var(--muted); font-size: 14px; }
+.invite-row { display: grid; grid-template-columns: 1fr 190px auto; gap: 12px; align-items: end; }
+.field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.input, .select {
+  width: 100%; height: 42px; padding: 0 12px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 9px; transition: border-color .15s, box-shadow .15s;
+}
+.input::placeholder { color: var(--muted); opacity: .8; }
+.input:hover, .select:hover { border-color: color-mix(in srgb, var(--muted) 55%, var(--line)); }
+.input:focus-visible, .select:focus-visible { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 28%, transparent); }
+.input[aria-invalid="true"] { border-color: var(--danger); }
+.select { appearance: none; padding-right: 34px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1.5 1.5 6 6l4.5-4.5' fill='none' stroke='%23778' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; }
+.select option { background: var(--surface); color: var(--ink); }
+.btn {
+  height: 42px; padding: 0 18px; border-radius: 9px; border: 1px solid transparent; font-weight: 600; cursor: pointer;
+  background: var(--cobalt); color: var(--cobalt-ink); transition: filter .15s, transform .05s;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: translateY(1px); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.ghost:hover { background: var(--sunken); filter: none; }
+.btn.danger { background: var(--danger); color: var(--surface); }
+.hint { margin: 10px 0 0; font-size: 13px; color: var(--muted); min-height: 20px; }
+.hint.err { color: var(--danger); font-weight: 500; }
+
+/* list */
+.list-head { display: flex; align-items: center; gap: 16px; padding: 18px 22px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+.list-head h2 { margin-right: auto; }
+.tabs { display: inline-flex; background: var(--sunken); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 2px; }
+.tab { border: 0; background: transparent; padding: 5px 12px; border-radius: 7px; cursor: pointer; color: var(--muted); font-weight: 600; font-size: 14px; }
+.tab[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(17,26,56,.15); }
+.search { position: relative; width: 240px; }
+.search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search .input { padding-left: 34px; height: 36px; }
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 13px; font-weight: 600; color: var(--muted); padding: 10px 22px; background: var(--sunken); border-bottom: 1px solid var(--line); }
+td { padding: 14px 22px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: color-mix(in srgb, var(--sunken) 60%, transparent); }
+th.col-act, td.col-act { text-align: right; width: 1%; white-space: nowrap; }
+th.col-role { width: 190px; }
+th.col-seen { width: 150px; }
+
+.person { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.avatar { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+.avatar.pending { background: transparent !important; color: var(--muted) !important; border: 1.5px dashed var(--muted); }
+.who { min-width: 0; }
+.name { font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.email { color: var(--muted); font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; }
+.tag { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--cobalt-wash); color: var(--cobalt); }
+.tag.invited { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.seen { color: var(--muted); font-size: 14px; }
+.seen.now { color: var(--ok); font-weight: 600; }
+.role-fixed { display: block; padding: 0 12px; height: 36px; line-height: 36px; font-weight: 500; }
+.row-select { height: 36px; }
+.link { background: none; border: 0; padding: 6px 8px; border-radius: 7px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--cobalt); }
+.link:hover { background: var(--cobalt-wash); }
+.link.rm { color: var(--danger); }
+.link.rm:hover { background: var(--danger-wash); }
+.link[disabled] { color: var(--muted); opacity: .5; cursor: not-allowed; background: none; }
+.empty { padding: 44px 22px; text-align: center; color: var(--muted); }
+.empty strong { display: block; color: var(--ink); font-size: 16px; margin-bottom: 4px; }
+.foot { padding: 14px 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+
+/* dialog */
+dialog { border: 1px solid var(--line); border-radius: 16px; padding: 0; background: var(--surface); color: var(--ink); width: min(440px, calc(100vw - 32px)); box-shadow: 0 24px 64px -16px rgba(0,0,0,.45); }
+dialog::backdrop { background: rgba(8,12,28,.55); }
+dialog form { padding: 24px; }
+dialog h3 { margin: 0 0 8px; font-size: 19px; letter-spacing: -.015em; }
+dialog p { margin: 0; color: var(--muted); }
+.dlg-act { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+/* toast */
+.toasts { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); display: grid; gap: 8px; z-index: 10; width: max-content; max-width: calc(100vw - 32px); }
+.toast { display: flex; align-items: center; gap: 14px; background: var(--ink); color: var(--bg); padding: 11px 14px 11px 16px; border-radius: 11px; box-shadow: var(--shadow); animation: pop .18s ease-out; }
+.toast button { background: none; border: 0; color: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 2px 4px; }
+@keyframes pop { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .toast { animation: none; } * { transition: none !important; } }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* small screens */
+@media (max-width: 760px) {
+  .bar-in { padding: 0 16px; gap: 12px; }
+  .nav a:not([aria-current]) { display: none; }
+  .me span { display: none; }
+  main { padding: 24px 16px 64px; }
+  h1 { font-size: 27px; }
+  .seats, .invite { padding: 18px 16px; }
+  .meter { gap: 3px; }
+  .cell { height: 24px; border-radius: 4px; }
+  .invite-row { grid-template-columns: 1fr; }
+  .btn.send { width: 100%; }
+  .list-head { padding: 16px; }
+  .search { width: 100%; order: 3; }
+  .tabs { margin-left: auto; }
+  table, tbody, tr, td { display: block; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  tr { padding: 16px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto; gap: 10px 12px; align-items: center; }
+  tbody tr:last-child { border-bottom: 0; }
+  td { padding: 0; border: 0; }
+  tbody tr:hover td { background: none; }
+  td.col-who { grid-column: 1 / -1; }
+  td.col-role { grid-column: 1 / -1; }
+  td.col-seen { grid-column: 1; font-size: 13px; }
+  td.col-act { grid-column: 2; text-align: right; width: auto; align-self: center; }
+  .foot { padding: 14px 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="7" fill="var(--cobalt)"/><path d="M8 13a5 5 0 0 1 9.2-2.7M18 13a5 5 0 0 1-9.2 2.7" fill="none" stroke="var(--cobalt-ink)" stroke-width="2.2" stroke-linecap="round"/><circle cx="13" cy="13" r="1.6" fill="var(--cobalt-ink)"/></svg>
+      Cobalt
+    </div>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Reviews</a>
+      <a href="#">Files</a>
+      <a href="#" aria-current="page">Team</a>
+      <a href="#">Billing</a>
+    </nav>
+    <div class="me"><span>Priya Raman</span><div class="avatar" style="background:#d9e3ff;color:#1d3a99;width:32px;height:32px" aria-hidden="true">PR</div></div>
+  </div>
+</header>
+
+<main>
+  <h1>Team members</h1>
+  <p class="lede">Everyone in Northfield Studio who can open, comment on or manage design reviews in Cobalt.</p>
+
+  <section class="seats" aria-labelledby="seats-h">
+    <div class="seats-top">
+      <div class="seats-count" id="seats-h"><span id="seat-used">0</span> of 20 seats <small id="seat-left"></small></div>
+      <div class="seats-plan">Team plan, billed yearly. <a href="#">Add seats</a></div>
+    </div>
+    <div class="meter" id="meter" role="img" aria-label=""></div>
+    <div class="key">
+      <span><i class="used"></i><b id="k-used" style="font-weight:500">0</b> active members</span>
+      <span><i class="held"></i><b id="k-held" style="font-weight:500">0</b> invites waiting</span>
+      <span><i></i><b id="k-free" style="font-weight:500">0</b> free</span>
+    </div>
+  </section>
+
+  <section class="card invite" aria-labelledby="inv-h">
+    <h2 id="inv-h">Invite people</h2>
+    <p class="sub">Separate several addresses with commas. Each invite holds a seat until it is accepted or revoked.</p>
+    <form id="invite-form" novalidate>
+      <div class="invite-row">
+        <div class="field">
+          <label for="emails">Email addresses</label>
+          <input class="input" id="emails" type="text" autocomplete="off" placeholder="name@company.com, name@company.com" aria-describedby="inv-hint">
+        </div>
+        <div class="field">
+          <label for="inv-role">Role</label>
+          <select class="select" id="inv-role"></select>
+        </div>
+        <button class="btn send" type="submit">Send invites</button>
+      </div>
+      <p class="hint" id="inv-hint" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="list-h">
+    <div class="list-head">
+      <h2 id="list-h">All people</h2>
+      <div class="tabs" role="group" aria-label="Filter by status">
+        <button class="tab" data-f="all" aria-pressed="true">All <span id="c-all"></span></button>
+        <button class="tab" data-f="active" aria-pressed="false">Active <span id="c-active"></span></button>
+        <button class="tab" data-f="invited" aria-pressed="false">Invited <span id="c-invited"></span></button>
+      </div>
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m10.6 10.6 3.4 3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <label class="sr" for="q">Search people</label>
+        <input class="input" id="q" type="search" placeholder="Search by name or email" autocomplete="off">
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Person</th><th class="col-role">Role</th><th class="col-seen">Last active</th><th class="col-act"><span class="sr">Actions</span></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="foot" id="role-help"></div>
+  </section>
+</main>
+
+<dialog id="rm-dlg" aria-labelledby="rm-h">
+  <form method="dialog">
+    <h3 id="rm-h"></h3>
+    <p id="rm-body"></p>
+    <div class="dlg-act">
+      <button class="btn ghost" value="cancel" id="rm-cancel">Keep member</button>
+      <button class="btn danger" value="ok" id="rm-ok">Remove member</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+const ROLES = {
+  Owner:    "Owns billing and the workspace. Can do everything.",
+  Admin:    "Manages people, projects and settings. Cannot change billing.",
+  Designer: "Uploads files, starts reviews and resolves comments.",
+  Reviewer: "Comments and approves on reviews they are added to.",
+  Viewer:   "Opens shared reviews. Cannot comment."
+};
+const SEATS = 20;
+const TINTS = [["#d9e3ff","#1d3a99"],["#fde4cf","#8a3d07"],["#d6f2e3","#16603a"],["#f3dcf5","#7a2a85"],["#ffe1e4","#9b1c2e"],["#dcecf4","#175a78"]];
+const TINTS_DARK = [["#1f2c5c","#b8c8ff"],["#4a2c15","#ffc99b"],["#14402b","#a6e6c3"],["#3f1f47","#ecc3f2"],["#4a1c24","#ffc0c8"],["#173847","#b2dcee"]];
+const dark = matchMedia("(prefers-color-scheme: dark)");
+
+let people = [
+  {id:1, name:"Priya Raman",     email:"priya@northfield.studio",   role:"Owner",    seen:"Active now", now:true, you:true},
+  {id:2, name:"Tomas Lindqvist", email:"tomas@northfield.studio",   role:"Admin",    seen:"12 minutes ago"},
+  {id:3, name:"Amara Okafor",    email:"amara@northfield.studio",   role:"Admin",    seen:"Today, 09:14"},
+  {id:4, name:"Jun Watanabe",    email:"jun@northfield.studio",     role:"Designer", seen:"Today, 08:52"},
+  {id:5, name:"Elena Marchetti", email:"elena@northfield.studio",   role:"Designer", seen:"Yesterday"},
+  {id:6, name:"Sam Okonkwo",     email:"sam@northfield.studio",     role:"Designer", seen:"Nov 25"},
+  {id:7, name:"Hannah Brooks",   email:"hannah@northfield.studio",  role:"Designer", seen:"Nov 24"},
+  {id:8, name:"Diego Alvarez",   email:"diego@northfield.studio",   role:"Designer", seen:"Nov 21"},
+  {id:9, name:"Mei Chen",        email:"mei.chen@northfield.studio",role:"Reviewer", seen:"Nov 26"},
+  {id:10,name:"Oliver Grant",    email:"oliver@northfield.studio",  role:"Reviewer", seen:"Nov 20"},
+  {id:11,name:"Fatima Sheikh",   email:"fatima@brightpath.co",      role:"Reviewer", seen:"Nov 18"},
+  {id:12,name:"Lucas Moreau",    email:"lucas@brightpath.co",       role:"Viewer",   seen:"Nov 12"},
+  {id:13,name:"Ruth Adeyemi",    email:"ruth@northfield.studio",    role:"Viewer",   seen:"Nov 3"},
+  {id:14,name:"Kenji Mori",      email:"kenji@northfield.studio",   role:"Viewer",   seen:"Oct 29"},
+  {id:15,email:"ibrahim@brightpath.co", role:"Reviewer", invited:"Sent Nov 25"},
+  {id:16,email:"claire.dubois@northfield.studio", role:"Designer", invited:"Sent Nov 24"},
+  {id:17,email:"w.tanaka@northfield.studio", role:"Viewer", invited:"Sent Nov 19"}
+];
+let nextId = 100, filter = "all", query = "", pendingRemove = null;
+
+const $ = s => document.querySelector(s);
+const rows = $("#rows");
+
+function initials(p){ const n = p.name || ""; return n.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase(); }
+function tint(p){ const set = dark.matches ? TINTS_DARK : TINTS; return set[(p.id*7) % set.length]; }
+function soleOwner(p){ return p.role === "Owner" && people.filter(x=>x.role==="Owner" && !x.invited).length === 1; }
+
+function el(tag, attrs={}, ...kids){
+  const e = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)){
+    if (k==="class") e.className=v; else if (k==="text") e.textContent=v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k,v);
+  }
+  kids.forEach(k=>e.append(k)); return e;
+}
+
+function roleSelect(p){
+  const s = el("select",{class:"select row-select","aria-label":"Role for "+(p.name||p.email)});
+  Object.keys(ROLES).forEach(r=>{ const o=el("option",{value:r,text:r}); if(r===p.role)o.selected=true; s.append(o); });
+  s.addEventListener("change", ()=>{
+    const from = p.role, to = s.value; p.role = to; update();
+    toast((p.name||p.email)+" is now "+(to==="Admin"||to==="Owner"?"an ":"a ")+to+".", "Undo", ()=>{ p.role=from; update(); });
+  });
+  return s;
+}
+
+function render(){
+  rows.replaceChildren();
+  const q = query.trim().toLowerCase();
+  const list = people.filter(p =>
+    (filter==="all" || (filter==="invited") === !!p.invited) &&
+    (!q || (p.name||"").toLowerCase().includes(q) || p.email.toLowerCase().includes(q)));
+  if (!list.length){
+    const t = el("tr",{},el("td",{colspan:4},el("div",{class:"empty"},
+      el("strong",{text: q ? "No one matches “"+query.trim()+"”" : "No one here yet"}),
+      document.createTextNode(q ? "Check the spelling or search by email address." : "Invite a teammate above to fill this seat."))));
+    rows.append(t); return;
+  }
+  list.forEach(p=>{
+    const av = el("div",{class:"avatar"+(p.invited?" pending":""),"aria-hidden":"true",text:p.invited?"@":initials(p)});
+    if(!p.invited){ const [bg,fg]=tint(p); av.style.background=bg; av.style.color=fg; }
+    const name = el("div",{class:"name"});
+    if (p.invited){ name.append(el("span",{text:p.email}), el("span",{class:"tag invited",text:"Invited"})); }
+    else { name.append(el("span",{text:p.name})); if(p.you) name.append(el("span",{class:"tag",text:"You"})); }
+    const who = el("div",{class:"who"}, name);
+    if(!p.invited) who.append(el("div",{class:"email",text:p.email}));
+
+    let roleCell;
+    if (p.you || soleOwner(p)) roleCell = el("span",{class:"role-fixed",text:p.role, title:"Transfer ownership before changing this role"});
+    else roleCell = roleSelect(p);
+
+    const act = el("td",{class:"col-act"});
+    if (p.invited){
+      act.append(el("button",{class:"link",text:"Resend invite",onclick:()=>{ p.invited="Sent today"; update(); toast("Invite resent to "+p.email+"."); }}),
+                 el("button",{class:"link rm",text:"Revoke",onclick:()=>revoke(p)}));
+    } else {
+      const b = el("button",{class:"link rm",text:"Remove","aria-label":"Remove "+p.name,onclick:()=>askRemove(p)});
+      if (p.you){ b.disabled = true; b.title = "You cannot remove yourself"; }
+      act.append(b);
+    }
+    rows.append(el("tr",{},
+      el("td",{class:"col-who"},el("div",{class:"person"},av,who)),
+      el("td",{class:"col-role"},roleCell),
+      el("td",{class:"col-seen"},el("span",{class:"seen"+(p.now?" now":""),text:p.invited||p.seen})),
+      act));
+  });
+}
+
+function stats(){
+  const a = people.filter(p=>!p.invited).length, h = people.length - a, free = SEATS - a - h;
+  $("#seat-used").textContent = a + h;
+  $("#seat-left").textContent = free ? "- "+free+" free" : "- none free";
+  $("#k-used").textContent = a; $("#k-held").textContent = h; $("#k-free").textContent = free;
+  $("#meter").setAttribute("aria-label", a+" seats used by members, "+h+" held by invites, "+free+" free");
+  const m = $("#meter"); m.replaceChildren();
+  for (let i=0;i<SEATS;i++) m.append(el("div",{class:"cell "+(i<a?"used":i<a+h?"held":"")}));
+  $("#c-all").textContent = people.length; $("#c-active").textContent = a; $("#c-invited").textContent = h;
+  document.querySelectorAll(".tab span").forEach(s=>s.style.opacity=.7);
+  return free;
+}
+
+function update(){ stats(); render(); }
+
+/* removal */
+function askRemove(p){
+  pendingRemove = p;
+  $("#rm-h").textContent = "Remove "+p.name+"?";
+  $("#rm-body").textContent = p.name.split(" ")[0]+" will lose access to every review right away. Their comments stay, and the seat becomes free.";
+  $("#rm-ok").textContent = "Remove member";
+  $("#rm-dlg").showModal();
+}
+$("#rm-dlg").addEventListener("close", e=>{
+  const dlg = e.target;
+  if (dlg.returnValue === "ok" && pendingRemove){
+    const p = pendingRemove, i = people.indexOf(p);
+    people.splice(i,1); update();
+    toast(p.name+" was removed.", "Undo", ()=>{ people.splice(i,0,p); update(); });
+  }
+  dlg.returnValue = ""; pendingRemove = null;
+});
+function revoke(p){
+  const i = people.indexOf(p); people.splice(i,1); update();
+  toast("Invite to "+p.email+" revoked.", "Undo", ()=>{ people.splice(i,0,p); update(); });
+}
+
+/* invite */
+const roleSel = $("#inv-role");
+Object.keys(ROLES).filter(r=>r!=="Owner").forEach(r=>roleSel.append(el("option",{value:r,text:r})));
+roleSel.value = "Designer";
+const hint = $("#inv-hint"), emails = $("#emails");
+function roleHint(){ hint.className="hint"; hint.textContent = roleSel.value+": "+ROLES[roleSel.value]; }
+roleSel.addEventListener("change", roleHint); roleHint();
+emails.addEventListener("input", ()=>{ emails.removeAttribute("aria-invalid"); roleHint(); });
+
+$("#invite-form").addEventListener("submit", e=>{
+  e.preventDefault();
+  const list = [...new Set(emails.value.split(/[,\s;]+/).map(s=>s.trim().toLowerCase()).filter(Boolean))];
+  const fail = msg => { hint.className="hint err"; hint.textContent=msg; emails.setAttribute("aria-invalid","true"); emails.focus(); };
+  if (!list.length) return fail("Enter at least one email address.");
+  const bad = list.filter(x=>!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(x));
+  if (bad.length) return fail(bad[0]+" is not a valid email address. Fix it and send again.");
+  const dup = list.find(x=>people.some(p=>p.email.toLowerCase()===x));
+  if (dup) return fail(dup+" is already on the team or has a pending invite.");
+  const free = SEATS - people.length;
+  if (list.length > free) return fail(free ? "You have "+free+" free seat"+(free>1?"s":"")+" and tried to invite "+list.length+". Remove an invite or add seats." : "No seats are free. Remove a member or add seats before you invite anyone.");
+  list.forEach(x=>people.push({id:nextId++, email:x, role:roleSel.value, invited:"Sent today"}));
+  emails.value=""; filter="all"; syncTabs(); update(); roleHint();
+  toast(list.length===1 ? "Invite sent to "+list[0]+"." : list.length+" invites sent as "+roleSel.value+".");
+});
+
+/* filters */
+function syncTabs(){ document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-pressed", t.dataset.f===filter)); }
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{ filter=t.dataset.f; syncTabs(); render(); }));
+$("#q").addEventListener("input", e=>{ query=e.target.value; render(); });
+dark.addEventListener("change", render);
+
+/* toast */
+function toast(msg, label, fn){
+  const t = el("div",{class:"toast"}, el("span",{text:msg}));
+  const kill = ()=>t.remove();
+  if (label){ t.append(el("button",{text:label,onclick:()=>{ fn(); kill(); }})); }
+  $("#toasts").append(t);
+  setTimeout(kill, label ? 7000 : 4000);
+}
+
+$("#role-help").textContent = Object.entries(ROLES).filter(([r])=>r!=="Owner").map(([r,d])=>r+": "+d.replace(/\.$/,"")).slice(0,0).join("");
+$("#role-help").textContent = "Roles: Admins manage people and settings. Designers upload and resolve. Reviewers comment and approve. Viewers read only.";
+
+update();
+</script>
+</body>
+</html>

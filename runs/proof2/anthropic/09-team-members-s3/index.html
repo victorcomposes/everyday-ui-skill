@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members - Cobalt</title>
+<style>
+:root{
+  --bg:#f2f4f9; --panel:#ffffff; --ink:#14192b; --ink2:#4a5270; --ink3:#6b7390;
+  --line:#dfe3ee; --line2:#eceff6; --cobalt:#1743d6; --cobalt-ink:#ffffff; --cobalt-wash:#e6ecff;
+  --danger:#b3261e; --danger-wash:#fdecea; --ok:#13794b; --warn:#8a5a00; --warn-wash:#fff3d6;
+  --head:"Bahnschrift","DIN Alternate","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+  --body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+  --av-bg:88%; --av-fg:28%; --av-s:55%;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c1020; --panel:#141a30; --ink:#e8ebf7; --ink2:#a9b1cf; --ink3:#8790b0;
+    --line:#262e4d; --line2:#1d2441; --cobalt:#5b83ff; --cobalt-ink:#0a1030; --cobalt-wash:#1b2650;
+    --danger:#ff8d84; --danger-wash:#3a1a1c; --ok:#5fd39b; --warn:#f0c15a; --warn-wash:#33290f;
+    --av-bg:26%; --av-fg:84%; --av-s:40%;
+  }
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+.top{background:var(--panel);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;font:600 19px var(--head);letter-spacing:.01em}
+.brand svg{display:block}
+nav{display:flex;gap:4px;height:100%}
+nav a{display:flex;align-items:center;padding:0 12px;color:var(--ink2);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px}
+nav a:hover{color:var(--ink)}
+nav a[aria-current]{color:var(--ink);border-color:var(--cobalt);font-weight:600}
+.me{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--ink2);font-size:14px}
+main{max-width:1180px;margin:0 auto;padding:36px 24px 64px}
+h1{font:600 34px/1.1 var(--head);margin:0 0 6px;letter-spacing:-.005em}
+.sub{margin:0;color:var(--ink2);max-width:60ch}
+.head{display:flex;gap:32px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;margin-bottom:28px}
+.seats{min-width:280px}
+.seats-t{display:flex;justify-content:space-between;font-size:14px;color:var(--ink2);margin-bottom:8px}
+.seats-t b{color:var(--ink);font-family:var(--head);font-size:18px;font-weight:600}
+.strip{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;height:14px}
+.strip i{border-radius:2px;background:var(--line)}
+.strip i.m{background:var(--cobalt)}
+.strip i.p{background:repeating-linear-gradient(135deg,var(--cobalt) 0 2px,transparent 2px 4px);box-shadow:inset 0 0 0 1px var(--cobalt)}
+.legend{display:flex;gap:14px;margin-top:8px;font-size:13px;color:var(--ink3)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.invite{padding:18px 20px;margin-bottom:20px}
+.invite h2{font:600 17px var(--head);margin:0 0 12px}
+.invite form{display:grid;grid-template-columns:1fr 170px auto;gap:10px;align-items:end}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:4px}
+.f{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:0 10px;height:40px;width:100%}
+.f:hover{border-color:var(--ink3)}
+.f[aria-invalid=true]{border-color:var(--danger)}
+.btn{height:40px;padding:0 16px;border-radius:6px;border:1px solid var(--cobalt);background:var(--cobalt);color:var(--cobalt-ink);font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--ink3)}
+.btn.danger{background:var(--danger);border-color:var(--danger);color:var(--panel)}
+.msg:empty{display:none}
+.msg{margin:10px 0 0;font-size:13px;color:var(--ink3)}
+.msg.err{color:var(--danger)}
+.bar{display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs{display:flex;gap:20px}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:14px 0 12px;color:var(--ink2);cursor:pointer;font-weight:500}
+.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--cobalt);font-weight:600}
+.tabs .n{color:var(--ink3);font-weight:400;margin-left:4px}
+.search{margin-left:auto;position:relative;width:220px}
+.search input{height:34px;padding-left:32px}
+.search svg{position:absolute;left:10px;top:9px;color:var(--ink3)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-weight:600;font-size:13px;color:var(--ink3);padding:10px 20px;border-bottom:1px solid var(--line)}
+td{padding:12px 20px;border-bottom:1px solid var(--line2);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:color-mix(in srgb,var(--cobalt-wash) 45%,transparent)}
+.who{display:flex;align-items:center;gap:12px;min-width:0}
+.av{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:600 13px var(--head);
+  background:hsl(var(--h) var(--av-s) var(--av-bg));color:hsl(var(--h) 55% var(--av-fg))}
+.av.pend{background:transparent;border:1.5px dashed var(--ink3);color:var(--ink3)}
+.nm{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.em{color:var(--ink2);font-size:14px;overflow-wrap:anywhere}
+.tag{font-size:12px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--cobalt-wash);color:var(--cobalt)}
+.tag.warn{background:var(--warn-wash);color:var(--warn)}
+.role{height:34px;padding-right:4px;width:140px}
+.role-fixed{display:inline-block;height:34px;line-height:34px;padding:0 10px;color:var(--ink2)}
+.seen{color:var(--ink2);font-size:14px;white-space:nowrap}
+.act{text-align:right;white-space:nowrap}
+.lnk{background:none;border:0;padding:6px 8px;border-radius:6px;cursor:pointer;color:var(--ink2);font-size:14px}
+.lnk:hover{background:var(--line2);color:var(--ink)}
+.lnk.rm:hover{background:var(--danger-wash);color:var(--danger)}
+.lnk:disabled{opacity:.4;cursor:not-allowed;background:none}
+.empty{padding:40px 20px;text-align:center;color:var(--ink2)}
+.empty b{display:block;color:var(--ink);font:600 17px var(--head);margin-bottom:4px}
+aside{padding:20px;position:sticky;top:20px}
+aside h2{font:600 17px var(--head);margin:0 0 4px}
+aside p{margin:0 0 14px;color:var(--ink2);font-size:14px}
+dl{margin:0}
+dt{font-weight:600;display:flex;align-items:center;gap:8px;margin-top:14px}
+dt::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+dd{margin:2px 0 0 16px;color:var(--ink2);font-size:14px}
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);padding:24px;width:min(420px,calc(100vw - 32px))}
+dialog::backdrop{background:rgba(8,12,30,.55)}
+dialog h2{font:600 20px var(--head);margin:0 0 8px}
+dialog p{margin:0 0 20px;color:var(--ink2)}
+.dlg-act{display:flex;justify-content:flex-end;gap:10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:8px;display:flex;gap:14px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:9;max-width:calc(100vw - 32px)}
+.toast[hidden]{display:none}
+.toast button{background:none;border:0;color:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:no-preference){
+  tr.in td{animation:flash 1.4s ease-out}
+  @keyframes flash{from{background:var(--cobalt-wash)}to{background:transparent}}
+}
+@media (max-width:960px){
+  .grid{grid-template-columns:1fr}
+  aside{position:static;order:2}
+}
+@media (max-width:640px){
+  .top-in{padding:0 16px;gap:12px}
+  nav a{padding:0 8px}
+  .me span{display:none}
+  nav a:nth-child(n+4){display:none}
+  main{padding:24px 16px 56px}
+  h1{font-size:28px}
+  .seats{min-width:0;width:100%}
+  .invite form{grid-template-columns:1fr}
+  .btn{width:100%}
+  .bar{padding:0 16px}
+  .search{width:100%;margin:0 0 12px}
+  .tabs{width:100%}
+  thead{display:none}
+  table,tbody{display:block}
+  tr{padding:14px 16px;border-bottom:1px solid var(--line2);display:grid;grid-template-columns:1fr auto;gap:10px 8px;align-items:center}
+  tr:last-child{border-bottom:0}
+  td{display:block;padding:0;border:0}
+  td.c-who{grid-column:1/-1}
+  td.c-role{grid-column:1;grid-row:2}
+  td.c-act{grid-column:2;grid-row:2}
+  td.c-seen{grid-column:1/-1;grid-row:3}
+  .role{width:100%}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="var(--cobalt)"/><path d="M7 7h6a4 4 0 0 1 0 8H7z" fill="none" stroke="var(--cobalt-ink)" stroke-width="2"/><circle cx="17" cy="17" r="2.2" fill="var(--cobalt-ink)"/></svg>
+      Cobalt
+    </div>
+    <nav aria-label="Main">
+      <a href="#">Reviews</a><a href="#">Projects</a><a href="#" aria-current="page">Team</a><a href="#">Billing</a>
+    </nav>
+    <div class="me"><span>Maren Okafor</span><div class="av" style="--h:222;width:30px;height:30px;font-size:12px">MO</div></div>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <h1>Team members</h1>
+      <p class="sub">Invite people to review designs, change what they can do, and remove them when they leave.</p>
+    </div>
+    <div class="seats" aria-live="polite">
+      <div class="seats-t"><span><b id="used">0</b> of <span id="cap">20</span> seats used</span><span id="left"></span></div>
+      <div class="strip" id="strip" aria-hidden="true"></div>
+      <div class="legend"><span><i style="background:var(--cobalt)"></i>Members</span><span><i style="box-shadow:inset 0 0 0 1px var(--cobalt)"></i>Pending invites</span><span><i style="background:var(--line)"></i>Free</span></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <section class="card invite">
+        <h2>Invite someone</h2>
+        <form id="inv" novalidate>
+          <div><label for="email">Work email</label><input class="f" id="email" type="email" placeholder="name@company.com" autocomplete="off" aria-describedby="msg"></div>
+          <div><label for="irole">Role</label><select class="f" id="irole"></select></div>
+          <button class="btn" id="send" type="submit">Send invite</button>
+        </form>
+        <p class="msg" id="msg" role="status"></p>
+      </section>
+
+      <section class="card">
+        <div class="bar">
+          <div class="tabs" role="tablist">
+            <button role="tab" id="t-m" aria-selected="true" aria-controls="panel">Members<span class="n" id="n-m"></span></button>
+            <button role="tab" id="t-p" aria-selected="false" aria-controls="panel">Pending invites<span class="n" id="n-p"></span></button>
+          </div>
+          <div class="search">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg>
+            <label class="sr" for="q">Search people</label>
+            <input class="f" id="q" type="search" placeholder="Search people">
+          </div>
+        </div>
+        <div id="panel" role="tabpanel"></div>
+      </section>
+    </div>
+
+    <aside class="card">
+      <h2>What each role can do</h2>
+      <p>Roles apply across every project in the workspace.</p>
+      <dl id="roles"></dl>
+    </aside>
+  </div>
+</main>
+
+<dialog id="dlg" aria-labelledby="dt">
+  <h2 id="dt"></h2>
+  <p id="dp"></p>
+  <div class="dlg-act">
+    <button class="btn ghost" id="dno" type="button">Keep member</button>
+    <button class="btn danger" id="dyes" type="button">Remove member</button>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" hidden><span id="tmsg"></span><button id="undo" type="button">Undo</button></div>
+
+<script>
+const CAP = 20;
+const ROLES = {
+  Admin:    {c:"var(--cobalt)", d:"Manages people, billing and every project. Can delete reviews."},
+  Designer: {c:"#0e9f8e",       d:"Uploads designs, starts reviews and resolves comments."},
+  Reviewer: {c:"#c27a00",       d:"Comments and approves or requests changes on designs."},
+  Viewer:   {c:"#8a93b3",       d:"Reads designs and comments. Cannot comment or approve."}
+};
+const members = [
+  {id:1,name:"Maren Okafor",email:"maren@northfield.studio",role:"Admin",seen:"Active now",owner:true,you:true},
+  {id:2,name:"Tomasz Wieczorek",email:"tomasz@northfield.studio",role:"Admin",seen:"2 hours ago"},
+  {id:3,name:"Priya Raman",email:"priya@northfield.studio",role:"Designer",seen:"Today, 09:12"},
+  {id:4,name:"Declan Byrne",email:"declan@northfield.studio",role:"Designer",seen:"Yesterday"},
+  {id:5,name:"Aiko Tanabe",email:"aiko@northfield.studio",role:"Designer",seen:"Mon 24 Nov"},
+  {id:6,name:"Lucia Ferrer",email:"lucia@northfield.studio",role:"Reviewer",seen:"Today, 08:40"},
+  {id:7,name:"Samuel Adeyemi",email:"samuel@northfield.studio",role:"Reviewer",seen:"Fri 21 Nov"},
+  {id:8,name:"Hannah Voss",email:"hannah.voss@brightpath.io",role:"Reviewer",seen:"Thu 20 Nov",guest:true},
+  {id:9,name:"Ines Carvalho",email:"ines@northfield.studio",role:"Viewer",seen:"12 Nov"},
+  {id:10,name:"Callum Reid",email:"callum.reid@brightpath.io",role:"Viewer",seen:"3 Nov",guest:true},
+  {id:11,name:"Yusuf Demir",email:"yusuf@northfield.studio",role:"Designer",seen:"Never signed in"}
+];
+let pending = [
+  {id:101,email:"jo.park@northfield.studio",role:"Designer",sent:"Sent 2 days ago"},
+  {id:102,email:"neha@brightpath.io",role:"Reviewer",sent:"Sent 5 days ago"},
+  {id:103,email:"adam.klein@northfield.studio",role:"Viewer",sent:"Sent today"}
+];
+let tab = "m", q = "", nextId = 200, lastRemoved = null, pendingRemoval = null, flashId = null, toastTimer;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hue = s => [...s].reduce((a,c)=>(a*31+c.charCodeAt(0))%360,7);
+const initials = n => n.split(/[\s.@]+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("");
+const roleOpts = sel => Object.keys(ROLES).map(r=>`<option${r===sel?" selected":""}>${r}</option>`).join("");
+const adminCount = () => members.filter(m=>m.role==="Admin").length;
+
+$("irole").innerHTML = roleOpts("Designer");
+$("roles").innerHTML = Object.entries(ROLES).map(([r,v])=>`<dt style="--c:${v.c}">${r}</dt><dd>${v.d}</dd>`).join("");
+
+function renderSeats(){
+  const used = members.length + pending.length;
+  $("used").textContent = used; $("cap").textContent = CAP;
+  $("left").textContent = used>=CAP ? "No seats left" : (CAP-used)+" free";
+  $("strip").innerHTML = Array.from({length:CAP},(_,i)=>`<i class="${i<members.length?"m":i<used?"p":""}"></i>`).join("");
+  $("send").disabled = used>=CAP;
+  $("n-m").textContent = members.length; $("n-p").textContent = pending.length;
+}
+function renderList(){
+  const term = q.trim().toLowerCase();
+  const hit = p => !term || (p.name||"").toLowerCase().includes(term) || p.email.toLowerCase().includes(term);
+  let html;
+  if(tab==="m"){
+    const rows = members.filter(hit);
+    html = rows.length ? `<table><thead><tr><th>Person</th><th>Role</th><th>Last active</th><th><span class="sr">Actions</span></th></tr></thead><tbody>${rows.map(m=>{
+      const locked = m.owner;
+      return `<tr class="${m.id===flashId?"in":""}"><td class="c-who"><div class="who"><div class="av" style="--h:${hue(m.name)}">${initials(m.name)}</div><div><div class="nm">${esc(m.name)}${m.you?'<span class="tag">You</span>':""}${m.guest?'<span class="tag warn">Guest</span>':""}</div><div class="em">${esc(m.email)}</div></div></div></td>
+      <td class="c-role">${locked?`<span class="role-fixed" title="The workspace owner is always an admin">Admin (owner)</span>`:`<select class="f role" data-id="${m.id}" aria-label="Role for ${esc(m.name)}">${roleOpts(m.role)}</select>`}</td>
+      <td class="c-seen seen">${m.seen}</td>
+      <td class="c-act act"><button class="lnk rm" data-rm="${m.id}" ${locked?'disabled title="The owner cannot be removed"':""} aria-label="Remove ${esc(m.name)}">Remove</button></td></tr>`}).join("")}</tbody></table>`
+      : `<div class="empty"><b>No one matches "${esc(q)}"</b>Check the spelling, or invite them by email above.</div>`;
+  } else {
+    const rows = pending.filter(hit);
+    html = rows.length ? `<table><thead><tr><th>Invited</th><th>Role</th><th>Status</th><th><span class="sr">Actions</span></th></tr></thead><tbody>${rows.map(p=>`<tr class="${p.id===flashId?"in":""}"><td class="c-who"><div class="who"><div class="av pend" aria-hidden="true">${initials(p.email)}</div><div><div class="nm">${esc(p.email)}</div><div class="em">Waiting for them to accept</div></div></div></td>
+      <td class="c-role"><select class="f role" data-pid="${p.id}" aria-label="Role for ${esc(p.email)}">${roleOpts(p.role)}</select></td>
+      <td class="c-seen seen">${p.sent}</td>
+      <td class="c-act act"><button class="lnk" data-resend="${p.id}">Resend</button><button class="lnk rm" data-revoke="${p.id}">Revoke</button></td></tr>`).join("")}</tbody></table>`
+      : `<div class="empty"><b>${term?`No invite matches "${esc(q)}"`:"No pending invites"}</b>${term?"Try a different email.":"Invite someone above and they will show up here until they accept."}</div>`;
+  }
+  $("panel").innerHTML = html; flashId = null;
+  $("panel").setAttribute("aria-labelledby", tab==="m"?"t-m":"t-p");
+}
+function render(){ renderSeats(); renderList(); }
+function say(text, err){ $("msg").textContent = text; $("msg").className = "msg"+(err?" err":""); $("email").setAttribute("aria-invalid", !!err); }
+function toast(text, undo){
+  $("tmsg").textContent = text; $("undo").hidden = !undo; $("toast").hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ $("toast").hidden = true; lastRemoved = null; }, 7000);
+}
+
+$("inv").addEventListener("submit", e=>{
+  e.preventDefault();
+  const email = $("email").value.trim().toLowerCase();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say("Enter a full email address, like name@company.com.", true);
+  if(members.some(m=>m.email===email)) return say(email+" is already on the team.", true);
+  if(pending.some(p=>p.email===email)) return say(email+" already has an invite. Resend it from Pending invites.", true);
+  if(members.length+pending.length>=CAP) return say("All seats are in use. Remove someone or revoke an invite first.", true);
+  const role = $("irole").value;
+  pending.unshift({id:nextId++,email,role,sent:"Sent just now"}); flashId = pending[0].id;
+  $("email").value = ""; say("Invite sent to "+email+" as "+role+".");
+  tab = "p"; syncTabs(); render(); toast("Invite sent to "+email);
+});
+function syncTabs(){ $("t-m").setAttribute("aria-selected", tab==="m"); $("t-p").setAttribute("aria-selected", tab==="p"); }
+$("t-m").onclick = ()=>{ tab="m"; syncTabs(); renderList(); };
+$("t-p").onclick = ()=>{ tab="p"; syncTabs(); renderList(); };
+$("q").addEventListener("input", e=>{ q=e.target.value; renderList(); });
+
+$("panel").addEventListener("change", e=>{
+  const s = e.target;
+  if(s.dataset.id){
+    const m = members.find(x=>x.id==s.dataset.id);
+    if(m.role==="Admin" && s.value!=="Admin" && adminCount()<2){ s.value = m.role; return toast("Keep at least one admin. Promote someone else first."); }
+    m.role = s.value; toast(m.name+" is now "+m.role+".");
+  } else if(s.dataset.pid){
+    const p = pending.find(x=>x.id==s.dataset.pid); p.role = s.value; toast("Invite for "+p.email+" changed to "+p.role+".");
+  }
+});
+$("panel").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  if(b.dataset.rm){
+    const m = members.find(x=>x.id==b.dataset.rm);
+    if(m.role==="Admin" && adminCount()<2){ return toast("Keep at least one admin. Promote someone else first."); }
+    pendingRemoval = m;
+    $("dt").textContent = "Remove "+m.name+"?";
+    $("dp").textContent = m.name+" will lose access to every project and review now. Their comments stay. This frees one seat.";
+    $("dlg").showModal();
+  }
+  if(b.dataset.resend){ const p = pending.find(x=>x.id==b.dataset.resend); p.sent = "Sent just now"; renderList(); toast("Invite resent to "+p.email); }
+  if(b.dataset.revoke){
+    const i = pending.findIndex(x=>x.id==b.dataset.revoke); const [p] = pending.splice(i,1);
+    lastRemoved = {kind:"p",item:p,index:i}; render(); toast("Revoked the invite for "+p.email, true);
+  }
+});
+$("dno").onclick = ()=>$("dlg").close();
+$("dyes").onclick = ()=>{
+  const i = members.findIndex(x=>x.id===pendingRemoval.id); const [m] = members.splice(i,1);
+  lastRemoved = {kind:"m",item:m,index:i}; $("dlg").close(); render(); toast(m.name+" removed from the team.", true);
+};
+$("undo").onclick = ()=>{
+  if(!lastRemoved) return;
+  const {kind,item,index} = lastRemoved; (kind==="m"?members:pending).splice(index,0,item);
+  flashId = item.id; lastRemoved = null; $("toast").hidden = true; render();
+};
+render();
+</script>
+</body>
+</html>

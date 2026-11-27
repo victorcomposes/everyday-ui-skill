@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Tarn 2 - Sneaker shop</title>
+<style>
+:root{
+  --bg:#dfe2e8;
+  --surface:#f4f5f8;
+  --raised:#ffffff;
+  --ink:#151822;
+  --muted:#5b6172;
+  --line:#c9cdd8;
+  --cobalt:#2a37d8;
+  --on-cobalt:#ffffff;
+  --focus:#2a37d8;
+  --danger:#b3261e;
+  --display:Bahnschrift,"DIN Alternate","Avenir Next Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  /* colorway (set by JS) */
+  --cw:#aab7cc; --cw-upper:#e4e9f0; --cw-accent:#2a37d8; --cw-toe:#a3afc2; --cw-heel:#c3ccda;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#090b10; --surface:#10131b; --raised:#1a1e29; --ink:#eef0f6; --muted:#9aa1b5;
+    --line:#2b3040; --cobalt:#8993ff; --on-cobalt:#0c1030; --focus:#a5adff; --danger:#ff8a80;
+  }
+}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 var(--body);min-height:100vh}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+.app{max-width:430px;margin:0 auto;background:var(--surface);min-height:100vh;position:relative;
+  box-shadow:0 0 0 1px var(--line)}
+
+/* top bar */
+.bar{position:absolute;inset:0 0 auto 0;z-index:3;display:flex;align-items:center;gap:8px;padding:12px 16px}
+.bar .grow{flex:1}
+.icon-btn{width:44px;height:44px;border-radius:50%;border:0;background:color-mix(in srgb,var(--surface) 78%,transparent);
+  backdrop-filter:blur(8px);display:grid;place-items:center;position:relative}
+.icon-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn[aria-pressed="true"] svg{fill:var(--cobalt);stroke:var(--cobalt)}
+.count{position:absolute;top:2px;right:0;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--cobalt);
+  color:var(--on-cobalt);font:700 11px/18px var(--body);text-align:center}
+
+/* hero */
+.hero{position:relative;height:420px;overflow:hidden;background:color-mix(in srgb,var(--cw) 30%,var(--surface));
+  transition:background .35s ease}
+.hero .word{position:absolute;left:-6px;top:58px;font:700 190px/0.8 var(--display);letter-spacing:-.04em;
+  color:color-mix(in srgb,var(--cw) 55%,var(--surface));opacity:.75;user-select:none;pointer-events:none;white-space:nowrap}
+.hero svg.shoe{position:absolute;left:50%;top:170px;width:372px;max-width:none;transform:translateX(-50%) rotate(-3deg);
+  filter:drop-shadow(0 28px 18px rgba(10,12,30,.22))}
+.hero .floor{position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,color-mix(in srgb,var(--cw) 40%,var(--surface)))}
+.tag{position:absolute;left:20px;bottom:44px;background:var(--ink);color:var(--surface);border-radius:6px;padding:5px 10px;font:600 13px/1.2 var(--body)}
+
+/* sheet */
+main{position:relative;margin-top:-22px;background:var(--surface);border-radius:22px 22px 0 0;padding:22px 20px 8px}
+.brand{font-size:14px;color:var(--muted)}
+h1{font:700 40px/1 var(--display);letter-spacing:-.01em;margin:2px 0 10px}
+.row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.price{font:600 28px/1 var(--display)}
+.price s{font:400 16px var(--body);color:var(--muted);margin-left:8px}
+.rating{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+.rating svg{width:16px;height:16px;fill:var(--ink)}
+.rating strong{color:var(--ink)}
+.lede{margin:14px 0 0;color:var(--muted);max-width:46ch}
+
+fieldset{border:0;padding:0;min-width:0;margin-top:26px}
+legend{padding:0;width:100%;display:flex;justify-content:space-between;align-items:baseline;font:600 17px/1.2 var(--body);margin-bottom:12px;float:left}
+legend + *{clear:both}
+legend small{font:400 14px var(--body);color:var(--muted)}
+.link{background:none;border:0;padding:0;color:var(--cobalt);font-size:14px;text-decoration:underline;text-underline-offset:3px}
+
+.swatches{display:flex;gap:12px}
+.swatch{position:relative}
+.swatch input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.swatch span{display:block;width:64px;height:64px;border-radius:14px;background:color-mix(in srgb,var(--c) 30%,var(--raised));
+  border:2px solid var(--line);display:grid;place-items:center;transition:border-color .15s}
+.swatch span i{display:block;width:36px;height:20px;border-radius:12px 18px 6px 6px;background:var(--c);
+  box-shadow:inset -12px 0 0 var(--c2)}
+.swatch input:checked + span{border-color:var(--ink)}
+.swatch input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+
+.sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.size{position:relative}
+.size input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.size span{display:grid;place-items:center;height:52px;border-radius:12px;background:var(--raised);border:1.5px solid var(--line);
+  font:600 17px var(--body);font-variant-numeric:tabular-nums}
+.size input:checked + span{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.size input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.size input:disabled{cursor:not-allowed}
+.size input:disabled + span{color:var(--muted);border-style:dashed;background:transparent;
+  background-image:linear-gradient(to top right,transparent calc(50% - 1px),var(--line) 50%,transparent calc(50% + 1px))}
+.hint{margin-top:12px;font-size:14px;color:var(--muted);min-height:21px}
+.hint.err{color:var(--danger);font-weight:600}
+.fieldset-err .sizes{animation:nudge .3s}
+@keyframes nudge{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+.facts{margin-top:28px;border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:56px;font-weight:600;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:9px;height:9px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+details[open] summary::after{transform:rotate(-135deg)}
+details p,details ul{padding:0 0 16px;color:var(--muted);font-size:15px}
+details ul{list-style:none}
+details li{padding:5px 0;display:flex;justify-content:space-between;gap:16px}
+details li b{color:var(--ink);font-weight:600;text-align:right}
+
+/* buy bar */
+.buy{position:sticky;bottom:0;z-index:4;display:flex;align-items:center;gap:16px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line);margin-top:24px}
+.buy .total{font:600 24px/1 var(--display)}
+.buy .total small{display:block;font:400 13px var(--body);color:var(--muted);margin-bottom:3px}
+.add{flex:1;height:56px;border:0;border-radius:14px;background:var(--cobalt);color:var(--on-cobalt);font:700 17px var(--body);
+  transition:transform .1s}
+.add:active{transform:scale(.98)}
+.add[data-state="idle"]{background:var(--ink);color:var(--surface)}
+.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:var(--surface);
+  padding:12px 18px;border-radius:12px;font-weight:600;font-size:15px;transition:.25s;z-index:10;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (min-width:600px){
+  body{padding:24px 0}
+  .app{min-height:0;border-radius:36px;overflow:clip;box-shadow:0 0 0 1px var(--line),0 30px 80px -30px rgba(10,12,30,.45)}
+  .buy{bottom:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="bar">
+    <button class="icon-btn" aria-label="Back to running shoes"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <span class="grow"></span>
+    <button class="icon-btn" id="fav" aria-pressed="false" aria-label="Save to favourites"><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/></svg></button>
+    <button class="icon-btn" aria-label="Open bag, 0 items" id="bagbtn"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></svg><span class="count" id="count" hidden>0</span></button>
+  </div>
+
+  <section class="hero" id="hero" aria-label="Kestrel Tarn 2 product image">
+    <div class="word" aria-hidden="true">Tarn</div>
+    <svg class="shoe" viewBox="0 0 420 230" role="img" aria-label="Side view of the Kestrel Tarn 2 sneaker">
+      <ellipse cx="215" cy="208" rx="190" ry="9" fill="rgba(10,12,30,.18)"/>
+      <!-- outsole -->
+      <path d="M26 182c0 12 12 18 28 18h282c34 0 56-12 58-32v-6H26z" fill="#1c1f2b"/>
+      <!-- midsole -->
+      <path d="M22 150h372c0 12-2 22-10 30-10 10-32 12-50 12H56c-20 0-32-6-34-22z" fill="#f3efe6"/>
+      <path d="M22 168c120 6 250 4 370-8" fill="none" stroke="#d9d3c4" stroke-width="3"/>
+      <!-- upper -->
+      <path d="M38 150C32 120 36 92 52 72c8-10 22-12 34-8 14 4 22-2 32-12l28-8c6 12 22 24 46 34 40 16 84 26 130 36 40 9 62 20 66 36z" fill="var(--cw-upper)"/>
+      <!-- heel counter -->
+      <path d="M38 150C32 120 36 92 52 72c8-10 22-12 34-8l-4 86z" fill="var(--cw-heel)"/>
+      <!-- toe cap -->
+      <path d="M300 118c46 8 86 18 92 32H296z" fill="var(--cw-toe)"/>
+      <!-- side stripe -->
+      <path d="M104 142c44-4 92-26 144-30" fill="none" stroke="var(--cw-accent)" stroke-width="16" stroke-linecap="round"/>
+      <!-- collar trim -->
+      <path d="M52 72c8-10 22-12 34-8 14 4 22-2 32-12" fill="none" stroke="var(--cw-accent)" stroke-width="5" stroke-linecap="round"/>
+      <!-- tongue -->
+      <path d="M118 52l28-9c7-3 14 3 11 11l-30 10z" fill="var(--cw-accent)"/>
+      <!-- laces -->
+      <g stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity=".95">
+        <path d="M164 62l12 14"/><path d="M188 72l12 14"/><path d="M212 82l12 14"/><path d="M236 92l12 14"/><path d="M260 99l10 12"/>
+      </g>
+      <!-- heel tab -->
+      <path d="M40 112h12v26H42z" fill="var(--cw-accent)"/>
+    </svg>
+    <div class="floor"></div>
+    <span class="tag" id="tag">New season</span>
+  </section>
+
+  <main>
+    <p class="brand">Kestrel</p>
+    <h1>Tarn 2</h1>
+    <div class="row">
+      <p class="price">£139<s>£159</s></p>
+      <p class="rating"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/></svg><strong>4.7</strong> (312 reviews)</p>
+    </div>
+    <p class="lede">A light daily trainer with a recycled mesh upper and a soft foam midsole. Made for walking to the station and running back.</p>
+
+    <fieldset>
+      <legend>Colour <small id="cwname">Harbour</small></legend>
+      <div class="swatches" id="swatches"></div>
+    </fieldset>
+
+    <fieldset id="sizeset">
+      <legend>Size (EU) <button type="button" class="link">Size guide</button></legend>
+      <div class="sizes" id="sizes"></div>
+      <p class="hint" id="hint" aria-live="polite">Runs about half a size small. Order one size up for a roomier fit.</p>
+    </fieldset>
+
+    <div class="facts">
+      <details open>
+        <summary>Materials and fit</summary>
+        <ul>
+          <li>Upper <b>Recycled mesh, 70%</b></li>
+          <li>Midsole <b>Foam, 38 mm heel</b></li>
+          <li>Drop <b>8 mm</b></li>
+          <li>Weight <b>268 g, size 42</b></li>
+        </ul>
+      </details>
+      <details>
+        <summary>Delivery and returns</summary>
+        <p>Free delivery on orders over £75, usually in 2 to 3 working days. Return unworn pairs within 30 days for a full refund.</p>
+      </details>
+      <details>
+        <summary>Reviews</summary>
+        <p>Runners praise the cushioning and the grip on wet pavement. Some find the toe box snug.</p>
+      </details>
+    </div>
+  </main>
+
+  <div class="buy">
+    <div class="total"><small>Total</small>£139.00</div>
+    <button class="add" id="add" data-state="idle">Select a size</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const colorways=[
+ {n:'Harbour',cw:'#9fb0cc',upper:'#e4e9f0',accent:'#2a37d8',toe:'#a3afc2',heel:'#c3ccda'},
+ {n:'Lichen',cw:'#9fb58a',upper:'#d7e2c9',accent:'#e0d23f',toe:'#8fa479',heel:'#b3c59f'},
+ {n:'Damson',cw:'#b48aa6',upper:'#7a4a6e',accent:'#f4b4cc',toe:'#5c3453',heel:'#69405f'}
+];
+const root=document.documentElement,$=id=>document.getElementById(id);
+const sw=$('swatches');
+colorways.forEach((c,i)=>{
+  const l=document.createElement('label');l.className='swatch';
+  l.innerHTML=`<input type="radio" name="cw" value="${i}" aria-label="${c.n}" ${i?'':'checked'}><span style="--c:${c.upper};--c2:${c.accent}"><i></i></span>`;
+  sw.append(l);
+});
+sw.addEventListener('change',e=>{
+  const c=colorways[e.target.value],s=root.style;
+  s.setProperty('--cw',c.cw);s.setProperty('--cw-upper',c.upper);s.setProperty('--cw-accent',c.accent);
+  s.setProperty('--cw-toe',c.toe);s.setProperty('--cw-heel',c.heel);$('cwname').textContent=c.n;
+});
+
+const out=[39,45],sizes=$('sizes');
+[38,39,40,41,42,43,44,45,46].forEach(n=>{
+  const l=document.createElement('label');l.className='size';
+  const gone=out.includes(n);
+  l.innerHTML=`<input type="radio" name="size" value="${n}" ${gone?'disabled':''} aria-label="Size ${n}${gone?', sold out':''}"><span>${n}</span>`;
+  sizes.append(l);
+});
+let size=null,bag=0;
+const add=$('add'),hint=$('hint'),base=hint.textContent;
+sizes.addEventListener('change',e=>{
+  size=e.target.value;add.dataset.state='ready';add.textContent='Add to bag, size '+size;
+  hint.className='hint';hint.textContent=out.length&&size==='44'?'Only 2 pairs left in this size.':base;
+  $('sizeset').classList.remove('fieldset-err');
+});
+let t;function toast(m){const e=$('toast');e.textContent=m;e.classList.add('show');clearTimeout(t);t=setTimeout(()=>e.classList.remove('show'),1800)}
+add.addEventListener('click',()=>{
+  if(!size){
+    hint.className='hint err';hint.textContent='Select a size to add this pair to your bag.';
+    const f=$('sizeset');f.classList.remove('fieldset-err');void f.offsetWidth;f.classList.add('fieldset-err');
+    f.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+    return;
+  }
+  bag++;const c=$('count');c.hidden=false;c.textContent=bag;$('bagbtn').setAttribute('aria-label','Open bag, '+bag+' items');
+  toast('Added to bag');
+});
+const fav=$('fav');
+fav.addEventListener('click',()=>{const on=fav.getAttribute('aria-pressed')!=='true';fav.setAttribute('aria-pressed',on);toast(on?'Saved to favourites':'Removed from favourites')});
+</script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team members · Cobalt</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f4f3ef; --surface:#fff; --surface-2:#faf9f6; --line:#e3e1da; --line-strong:#c9c6bc;
+  --ink:#15181e; --muted:#555d6b; --accent:#1d4ed8; --accent-ink:#fff; --accent-soft:#e6ecfc;
+  --danger:#b42318; --danger-soft:#fdeceb; --warn:#8a4b00; --warn-soft:#fdf0d9;
+  --focus:#1d4ed8; --shadow:0 1px 2px rgba(20,24,30,.05),0 8px 24px -12px rgba(20,24,30,.12);
+  --a1:#dbe6ff; --a2:#fbe3d4; --a3:#dcf1e3; --a4:#efe2fa; --a5:#fcefc2; --a6:#d8eef2;
+  --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1117; --surface:#161a22; --surface-2:#1b2029; --line:#262c38; --line-strong:#3a4252;
+    --ink:#e9ecf1; --muted:#9ba5b6; --accent:#86a6ff; --accent-ink:#0a1230; --accent-soft:#1c2a52;
+    --danger:#ff8a80; --danger-soft:#3a1c1b; --warn:#f2b45c; --warn-soft:#38280d;
+    --focus:#9db6ff; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+    --a1:#26376b; --a2:#5a3320; --a3:#1f4a30; --a4:#432b5c; --a5:#5a4a14; --a6:#1d4650;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;background:var(--accent);color:var(--accent-ink);padding:8px 14px;border-radius:8px;z-index:50}
+.skip:focus{top:12px}
+
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.side{background:var(--surface);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px;font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.mark{width:28px;height:28px;border-radius:8px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink)}
+.ws{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+.ws b{display:block;font-size:14px;line-height:1.2}.ws small{color:var(--muted);font-size:12.5px}
+.ws .tile{width:30px;height:30px;border-radius:7px;background:var(--a2);display:grid;place-items:center;font-weight:700;font-size:13px}
+.nav{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none}
+.nav h2{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 10px 6px;font-weight:600}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--surface-2);color:var(--ink)}
+.nav a[aria-current=page]{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.nav svg{flex:none}
+.me{margin-top:auto;display:flex;gap:10px;align-items:center;padding:8px;font-size:13.5px}
+.me small{display:block;color:var(--muted);font-size:12.5px}
+
+main{padding:40px clamp(16px,4vw,56px) 72px;max-width:1120px;width:100%}
+.crumbs{font-size:13px;color:var(--muted);margin:0 0 8px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+h1{font-family:var(--serif);font-size:clamp(28px,4vw,36px);line-height:1.1;margin:0 0 8px;letter-spacing:-.02em}
+.head p{margin:0;color:var(--muted);max-width:52ch}
+.seats{min-width:230px}
+.seats .row{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:8px;gap:12px}
+.seats .row span:last-child{color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;display:flex}
+.bar i{display:block;height:100%;background:var(--accent)}.bar i+i{background:repeating-linear-gradient(45deg,var(--accent) 0 3px,transparent 3px 6px);opacity:.55}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.invite{padding:20px;margin-bottom:24px}
+.invite h2{font-size:16px;margin:0 0 2px}.invite>p{margin:0 0 16px;color:var(--muted);font-size:14px}
+.invite form{display:grid;grid-template-columns:minmax(0,1fr) 190px auto;gap:12px;align-items:start}
+label.f{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.inp,.sel{width:100%;height:42px;padding:0 12px;border:1px solid var(--line-strong);background:var(--surface);border-radius:9px}
+.inp::placeholder{color:var(--muted)}
+.inp[aria-invalid=true]{border-color:var(--danger)}
+.err{color:var(--danger);font-size:13px;margin:6px 0 0}
+.err:empty{margin:0}
+.sel{appearance:none;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
+.btn{height:42px;padding:0 18px;border-radius:9px;border:1px solid var(--line-strong);background:var(--surface);font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
+@media (prefers-color-scheme: dark){.btn.danger{color:#2a0806}}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.fld-btn{padding-top:25px}
+
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 16px}
+.tab{background:none;border:0;padding:14px 12px 12px;border-bottom:2px solid transparent;color:var(--muted);font-weight:600;cursor:pointer;margin-bottom:-1px;display:flex;gap:8px;align-items:center}
+.tab[aria-selected=true]{color:var(--ink);border-color:var(--accent)}
+.count{font-size:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;padding:0 8px;line-height:20px;color:var(--muted);font-weight:600}
+.tools{display:flex;gap:12px;padding:16px;flex-wrap:wrap}
+.search{position:relative;flex:1 1 260px}
+.search svg{position:absolute;left:12px;top:13px;color:var(--muted)}
+.search .inp{padding-left:38px}
+.tools .sel{width:180px}
+
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:10px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface-2)}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface-2)}
+.who{display:flex;gap:12px;align-items:center;min-width:0}
+.av{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--ink)}
+.av.sm{width:32px;height:32px;font-size:12px}
+.who b{display:block;line-height:1.25}.who span{color:var(--muted);font-size:13.5px;overflow-wrap:anywhere}
+.who .badge{display:inline;margin-left:6px}
+.badge{font-size:11.5px;font-weight:600;border-radius:99px;padding:1px 8px;background:var(--accent-soft);color:var(--ink);vertical-align:1px}
+.badge.warn{background:var(--warn-soft);color:var(--warn)}
+td.rolecell .sel{height:36px;width:150px;font-size:14px}
+.locked{display:inline-flex;gap:6px;align-items:center;color:var(--muted);font-size:14px;height:36px}
+.muted{color:var(--muted);font-size:14px}
+.act{text-align:right;width:1%;white-space:nowrap}
+.ibtn{height:36px;padding:0 12px;border-radius:8px;border:1px solid transparent;background:none;color:var(--muted);font-weight:600;cursor:pointer;font-size:14px}
+.ibtn:hover{background:var(--danger-soft);color:var(--danger)}
+.ibtn.plain:hover{background:var(--accent-soft);color:var(--ink)}
+.ibtn[disabled]{opacity:.5;cursor:not-allowed}.ibtn[disabled]:hover{background:none;color:var(--muted)}
+.empty{padding:48px 16px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.foot{padding:14px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px;display:flex;gap:8px;align-items:center}
+.foot svg{flex:none}
+
+.roles{margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.roles>div{padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.roles b{display:block;font-size:14px;margin-bottom:2px}.roles span{font-size:13.5px;color:var(--muted)}
+.roles h2{grid-column:1/-1;margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);padding:24px;width:min(440px,calc(100vw - 32px));box-shadow:0 24px 60px -12px rgba(0,0,0,.4)}
+dialog::backdrop{background:rgba(10,12,18,.55)}
+dialog h2{margin:0 0 8px;font-family:var(--serif);font-size:22px}
+dialog p{margin:0 0 20px;color:var(--muted)}
+dialog .btns{display:flex;justify-content:flex-end;gap:10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:10px;font-weight:500;opacity:0;pointer-events:none;transition:.2s;max-width:calc(100vw - 32px);z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.topbar{display:none}
+
+@media (max-width:1000px){
+  .roles{grid-template-columns:repeat(2,1fr)}
+  .invite form{grid-template-columns:1fr 170px}
+  .fld-btn{padding-top:0;grid-column:1/-1}.fld-btn .btn{width:100%}
+}
+@media (max-width:860px){
+  .app{display:block}
+  .side{display:none}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .topbar .brand{padding:0}
+  main{padding-top:24px}
+}
+@media (max-width:720px){
+  .invite form{grid-template-columns:1fr}
+  .tools .sel{width:100%}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  table,tbody{display:block}
+  tbody tr{display:grid;grid-template-columns:1fr auto;gap:10px 12px;align-items:center;padding:16px;border-bottom:1px solid var(--line)}
+  tbody tr:last-child{border-bottom:0}
+  tbody td{display:block;padding:0;border:0}
+  td.who-c{grid-column:1/-1}
+  td.rolecell{grid-column:1}
+  td.rolecell .sel{width:100%}
+  td.seen{grid-column:1/-1;order:5;font-size:13px}
+  td.act{grid-column:2;width:auto}
+  .roles{grid-template-columns:1fr}
+  .head{align-items:stretch}.seats{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="topbar">
+  <div class="brand"><span class="mark"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 3.5A6 6 0 1 0 13 12.5"/></svg></span>Cobalt</div>
+  <span class="muted">Northwind Studio</span>
+</div>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span class="mark"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 3.5A6 6 0 1 0 13 12.5"/></svg></span>Cobalt</div>
+    <div class="ws"><span class="tile" aria-hidden="true">N</span><div><b>Northwind Studio</b><small>Team plan · 20 seats</small></div></div>
+    <nav aria-label="Workspace settings">
+      <ul class="nav">
+        <li><h2>Workspace</h2></li>
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="2.5" width="13" height="13" rx="3"/><path d="M6 9h6"/></svg>General</a></li>
+        <li><a href="#" aria-current="page"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="6.5" r="2.7"/><path d="M2 15c.5-3 2.5-4.3 5-4.3s4.5 1.3 5 4.3"/><path d="M12 4.2a2.4 2.4 0 0 1 0 4.6M13.5 10.9c1.6.5 2.6 1.9 2.9 4.1"/></svg>Team members</a></li>
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 2l6 2.5v4.2c0 3.2-2.4 5.9-6 7.3-3.6-1.4-6-4.1-6-7.3V4.5z"/></svg>Security</a></li>
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="14" height="10" rx="2.5"/><path d="M2 8h14"/></svg>Billing</a></li>
+        <li><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 5L3 9l4 4M11 5l4 4-4 4"/></svg>Integrations</a></li>
+      </ul>
+    </nav>
+    <div class="me"><span class="av sm" style="background:var(--a1)" aria-hidden="true">PR</span><div><b>Priya Raman</b><small>Owner</small></div></div>
+  </aside>
+
+  <main id="main">
+    <p class="crumbs">Settings / Workspace</p>
+    <div class="head">
+      <div>
+        <h1>Team members</h1>
+        <p>Invite designers and reviewers, set what each person can do, and remove people who no longer work on your files.</p>
+      </div>
+      <div class="seats" id="seats"></div>
+    </div>
+
+    <section class="card invite" aria-labelledby="inv-h">
+      <h2 id="inv-h">Invite someone</h2>
+      <p>They get an email with a link that expires in 7 days.</p>
+      <form id="inviteForm" novalidate>
+        <div>
+          <label class="f" for="email">Work email</label>
+          <input class="inp" id="email" type="email" autocomplete="off" placeholder="name@company.com" aria-describedby="email-err">
+          <p class="err" id="email-err" role="alert"></p>
+        </div>
+        <div>
+          <label class="f" for="role">Role</label>
+          <select class="sel" id="role">
+            <option>Admin</option><option selected>Designer</option><option>Reviewer</option><option>Viewer</option>
+          </select>
+        </div>
+        <div class="fld-btn"><button class="btn primary" type="submit" id="sendBtn">Send invite</button></div>
+      </form>
+    </section>
+
+    <section class="card" aria-label="People in this workspace">
+      <div class="tabs" role="tablist" aria-label="Member list">
+        <button class="tab" role="tab" id="tab-members" aria-selected="true" aria-controls="panel" data-tab="members">Members <span class="count" id="cMembers"></span></button>
+        <button class="tab" role="tab" id="tab-pending" aria-selected="false" aria-controls="panel" tabindex="-1" data-tab="pending">Pending invites <span class="count" id="cPending"></span></button>
+      </div>
+      <div class="tools">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>
+          <label class="sr" for="q">Search people</label>
+          <input class="inp" id="q" type="search" placeholder="Search by name or email">
+        </div>
+        <label class="sr" for="rf">Filter by role</label>
+        <select class="sel" id="rf"><option value="">All roles</option><option>Owner</option><option>Admin</option><option>Designer</option><option>Reviewer</option><option>Viewer</option></select>
+      </div>
+      <div id="panel" role="tabpanel" aria-labelledby="tab-members"></div>
+      <div class="foot" id="foot"></div>
+    </section>
+
+    <div class="roles">
+      <h2>What each role can do</h2>
+      <div><b>Admin</b><span>Manage members, billing and every project.</span></div>
+      <div><b>Designer</b><span>Upload files, request reviews and resolve feedback.</span></div>
+      <div><b>Reviewer</b><span>Comment and approve on files they are added to.</span></div>
+      <div><b>Viewer</b><span>Read designs and comments. Cannot post.</span></div>
+    </div>
+  </main>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-t" aria-describedby="dlg-d">
+  <h2 id="dlg-t"></h2>
+  <p id="dlg-d"></p>
+  <div class="btns">
+    <button class="btn" type="button" id="dlgCancel">Cancel</button>
+    <button class="btn danger" type="button" id="dlgOk">Remove member</button>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SEATS = 20;
+const ROLES = ["Admin","Designer","Reviewer","Viewer"];
+let members = [
+  {id:1,name:"Priya Raman",email:"priya@northwind.studio",role:"Owner",seen:"Active now",me:true},
+  {id:2,name:"Marcus Bell",email:"marcus@northwind.studio",role:"Admin",seen:"12 min ago"},
+  {id:3,name:"Ines Okafor",email:"ines.okafor@northwind.studio",role:"Admin",seen:"Today, 09:14"},
+  {id:4,name:"Tomás Herrera",email:"tomas@northwind.studio",role:"Designer",seen:"Today, 08:02"},
+  {id:5,name:"Hannah Lindqvist",email:"hannah@northwind.studio",role:"Designer",seen:"Yesterday"},
+  {id:6,name:"Dev Patel",email:"dev.patel@northwind.studio",role:"Designer",seen:"Yesterday"},
+  {id:7,name:"Sofia Marchetti",email:"sofia@northwind.studio",role:"Designer",seen:"Nov 24"},
+  {id:8,name:"Kwame Asante",email:"kwame@northwind.studio",role:"Reviewer",seen:"Nov 24"},
+  {id:9,name:"Léa Fontaine",email:"lea.fontaine@brightloop.io",role:"Reviewer",seen:"Nov 21"},
+  {id:10,name:"Owen Brightwell",email:"owen@brightloop.io",role:"Reviewer",seen:"Nov 19"},
+  {id:11,name:"Yuki Tanaka",email:"yuki@northwind.studio",role:"Viewer",seen:"Nov 18"},
+  {id:12,name:"Rachel Greene",email:"rgreene@fieldnotes.co",role:"Viewer",seen:"Nov 12"},
+  {id:13,name:"Amir Haddad",email:"amir@northwind.studio",role:"Designer",seen:"Nov 3"},
+  {id:14,name:"Chloe Whitaker",email:"chloe@northwind.studio",role:"Viewer",seen:"Never"}
+];
+let pending = [
+  {id:101,email:"jonas.weber@northwind.studio",role:"Designer",sent:"Sent 2 days ago"},
+  {id:102,email:"mei.lin@fieldnotes.co",role:"Reviewer",sent:"Sent 5 days ago",expiring:true},
+  {id:103,email:"b.oduya@brightloop.io",role:"Viewer",sent:"Sent today"}
+];
+let tab="members", nextId=200, pendingRemove=null, lastFocus=null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const initials=n=>n.split(/[\s@.]+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+const hue=s=>"a"+(1+[...s].reduce((a,c)=>a+c.charCodeAt(0),0)%6);
+const av=(label,cls="")=>`<span class="av ${cls}" style="background:var(--${hue(label)})" aria-hidden="true">${esc(initials(label))}</span>`;
+const lock='<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6" rx="1.5"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6"/></svg>';
+
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),3200)}
+
+function roleSelect(m){
+  return `<select class="sel" aria-label="Role for ${esc(m.name||m.email)}" data-role="${m.id}">${ROLES.map(r=>`<option${r===m.role?" selected":""}>${r}</option>`).join("")}</select>`;
+}
+
+function render(){
+  const used=members.length+pending.length;
+  $("#seats").innerHTML=`<div class="row"><span><b>${used}</b> of ${SEATS} seats used</span><span>${SEATS-used} free</span></div>
+    <div class="bar" role="img" aria-label="${members.length} members and ${pending.length} pending invites of ${SEATS} seats"><i style="width:${members.length/SEATS*100}%"></i><i style="width:${pending.length/SEATS*100}%"></i></div>`;
+  $("#cMembers").textContent=members.length; $("#cPending").textContent=pending.length;
+  $("#sendBtn").disabled=used>=SEATS;
+  const q=$("#q").value.trim().toLowerCase(), rf=$("#rf").value;
+  const match=x=>(!q||(x.name||"").toLowerCase().includes(q)||x.email.toLowerCase().includes(q))&&(!rf||x.role===rf);
+  const panel=$("#panel");
+  panel.setAttribute("aria-labelledby","tab-"+tab);
+  let rows, list;
+  if(tab==="members"){
+    list=members.filter(match);
+    rows=list.map(m=>`<tr>
+      <td class="who-c"><div class="who">${av(m.name)}<div><b>${esc(m.name)}${m.me?' <span class="badge">You</span>':""}</b><span>${esc(m.email)}</span></div></div></td>
+      <td class="rolecell">${m.role==="Owner"?`<span class="locked">${lock}Owner</span>`:roleSelect(m)}</td>
+      <td class="seen muted">${esc(m.seen)}</td>
+      <td class="act">${m.role==="Owner"?`<button class="ibtn" disabled title="The owner cannot be removed" aria-label="Remove ${esc(m.name)} (not allowed)">Remove</button>`:`<button class="ibtn" data-remove="${m.id}" aria-label="Remove ${esc(m.name)}">Remove</button>`}</td></tr>`).join("");
+    panel.innerHTML=list.length?`<table><thead><tr><th scope="col">Member</th><th scope="col">Role</th><th scope="col">Last active</th><th scope="col"><span class="sr">Actions</span></th></tr></thead><tbody>${rows}</tbody></table>`
+      :`<div class="empty"><b>No members match</b>Try a different name or clear the role filter.</div>`;
+  }else{
+    list=pending.filter(match);
+    rows=list.map(p=>`<tr>
+      <td class="who-c"><div class="who">${av(p.email)}<div><b>${esc(p.email)}${p.expiring?' <span class="badge warn">Expires soon</span>':""}</b><span>${esc(p.sent)}</span></div></div></td>
+      <td class="rolecell">${roleSelect(p)}</td>
+      <td class="seen muted">Awaiting reply</td>
+      <td class="act"><button class="ibtn plain" data-resend="${p.id}" aria-label="Resend invite to ${esc(p.email)}">Resend</button><button class="ibtn" data-revoke="${p.id}" aria-label="Revoke invite for ${esc(p.email)}">Revoke</button></td></tr>`).join("");
+    panel.innerHTML=list.length?`<table><thead><tr><th scope="col">Invited</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col"><span class="sr">Actions</span></th></tr></thead><tbody>${rows}</tbody></table>`
+      :`<div class="empty"><b>${pending.length?"No invites match":"No pending invites"}</b>${pending.length?"Try a different search.":"Everyone you invited has joined."}</div>`;
+  }
+  $("#foot").innerHTML=`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 7.2v4M8 5v.01"/></svg><span>Showing ${list.length} of ${tab==="members"?members.length:pending.length}. Removing a member keeps their comments on your files.</span>`;
+}
+
+document.querySelectorAll(".tab").forEach(b=>{
+  b.onclick=()=>{tab=b.dataset.tab;document.querySelectorAll(".tab").forEach(t=>{const on=t===b;t.setAttribute("aria-selected",on);t.tabIndex=on?0:-1});render()};
+  b.onkeydown=e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){const o=document.querySelector(".tab:not([aria-selected=true])");o.click();o.focus()}};
+});
+$("#q").oninput=render; $("#rf").onchange=render;
+
+$("#panel").addEventListener("change",e=>{
+  const id=e.target.dataset.role; if(!id) return;
+  const x=[...members,...pending].find(m=>m.id==id); x.role=e.target.value;
+  toast(`${x.name||x.email} is now ${x.role==="Admin"?"an":"a"} ${x.role}.`);
+});
+$("#panel").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.remove){
+    pendingRemove=members.find(m=>m.id==b.dataset.remove); lastFocus=b;
+    $("#dlg-t").textContent=`Remove ${pendingRemove.name}?`;
+    $("#dlg-d").textContent=`${pendingRemove.name} will lose access to all Northwind Studio projects right away. Their past comments stay in place. You can invite them again later.`;
+    $("#dlg").showModal();
+  }
+  if(b.dataset.revoke){const p=pending.find(x=>x.id==b.dataset.revoke);pending=pending.filter(x=>x!==p);render();toast(`Invite for ${p.email} revoked.`);$("#tab-pending").focus()}
+  if(b.dataset.resend){const p=pending.find(x=>x.id==b.dataset.resend);p.sent="Sent just now";p.expiring=false;render();toast(`Invite resent to ${p.email}.`)}
+});
+$("#dlgCancel").onclick=()=>$("#dlg").close();
+$("#dlg").addEventListener("close",()=>{if(lastFocus&&document.contains(lastFocus))lastFocus.focus()});
+$("#dlgOk").onclick=()=>{
+  const m=pendingRemove; members=members.filter(x=>x!==m); lastFocus=null; $("#dlg").close(); render();
+  toast(`${m.name} was removed.`); $("#q").focus();
+};
+
+$("#inviteForm").onsubmit=e=>{
+  e.preventDefault();
+  const inp=$("#email"), v=inp.value.trim(), err=$("#email-err");
+  const all=[...members,...pending].map(x=>x.email.toLowerCase());
+  let msg="";
+  if(!v) msg="Enter an email address.";
+  else if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) msg="That does not look like an email address.";
+  else if(all.includes(v.toLowerCase())) msg="This person is already on the team or has a pending invite.";
+  err.textContent=msg; inp.setAttribute("aria-invalid",String(!!msg));
+  if(msg){inp.focus();return}
+  pending.unshift({id:nextId++,email:v,role:$("#role").value,sent:"Sent just now"});
+  inp.value=""; render(); toast(`Invite sent to ${v}.`);
+};
+$("#email").oninput=()=>{$("#email-err").textContent="";$("#email").setAttribute("aria-invalid","false")};
+render();
+</script>
+</body>
+</html>

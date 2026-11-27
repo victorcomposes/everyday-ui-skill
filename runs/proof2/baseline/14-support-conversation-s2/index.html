@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harborline - Conversation</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f3f5f8; --surface:#fff; --surface-2:#f7f9fb; --line:#e0e5ec; --line-2:#cdd5df;
+  --text:#18212c; --muted:#566272; --accent:#0b6b8a; --accent-ink:#fff; --accent-soft:#e3f1f6;
+  --note:#fff6d9; --note-line:#ecd98a; --note-ink:#4a3b00;
+  --ok:#1b7a43; --ok-soft:#e1f4e8; --warn:#9a5b00; --warn-soft:#fdeccf; --bad:#b3261e; --bad-soft:#fbe4e2;
+  --focus:#0b6b8a; --shadow:0 8px 24px rgba(16,24,40,.16);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1319; --surface:#161c24; --surface-2:#1b222b; --line:#273039; --line-2:#36414d;
+    --text:#e8edf3; --muted:#9aa7b6; --accent:#4fb8dc; --accent-ink:#04212c; --accent-soft:#16323d;
+    --note:#2e2812; --note-line:#5a4c17; --note-ink:#f1dd9a;
+    --ok:#6fd49a; --ok-soft:#14301f; --warn:#f2b45a; --warn-soft:#3a2a10; --bad:#ff8a80; --bad-soft:#40201e;
+    --focus:#4fb8dc; --shadow:0 8px 24px rgba(0,0,0,.5);
+  }
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+button,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh;height:100dvh}
+.top{display:flex;align-items:center;gap:12px;padding:0 16px;height:52px;background:var(--surface);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px;letter-spacing:-.01em}
+.brand svg{color:var(--accent)}
+.shop{margin-left:4px;padding-left:12px;border-left:1px solid var(--line);color:var(--muted)}
+.me{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:320px minmax(0,1fr) 330px;min-height:0}
+.pane{min-height:0;min-width:0;display:flex;flex-direction:column;background:var(--surface)}
+#inbox{border-right:1px solid var(--line)}
+#details{border-left:1px solid var(--line);background:var(--surface-2)}
+.pane-head{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.pane-head h2{font-size:15px;font-weight:650}
+.pane-head h2:focus{outline:none}
+.scroll{overflow:auto;min-height:0;flex:1}
+.back{display:none}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);font-weight:550}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none}
+
+/* inbox */
+.search{padding:10px 16px;border-bottom:1px solid var(--line)}
+.search input{width:100%;min-height:36px;padding:0 10px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface-2);color:var(--text);font:inherit}
+.search input::placeholder{color:var(--muted)}
+.list{list-style:none;margin:0;padding:0}
+.conv{display:block;width:100%;text-align:left;padding:12px 16px;border:0;border-bottom:1px solid var(--line);background:none;border-left:3px solid transparent}
+.conv:hover{background:var(--surface-2)}
+.conv[aria-current="true"]{background:var(--accent-soft);border-left-color:var(--accent)}
+.conv .r1{display:flex;justify-content:space-between;gap:8px}
+.conv .who{font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conv.unread .who::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:6px}
+.conv .when{color:var(--muted);font-size:12px;white-space:nowrap}
+.conv .subj{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conv .prev{color:var(--muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conv .r4{margin-top:6px}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:99px;font-size:12px;font-weight:600;background:var(--surface-2);border:1px solid var(--line-2);color:var(--muted)}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge.open{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.badge.pending{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.badge.solved{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
+.badge.high{background:var(--bad-soft);border-color:transparent;color:var(--bad)}
+
+/* thread */
+#thread{background:var(--bg)}
+.t-head{background:var(--surface);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;flex-direction:column;gap:6px}
+.t-top{display:flex;align-items:center;gap:8px}
+.t-head h1{font-size:18px;line-height:1.3;letter-spacing:-.01em;flex:1;min-width:0}
+.t-head h1:focus{outline:none}
+.meta{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;color:var(--muted);font-size:13px}
+.wait{color:var(--bad);font-weight:600}
+.msgs{padding:20px;display:flex;flex-direction:column;gap:16px}
+.day{align-self:center;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:1px 12px}
+.m{display:flex;gap:10px;max-width:760px}
+.m.a{align-self:flex-end;flex-direction:row-reverse}
+.m.n{align-self:flex-end;flex-direction:row-reverse}
+.av{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--line);color:var(--text)}
+.a .av{background:var(--accent);color:var(--accent-ink)}
+.n .av{background:var(--note-line);color:var(--note-ink)}
+.bubble{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:10px 14px}
+.a .bubble{background:var(--accent-soft);border-color:transparent;border-radius:14px 4px 14px 14px}
+.n .bubble{background:var(--note);border:1px dashed var(--note-line);color:var(--note-ink);border-radius:14px 4px 14px 14px}
+.bh{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;margin-bottom:2px}
+.bh b{font-weight:650}
+.bh span{font-size:12px;color:var(--muted)}
+.n .bh span{color:var(--note-ink);opacity:.8}
+.bt{white-space:pre-wrap;overflow-wrap:anywhere}
+.ev{align-self:center;display:flex;align-items:center;gap:8px;max-width:100%;font-size:13px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 12px}
+.ev svg{flex:none;color:var(--warn)}
+
+/* composer */
+.comp{background:var(--surface);border-top:1px solid var(--line);padding:12px 20px 14px;display:flex;flex-direction:column;gap:8px}
+.tabs{display:flex;gap:4px}
+.tab{min-height:32px;padding:0 12px;border:1px solid transparent;border-radius:8px;background:none;font-weight:600;color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--accent-soft);color:var(--accent)}
+.comp.note .tab[aria-selected="true"]{background:var(--note);color:var(--note-ink)}
+.to{font-size:13px;color:var(--muted)}
+.comp textarea{width:100%;min-height:96px;max-height:30vh;resize:vertical;padding:10px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);line-height:1.5}
+.comp.note textarea{background:var(--note);border-color:var(--note-line);color:var(--note-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chips .lbl{font-size:12px;color:var(--muted);margin-right:2px}
+.chip{min-height:30px;padding:0 10px;border:1px solid var(--line-2);border-radius:99px;background:var(--surface-2);font-size:13px}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.send{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.send .hint{font-size:12px;color:var(--muted)}
+.send .grp{display:flex;gap:8px;align-items:center;margin-left:auto}
+select{min-height:36px;padding:0 8px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);color:var(--text)}
+
+/* details */
+.card{padding:16px;border-bottom:1px solid var(--line)}
+.card h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:650;margin-bottom:10px}
+.cust{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.cust .av{width:40px;height:40px;font-size:14px}
+.cust b{display:block;font-weight:650}
+.cust span{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:0}
+dt{color:var(--muted)}
+dd{margin:0;text-align:right;overflow-wrap:anywhere}
+.props{display:grid;gap:10px}
+.props label{display:grid;grid-template-columns:80px 1fr;align-items:center;gap:8px;color:var(--muted)}
+.steps{list-style:none;margin:12px 0 0;padding:0}
+.steps li{position:relative;padding:0 0 12px 24px;font-size:13px}
+.steps li::before{content:"";position:absolute;left:3px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--ok);}
+.steps li::after{content:"";position:absolute;left:7px;top:17px;bottom:-5px;width:2px;background:var(--line-2)}
+.steps li:last-child{padding-bottom:0}
+.steps li:last-child::after{display:none}
+.steps li.alert::before{background:var(--bad)}
+.steps li.todo::before{background:var(--surface);border:2px solid var(--line-2);left:2px;top:4px;width:12px;height:12px}
+.steps b{font-weight:600;display:block}
+.steps span{color:var(--muted)}
+.steps li.alert b{color:var(--bad)}
+.items{list-style:none;margin:0 0 10px;padding:0}
+.items li{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
+.link{color:var(--accent);font-weight:600}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:8px 16px;border-radius:99px;box-shadow:var(--shadow);transition:.2s;z-index:10;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:1099px){
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .pane{display:none;border:0}
+  .app[data-view="inbox"] #inbox,.app[data-view="thread"] #thread,.app[data-view="details"] #details{display:flex}
+  .back{display:inline-flex}
+  .shop,.me span{display:none}
+}
+@media (max-width:640px){
+  .t-head{padding:10px 16px}
+  .t-head h1{font-size:16px}
+  .msgs{padding:16px}
+  .m{max-width:100%}
+  .comp{padding:10px 16px 12px}
+  .comp textarea{min-height:76px}
+  .send .hint{display:none}
+  .send .grp{width:100%}
+  .send .grp select{flex:1}
+  .btn,select,.tab,.chip{min-height:40px}
+  .chip{min-height:36px}
+}
+@media (min-width:1100px){.only-small{display:none}}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="app" id="app" data-view="thread">
+  <header class="top">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M7 12h10M4 15c0 3.3 3.6 6 8 6s8-2.7 8-6"/></svg>
+      Harborline
+    </div>
+    <span class="shop">Tidewater Goods</span>
+    <div class="me"><span>Marcus Webb</span><div class="av" style="background:var(--accent);color:var(--accent-ink)" aria-hidden="true">MW</div></div>
+  </header>
+
+  <div class="cols">
+    <section class="pane" id="inbox" aria-labelledby="inbox-h">
+      <div class="pane-head">
+        <button class="btn back" data-go="thread" aria-label="Back to conversation">&larr;</button>
+        <h2 id="inbox-h" tabindex="-1">Inbox</h2>
+        <span class="badge" id="count" style="margin-left:auto"></span>
+      </div>
+      <div class="search"><label class="sr" for="q">Search conversations</label><input id="q" type="search" placeholder="Search name, subject or order"></div>
+      <div class="scroll"><ul class="list" id="list"></ul></div>
+    </section>
+
+    <section class="pane" id="thread" aria-labelledby="subject">
+      <div class="t-head">
+        <div class="t-top">
+          <button class="btn back" data-go="inbox" aria-label="Back to inbox">&larr;</button>
+          <h1 id="subject" tabindex="-1"></h1>
+          <button class="btn back" data-go="details">Details</button>
+        </div>
+        <div class="meta" id="meta"></div>
+      </div>
+      <div class="scroll" id="scroll"><div class="msgs" id="msgs" role="log" aria-label="Conversation messages"></div></div>
+
+      <form class="comp" id="comp" autocomplete="off">
+        <div class="tabs" role="tablist" aria-label="Message type">
+          <button type="button" class="tab" role="tab" id="tab-reply" aria-selected="true" data-mode="reply">Reply</button>
+          <button type="button" class="tab" role="tab" id="tab-note" aria-selected="false" data-mode="note" tabindex="-1">Internal note</button>
+        </div>
+        <div class="to" id="to"></div>
+        <label class="sr" for="body">Message</label>
+        <textarea id="body" placeholder="Write a reply to the customer"></textarea>
+        <div class="chips" id="chips" role="group" aria-label="Saved replies"><span class="lbl">Saved replies</span></div>
+        <div class="send">
+          <span class="hint">Ctrl + Enter to send</span>
+          <div class="grp">
+            <label class="sr" for="after">Set status after sending</label>
+            <select id="after"><option value="pending">Send and set Pending</option><option value="open">Send and keep Open</option><option value="solved">Send and set Solved</option></select>
+            <button class="btn primary" id="sendbtn" type="submit" disabled>Send reply</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <aside class="pane" id="details" aria-labelledby="details-h">
+      <div class="pane-head">
+        <button class="btn back" data-go="thread" aria-label="Back to conversation">&larr;</button>
+        <h2 id="details-h" tabindex="-1">Details</h2>
+      </div>
+      <div class="scroll" id="dbody"></div>
+    </aside>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const ME = {name:"Marcus Webb"};
+const CONVS = [
+ {id:1,status:"open",priority:"high",unread:false,assignee:"Marcus Webb",subject:"Order TG-20418 still has not arrived",wait:"Waiting 2h 18m on us",
+  cust:{name:"Priya Raman",email:"priya.raman@mailbox.example",orders:4,spent:"$412.60",since:"Mar 2024",city:"Leeds, UK"},
+  order:{id:"TG-20418",placed:"Nov 12",total:"$86.40",ship:"Parcelway Standard",track:"PW 7712 0394 55",eta:"Was Nov 19, now unknown",
+   items:[["Beeswax candle set x2","$48.00"],["Linen napkins, sage x4","$32.00"],["Shipping","$6.40"]],
+   steps:[["Label created","Nov 13, 10:02"],["Collected by carrier","Nov 14, 16:40"],["Arrived at Leeds hub","Nov 16, 05:12"],["Delayed at sorting facility","Nov 19, 09:30, no scan since","alert"],["Out for delivery","Not yet","todo"],["Delivered","Not yet","todo"]]},
+  msgs:[
+   {day:"Fri, Nov 21"},
+   {who:"c",name:"Priya Raman",time:"09:14",text:"Hi, my order TG-20418 was due on Wednesday and the tracking page has not changed since then. Can you tell me where it is?"},
+   {who:"a",name:"Marcus Webb",time:"09:51",text:"Hi Priya, sorry about the delay. I can see the parcel stopped at the sorting facility on Nov 19. I have opened a trace with the carrier and will update you by Monday."},
+   {who:"n",name:"Marcus Webb",time:"09:55",text:"Trace opened with Parcelway, ref PW-77120. They answer in 2 working days. Stock of both items is fine if we need to reship."},
+   {day:"Mon, Nov 24"},
+   {who:"e",text:"Carrier trace PW-77120 closed: parcel not located"},
+   {who:"c",name:"Priya Raman",time:"08:02",text:"It is Monday and there is still nothing. This is a birthday gift for Saturday. Can I get a replacement sent by express, or my money back?"}
+  ]},
+ {id:2,status:"open",priority:"normal",unread:true,assignee:"Unassigned",subject:"Can I change my delivery address?",wait:"Waiting 41m on us",
+  cust:{name:"Hannah Okafor",email:"h.okafor@mailbox.example",orders:1,spent:"$54.00",since:"Nov 2026",city:"Bristol, UK"},
+  order:{id:"TG-20551",placed:"Nov 24",total:"$54.00",ship:"Parcelway Standard",track:"Not shipped",eta:"Nov 28 to Dec 1",items:[["Stoneware mug set x2","$46.00"],["Shipping","$8.00"]],steps:[["Order placed","Nov 24, 09:12"],["Packing","In progress","todo"],["Shipped","Not yet","todo"]]},
+  msgs:[{day:"Mon, Nov 24"},{who:"c",name:"Hannah Okafor",time:"09:39",text:"Hello, I typed my old flat number by mistake. Can I change the address on TG-20551 before it ships?"}]},
+ {id:3,status:"pending",priority:"normal",unread:false,assignee:"Marcus Webb",subject:"Wrong size on linen apron",wait:"Waiting on customer",
+  cust:{name:"Tomas Eriksen",email:"t.eriksen@mailbox.example",orders:2,spent:"$121.00",since:"Jun 2025",city:"Dublin, IE"},
+  order:{id:"TG-20377",placed:"Nov 9",total:"$67.00",ship:"Parcelway Express",track:"PW 7709 8812 03",eta:"Delivered Nov 13",items:[["Linen apron, size M","$59.00"],["Shipping","$8.00"]],steps:[["Label created","Nov 10, 08:15"],["In transit","Nov 11, 21:00"],["Delivered","Nov 13, 11:48"]]},
+  msgs:[{day:"Sun, Nov 23"},{who:"c",name:"Tomas Eriksen",time:"18:20",text:"The apron arrived but it is a small, not a medium."},{who:"a",name:"Marcus Webb",time:"19:03",text:"Sorry about that, Tomas. Could you send a photo of the size label? I will ship a medium as soon as I have it."}]},
+ {id:4,status:"open",priority:"normal",unread:true,assignee:"Marcus Webb",subject:"Parcel marked delivered but not here",wait:"Waiting 5h 02m on us",
+  cust:{name:"Maria Santos",email:"maria.santos@mailbox.example",orders:7,spent:"$689.20",since:"Jan 2024",city:"Manchester, UK"},
+  order:{id:"TG-20502",placed:"Nov 20",total:"$132.50",ship:"Parcelway Standard",track:"PW 7714 5520 91",eta:"Marked delivered Nov 23",items:[["Cast iron skillet","$118.00"],["Shipping","$14.50"]],steps:[["Label created","Nov 21, 09:00"],["Out for delivery","Nov 23, 07:30"],["Marked delivered","Nov 23, 13:12, no signature","alert"]]},
+  msgs:[{day:"Sun, Nov 23"},{who:"c",name:"Maria Santos",time:"17:45",text:"Tracking says delivered today but nothing is at my door or with my neighbours."}]},
+ {id:5,status:"solved",priority:"normal",unread:false,assignee:"Marcus Webb",subject:"Discount code WELCOME10 not working",wait:"Solved Nov 22",
+  cust:{name:"Devon Bright",email:"devon.bright@mailbox.example",orders:1,spent:"$38.00",since:"Nov 2026",city:"Glasgow, UK"},
+  order:{id:"TG-20466",placed:"Nov 22",total:"$38.00",ship:"Parcelway Standard",track:"PW 7713 1190 27",eta:"Nov 26 to Nov 28",items:[["Wool throw, oat","$34.20"],["Shipping","$3.80"]],steps:[["Order placed","Nov 22, 14:10"],["Shipped","Nov 23, 10:30"],["In transit","Nov 24, 06:20"]]},
+  msgs:[{day:"Sat, Nov 22"},{who:"c",name:"Devon Bright",time:"14:02",text:"WELCOME10 says it has expired."},{who:"a",name:"Marcus Webb",time:"14:20",text:"It was a glitch on our side. I have refunded 10% to your card, about $3.80, and it will show in 3 to 5 days."},{who:"c",name:"Devon Bright",time:"14:31",text:"Thank you, that works."}]}
+];
+const REPLIES = {
+ "Apologise and trace":"Hi {first}, I am sorry your order {order} is late. I have asked the carrier for a new trace and I will write to you again by end of day tomorrow with what they find.",
+ "Offer express reship":"Hi {first}, I am sorry about this. I have not been able to get an answer from the carrier, so I will send a replacement by express today at no cost. You will get a new tracking number within a few hours. If the first parcel turns up, you can keep it.",
+ "Offer refund":"Hi {first}, I am sorry about the wait. I can refund {total} to your original payment method today. It usually shows on your statement in 3 to 5 working days. Reply to confirm and I will process it."
+};
+let cur = CONVS[0], mode = "reply", q = "";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const initials = n => n.split(" ").map(w => w[0]).join("").slice(0,2);
+const cap = s => s[0].toUpperCase() + s.slice(1);
+const last = c => c.msgs.filter(m => m.who).slice(-1)[0];
+const wide = () => matchMedia("(min-width:1100px)").matches;
+const drafts = {};
+
+function setView(v){
+  $("#app").dataset.view = v;
+  if(!wide()) { const h = {inbox:"#inbox-h",thread:"#subject",details:"#details-h"}[v]; $(h).focus({preventScroll:true}); }
+}
+function toast(t){ const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2400); }
+
+function renderList(){
+  const term = q.trim().toLowerCase();
+  const rows = CONVS.filter(c => !term || (c.cust.name + c.subject + c.order.id).toLowerCase().includes(term));
+  $("#count").textContent = CONVS.filter(c => c.status !== "solved").length + " open";
+  $("#list").innerHTML = rows.length ? rows.map(c => {
+    const l = last(c);
+    return `<li><button class="conv${c.unread ? " unread" : ""}" data-id="${c.id}" aria-current="${c === cur}">
+      <div class="r1"><span class="who">${esc(c.cust.name)}</span><span class="when">${esc(l.time)}</span></div>
+      <div class="subj">${esc(c.subject)}</div>
+      <div class="prev">${l.who === "n" ? "Note: " : l.who === "a" ? "You: " : ""}${esc(l.text)}</div>
+      <div class="r4"><span class="badge ${c.status}">${cap(c.status)}</span></div></button></li>`;
+  }).join("") : `<li style="padding:24px 16px;color:var(--muted)">No conversations match "${esc(q)}".</li>`;
+}
+
+function renderThread(){
+  const c = cur;
+  $("#subject").textContent = c.subject;
+  $("#meta").innerHTML = `<span class="badge ${c.status}">${cap(c.status)}</span>` +
+    (c.priority === "high" ? `<span class="badge high">High priority</span>` : "") +
+    `<span>${esc(c.cust.name)}</span><span>Order ${esc(c.order.id)}</span>` +
+    `<span class="${c.status === "open" ? "wait" : ""}">${esc(c.wait)}</span>`;
+  $("#msgs").innerHTML = c.msgs.map(m => {
+    if(m.day) return `<div class="day">${esc(m.day)}</div>`;
+    if(m.who === "e") return `<div class="ev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${esc(m.text)}</div>`;
+    return `<article class="m ${m.who}"><div class="av" aria-hidden="true">${esc(initials(m.name))}</div>
+      <div class="bubble"><div class="bh"><b>${esc(m.name)}</b><span>${m.who === "n" ? "Internal note, " : ""}${esc(m.time)}</span></div><p class="bt">${esc(m.text)}</p></div></article>`;
+  }).join("");
+  $("#to").textContent = mode === "note" ? "Only your team can see this note." : `To: ${c.cust.name} <${c.cust.email}>`;
+  $("#body").value = drafts[c.id + mode] || "";
+  syncSend();
+  const s = $("#scroll"); s.scrollTop = s.scrollHeight;
+}
+
+function renderDetails(){
+  const c = cur, o = c.order, u = c.cust;
+  $("#dbody").innerHTML = `
+  <div class="card"><h3>Properties</h3><div class="props">
+    <label>Status<select id="p-status">${["open","pending","solved"].map(s => `<option value="${s}"${c.status === s ? " selected" : ""}>${cap(s)}</option>`).join("")}</select></label>
+    <label>Priority<select id="p-prio">${["normal","high"].map(s => `<option value="${s}"${c.priority === s ? " selected" : ""}>${cap(s)}</option>`).join("")}</select></label>
+    <label>Assignee<select id="p-asg">${["Marcus Webb","Unassigned"].map(s => `<option${c.assignee === s ? " selected" : ""}>${s}</option>`).join("")}</select></label>
+  </div></div>
+  <div class="card"><h3>Customer</h3>
+    <div class="cust"><div class="av" aria-hidden="true">${esc(initials(u.name))}</div><div><b>${esc(u.name)}</b><span>${esc(u.email)}</span></div></div>
+    <dl><dt>Location</dt><dd>${esc(u.city)}</dd><dt>Customer since</dt><dd>${esc(u.since)}</dd><dt>Orders</dt><dd>${u.orders}</dd><dt>Total spent</dt><dd>${esc(u.spent)}</dd></dl></div>
+  <div class="card"><h3>Order ${esc(o.id)}</h3>
+    <ul class="items">${o.items.map(i => `<li><span>${esc(i[0])}</span><span>${esc(i[1])}</span></li>`).join("")}</ul>
+    <dl><dt>Total</dt><dd><b>${esc(o.total)}</b></dd><dt>Placed</dt><dd>${esc(o.placed)}</dd><dt>Carrier</dt><dd>${esc(o.ship)}</dd><dt>Tracking</dt><dd>${esc(o.track)}</dd><dt>Delivery</dt><dd>${esc(o.eta)}</dd></dl></div>
+  <div class="card"><h3>Tracking</h3><ol class="steps" style="margin-top:0">${o.steps.map(s => `<li class="${s[2] || ""}"><b>${esc(s[0])}${s[2] === "alert" ? " (needs attention)" : ""}</b><span>${esc(s[1])}</span></li>`).join("")}</ol></div>`;
+  const on = (id, f) => $(id).addEventListener("change", e => { f(e.target.value); renderAll(false); toast("Saved"); });
+  on("#p-status", v => { c.status = v; c.wait = v === "solved" ? "Solved just now" : v === "pending" ? "Waiting on customer" : c.wait; });
+  on("#p-prio", v => c.priority = v);
+  on("#p-asg", v => c.assignee = v);
+}
+
+function renderChips(){
+  $("#chips").querySelectorAll(".chip").forEach(e => e.remove());
+  if(mode === "note") return;
+  Object.keys(REPLIES).forEach(k => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = k; b.dataset.k = k; $("#chips").append(b); });
+}
+function renderAll(full = true){ renderList(); if(full){ renderThread(); renderDetails(); } else renderThread(); renderChips(); }
+
+function syncSend(){
+  drafts[cur.id + mode] = $("#body").value;
+  const empty = !$("#body").value.trim();
+  const b = $("#sendbtn"); b.disabled = empty;
+  b.textContent = mode === "note" ? "Add note" : "Send reply";
+  $("#after").hidden = mode === "note";
+  $("#comp").classList.toggle("note", mode === "note");
+  $("#body").placeholder = mode === "note" ? "Write a note for your team" : "Write a reply to the customer";
+}
+
+function setMode(m){
+  drafts[cur.id + mode] = $("#body").value; mode = m;
+  document.querySelectorAll(".tab").forEach(t => { const on = t.dataset.mode === m; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; });
+  $("#to").textContent = m === "note" ? "Only your team can see this note." : `To: ${cur.cust.name} <${cur.cust.email}>`;
+  $("#body").value = drafts[cur.id + m] || ""; renderChips(); syncSend();
+}
+
+function send(){
+  const text = $("#body").value.trim(); if(!text) return;
+  const t = new Date(); const time = String(t.getHours()).padStart(2,"0") + ":" + String(t.getMinutes()).padStart(2,"0");
+  cur.msgs.push({who: mode === "note" ? "n" : "a", name: ME.name, time, text});
+  cur.unread = false;
+  if(mode === "reply"){ const s = $("#after").value; cur.status = s; cur.wait = s === "solved" ? "Solved just now" : s === "pending" ? "Waiting on customer" : "Reply sent, still open"; }
+  delete drafts[cur.id + mode];
+  toast(mode === "note" ? "Note added" : "Reply sent to " + cur.cust.name.split(" ")[0]);
+  renderAll(true);
+  $("#body").focus();
+}
+
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-go]"); if(g) return setView(g.dataset.go);
+  const cv = e.target.closest(".conv");
+  if(cv){ drafts[cur.id + mode] = $("#body").value; cur = CONVS.find(c => c.id == cv.dataset.id); cur.unread = false; renderAll(true); return setView("thread"); }
+  const tb = e.target.closest(".tab"); if(tb) return setMode(tb.dataset.mode);
+  const ch = e.target.closest(".chip");
+  if(ch){ $("#body").value = REPLIES[ch.dataset.k].replace("{first}", cur.cust.name.split(" ")[0]).replace("{order}", cur.order.id).replace("{total}", cur.order.total); syncSend(); $("#body").focus(); }
+});
+$(".tabs").addEventListener("keydown", e => { if(e.key === "ArrowRight" || e.key === "ArrowLeft"){ const m = mode === "reply" ? "note" : "reply"; setMode(m); $("#tab-" + m).focus(); } });
+$("#body").addEventListener("input", () => { drafts[cur.id + mode] = $("#body").value; syncSend(); });
+$("#body").addEventListener("keydown", e => { if(e.key === "Enter" && (e.ctrlKey || e.metaKey)){ e.preventDefault(); send(); } });
+$("#comp").addEventListener("submit", e => { e.preventDefault(); send(); });
+$("#q").addEventListener("input", e => { q = e.target.value; renderList(); });
+renderAll(true);
+</script>
+</body>
+</html>

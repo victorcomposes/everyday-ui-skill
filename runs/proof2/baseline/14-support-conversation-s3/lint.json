@@ -1,0 +1,85 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 10.8333,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(15, 95, 214)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(15, 95, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 6,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Order details",
+        "w": 106,
+        "h": 35
+      },
+      {
+        "tag": "button",
+        "text": "Snooze",
+        "w": 71,
+        "h": 35
+      },
+      {
+        "tag": "button",
+        "text": "Mark solved",
+        "w": 101,
+        "h": 35
+      },
+      {
+        "tag": "button",
+        "text": "Reply to customer",
+        "w": 135,
+        "h": 31
+      },
+      {
+        "tag": "button",
+        "text": "Internal note",
+        "w": 99,
+        "h": 31
+      },
+      {
+        "tag": "select",
+        "text": "Saved replies\nReship a lost pa",
+        "w": 149,
+        "h": 33
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

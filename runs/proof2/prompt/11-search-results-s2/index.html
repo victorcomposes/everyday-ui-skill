@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chickpea curry - Recipes - Saltbox Kitchen</title>
+<style>
+:root{
+  --bg:#faf6ee; --surface:#ffffff; --sunk:#f3ecdf; --ink:#2b2119; --muted:#675a4c; --line:#e3d9c8; --line-strong:#b9ab97;
+  --accent:#b23a17; --accent-ink:#ffffff; --accent-soft:#f9e3d8; --focus:#1d4ed8;
+  --star:#b45309; --leaf:#2f6b3a; --leaf-soft:#e2eed9;
+  --shadow:0 1px 2px rgba(43,33,25,.06),0 6px 18px -8px rgba(43,33,25,.18);
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#16120f; --surface:#211b16; --sunk:#2a231d; --ink:#f4ece0; --muted:#bdae9b; --line:#3a3128; --line-strong:#6d5f50;
+    --accent:#f08a5d; --accent-ink:#1c0f08; --accent-soft:#40261a; --focus:#8fb4ff;
+    --star:#f0b45a; --leaf:#9fd18a; --leaf-soft:#25331f;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 20px -8px rgba(0,0,0,.6);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:16px;top:-60px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:8px;z-index:20}
+.skip:focus{top:12px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* header */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 21px/1 var(--serif);letter-spacing:-.01em}
+.brand svg{width:30px;height:30px;color:var(--accent)}
+.nav{display:flex;gap:4px}
+.nav a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--muted);font-weight:500;font-size:15px}
+.nav a:hover{background:var(--sunk);color:var(--ink)}
+.nav a[aria-current]{color:var(--ink)}
+.search{flex:1;max-width:520px;margin-left:auto;display:flex;align-items:center;background:var(--bg);border:1.5px solid var(--line-strong);border-radius:999px;padding:0 6px 0 16px;height:46px}
+.search:focus-within{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 30%,transparent)}
+.search svg{width:18px;height:18px;color:var(--muted);flex:none}
+.search input{flex:1;min-width:0;border:0;background:transparent;padding:0 10px;height:100%;outline:0}
+.search button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;height:34px;padding:0 16px;font-weight:600;cursor:pointer}
+.search button:hover{filter:brightness(1.08)}
+.saved{display:flex;align-items:center;gap:8px;text-decoration:none;font-weight:500;font-size:15px;padding:8px 12px;border-radius:8px}
+.saved:hover{background:var(--sunk)}
+.saved svg{width:20px;height:20px}
+.saved b{background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 8px;font-size:13px;line-height:20px}
+
+/* page head */
+.head{padding:36px 0 20px}
+.crumbs{font-size:14px;color:var(--muted);margin:0 0 10px}
+.crumbs a{color:var(--muted)}
+h1{font:400 clamp(30px,4.4vw,46px)/1.1 var(--serif);letter-spacing:-.02em;margin:0}
+h1 em{font-style:italic;color:var(--accent)}
+.sub{margin:10px 0 0;color:var(--muted)}
+.related{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}
+.related span{font-size:14px;color:var(--muted);margin-right:4px}
+.pill{display:inline-block;border:1px solid var(--line-strong);border-radius:999px;padding:5px 13px;font-size:14px;text-decoration:none;background:var(--surface)}
+.pill:hover{border-color:var(--ink)}
+
+/* layout */
+.layout{display:grid;grid-template-columns:252px minmax(0,1fr);gap:44px;padding-bottom:72px;align-items:start}
+.filters{position:sticky;top:16px}
+.filters h2{font:600 13px/1 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 14px}
+fieldset{border:0;border-top:1px solid var(--line);margin:0;padding:18px 0 14px}
+legend{padding:0;font-weight:700;font-size:15px;float:left;width:100%;margin-bottom:10px}
+legend+*{clear:both}
+.opt{display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;font-size:15px}
+.opt input{appearance:none;margin:0;width:20px;height:20px;border:1.5px solid var(--line-strong);background:var(--surface);flex:none;display:grid;place-content:center;cursor:pointer}
+.opt input[type=checkbox]{border-radius:5px}
+.opt input[type=radio]{border-radius:50%}
+.opt input:checked{background:var(--accent);border-color:var(--accent)}
+.opt input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:solid var(--accent-ink);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.opt input[type=radio]:checked::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-ink)}
+.clear{background:none;border:0;padding:6px 0;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.ftoggle{display:none}
+
+/* toolbar */
+.bar{display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.count{margin:0;font-size:15px;color:var(--muted);flex:1;min-width:180px}
+.count strong{color:var(--ink)}
+.sort{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.sort select{appearance:none;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;border:1.5px solid var(--line-strong);border-radius:10px;height:42px;padding:0 34px 0 14px;color:var(--ink);font-weight:500;cursor:pointer}
+
+/* cards */
+.grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 22px}
+.card{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:transform .15s ease,border-color .15s}
+.card:hover{transform:translateY(-2px);border-color:var(--line-strong)}
+.card:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.art{aspect-ratio:4/3;background:var(--bg-c,#f4e3c4);position:relative;overflow:hidden}
+.art svg{width:100%;height:100%;display:block}
+.tag{position:absolute;left:12px;top:12px;background:var(--leaf-soft);color:var(--leaf);font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:.02em}
+.body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font:700 19px/1.25 var(--serif);margin:0;letter-spacing:-.01em}
+.card h3 a{text-decoration:none}
+.card h3 a::after{content:"";position:absolute;inset:0}
+.card h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.by{margin:0;font-size:14px;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:10px;font-size:14px;border-top:1px dashed var(--line)}
+.meta>span{display:inline-flex;align-items:center;gap:5px}
+.meta svg{width:16px;height:16px}
+.rate{color:var(--star);font-weight:700}
+.rate i{font-style:normal;color:var(--muted);font-weight:400}
+.save{position:absolute;right:10px;top:10px;z-index:2;width:40px;height:40px;border-radius:50%;border:0;background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.save svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+.save[aria-pressed=true]{color:var(--accent)}
+.save[aria-pressed=true] svg{fill:currentColor}
+.save:hover{transform:scale(1.06)}
+.feature{grid-column:1/-1;flex-direction:row}
+.feature .art{aspect-ratio:auto;flex:1.15;min-height:300px}
+.feature .body{flex:1;padding:28px 30px;gap:12px;justify-content:center}
+.feature h3{font-size:28px;line-height:1.15}
+.blurb{margin:0;color:var(--muted);font-size:16px}
+.badge{align-self:flex-start;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:6px}
+.feature .meta{flex:none;margin-top:8px;font-size:15px}
+
+.empty{text-align:center;padding:64px 20px;border:1.5px dashed var(--line-strong);border-radius:16px}
+.empty h3{font:400 26px var(--serif);margin:0 0 8px}
+.empty p{margin:0 0 16px;color:var(--muted)}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:11px 20px;font-weight:600;cursor:pointer}
+
+.pager{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:44px}
+.pager a{min-width:44px;height:44px;display:grid;place-items:center;border-radius:10px;text-decoration:none;font-weight:600;padding:0 12px}
+.pager a:hover{background:var(--sunk)}
+.pager a[aria-current]{background:var(--ink);color:var(--bg)}
+
+.more{margin-top:56px;background:var(--sunk);border-radius:20px;padding:28px 32px;display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.more h2{font:400 24px var(--serif);margin:0 0 4px}
+.more p{margin:0;color:var(--muted)}
+.more .pills{display:flex;gap:8px;flex-wrap:wrap}
+
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:1100px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .layout{gap:32px}
+  .nav{display:none}
+}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;gap:20px}
+  .ftoggle{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:10px;border:1.5px solid var(--line-strong);background:var(--surface);font-weight:600;cursor:pointer}
+  .ftoggle b{background:var(--accent);color:var(--accent-ink);border-radius:999px;min-width:20px;line-height:20px;font-size:12px;text-align:center}
+  .ftoggle b:empty{display:none}
+  .filters{position:static;display:none;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:12px}
+  .filters.open{display:block}
+  .filters h2{display:none}
+  .filters fieldset:first-of-type{border-top:0;padding-top:0}
+  .feature{flex-direction:column}
+  .feature .art{min-height:0;aspect-ratio:4/3;flex:none}
+  .feature .body{padding:20px}
+  .top .wrap{gap:14px}
+  .saved span{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .grid{grid-template-columns:1fr;gap:20px}
+  .top .wrap{height:auto;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+  .brand{order:1;margin-right:auto}
+  .saved{order:2}
+  .search{order:3;flex-basis:100%;max-width:none}
+  .head{padding-top:24px}
+  .feature h3{font-size:24px}
+  .more{padding:22px}
+  .sort{flex:1}
+  .sort select{flex:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#results">Skip to results</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="bowl" viewBox="0 0 400 300">
+      <ellipse cx="200" cy="262" rx="120" ry="10" fill="#000" opacity=".12"/>
+      <circle cx="200" cy="150" r="118" fill="var(--rim,#fbf7ef)"/>
+      <circle cx="200" cy="150" r="118" fill="none" stroke="#000" stroke-opacity=".08" stroke-width="2"/>
+      <circle cx="200" cy="150" r="94" fill="var(--curry,#d98a1f)"/>
+      <circle cx="200" cy="150" r="94" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="3"/>
+      <g style="transform-origin:200px 150px;transform:rotate(var(--r,0deg))">
+        <path d="M130 140c26-30 52 18 80-6s46-18 60 6" fill="none" stroke="var(--cream,#fff3d6)" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+        <path d="M150 182c24-18 46 10 70-2" fill="none" stroke="var(--cream,#fff3d6)" stroke-width="7" stroke-linecap="round" opacity=".75"/>
+        <g fill="var(--pea,#e6bd6c)" stroke="#9a6d22" stroke-opacity=".5" stroke-width="2">
+          <circle cx="160" cy="118" r="11"/><circle cx="212" cy="104" r="12"/><circle cx="246" cy="132" r="11"/>
+          <circle cx="178" cy="160" r="12"/><circle cx="232" cy="172" r="11"/><circle cx="150" cy="190" r="10"/>
+          <circle cx="206" cy="136" r="10"/><circle cx="258" cy="170" r="9"/><circle cx="196" cy="196" r="11"/>
+        </g>
+        <g fill="var(--herb,#3c8a43)">
+          <ellipse cx="190" cy="120" rx="9" ry="4.5" transform="rotate(-30 190 120)"/>
+          <ellipse cx="226" cy="150" rx="9" ry="4.5" transform="rotate(25 226 150)"/>
+          <ellipse cx="168" cy="146" rx="8" ry="4" transform="rotate(60 168 146)"/>
+          <ellipse cx="214" cy="186" rx="9" ry="4.5" transform="rotate(-10 214 186)"/>
+          <ellipse cx="244" cy="110" rx="8" ry="4" transform="rotate(40 244 110)"/>
+        </g>
+      </g>
+      <g transform="translate(338 232)">
+        <circle r="34" fill="var(--side,#e9c98c)"/>
+        <circle r="34" fill="none" stroke="#000" stroke-opacity=".1" stroke-width="2"/>
+        <path d="M-18-8c8 4 14-6 22 0M-12 10c8 4 14-6 22 0M2-20c4 6 12 4 14 10" fill="none" stroke="#9a6d22" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g transform="translate(70 232) rotate(-18)">
+        <path d="M-26 0a26 26 0 0 0 52 0z" fill="#a8c24a"/><path d="M-20 0a20 20 0 0 0 40 0z" fill="#d6e48a"/>
+      </g>
+    </symbol>
+    <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="star" viewBox="0 0 24 24"><path d="m12 2.8 2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Saltbox Kitchen home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 12h22v8a8 8 0 0 1-8 8h-6a8 8 0 0 1-8-8z" fill="currentColor"/><path d="M5 15H2.5M27 15h2.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M11 8c0-2 3-2 3-4M18 8c0-2 3-2 3-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Saltbox Kitchen
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#" aria-current="page">Recipes</a><a href="#">Collections</a><a href="#">Meal plans</a><a href="#">Techniques</a>
+    </nav>
+    <form class="search" role="search" onsubmit="return false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <label class="vh" for="q">Search recipes</label>
+      <input id="q" type="search" value="chickpea curry" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <a class="saved" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Saved</span><b>7</b></a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="head" aria-labelledby="h1">
+      <p class="crumbs"><a href="#">Recipes</a> / Search</p>
+      <h1 id="h1">Results for <em>chickpea curry</em></h1>
+      <p class="sub">47 recipes, ranked by how well they match and how many cooks made them again.</p>
+      <div class="related">
+        <span>Try also:</span>
+        <a class="pill" href="#">chana masala</a><a class="pill" href="#">coconut chickpea stew</a><a class="pill" href="#">dal and chickpea</a><a class="pill" href="#">vegan tikka masala</a>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside aria-label="Filter results">
+        <button class="ftoggle" id="ftoggle" type="button" aria-expanded="false" aria-controls="filters">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+          Filters <b id="fcount"></b>
+        </button>
+        <form class="filters" id="filters" onsubmit="return false">
+          <h2>Refine</h2>
+          <fieldset>
+            <legend>Diet</legend>
+            <label class="opt"><input type="checkbox" name="diet" value="vegan"> Vegan</label>
+            <label class="opt"><input type="checkbox" name="diet" value="gluten-free"> Gluten-free</label>
+            <label class="opt"><input type="checkbox" name="diet" value="dairy-free"> Dairy-free</label>
+          </fieldset>
+          <fieldset>
+            <legend>Total time</legend>
+            <label class="opt"><input type="radio" name="time" value="0" checked> Any time</label>
+            <label class="opt"><input type="radio" name="time" value="30"> 30 minutes or less</label>
+            <label class="opt"><input type="radio" name="time" value="45"> 45 minutes or less</label>
+            <label class="opt"><input type="radio" name="time" value="60"> 1 hour or less</label>
+          </fieldset>
+          <fieldset>
+            <legend>Rating</legend>
+            <label class="opt"><input type="radio" name="rating" value="0" checked> Any rating</label>
+            <label class="opt"><input type="radio" name="rating" value="4.5"> 4.5 stars and up</label>
+            <label class="opt"><input type="radio" name="rating" value="4.0"> 4.0 stars and up</label>
+          </fieldset>
+          <fieldset>
+            <legend>Built around</legend>
+            <label class="opt"><input type="checkbox" name="ing" value="coconut milk"> Coconut milk</label>
+            <label class="opt"><input type="checkbox" name="ing" value="spinach"> Spinach</label>
+            <label class="opt"><input type="checkbox" name="ing" value="squash"> Squash or sweet potato</label>
+            <label class="opt"><input type="checkbox" name="ing" value="tomato"> Tomato</label>
+          </fieldset>
+          <button class="clear" type="button" id="clear">Clear all filters</button>
+        </form>
+      </aside>
+
+      <section id="results" aria-label="Recipe results" tabindex="-1">
+        <div class="bar">
+          <p class="count" id="count" role="status" aria-live="polite"></p>
+          <label class="sort">Sort by
+            <select id="sort">
+              <option value="match">Best match</option>
+              <option value="rating">Highest rated</option>
+              <option value="time">Quickest first</option>
+              <option value="reviews">Most reviewed</option>
+            </select>
+          </label>
+        </div>
+        <ul class="grid" id="grid"></ul>
+
+        <nav class="pager" aria-label="Pagination">
+          <a href="#" aria-current="page" aria-label="Page 1, current page">1</a>
+          <a href="#" aria-label="Page 2">2</a><a href="#" aria-label="Page 3">3</a><a href="#" aria-label="Page 4">4</a>
+          <a href="#" aria-label="Next page">Next</a>
+        </nav>
+
+        <div class="more">
+          <div>
+            <h2>Cooking for a crowd?</h2>
+            <p>Browse chickpea curries that scale well and keep for the week.</p>
+          </div>
+          <div class="pills"><a class="pill" href="#">Batch cooking</a><a class="pill" href="#">Freezer friendly</a><a class="pill" href="#">Under 10 ingredients</a></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap"><span>&copy; 2026 Saltbox Kitchen. Tested recipes from home cooks.</span><span>Privacy &middot; Terms &middot; Contact</span></div></footer>
+
+<script>
+const R=[
+{t:"Smoky Coconut Chickpea Curry",a:"Priya Raman",m:35,r:4.8,n:2314,d:["vegan","gluten-free","dairy-free"],i:["coconut milk","tomato"],b:"Smoked paprika and a spoonful of tomato paste give this weeknight pot a deep, slow-simmered flavour in 35 minutes.",c:{bg:"#f6dfb4",curry:"#d4741a",cream:"#fff1d2",rot:"0deg"}},
+{t:"One-Pot Chana Masala",a:"Dev Joshi",m:40,r:4.7,n:1892,d:["vegan","gluten-free","dairy-free"],i:["tomato"],c:{bg:"#f1cdb8",curry:"#b5441c",cream:"#f5d7b0",rot:"40deg"}},
+{t:"Chana Saag with Spinach and Garlic",a:"Meera Nair",m:30,r:4.6,n:1206,d:["vegan","gluten-free","dairy-free"],i:["spinach"],c:{bg:"#dbe6c4",curry:"#5d8a3a",cream:"#eef2cf",rot:"120deg",herb:"#2a5a2c"}},
+{t:"Sweet Potato Chickpea Coconut Curry",a:"Hannah Okafor",m:45,r:4.7,n:987,d:["vegan","gluten-free","dairy-free"],i:["coconut milk","squash"],c:{bg:"#f7d9a6",curry:"#e0922c",cream:"#fff3dc",rot:"200deg"}},
+{t:"15-Minute Pantry Chickpea Curry",a:"Tomasz Wrobel",m:15,r:4.4,n:3402,d:["vegan","dairy-free"],i:["tomato"],c:{bg:"#f3c9b4",curry:"#c4532a",cream:"#f9dcc0",rot:"280deg"}},
+{t:"Slow Cooker Chickpea Tikka Masala",a:"Amara Singh",m:250,r:4.5,n:641,d:["gluten-free"],i:["tomato"],c:{bg:"#f0c4a8",curry:"#c2501f",cream:"#fde8d0",rot:"70deg"}},
+{t:"Thai Red Chickpea Curry",a:"Lina Phan",m:30,r:4.6,n:758,d:["vegan","gluten-free","dairy-free"],i:["coconut milk"],c:{bg:"#f4cfc3",curry:"#cf4a2f",cream:"#fde6d8",rot:"160deg",side:"#f3ead2"}},
+{t:"Kerala-Style Kadala Curry",a:"Anjali Menon",m:50,r:4.9,n:412,d:["vegan","gluten-free","dairy-free"],i:["coconut milk"],c:{bg:"#e9d3b0",curry:"#8f4a1c",cream:"#f1d9b0",rot:"240deg",side:"#f2e2c0"}},
+{t:"Butternut Squash and Chickpea Curry",a:"Cole Brennan",m:55,r:4.5,n:529,d:["vegan","gluten-free","dairy-free"],i:["squash","coconut milk"],c:{bg:"#f8dcae",curry:"#e5a02d",cream:"#fff4de",rot:"20deg"}},
+{t:"Creamy Cashew Chickpea Korma",a:"Rukmini Patel",m:40,r:4.3,n:318,d:["vegan","gluten-free","dairy-free"],i:[],c:{bg:"#f6ebcf",curry:"#e8bf6a",cream:"#fffaf0",rot:"310deg"}},
+];
+const $=s=>document.querySelector(s), form=$("#filters"), grid=$("#grid");
+const saved=new Set([R[1].t]);
+const fmt=m=>m>=60?(Math.floor(m/60)+" hr"+(m%60?" "+m%60+" min":"")):m+" min";
+const vals=n=>[...form.querySelectorAll("[name="+n+"]:checked")].map(e=>e.value);
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function card(x,feat){
+  const c=x.c,st="--bg-c:"+c.bg+";--curry:"+c.curry+";--cream:"+c.cream+";--r:"+c.rot+";--side:"+(c.side||"#e9c98c")+";--herb:"+(c.herb||"#3c8a43");
+  const tag=x.d.includes("vegan")?"Vegan":(x.d.includes("gluten-free")?"Gluten-free":"");
+  return `<li class="card${feat?" feature":""}">
+    <div class="art" style="${st}"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Bowl of ${esc(x.t.toLowerCase())}"><use href="#bowl"/></svg>${tag?`<span class="tag">${tag}</span>`:""}</div>
+    <button class="save" type="button" aria-pressed="${saved.has(x.t)}" data-t="${esc(x.t)}" aria-label="Save ${esc(x.t)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button>
+    <div class="body">
+      ${feat?'<span class="badge">Best match</span>':""}
+      <h3><a href="#">${esc(x.t)}</a></h3>
+      ${feat?`<p class="blurb">${esc(x.b)}</p>`:""}
+      <p class="by">by ${esc(x.a)}</p>
+      <div class="meta">
+        <span><svg aria-hidden="true"><use href="#clock"/></svg><span class="vh">Total time </span>${fmt(x.m)}</span>
+        <span class="rate"><svg aria-hidden="true"><use href="#star"/></svg>${x.r.toFixed(1)}<span class="vh"> out of 5 stars,</span> <i>(${x.n.toLocaleString("en-US")}<span class="vh"> ratings</span>)</i></span>
+      </div>
+    </div></li>`;
+}
+function render(){
+  const d=vals("diet"),g=vals("ing"),t=+form.time.value,r=+form.rating.value,s=$("#sort").value;
+  let L=R.filter(x=>d.every(k=>x.d.includes(k))&&(!g.length||g.some(k=>x.i.includes(k)))&&(!t||x.m<=t)&&x.r>=r);
+  const by={match:null,rating:(a,b)=>b.r-a.r,time:(a,b)=>a.m-b.m,reviews:(a,b)=>b.n-a.n}[s];
+  if(by)L=[...L].sort(by);
+  const n=d.length+g.length+(t?1:0)+(r?1:0);
+  $("#fcount").textContent=n||"";
+  $("#count").innerHTML=n?`<strong>${L.length}</strong> of ${R.length} recipes on this page match your filters`:`Showing <strong>1 to ${R.length}</strong> of 47 recipes`;
+  grid.innerHTML=L.length?L.map((x,i)=>card(x,s==="match"&&i===0)).join(""):
+    `<li style="grid-column:1/-1"><div class="empty"><h3>No chickpea curries match all of those</h3><p>Try removing a filter. Most people start by loosening the time limit.</p><button class="btn" type="button" id="reset">Clear all filters</button></div></li>`;
+}
+form.addEventListener("change",render);
+$("#sort").addEventListener("change",render);
+$("#clear").addEventListener("click",()=>{form.reset();render()});
+grid.addEventListener("click",e=>{
+  if(e.target.closest("#reset")){form.reset();render();return}
+  const b=e.target.closest(".save");if(!b)return;
+  const on=b.getAttribute("aria-pressed")!=="true";
+  on?saved.add(b.dataset.t):saved.delete(b.dataset.t);
+  b.setAttribute("aria-pressed",on);
+  document.querySelector(".saved b").textContent=6+saved.size;
+});
+$("#ftoggle").addEventListener("click",e=>{
+  const o=$("#filters").classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",o);
+});
+render();
+</script>
+</body>
+</html>

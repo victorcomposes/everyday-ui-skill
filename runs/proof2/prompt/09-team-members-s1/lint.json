@@ -1,0 +1,99 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "ui-sans-serif"
+  ],
+  "textColors": 20,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 36,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to content",
+        "w": 118,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "General",
+        "w": 97,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Team members",
+        "w": 145,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Security",
+        "w": 99,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Billing",
+        "w": 88,
+        "h": 37
+      },
+      {
+        "tag": "a",
+        "text": "Integrations",
+        "w": 125,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Invite people",
+        "w": 358,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Manage seats",
+        "w": 103,
+        "h": 32
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

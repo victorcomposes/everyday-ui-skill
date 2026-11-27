@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(22, 24, 29)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(31, 95, 158)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 11,
+    "examples": [
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 171,
+        "h": 42
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

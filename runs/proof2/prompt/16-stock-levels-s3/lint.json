@@ -1,0 +1,100 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "system-ui"
+  ],
+  "textColors": 7,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 47,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to stock list",
+        "w": 139,
+        "h": 43
+      },
+      {
+        "tag": "a",
+        "text": "Stock levels",
+        "w": 133,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "Orders",
+        "w": 100,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "Suppliers",
+        "w": 117,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "Recipes",
+        "w": 105,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "Waste log",
+        "w": 122,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "Reports",
+        "w": 107,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "text": "Start stock count",
+        "w": 151,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

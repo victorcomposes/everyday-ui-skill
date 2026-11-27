@@ -1,0 +1,98 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "ui-monospace",
+    "ui-sans-serif"
+  ],
+  "textColors": 8,
+  "minFontPx": 11.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(11, 92, 122)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(11, 92, 122)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 12,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to reply box",
+        "w": 130,
+        "h": 39
+      },
+      {
+        "tag": "a",
+        "text": "Inbox",
+        "w": 358,
+        "h": 20
+      },
+      {
+        "tag": "button",
+        "text": "Order details",
+        "w": 175,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Resolve",
+        "w": 175,
+        "h": 34
+      },
+      {
+        "tag": "a",
+        "text": "tracking-screenshot.png\n184 KB",
+        "w": 225,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "Reply",
+        "w": 59,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Internal note",
+        "w": 106,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Offer reship",
+        "w": 89,
+        "h": 27
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

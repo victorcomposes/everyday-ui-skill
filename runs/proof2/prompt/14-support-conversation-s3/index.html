@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harborline - HL-20418 Late order</title>
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#eef0ed; --surface:#ffffff; --surface-2:#f6f7f4; --line:#dcdfd8; --line-strong:#c4c9c0;
+  --text:#192226; --muted:#566369; --accent:#0d5c6e; --accent-ink:#ffffff; --accent-soft:#dcedf0; --accent-line:#a9d0d8;
+  --agent-bg:#eaf4f5; --note-bg:#fff6dc; --note-line:#d9b64f; --note-ink:#5e4300;
+  --warn-bg:#fdecc8; --warn-ink:#744200; --ok-bg:#d9efe0; --ok-ink:#1d5a33; --bad-bg:#fadcd8; --bad-ink:#8a2318;
+  --rail:#0f2a31; --rail-ink:#cfe0e4; --rail-active:#1d4650;
+  --shadow:0 1px 2px rgba(20,35,40,.06),0 4px 14px rgba(20,35,40,.05);
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c1215; --surface:#131b1f; --surface-2:#182227; --line:#27343a; --line-strong:#38484f;
+    --text:#e5ecee; --muted:#9bacb2; --accent:#6fc4d7; --accent-ink:#06242b; --accent-soft:#183943; --accent-line:#2b5a67;
+    --agent-bg:#162c33; --note-bg:#2b2410; --note-line:#8a6d1c; --note-ink:#efd48a;
+    --warn-bg:#3a2c0f; --warn-ink:#f2c874; --ok-bg:#16301f; --ok-ink:#8fd7a6; --bad-bg:#3b1a16; --bad-ink:#f2a69b;
+    --rail:#091013; --rail-ink:#a9bcc2; --rail-active:#17323a;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:15px/1.5 ui-sans-serif,"Segoe UI Variable","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;background:var(--surface);padding:8px 12px;border-radius:8px;z-index:20;border:1px solid var(--line-strong)}
+.skip:focus{top:12px}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* shell */
+.app{display:grid;grid-template-columns:60px 316px minmax(0,1fr) 332px;height:100dvh;min-height:640px}
+.rail{background:var(--rail);color:var(--rail-ink);display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:6px}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;margin-bottom:14px}
+.rail a{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:inherit;position:relative}
+.rail a:hover{background:var(--rail-active)}
+.rail a[aria-current]{background:var(--rail-active);color:#fff}
+.rail .me{margin-top:auto}
+.badge{position:absolute;top:3px;right:2px;min-width:17px;height:17px;border-radius:9px;background:#e7a23b;color:#2b1b00;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+
+.list{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.list header{padding:16px 16px 10px}
+.list h2{margin:0 0 10px;font-size:16px;font-weight:650;display:flex;justify-content:space-between;align-items:center}
+.count{font-weight:500;font-size:13px;color:var(--muted)}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:0 10px;height:36px;color:var(--muted)}
+.search input{border:0;background:none;flex:1;min-width:0;height:100%;outline:none;color:var(--text)}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.search input::placeholder{color:var(--muted)}
+.filters{display:flex;gap:6px;padding:0 16px 12px;border-bottom:1px solid var(--line)}
+.filters button{border:1px solid var(--line);background:none;border-radius:999px;padding:3px 11px;font-size:13px;cursor:pointer;color:var(--muted)}
+.filters button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);font-weight:600}
+.items{list-style:none;margin:0;padding:0;overflow:auto;flex:1}
+.items a{display:block;padding:12px 16px 12px 14px;border-bottom:1px solid var(--line);border-left:3px solid transparent;color:inherit;text-decoration:none}
+.items a:hover{background:var(--surface-2)}
+.items a[aria-current]{background:var(--accent-soft);border-left-color:var(--accent)}
+.items .top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.items .who{font-weight:650;color:var(--text);font-size:14px}
+.items .subj{font-size:14px;margin:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.items .snip{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:6px}
+
+.thread{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--bg)}
+.thead{background:var(--surface);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;gap:16px;align-items:flex-start;justify-content:space-between}
+.thead>div:first-child{min-width:0}
+.hactions{flex:none}
+.crumb{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.thead h1{margin:2px 0 0;font-size:20px;line-height:1.3;font-weight:650;letter-spacing:-.01em;max-width:60ch}
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.chip.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:transparent}
+.chip.ok{background:var(--ok-bg);color:var(--ok-ink);border-color:transparent}
+.chip.bad{background:var(--bad-bg);color:var(--bad-ink);border-color:transparent}
+.hactions{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 13px;border-radius:8px;border:1px solid var(--line-strong);background:var(--surface);cursor:pointer;font-weight:600;font-size:14px;white-space:nowrap;text-decoration:none;color:var(--text)}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.icon{width:36px;padding:0;justify-content:center}
+.back{display:none}
+
+.scroll{flex:1;overflow:auto;padding:22px 24px 8px}
+.lane{max-width:780px;margin:0 auto}
+.day{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12.5px;margin:6px 0 14px;font-weight:600}
+.day::before,.day::after{content:"";flex:1;height:1px;background:var(--line)}
+.msg{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;margin-bottom:18px}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;background:#c9d8dc;color:#143038}
+.av.agent{background:var(--accent);color:var(--accent-ink)}
+@media (prefers-color-scheme:dark){.av{background:#2c4750;color:#d6e8ed}.av.agent{background:var(--accent);color:var(--accent-ink)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.msg.agent .card{background:var(--agent-bg);border-color:var(--accent-line)}
+.msg.note .card{background:var(--note-bg);border:1px dashed var(--note-line);box-shadow:none;color:var(--note-ink)}
+.msg.note .av{background:var(--note-line);color:#2b1b00}
+.mh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;padding:10px 14px 0;font-size:13px;color:var(--muted)}
+.mh strong{color:var(--text);font-size:14px;font-weight:650}
+.msg.note .mh,.msg.note .mh strong{color:var(--note-ink)}
+.mh time{margin-left:auto}
+.mb{padding:6px 14px 13px}
+.mb p{margin:0 0 .7em;max-width:66ch}
+.mb p:last-child{margin:0}
+.att{display:flex;align-items:center;gap:10px;margin-top:10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);font-size:13px;width:fit-content;max-width:100%}
+.att small{color:var(--muted)}
+.event{display:flex;gap:10px;align-items:center;margin:0 0 18px 48px;font-size:13px;color:var(--muted)}
+.event .ico{width:24px;height:24px;border-radius:50%;background:var(--surface);border:1px solid var(--line-strong);display:grid;place-items:center;flex:none}
+.event .ico svg{width:13px;height:13px}
+.event b{color:var(--text);font-weight:600}
+
+/* composer */
+.composer{background:var(--surface);border-top:1px solid var(--line);padding:12px 24px 16px}
+.cbox{max-width:780px;margin:0 auto;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);overflow:hidden}
+.cbox:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cbox.is-note{background:var(--note-bg);border-color:var(--note-line)}
+.tabs{display:flex;gap:2px;padding:6px 8px 0;border-bottom:1px solid var(--line);align-items:center;background:var(--surface-2)}
+.tabs [role=tab]{border:0;background:none;padding:8px 12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;gap:7px;align-items:center}
+.tabs [role=tab][aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent)}
+.tabs .to{margin-left:auto;font-size:13px;color:var(--muted);padding-right:6px}
+.tabs .to b{color:var(--text);font-weight:600}
+.cbox textarea{display:block;width:100%;border:0;background:none;resize:vertical;min-height:150px;padding:14px 16px;line-height:1.55;outline:none}
+.cbox textarea::placeholder{color:var(--muted)}
+.ctool{display:flex;align-items:center;gap:6px;padding:8px 10px;border-top:1px solid var(--line);flex-wrap:wrap}
+.tb{width:34px;height:34px;border:0;background:none;border-radius:7px;display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.tb:hover{background:var(--surface-2);color:var(--text)}
+.macro{height:34px;border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:0 10px;display:flex;gap:6px;align-items:center;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted)}
+.macro:hover{color:var(--text);background:var(--surface-2)}
+.sp{flex:1}
+.status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.status select{height:36px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);padding:0 8px}
+.hint{font-size:12.5px;color:var(--muted);max-width:780px;margin:6px auto 0}
+kbd{font:inherit;font-size:12px;border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--surface-2)}
+
+/* context */
+.ctx{background:var(--surface);border-left:1px solid var(--line);overflow:auto;min-height:0}
+.sec{padding:16px 18px;border-bottom:1px solid var(--line)}
+.sec h2{margin:0 0 10px;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.sec h2 a,.sec h2 span{text-transform:none;letter-spacing:0;font-weight:600;font-size:13px}
+.person{display:flex;gap:12px;align-items:center}
+.person .av{width:44px;height:44px;font-size:15px}
+.person strong{display:block;font-size:16px;line-height:1.25}
+.person span{color:var(--muted);font-size:13px}
+dl{margin:12px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px}
+dt{color:var(--muted);white-space:nowrap}
+dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.sla{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:9px;background:var(--warn-bg);color:var(--warn-ink);font-size:13.5px}
+.sla strong{display:block;font-size:15px}
+.order{border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.order .oh{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--surface-2);font-weight:650}
+.line{display:flex;gap:10px;padding:10px 12px;border-top:1px solid var(--line);font-size:13.5px;align-items:center}
+.thumb{width:40px;height:40px;border-radius:7px;flex:none;display:grid;place-items:center;background:linear-gradient(135deg,#a8743f,#7a4f26);color:#fff}
+.thumb.b{background:linear-gradient(135deg,#6e9486,#3f6a5d)}
+.line .t{flex:1;min-width:0}
+.line .t small{display:block;color:var(--muted)}
+.price{font-variant-numeric:tabular-nums;font-weight:600}
+ol.track{list-style:none;margin:0;padding:0}
+ol.track li{position:relative;padding:0 0 14px 24px;font-size:13.5px}
+ol.track li::before{content:"";position:absolute;left:4px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--line-strong)}
+ol.track li::after{content:"";position:absolute;left:8px;top:16px;bottom:-2px;width:1px;background:var(--line-strong)}
+ol.track li:last-child::after{display:none}
+ol.track li.done::before{background:var(--ok-ink)}
+ol.track li.stuck::before{background:#d98a14;box-shadow:0 0 0 4px var(--warn-bg)}
+ol.track small{display:block;color:var(--muted)}
+.policy{font-size:13.5px;margin:0}
+.policy b{font-weight:650}
+.acts{display:grid;gap:8px}
+.acts .btn{justify-content:flex-start;width:100%}
+.prev{list-style:none;margin:0;padding:0;font-size:13.5px}
+.prev li{display:flex;justify-content:space-between;gap:10px;padding:6px 0}
+.prev span{color:var(--muted)}
+
+/* responsive */
+@media (max-width:1320px){.app{grid-template-columns:60px minmax(0,1fr) 316px}.list{display:none}}
+@media (max-width:980px){
+  .app{display:block;height:auto}
+  .rail{display:none}
+  .scroll{overflow:visible;padding:18px 16px 8px}
+  .thead{padding:12px 16px;flex-wrap:wrap}
+  .composer{padding:12px 16px 20px}
+  .ctx{border-left:0;border-top:1px solid var(--line)}
+  .back{display:inline-flex}
+}
+@media (max-width:560px){
+  .thead h1{font-size:18px}
+  .hactions .btn span{display:none}
+  .hactions .btn{width:36px;padding:0;justify-content:center}
+  .hactions .btn.primary{width:auto;padding:0 12px}
+  .hactions .btn.primary span{display:inline}
+  .msg{grid-template-columns:30px minmax(0,1fr);gap:9px}
+  .av{width:30px;height:30px;font-size:11px}
+  .event{margin-left:39px}
+  .mh time{margin-left:0;flex-basis:100%}
+  .tabs .to{display:none}
+  .ctool .status{width:100%}
+  .ctool .status select{flex:1}
+  .ctool .btn.primary{width:100%;justify-content:center}
+  .hint{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#reply">Skip to reply box</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="anchor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M8 11h8M4 14c0 4 3.5 7 8 7s8-3 8-7M4 14l-1.5 2M20 14l1.5 2"/></symbol>
+    <symbol id="inbox" viewBox="0 0 24 24"><path d="M3 13l3-8h12l3 8v6H3zM3 13h5l1 3h6l1-3h5"/></symbol>
+    <symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 4.5a3.5 3.5 0 010 7M18 14c2 .6 3.3 2.4 3.5 6"/></symbol>
+    <symbol id="chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M13 16V8M18 16v-8"/></symbol>
+    <symbol id="book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 19a2 2 0 012-2h13"/></symbol>
+    <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></symbol>
+    <symbol id="back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></symbol>
+    <symbol id="clip" viewBox="0 0 24 24"><path d="M20 11.5l-8 8a5 5 0 01-7-7l8.5-8.5a3.5 3.5 0 015 5L10 17.5a2 2 0 01-3-3l7.500-7.500"/></symbol>
+    <symbol id="bold" viewBox="0 0 24 24"><path d="M7 4h6a3.5 3.5 0 010 7H7zM7 11h7a3.5 3.5 0 010 7H7z"/></symbol>
+    <symbol id="link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.700 0l-3 3a4 4 0 005.700 5.700l1-1"/></symbol>
+    <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></symbol>
+    <symbol id="box" viewBox="0 0 24 24"><path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5zM3 7.5l9 4.5 9-4.5M12 12v9"/></symbol>
+    <symbol id="truck" viewBox="0 0 24 24"><path d="M2 6h11v10H2zM13 9h4.5L21 12.5V16h-8M6.5 19a1.8 1.8 0 100-3.6 1.8 1.8 0 000 3.6zM17 19a1.8 1.8 0 100-3.6 1.8 1.8 0 000 3.6z"/></symbol>
+    <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="refund" viewBox="0 0 24 24"><path d="M4 12a8 8 0 108-8H7M7 1v5H2M10 12h4M10 15h4"/></symbol>
+    <symbol id="doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+    <symbol id="send" viewBox="0 0 24 24"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <nav class="rail" aria-label="Main">
+    <div class="logo" aria-hidden="true"><svg class="i" style="width:20px;height:20px"><use href="#anchor"/></svg></div>
+    <a href="#" aria-current="page" aria-label="Inbox, 12 open"><svg class="i"><use href="#inbox"/></svg><span class="badge" aria-hidden="true">12</span></a>
+    <a href="#" aria-label="Customers"><svg class="i"><use href="#users"/></svg></a>
+    <a href="#" aria-label="Reports"><svg class="i"><use href="#chart"/></svg></a>
+    <a href="#" aria-label="Help center"><svg class="i"><use href="#book"/></svg></a>
+    <a href="#" aria-label="Settings" class="me"><svg class="i"><use href="#gear"/></svg></a>
+  </nav>
+
+  <aside class="list" aria-label="Conversations">
+    <header>
+      <h2>Late deliveries <span class="count">12 open</span></h2>
+      <label class="search"><svg class="i"><use href="#search"/></svg><span class="sr">Search conversations</span><input type="search" placeholder="Search conversations"></label>
+    </header>
+    <div class="filters" role="group" aria-label="Filter">
+      <button type="button" aria-pressed="true">Mine</button>
+      <button type="button" aria-pressed="false">Unassigned</button>
+      <button type="button" aria-pressed="false">Waiting</button>
+    </div>
+    <ul class="items">
+      <li><a href="#" aria-current="true"><div class="top"><span class="who">Maya Okonkwo-Reyes</span><time datetime="2026-11-27T08:41">8:41</time></div><div class="subj">Order #48213 has not arrived</div><div class="snip">It is Friday and there is still nothing, and I have...</div></a></li>
+      <li><a href="#"><div class="top"><span class="who"><span class="dot"></span>Tomasz Wieczorek<span class="sr">, unread</span></span><time datetime="2026-11-27T08:12">8:12</time></div><div class="subj">Wrong address on parcel</div><div class="snip">The courier left a card for a street I never lived on</div></a></li>
+      <li><a href="#"><div class="top"><span class="who">Priya Nair</span><time datetime="2026-11-27T07:55">7:55</time></div><div class="subj">Where is my kettle?</div><div class="snip">Ordered 14 Nov, shop says it shipped but nothing</div></a></li>
+      <li><a href="#"><div class="top"><span class="who"><span class="dot"></span>Colin Beaumont<span class="sr">, unread</span></span><time datetime="2026-11-26T17:30">Thu</time></div><div class="subj">Parcel marked delivered, not here</div><div class="snip">I checked with all the neighbours and the porch</div></a></li>
+      <li><a href="#"><div class="top"><span class="who">Aiko Tanabe</span><time datetime="2026-11-26T14:02">Thu</time></div><div class="subj">Split shipment, one box missing</div><div class="snip">Two of three boxes came on Tuesday</div></a></li>
+      <li><a href="#"><div class="top"><span class="who">Rosalind Ferreira</span><time datetime="2026-11-26T10:18">Thu</time></div><div class="subj">Cancel if it is not here by Monday</div><div class="snip">It was a gift and the date has passed</div></a></li>
+      <li><a href="#"><div class="top"><span class="who">Jonas Albrecht</span><time datetime="2026-11-25T16:44">Wed</time></div><div class="subj">Refund still not received</div><div class="snip">Thanks for the update, I will wait until Friday</div></a></li>
+    </ul>
+  </aside>
+
+  <main class="thread" id="main">
+    <header class="thead">
+      <div>
+        <div class="crumb">
+          <a class="btn icon back" href="#" aria-label="Back to conversations"><svg class="i"><use href="#back"/></svg></a>
+          <span>HL-20418</span><span aria-hidden="true">/</span><span>Alder &amp; Finch Home</span>
+        </div>
+        <h1>Order #48213 has not arrived, 8 days past the promised date</h1>
+        <div class="chips">
+          <span class="chip warn"><svg class="i" style="width:14px;height:14px"><use href="#truck"/></svg>Delivery late</span>
+          <span class="chip">Open</span>
+          <span class="chip">Assigned to you</span>
+          <span class="chip bad"><svg class="i" style="width:14px;height:14px"><use href="#clock"/></svg>Reply due in 1h 12m</span>
+        </div>
+      </div>
+      <div class="hactions">
+        <button class="btn" type="button"><svg class="i"><use href="#moon"/></svg><span>Snooze</span></button>
+        <button class="btn primary" type="button"><svg class="i"><use href="#check"/></svg><span>Resolve</span></button>
+      </div>
+    </header>
+
+    <div class="scroll" id="scroll" tabindex="0" aria-label="Conversation history">
+      <div class="lane" id="lane">
+        <div class="day">Wednesday 25 November</div>
+
+        <article class="msg" aria-label="Message from Maya Okonkwo-Reyes">
+          <div class="av" aria-hidden="true">MO</div>
+          <div class="card">
+            <div class="mh"><strong>Maya Okonkwo-Reyes</strong><span>Customer, via email</span><time datetime="2026-11-25T09:12">9:12</time></div>
+            <div class="mb">
+              <p>Hi, I ordered a walnut desk lamp and a linen shade from Alder &amp; Finch on 12 November. The shop promised delivery by the 19th.</p>
+              <p>It is now the 25th. The tracking page has said "in transit" since last Friday and has not moved. I need the lamp for my mum's birthday on Sunday. Can you tell me where it is?</p>
+              <div class="att"><svg class="i"><use href="#doc"/></svg><span>tracking-screenshot.png <small>212 KB</small></span></div>
+            </div>
+          </div>
+        </article>
+
+        <div class="event"><span class="ico"><svg class="i"><use href="#truck"/></svg></span><span><b>Carrier scan checked</b> by Harborline. Last scan: Memphis hub, 20 Nov, 22:47.</span></div>
+
+        <article class="msg agent" aria-label="Reply from Dani Okafor">
+          <div class="av agent" aria-hidden="true">DO</div>
+          <div class="card">
+            <div class="mh"><strong>Dani Okafor</strong><span>Harborline support</span><time datetime="2026-11-25T10:03">10:03</time></div>
+            <div class="mb">
+              <p>Hi Maya, thank you for the screenshot. I can see the parcel has had no scan since 20 November. I have asked the carrier to trace it and I will write again as soon as I hear back.</p>
+            </div>
+          </div>
+        </article>
+
+        <div class="day">Thursday 26 November</div>
+
+        <article class="msg note" aria-label="Internal note from Dani Okafor">
+          <div class="av" aria-hidden="true"><svg class="i"><use href="#lock"/></svg></div>
+          <div class="card">
+            <div class="mh"><strong>Internal note</strong><span>Dani Okafor, only agents see this</span><time datetime="2026-11-26T15:20">15:20</time></div>
+            <div class="mb"><p>Carrier trace case TR-77192 opened. They say the Memphis hub has a backlog of about 4 days and give no promise. Merchant policy lets us refund shipping or reship after 7 days late. Reship stock check pending.</p></div>
+          </div>
+        </article>
+
+        <div class="event"><span class="ico"><svg class="i"><use href="#box"/></svg></span><span><b>Merchant confirmed 1 lamp in stock</b> at Alder &amp; Finch. Reship possible today.</span></div>
+
+        <div class="day">Today, Friday 27 November</div>
+
+        <article class="msg" aria-label="Message from Maya Okonkwo-Reyes">
+          <div class="av" aria-hidden="true">MO</div>
+          <div class="card">
+            <div class="mh"><strong>Maya Okonkwo-Reyes</strong><span>Customer, via email</span><time datetime="2026-11-27T08:41">8:41</time></div>
+            <div class="mb">
+              <p>Hello again. It is Friday and there is still nothing, and I have had no update since Wednesday. The birthday is in two days.</p>
+              <p>If the parcel cannot arrive by Saturday, can you send another one a faster way? I would rather pay a bit more than miss the day.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <section class="composer" aria-label="Write a reply">
+      <div class="cbox" id="cbox">
+        <div class="tabs" role="tablist" aria-label="Message type">
+          <button role="tab" id="tab-reply" aria-selected="true" aria-controls="reply" type="button"><svg class="i"><use href="#send"/></svg>Reply</button>
+          <button role="tab" id="tab-note" aria-selected="false" aria-controls="reply" tabindex="-1" type="button"><svg class="i"><use href="#lock"/></svg>Internal note</button>
+          <span class="to" id="to">To <b>maya.okonkwo@fastmail.example</b></span>
+        </div>
+        <label class="sr" for="reply" id="reply-label">Reply to Maya</label>
+        <textarea id="reply" role="tabpanel" aria-labelledby="tab-reply" placeholder="Write your reply to Maya">Hi Maya,
+
+I am sorry about the wait, and thank you for your patience. The carrier has found the parcel stuck at its Memphis hub and cannot give a delivery date.
+
+Because your gift is due on Sunday, I have asked Alder &amp; Finch to send a new lamp and shade today by 2-day express, at no cost to you. It should reach you by Sunday. If the first parcel turns up, you can keep or return it.
+
+I will also refund the original shipping fee of $12.40.
+
+Dani</textarea>
+        <div class="ctool">
+          <button class="tb" type="button" aria-label="Bold"><svg class="i"><use href="#bold"/></svg></button>
+          <button class="tb" type="button" aria-label="Insert link"><svg class="i"><use href="#link"/></svg></button>
+          <button class="tb" type="button" aria-label="Attach file"><svg class="i"><use href="#clip"/></svg></button>
+          <button class="macro" type="button"><svg class="i" style="width:15px;height:15px"><use href="#bolt"/></svg>Macros</button>
+          <span class="sp"></span>
+          <label class="status"><span>Then set to</span>
+            <select id="after"><option>Pending customer</option><option>Open</option><option>Solved</option></select>
+          </label>
+          <button class="btn primary" id="send" type="button"><svg class="i"><use href="#send"/></svg><span>Send reply</span></button>
+        </div>
+      </div>
+      <p class="hint">Press <kbd>Ctrl</kbd> <kbd>Enter</kbd> to send. The shipping refund and the reship are not issued until you confirm them in the side panel.</p>
+    </section>
+  </main>
+
+  <aside class="ctx" aria-label="Customer and order details">
+    <section class="sec">
+      <h2>Customer</h2>
+      <div class="person">
+        <div class="av" aria-hidden="true">MO</div>
+        <div><strong>Maya Okonkwo-Reyes</strong><span>Nashville, TN, 8:52 local</span></div>
+      </div>
+      <dl>
+        <dt>Email</dt><dd>maya.okonkwo@fastmail.example</dd>
+        <dt>Customer since</dt><dd>Mar 2024</dd>
+        <dt>Orders</dt><dd>5 ($612.40 total)</dd>
+        <dt>Satisfaction</dt><dd>4.8 / 5</dd>
+      </dl>
+    </section>
+
+    <section class="sec">
+      <h2>Service time</h2>
+      <div class="sla"><svg class="i"><use href="#clock"/></svg><div><strong>Reply due in 1h 12m</strong>Target is 4 hours for late orders.</div></div>
+    </section>
+
+    <section class="sec">
+      <h2>Order <a href="#">Open in shop</a></h2>
+      <div class="order">
+        <div class="oh"><span>#48213</span><span class="chip warn">8 days late</span></div>
+        <div class="line"><div class="thumb" aria-hidden="true"><svg class="i"><use href="#bolt"/></svg></div><div class="t">Walnut desk lamp<small>Qty 1</small></div><span class="price">$84.00</span></div>
+        <div class="line"><div class="thumb b" aria-hidden="true"><svg class="i"><use href="#box"/></svg></div><div class="t">Linen shade, oat<small>Qty 1</small></div><span class="price">$26.00</span></div>
+        <div class="line"><div class="t">Shipping, standard<small>Paid 12 Nov</small></div><span class="price">$12.40</span></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>Shipment <span>Ridgeway Freight</span></h2>
+      <ol class="track">
+        <li class="done">Label created<small>13 Nov, 09:10</small></li>
+        <li class="done">Picked up, Portland OR<small>14 Nov, 16:22</small></li>
+        <li class="stuck">Arrived Memphis hub, no scan since<small>20 Nov, 22:47. Case TR-77192</small></li>
+        <li>Expected delivery was 19 Nov<small>Shop promised 5 to 7 business days</small></li>
+      </ol>
+    </section>
+
+    <section class="sec">
+      <h2>Shop policy</h2>
+      <p class="policy">After <b>7 days late</b> an agent may refund shipping or reship at the shop's cost. Refunds above <b>$50</b> need the shop's approval.</p>
+    </section>
+
+    <section class="sec">
+      <h2>Actions</h2>
+      <div class="acts">
+        <button class="btn" type="button"><svg class="i"><use href="#refund"/></svg>Refund shipping, $12.40</button>
+        <button class="btn" type="button"><svg class="i"><use href="#truck"/></svg>Reship by 2-day express</button>
+        <button class="btn" type="button"><svg class="i"><use href="#doc"/></svg>Update carrier case</button>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>Earlier conversations</h2>
+      <ul class="prev">
+        <li><a href="#">Wrong shade colour</a><span>Jun 2025, solved</span></li>
+        <li><a href="#">Change delivery address</a><span>Jan 2025, solved</span></li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<script>
+(function(){
+  var tabs=document.querySelectorAll('[role=tab]'),box=document.getElementById('cbox'),
+      ta=document.getElementById('reply'),to=document.getElementById('to'),
+      lane=document.getElementById('lane'),sc=document.getElementById('scroll'),
+      sendLabel=document.querySelector('#send span'),
+      drafts={reply:ta.value,note:''},mode='reply';
+  function setMode(m){
+    drafts[mode]=ta.value;mode=m;
+    tabs.forEach(function(t){var on=t.id==='tab-'+m;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});
+    ta.setAttribute('aria-labelledby','tab-'+m);
+    box.classList.toggle('is-note',m==='note');
+    ta.value=drafts[m];
+    ta.placeholder=m==='note'?'Write a note only agents can see':'Write your reply to Maya';
+    to.hidden=m==='note';
+    sendLabel.textContent=m==='note'?'Add note':'Send reply';
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){setMode(t.id.slice(4))});
+    t.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var n=t.id==='tab-reply'?'note':'reply';setMode(n);document.getElementById('tab-'+n).focus()}
+    });
+  });
+  function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+  function send(){
+    var v=ta.value.trim();if(!v)return;
+    var note=mode==='note',now=new Date(),hm=now.getHours()+':'+('0'+now.getMinutes()).slice(-2);
+    var html=v.split(/\n{2,}/).map(function(p){return '<p>'+esc(p).replace(/\n/g,'<br>')+'</p>'}).join('');
+    var a=document.createElement('article');
+    a.className='msg '+(note?'note':'agent');
+    a.innerHTML='<div class="av'+(note?'':' agent')+'" aria-hidden="true">'+(note?'<svg class="i"><use href="#lock"/></svg>':'DO')+'</div><div class="card"><div class="mh"><strong>'+(note?'Internal note':'Dani Okafor')+'</strong><span>'+(note?'Dani Okafor, only agents see this':'Harborline support')+'</span><time>'+hm+'</time></div><div class="mb">'+html+'</div></div>';
+    lane.appendChild(a);ta.value='';drafts[mode]='';
+    sc.scrollTop=sc.scrollHeight;
+    if(window.innerWidth<=980)a.scrollIntoView({block:'center'});
+  }
+  document.getElementById('send').addEventListener('click',send);
+  ta.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='Enter')send()});
+  document.querySelectorAll('.filters button').forEach(function(b){b.addEventListener('click',function(){
+    document.querySelectorAll('.filters button').forEach(function(o){o.setAttribute('aria-pressed',o===b)})})});
+  sc.scrollTop=sc.scrollHeight;
+})();
+</script>
+</body>
+</html>

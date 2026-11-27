@@ -1,0 +1,20 @@
+{
+  "09-team-members-s1": {
+    "D": { "hierarchy": 9, "layout": 9, "typography": 8, "colour": 8, "craft": 9, "realism": 9, "mobile": 8, "dark": 8, "overall": 9, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the top nav collapses to a lone Team tab so the other sections are unreachable" },
+    "C": { "hierarchy": 7, "layout": 8, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 8, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the owner card floats Active to the right of Owner with no label, so role and status misalign" },
+    "B": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the sidebar background ends at 900px while the page continues below" },
+    "A": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 7, "craft": 5, "realism": 6, "mobile": 5, "dark": 6, "overall": 4, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: a large blank gap between the Work email field and the Role label in the invite card" }
+  },
+  "09-team-members-s2": {
+    "D": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 6, "mobile": 6, "dark": 6, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the top nav links overflow and are cut off at the right edge" },
+    "C": { "hierarchy": 9, "layout": 9, "typography": 9, "colour": 8, "craft": 9, "realism": 9, "mobile": 9, "dark": 8, "overall": 9, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the email placeholder is cut off at 'another@company'" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the invite card fills the whole first screen and pushes the member list far down" },
+    "A": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: member cards use a loose grid with unlabeled last-active text and an indented checkbox" }
+  },
+  "09-team-members-s3": {
+    "D": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 6, "mobile": 5, "dark": 6, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: three stat cards stack and push the member list far down the page" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 9, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the sidebar background ends at 900px while the page continues below" },
+    "B": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 8, "dark": 8, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the native role selects with heavy dark chevrons look unstyled against the rest of the page" },
+    "A": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: emails are truncated and 'Active 2 h ago' repeats the Active badge" }
+  }
+}

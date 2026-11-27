@@ -1,0 +1,100 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "segoe ui variable text"
+  ],
+  "textColors": 14,
+  "minFontPx": 12.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(16, 27, 53)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(27, 67, 198)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 33,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "General",
+        "w": 69,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Team members",
+        "w": 120,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Billing",
+        "w": 59,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Integrations",
+        "w": 97,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Audit log",
+        "w": 79,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 304,
+        "h": 42
+      },
+      {
+        "tag": "select",
+        "text": "Owner\nAdmin\nDesigner\nReviewer\n",
+        "w": 304,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "text": "Send invites",
+        "w": 304,
+        "h": 42
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

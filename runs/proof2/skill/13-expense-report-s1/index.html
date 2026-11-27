@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New expense report - Outlay</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Harbour kit, Steel variant */
+  --accent: #1f5f9e; --accent-hover: #174b7d; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --text-sm: 14px; --text-md: 16px; --text-xl: 20px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px;
+  --w-rail: 320px; --w-content: 1280px; --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #131a2b;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-md)/24px var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+@media (max-width: 640px) { h1 { font-size: 26px; } }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); z-index: 20; }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.ico { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* frame */
+.topbar { background: var(--frame); border-bottom: 1px solid var(--border); }
+.topbar-in { max-width: var(--w-content); margin: 0 auto; padding: 0 var(--s-8); min-height: var(--h-topbar);
+  display: flex; align-items: center; gap: var(--s-8); }
+.brand { display: inline-flex; align-items: center; gap: 10px; font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; min-height: 44px; }
+.topbar nav { display: flex; gap: var(--s-1); flex: 1; min-width: 0; }
+.topbar nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; font-size: var(--text-sm); color: var(--text-muted); }
+.topbar nav a:hover { background: var(--accent-subtle); color: var(--text); }
+.topbar nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--accent); }
+.account { display: flex; align-items: center; gap: var(--s-2); font-size: var(--text-sm); font-weight: 500; white-space: nowrap; }
+.avatar { width: 28px; height: 28px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 600; border: 1px solid var(--border); }
+@media (max-width: 640px) {
+  .topbar-in { flex-wrap: wrap; padding: 0 var(--s-4); gap: 0 var(--s-3); }
+  .brand { order: 1; }
+  .account { order: 2; margin-left: auto; }
+  .account .who { display: none; }
+  .topbar nav { order: 3; flex: 0 0 100%; margin: 0 calc(var(--s-3) * -1); }
+}
+
+/* page */
+.page { max-width: var(--w-content); margin: 0 auto; padding: var(--s-4) var(--s-8) var(--s-12); }
+@media (max-width: 640px) { .page { padding: var(--s-2) var(--s-4) var(--s-8); } }
+.back { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); }
+.back:hover { color: var(--accent); }
+.page-head { margin-bottom: var(--rhythm-content); }
+.sub { margin: var(--rhythm-title) 0 0; color: var(--text-muted); font-size: var(--text-sm); max-width: 90ch; }
+
+/* layout */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); column-gap: var(--s-8); row-gap: var(--rhythm-group); align-items: start;
+  grid-template-areas: "details summary" "lines summary" "actions summary"; }
+.details { grid-area: details; } .lines { grid-area: lines; } .summary { grid-area: summary; } .actions { grid-area: actions; }
+@media (max-width: 1023px) {
+  .layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "details" "lines" "summary" "actions"; }
+}
+.sec-head { margin-bottom: var(--rhythm-content); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); }
+.sec-head p { margin: var(--rhythm-tight) 0 0; color: var(--text-muted); font-size: var(--text-sm); max-width: none; }
+
+/* fields */
+.fields { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s-6) var(--s-4); }
+.f-title { grid-column: span 8; } .f-cc { grid-column: span 4; }
+.f-start, .f-end { grid-column: span 3; } .f-client { grid-column: span 6; } .f-purpose { grid-column: span 12; }
+@media (max-width: 640px) { .fields > * { grid-column: span 12 !important; } }
+.field label { display: block; font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); margin-bottom: var(--rhythm-tight); }
+.err { margin: 0 0 var(--rhythm-tight); font-size: var(--text-sm); font-weight: 500; color: var(--danger); display: flex; gap: var(--s-1); align-items: flex-start; }
+.err .ico { margin-top: 3px; }
+input[type="text"], input[type="date"], select, textarea {
+  width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface);
+  border: 1px solid var(--border-strong); border-radius: var(--r-md); font-size: var(--text-md);
+  transition: border-color var(--t-fast) var(--ease); }
+textarea { padding: var(--s-2) var(--s-3); line-height: 24px; resize: vertical; min-height: 76px; }
+input:hover, select:hover, textarea:hover { border-color: var(--text-muted); }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; border-color: var(--accent); }
+[aria-invalid="true"] { border: 2px solid var(--danger) !important; padding-left: calc(var(--s-3) - 1px); }
+input[readonly] { background: var(--bg-subtle); }
+.select { position: relative; }
+.select select { appearance: none; padding-right: 36px; text-overflow: ellipsis; }
+.select .ico { position: absolute; right: var(--s-3); top: 50%; margin-top: -8px; pointer-events: none; color: var(--text-muted); }
+.num-in { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4);
+  border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text);
+  font-size: var(--text-sm); font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn:active { background: var(--border); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-size: var(--text-md); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-primary[aria-disabled="true"] { cursor: progress; background: var(--accent-hover); }
+.btn-text { border-color: transparent; background: transparent; color: var(--accent); }
+.btn-text:hover { background: var(--accent-subtle); }
+
+/* expense lines */
+.cols, .line, .lines-foot { --col: 136px 140px minmax(0, 1fr) 92px 150px 36px;
+  display: grid; grid-template-columns: var(--col); column-gap: var(--s-2); align-items: start; }
+.cols { padding-bottom: var(--s-2); border-bottom: 1px solid var(--border); font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); }
+.cols .r { text-align: right; }
+.line { padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+.line .c { position: relative; min-width: 0; }
+.line input[type="text"], .line input[type="date"], .line select, .line .receipt { font-size: var(--text-sm); }
+.line input, .line select { padding: 0 var(--s-2); }
+.line .select select { padding-right: 28px; }
+.line .select .ico { right: var(--s-2); }
+.line .lbl { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.line-head { display: contents; }
+.line-no { display: none; }
+.rm { position: relative; display: grid; place-items: center; width: 36px; height: var(--control-h); border: 0; border-radius: var(--r-md); background: transparent; color: var(--text-muted); cursor: pointer; }
+.rm:hover { background: var(--danger-subtle); color: var(--danger); }
+.line .rm { order: 6; } .line .line-err { order: 7; }
+@media (max-width: 640px) { .line .rm, .line .line-err { order: 0; } }
+.rm-t { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.receipt { position: relative; width: 100%; justify-content: flex-start; font-weight: 500; overflow: hidden; }
+.receipt .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.receipt:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.receipt input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.receipt.none { color: var(--accent); }
+.receipt.has .ico { color: var(--success); }
+.receipt.bad { border: 2px solid var(--danger); color: var(--danger); }
+.line-err { grid-column: 1 / -1; margin: var(--s-2) 0 0; }
+.lines-foot { padding-top: var(--s-4); align-items: baseline; }
+.lines-foot .lbl-t { grid-column: 3; text-align: right; color: var(--text-muted); font-size: var(--text-sm); font-weight: 500; }
+.lines-foot .val { grid-column: 4; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 640px) {
+  .sec-head { flex-direction: column; }
+  .cols { display: none; }
+  .line { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-3); padding: var(--s-5) 0; }
+  .line-head { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; margin-top: calc(var(--s-2) * -1); }
+  .line-no { display: block; font-weight: 600; }
+  .rm { width: auto; padding: 0 var(--s-3); display: inline-flex; gap: var(--s-1); min-height: 44px; font-size: var(--text-sm); font-weight: 500; margin-right: calc(var(--s-3) * -1); }
+  .rm-t { position: static; width: auto; height: auto; margin: 0; clip-path: none; overflow: visible; }
+  .line .lbl { position: static; width: auto; height: auto; margin: 0 0 var(--rhythm-tight); overflow: visible; clip-path: none; display: block; font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); }
+  .c.merch { grid-column: 1 / -1; }
+  .lines-foot { grid-template-columns: minmax(0, 1fr) auto; }
+  .lines-foot .lbl-t, .lines-foot .val { grid-column: auto; }
+  .lines-foot .lbl-t { text-align: left; }
+  .lines-foot > :nth-child(n+3) { display: none; }
+  .line input[type="text"], .line input[type="date"], .line select, .line .receipt { font-size: var(--text-md); }
+  .line input, .line select { padding: 0 var(--s-3); }
+}
+
+/* summary */
+.summary { position: sticky; top: var(--s-4); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6); }
+@media (max-width: 1023px) { .summary { position: static; } }
+.key-l { font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); }
+.key { font: 700 36px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin: var(--s-1) 0 0; }
+.key-s { margin: var(--rhythm-tight) 0 0; font-size: var(--text-sm); color: var(--text-muted); }
+.sum-sec { margin-top: var(--s-6); padding-top: var(--s-6); border-top: 1px solid var(--border); }
+.sum-sec h2 { font-size: var(--text-md); line-height: 24px; margin-bottom: var(--s-3); }
+dl.rows { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2) var(--s-4); font-size: var(--text-sm); }
+dl.rows dt { color: var(--text-muted); } dl.rows dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+.meter-h { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--text-sm); margin-bottom: var(--s-2); }
+.meter-h span { font-weight: 600; }
+.meter-h b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.meter { height: 8px; border-radius: var(--r-full); background: var(--bg-subtle); border: 1px solid var(--border); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--accent); border-radius: var(--r-full); }
+.meter-n { margin: var(--rhythm-tight) 0 0; font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); }
+.rc { display: flex; align-items: center; gap: var(--s-2); font-size: var(--text-sm); }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; padding: 2px var(--s-2); border-radius: var(--r-sm); font-size: var(--text-xs); line-height: 16px; font-weight: 500; }
+.badge.warn { background: var(--warning-subtle); color: var(--warning); }
+.badge.ok { background: var(--success-subtle); color: var(--success); }
+.summary .btn-primary { width: 100%; margin-top: var(--s-5); }
+.approver { font-size: var(--text-sm); margin: 0; }
+.approver b { font-weight: 600; }
+@media (max-width: 1023px) { .summary .btn-primary { display: none; } }
+
+/* actions */
+.actions { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.actions .btn-primary { min-width: 220px; }
+@media (max-width: 640px) { .actions { flex-direction: column; align-items: stretch; } .actions .btn { width: 100%; } }
+
+/* error summary */
+.errsum { border: 2px solid var(--danger); border-radius: var(--r-lg); background: var(--danger-subtle); padding: var(--s-4) var(--s-6); margin-bottom: var(--rhythm-content); max-width: 760px; }
+.errsum h2 { font-size: var(--text-xl); }
+.errsum ul { margin: var(--s-2) 0 0; padding-left: var(--s-5); }
+.errsum li { margin: var(--s-1) 0; font-size: var(--text-sm); }
+.errsum a { color: var(--danger); text-decoration: underline; text-underline-offset: 2px; font-weight: 500; display: inline-block; padding: 2px 0; }
+@media (max-width: 640px) { .errsum { padding: var(--s-4); } .errsum a { padding: 10px 0; } }
+
+/* done */
+.done { max-width: 640px; padding-top: var(--s-6); }
+.done h1 { margin-bottom: 0; }
+.done-mark { width: 48px; height: 48px; border-radius: var(--r-full); background: var(--success-subtle); color: var(--success); display: grid; place-items: center; margin-bottom: var(--s-4); }
+.done-mark .ico { width: 24px; height: 24px; stroke-width: 2.5; }
+.done dl.rows { margin: var(--s-6) 0; padding: var(--s-4) 0; border-block: 1px solid var(--border); font-size: var(--text-md); }
+
+/* toast */
+.toast { position: fixed; left: var(--s-6); bottom: var(--s-6); z-index: 30; display: flex; align-items: center; gap: var(--s-3);
+  background: var(--text); color: var(--bg); border-radius: var(--r-lg); padding: var(--s-1) var(--s-1) var(--s-1) var(--s-4); box-shadow: var(--shadow-pop); font-size: var(--text-sm); max-width: calc(100vw - 32px); }
+.toast button { min-height: 44px; padding: 0 var(--s-4); border: 0; background: transparent; color: var(--bg); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; border-radius: var(--r-md); }
+.toast button:focus-visible { outline-color: var(--bg); }
+@media (max-width: 640px) { .toast { left: var(--s-4); right: var(--s-4); bottom: var(--s-4); } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-clip" viewBox="0 0 24 24"><path d="M21 12.5l-8.6 8.6a5.5 5.5 0 01-7.8-7.8l9-9a3.7 3.7 0 115.2 5.2l-9 9a1.8 1.8 0 01-2.6-2.6l8.2-8.2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-chev-d" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></symbol>
+</svg>
+<a class="skip-link" href="#main">Skip to the form</a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#" aria-label="Outlay home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><rect x="7" y="7" width="14" height="3.5" rx="1.75" fill="var(--on-accent)"/><rect x="7" y="12.25" width="9.5" height="3.5" rx="1.75" fill="var(--on-accent)"/><rect x="7" y="17.5" width="12" height="3.5" rx="1.75" fill="var(--on-accent)"/></svg>
+      <span>Outlay</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#" aria-current="page">Reports</a>
+      <a href="#">Cards</a>
+      <a href="#">Approvals</a>
+      <a href="#">Policies</a>
+    </nav>
+    <div class="account"><span class="avatar" aria-hidden="true">PR</span><span class="who">Priya Raman</span></div>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div id="head">
+    <a class="back" href="#"><svg class="ico" aria-hidden="true"><use href="#i-chev-l"/></svg>Expense reports</a>
+    <div class="page-head">
+      <h1>New expense report</h1>
+      <p class="sub">Itemise your trip, attach a receipt to each expense and send it to your approver. Your draft saved at 09:42.</p>
+    </div>
+  </div>
+
+  <div id="errsum" class="errsum" tabindex="-1" role="alert" hidden></div>
+
+  <form id="report" class="layout" novalidate>
+    <section class="details" aria-labelledby="h-details">
+      <div class="sec-head"><h2 id="h-details">Trip details</h2></div>
+      <div class="fields">
+        <div class="field f-title">
+          <label for="f-title">Report title</label>
+          <div class="err" id="f-title-err" hidden></div>
+          <input type="text" id="f-title" value="Leeds client visit, Calder &amp; Rowe" autocomplete="off">
+        </div>
+        <div class="field f-cc">
+          <label for="f-cc">Cost centre</label>
+          <div class="select"><select id="f-cc">
+            <option>4120 Enterprise sales</option><option>4130 Sales engineering</option><option>4210 Customer success</option><option>5010 Marketing</option>
+          </select><svg class="ico" aria-hidden="true"><use href="#i-chev-d"/></svg></div>
+        </div>
+        <div class="field f-start">
+          <label for="f-start">Trip start</label>
+          <input type="date" id="f-start" value="2026-11-17">
+        </div>
+        <div class="field f-end">
+          <label for="f-end">Trip end</label>
+          <div class="err" id="f-end-err" hidden></div>
+          <input type="date" id="f-end" value="2026-11-19">
+        </div>
+        <div class="field f-client">
+          <label for="f-client">Client or project (optional)</label>
+          <input type="text" id="f-client" value="Calder &amp; Rowe Logistics, rollout kickoff" autocomplete="off">
+        </div>
+        <div class="field f-purpose">
+          <label for="f-purpose">Business purpose</label>
+          <div class="err" id="f-purpose-err" hidden></div>
+          <textarea id="f-purpose" rows="3">Two days on site with the Calder &amp; Rowe operations team to plan the depot rollout, plus a client dinner with their finance and IT leads on the evening of the 18th.</textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="lines" aria-labelledby="h-lines">
+      <div class="sec-head">
+        <div>
+          <h2 id="h-lines">Expenses</h2>
+          <p id="lines-intro"></p>
+        </div>
+        <button type="button" class="btn" id="add"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg>Add expense</button>
+      </div>
+      <div class="cols" aria-hidden="true">
+        <span>Date</span><span>Category</span><span>Merchant</span><span class="r">Amount (GBP)</span><span>Receipt</span><span></span>
+      </div>
+      <div id="lines"></div>
+      <div class="lines-foot"><span class="lbl-t">Total</span><span class="val" id="foot-total"></span><span></span><span></span></div>
+    </section>
+
+    <aside class="summary" aria-labelledby="h-sum">
+      <h2 class="sr-only" id="h-sum">Report summary</h2>
+      <div class="key-l">Total to reimburse</div>
+      <p class="key" id="key">£0.00</p>
+      <p class="key-s" id="key-s"></p>
+      <button type="submit" class="btn btn-primary" id="submit-a">Submit for approval</button>
+
+      <div class="sum-sec">
+        <h2>By category</h2>
+        <dl class="rows" id="cats"></dl>
+      </div>
+      <div class="sum-sec">
+        <div class="meter-h"><span>Meals allowance</span><b id="meal-v"></b></div>
+        <div class="meter" id="meter" role="img"><i id="meter-i"></i></div>
+        <p class="meter-n" id="meter-n"></p>
+      </div>
+      <div class="sum-sec">
+        <h2>Receipts</h2>
+        <div class="rc" id="rc"></div>
+      </div>
+      <div class="sum-sec">
+        <h2>Approval</h2>
+        <p class="approver"><b>Marcus Whitfield</b>, Head of Sales, approves this report. Payment arrives in the 11 December expense run.</p>
+      </div>
+    </aside>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary" id="submit-b">Submit for approval</button>
+      <button type="button" class="btn" id="draft">Save draft</button>
+      <a class="btn btn-text" href="#">Cancel</a>
+    </div>
+  </form>
+
+  <section id="done" class="done" hidden aria-labelledby="done-h">
+    <div class="done-mark"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg></div>
+    <h1 id="done-h" tabindex="-1">Sent to Marcus Whitfield</h1>
+    <p class="sub" id="done-p"></p>
+    <dl class="rows" id="done-rows"></dl>
+    <div class="actions">
+      <a class="btn btn-primary" href="#">View report</a>
+      <a class="btn" href="#">Back to expense reports</a>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden><span id="toast-t"></span><button type="button" id="toast-undo">Undo</button></div>
+
+<script>
+const CATS = ['Travel', 'Lodging', 'Meals', 'Local transport', 'Entertainment', 'Other'];
+const MEAL_PER_DAY = 45, RECEIPT_ABOVE = 10;
+let nextId = 12;
+let lines = [
+  { id: 1,  date: '2026-11-17', cat: 'Travel',               merchant: "LNER, London King's Cross to Leeds", amount: '142.60', receipt: 'lner-kgx-leeds.pdf' },
+  { id: 2,  date: '2026-11-17', cat: 'Meals',                merchant: 'Kirkgate Kitchen, Leeds',            amount: '18.40',  receipt: 'kirkgate-lunch.jpg' },
+  { id: 3,  date: '2026-11-17', cat: 'Lodging',              merchant: 'The Wharf Hotel, Leeds',             amount: '129.00', receipt: 'wharf-hotel-17-nov.pdf' },
+  { id: 4,  date: '2026-11-17', cat: 'Meals',                merchant: 'Slate & Fig, Leeds',                 amount: '27.50',  receipt: 'slate-fig-dinner.jpg' },
+  { id: 5,  date: '2026-11-18', cat: 'Meals',                merchant: 'Corner Bakehouse, Leeds',            amount: '11.80',  receipt: '' },
+  { id: 6,  date: '2026-11-18', cat: 'Local transport',      merchant: 'Leeds Cabs, to Calder & Rowe',       amount: '23.40',  receipt: 'leeds-cabs-18-nov.jpg' },
+  { id: 7,  date: '2026-11-18', cat: 'Entertainment', merchant: 'Harvest Yard, Leeds (4 guests)',     amount: '212.00', receipt: 'harvest-yard-dinner.pdf' },
+  { id: 8,  date: '2026-11-18', cat: 'Lodging',              merchant: 'The Wharf Hotel, Leeds',             amount: '129.00', receipt: 'wharf-hotel-18-nov.pdf' },
+  { id: 9,  date: '2026-11-19', cat: 'Meals',                merchant: 'Station Kitchen, Leeds',             amount: '14.20',  receipt: 'station-kitchen.jpg' },
+  { id: 10, date: '2026-11-19', cat: 'Local transport',      merchant: 'Leeds Cabs, to station',             amount: '16.80',  receipt: 'leeds-cabs-19-nov.jpg' },
+  { id: 11, date: '2026-11-19', cat: 'Travel',               merchant: "LNER, Leeds to London King's Cross", amount: '138.40', receipt: 'lner-leeds-kgx.pdf' },
+];
+let errors = {};   // key -> message. Keys: title, end, purpose, and date|merch|amt|rec plus -<line id>
+let pending = false, removed = null, toastTimer;
+
+const $ = (s) => document.querySelector(s);
+const money = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const amt = (l) => { const n = parseFloat(String(l.amount).replace(/,/g, '')); return isNaN(n) ? 0 : n; };
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+const icon = (id) => `<svg class="ico" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const tripDays = () => Math.max(1, Math.round((new Date($('#f-end').value) - new Date($('#f-start').value)) / 864e5) + 1) || 1;
+const lineMsg = (l) => ['date', 'merch', 'amt', 'rec'].map((k) => errors[k + '-' + l.id]).find(Boolean);
+
+function receiptCell(l) {
+  const has = !!l.receipt, bad = errors['rec-' + l.id];
+  return `<label class="btn receipt ${has ? 'has' : 'none'} ${bad ? 'bad' : ''}" title="${has ? esc(l.receipt) : 'Attach a receipt'}">
+    ${icon(has ? 'check' : 'clip')}<span class="t">${has ? esc(l.receipt) : 'Attach receipt'}</span>
+    <span class="sr-only">${has ? 'Replace receipt' : 'Attach receipt'} for ${esc(l.merchant || 'new expense')}</span>
+    <input type="file" id="r-${l.id}" accept="image/*,application/pdf" data-id="${l.id}" ${pending ? 'disabled' : ''} ${bad ? 'aria-invalid="true" aria-describedby="e-' + l.id + '"' : ''}></label>`;
+}
+function lineHtml(l, i) {
+  const opts = CATS.map((c) => `<option ${c === l.cat ? 'selected' : ''}>${c}</option>`).join('');
+  const inv = (k) => errors[k + '-' + l.id] ? ` aria-invalid="true" aria-describedby="e-${l.id}"` : '';
+  const ro = pending ? 'readonly' : '';
+  const msg = lineMsg(l);
+  return `<div class="line" role="group" aria-label="Expense ${i + 1}" data-id="${l.id}">
+    <div class="line-head"><span class="line-no">Expense ${i + 1}</span>
+      <button type="button" class="rm" data-rm="${l.id}" ${pending ? 'disabled' : ''}>${icon('trash')}<span class="rm-t">Remove<span class="sr-only"> expense ${i + 1}, ${esc(l.merchant || 'no merchant')}</span></span></button></div>
+    <div class="c"><label class="lbl" for="d-${l.id}">Date</label><input type="date" id="d-${l.id}" data-k="date" data-id="${l.id}" value="${l.date}" ${ro}${inv('date')}></div>
+    <div class="c"><label class="lbl" for="c-${l.id}">Category</label><div class="select"><select id="c-${l.id}" data-k="cat" data-id="${l.id}" ${pending ? 'disabled' : ''}>${opts}</select>${icon('chev-d')}</div></div>
+    <div class="c merch"><label class="lbl" for="m-${l.id}">Merchant</label><input type="text" id="m-${l.id}" data-k="merchant" data-id="${l.id}" value="${esc(l.merchant)}" ${ro} autocomplete="off"${inv('merch')}></div>
+    <div class="c"><label class="lbl" for="a-${l.id}">Amount (GBP)</label><input type="text" inputmode="decimal" class="num-in" id="a-${l.id}" data-k="amount" data-id="${l.id}" value="${esc(l.amount)}" ${ro} autocomplete="off"${inv('amt')}></div>
+    <div class="c rcell"><span class="lbl">Receipt</span>${receiptCell(l)}</div>
+    <p class="err line-err" id="e-${l.id}" ${msg ? '' : 'hidden'}>${msg ? icon('alert') + esc(msg) : ''}</p>
+  </div>`;
+}
+const renderLines = () => { $('#lines').innerHTML = lines.map(lineHtml).join(''); };
+
+function renderSummary() {
+  const total = lines.reduce((s, l) => s + amt(l), 0);
+  const by = (c) => lines.filter((l) => l.cat === c);
+  const sum = (c) => by(c).reduce((s, l) => s + amt(l), 0);
+  const days = tripDays(), allow = MEAL_PER_DAY * days, meals = sum('Meals');
+  const need = lines.filter((l) => amt(l) > RECEIPT_ABOVE), miss = need.filter((l) => !l.receipt);
+  const span = `${fmtDate($('#f-start').value)} to ${fmtDate($('#f-end').value)}`;
+  $('#key').textContent = money.format(total);
+  $('#key-s').textContent = `${plural(lines.length, 'expense', 'expenses')} over ${plural(days, 'day', 'days')}`;
+  $('#foot-total').textContent = money.format(total);
+  $('#lines-intro').textContent = `${plural(lines.length, 'expense', 'expenses')} from ${span}. Receipts are required for anything above £${RECEIPT_ABOVE}.`;
+  $('#cats').innerHTML = CATS.filter((c) => by(c).length).map((c) => `<dt>${c} (${by(c).length})</dt><dd>${money.format(sum(c))}</dd>`).join('');
+  $('#meal-v').textContent = `${money.format(meals)} of ${money.format(allow)}`;
+  $('#meter-i').style.width = Math.min(100, (meals / allow) * 100) + '%';
+  $('#meter').setAttribute('aria-label', `Meals ${money.format(meals)} of the ${money.format(allow)} allowance`);
+  $('#meter-n').textContent = `${plural(days, 'day', 'days')} at £${MEAL_PER_DAY} a day. Client entertainment is counted separately.`;
+  $('#rc').innerHTML = miss.length
+    ? `<span class="badge warn">${miss.length} missing</span><span>${need.length - miss.length} of ${need.length} attached</span>`
+    : `<span class="badge ok">Complete</span><span>${need.length} of ${need.length} attached</span>`;
+}
+
+function validate() {
+  errors = {}; const list = [];
+  const add = (key, msg, target, short) => { errors[key] = msg; list.push({ msg: short || msg, target }); };
+  if (!$('#f-title').value.trim()) add('title', 'Enter a title so your approver can find this report.', 'f-title');
+  const s = $('#f-start').value, e = $('#f-end').value;
+  if (!s || !e || e < s) add('end', 'Choose a trip end date on or after the start date.', 'f-end');
+  if (!$('#f-purpose').value.trim()) add('purpose', 'Enter the business purpose, for example the client and what you met about.', 'f-purpose');
+  lines.forEach((l, i) => {
+    const who = `${l.merchant || 'expense ' + (i + 1)}, ${l.date ? fmtDate(l.date) : 'no date'}`;
+    if (!l.date || (s && e && (l.date < s || l.date > e))) add('date-' + l.id, `Choose a date between ${fmtDate(s)} and ${fmtDate(e)}.`, 'd-' + l.id, `Choose a date within the trip for ${who}.`);
+    if (!l.merchant.trim()) add('merch-' + l.id, 'Enter the merchant.', 'm-' + l.id, `Enter the merchant for expense ${i + 1}.`);
+    if (!(amt(l) > 0)) add('amt-' + l.id, 'Enter an amount, like 12.50.', 'a-' + l.id, `Enter an amount for ${who}.`);
+    else if (amt(l) > RECEIPT_ABOVE && !l.receipt) add('rec-' + l.id, `Attach a receipt, or remove this expense. Receipts are required above £${RECEIPT_ABOVE}.`, 'r-' + l.id, `Attach a receipt for ${who} (${money.format(amt(l))}).`);
+  });
+  return list;
+}
+function showErrors(list) {
+  ['title', 'end', 'purpose'].forEach((k) => {
+    const el = $('#f-' + k + '-err'), inp = $('#f-' + k);
+    el.hidden = !errors[k]; el.innerHTML = errors[k] ? icon('alert') + esc(errors[k]) : '';
+    if (errors[k]) { inp.setAttribute('aria-invalid', 'true'); inp.setAttribute('aria-describedby', el.id); }
+    else { inp.removeAttribute('aria-invalid'); inp.removeAttribute('aria-describedby'); }
+  });
+  renderLines();
+  const box = $('#errsum');
+  if (!list.length) { box.hidden = true; return; }
+  box.innerHTML = `<h2>There is a problem</h2><ul>${list.map((x) => `<li><a href="#${x.target}">${esc(x.msg)}</a></li>`).join('')}</ul>`;
+  box.hidden = false; box.focus();
+}
+
+function startSubmit(hold) {
+  pending = true;
+  ['#submit-a', '#submit-b'].forEach((s) => { const b = $(s); b.setAttribute('aria-disabled', 'true'); b.textContent = 'Submitting…'; });
+  document.querySelectorAll('#report input:not([type=file]), #report textarea').forEach((el) => (el.readOnly = true));
+  document.querySelectorAll('#report select, #report .rm, #report input[type=file], #add, #draft').forEach((el) => (el.disabled = true));
+  if (!hold) setTimeout(finish, 1400);
+}
+function finish() {
+  const total = lines.reduce((s, l) => s + amt(l), 0);
+  $('#report').hidden = true; $('#errsum').hidden = true; $('#head').hidden = true; $('#done').hidden = false;
+  $('#done-p').textContent = 'He gets an email now and usually decides within two working days. We email you when he does. Reference ER-2026-0187.';
+  $('#done-rows').innerHTML = `<dt>Total</dt><dd>${money.format(total)}</dd><dt>Expenses</dt><dd>${lines.length}</dd><dt>Submitted</dt><dd>27 November 2026</dd><dt>Payment, if approved</dt><dd>11 December 2026</dd>`;
+  $('#done-h').focus();
+}
+function toast(text) {
+  $('#toast-t').textContent = text; $('#toast').hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => ($('#toast').hidden = true), 8000);
+}
+
+$('#report').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (pending) return;
+  const list = validate(); showErrors(list); renderSummary();
+  if (!list.length) startSubmit(false);
+});
+$('#draft').addEventListener('click', () => toast('Draft saved at ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + '.'));
+$('#add').addEventListener('click', () => {
+  const l = { id: nextId++, date: $('#f-start').value, cat: 'Meals', merchant: '', amount: '', receipt: '' };
+  lines.push(l); renderLines(); renderSummary(); $('#m-' + l.id).focus();
+});
+$('#lines').addEventListener('input', (e) => {
+  const t = e.target, l = lines.find((x) => x.id === +t.dataset.id);
+  if (!l || !t.dataset.k) return;
+  l[t.dataset.k] = t.value; renderSummary();
+});
+$('#lines').addEventListener('change', (e) => {
+  const t = e.target, l = lines.find((x) => x.id === +t.dataset.id);
+  if (!l || t.type !== 'file' || !t.files[0]) return;
+  l.receipt = t.files[0].name; delete errors['rec-' + l.id];
+  t.closest('.rcell').querySelector('label.btn').outerHTML = receiptCell(l);
+  const m = lineMsg(l), p = $('#e-' + l.id); p.hidden = !m; if (!m) p.innerHTML = '';
+  renderSummary(); $('#r-' + l.id).focus();
+});
+$('#lines').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-rm]'); if (!b) return;
+  const i = lines.findIndex((x) => x.id === +b.dataset.rm);
+  removed = { line: lines[i], index: i }; lines.splice(i, 1);
+  renderLines(); renderSummary(); toast(`Removed ${removed.line.merchant || 'the expense'}.`);
+  (document.querySelector('#lines .rm') || $('#add')).focus();
+});
+$('#toast-undo').addEventListener('click', () => {
+  if (!removed) return;
+  lines.splice(removed.index, 0, removed.line); removed = null; $('#toast').hidden = true;
+  renderLines(); renderSummary();
+});
+['#f-start', '#f-end'].forEach((s) => $(s).addEventListener('input', renderSummary));
+$('#errsum').addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#"]'); if (!a) return;
+  e.preventDefault();
+  const el = document.getElementById(a.getAttribute('href').slice(1)); if (!el) return;
+  el.scrollIntoView({ block: 'center' }); el.focus();
+});
+
+renderLines(); renderSummary();
+const state = new URLSearchParams(location.search).get('state');
+if (state === 'error') { const list = validate(); showErrors(list); renderSummary(); }
+if (state === 'loading') { lines.find((l) => !l.receipt).receipt = 'corner-bakehouse-18-nov.jpg'; renderLines(); renderSummary(); startSubmit(true); }
+</script>
+</body>
+</html>

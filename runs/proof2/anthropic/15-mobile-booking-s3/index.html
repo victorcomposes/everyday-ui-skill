@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a check-up - Fernlea Dental</title>
+<style>
+:root {
+  --paper: #f6f9f6;
+  --card: #ffffff;
+  --ink: #14291f;
+  --ink-2: #4d6358;
+  --line: #d8e3da;
+  --fern: #23694b;
+  --fern-deep: #123a2a;
+  --on-fern: #f3faf5;
+  --mist: #e6f0e8;
+  --sun: #f4c04e;
+  --sun-ink: #3b2c00;
+  --off: #8a9b90;
+  --stage: #dfe9e1;
+  --focus: #0b6bd6;
+  --shadow: 0 1px 0 rgba(18,58,42,.06), 0 12px 32px -12px rgba(18,58,42,.28);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a14;
+    --card: #17261d;
+    --ink: #e9f3ec;
+    --ink-2: #a2b8aa;
+    --line: #2a4033;
+    --fern: #6cc79a;
+    --fern-deep: #0a1510;
+    --on-fern: #0b1d13;
+    --mist: #1d3427;
+    --sun: #f0bd4a;
+    --sun-ink: #2a1f00;
+    --off: #6f8577;
+    --stage: #08110c;
+    --focus: #7db8ff;
+    --shadow: 0 0 0 1px rgba(255,255,255,.04), 0 18px 40px -12px rgba(0,0,0,.7);
+  }
+}
+* { box-sizing: border-box; margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--stage);
+  color: var(--ink);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 700px) {
+  body { align-items: center; padding: 24px 0; }
+  .app { min-height: 0; height: min(852px, calc(100vh - 48px)); min-height: 0; border-radius: 36px; overflow: hidden; box-shadow: var(--shadow); }
+}
+
+/* header */
+.top {
+  position: relative;
+  background: var(--fern-deep);
+  color: #eaf5ee;
+  padding: 14px 20px 22px;
+  overflow: hidden;
+  flex: none;
+}
+.top svg.frond { position: absolute; right: -18px; top: -6px; width: 150px; height: 130px; opacity: .55; pointer-events: none; }
+.nav { display: flex; align-items: center; gap: 10px; position: relative; }
+.back {
+  width: 44px; height: 44px; margin-left: -10px; border: 0; background: transparent; border-radius: 50%;
+  display: grid; place-items: center; color: inherit;
+}
+.back:hover { background: rgba(255,255,255,.1); }
+.clinic { font-size: 14px; color: #a9c9b6; }
+h1 { font-size: 28px; line-height: 1.1; font-weight: 700; letter-spacing: -.02em; margin-top: 10px; position: relative; }
+.visit { margin-top: 6px; font-size: 15px; color: #c6dccf; position: relative; max-width: 34ch; }
+
+/* scroll body */
+.scroll { flex: 1; overflow-y: auto; padding: 4px 20px 24px; }
+section { padding-top: 22px; }
+.head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.step {
+  width: 26px; height: 26px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-size: 13px; font-weight: 700;
+  background: var(--mist); color: var(--fern); border: 1.5px solid var(--fern);
+}
+.step.done { background: var(--fern); color: var(--on-fern); }
+h2 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+.pick { margin-left: auto; font-size: 14px; color: var(--ink-2); }
+
+/* dentists */
+.dentists { display: grid; gap: 10px; padding: 0; list-style: none; }
+.dentist {
+  width: 100%; text-align: left; display: flex; align-items: center; gap: 14px;
+  background: var(--card); border: 1.5px solid var(--line); border-radius: 16px; padding: 12px 14px; min-height: 72px;
+}
+.dentist[aria-checked="true"] { border-color: var(--fern); background: var(--mist); box-shadow: inset 0 0 0 1px var(--fern); }
+.avatar {
+  width: 48px; height: 48px; border-radius: 50%; flex: none; display: grid; place-items: center;
+  font-weight: 700; font-size: 16px; letter-spacing: .02em; color: #fff;
+}
+.a1 { background: #23694b; } .a2 { background: #3f5f9a; } .a3 { background: #8a5a8c; }
+.dentist .name { font-weight: 650; font-size: 16px; }
+.dentist .role { font-size: 14px; color: var(--ink-2); }
+.dentist .next { font-size: 13px; color: var(--fern); font-weight: 600; margin-top: 2px; }
+.radio { margin-left: auto; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--off); flex: none; display: grid; place-items: center; }
+.dentist[aria-checked="true"] .radio { border-color: var(--fern); background: var(--fern); }
+.dentist[aria-checked="true"] .radio::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--on-fern); }
+
+/* dates */
+.dates {
+  display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x proximity;
+  margin: 0 -20px; padding: 2px 20px 8px; scroll-padding-inline: 20px; scrollbar-width: none;
+}
+.dates::-webkit-scrollbar { display: none; }
+.day {
+  flex: none; width: 58px; height: 80px; scroll-snap-align: start; border-radius: 16px;
+  background: var(--card); border: 1.5px solid var(--line);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+}
+.day .wd { font-size: 13px; color: var(--ink-2); }
+.day .dn { font-size: 22px; font-weight: 700; line-height: 1.1; }
+.day .mo { font-size: 11px; color: var(--ink-2); height: 13px; }
+.day[aria-pressed="true"] { background: var(--fern); border-color: var(--fern); color: var(--on-fern); }
+.day[aria-pressed="true"] .wd, .day[aria-pressed="true"] .mo { color: var(--on-fern); opacity: .85; }
+.day:disabled { cursor: not-allowed; background: transparent; border-style: dashed; color: var(--off); }
+.day:disabled .wd, .day:disabled .mo { color: var(--off); }
+
+/* times */
+.period { font-size: 14px; font-weight: 600; color: var(--ink-2); margin: 14px 0 8px; }
+.period:first-of-type { margin-top: 0; }
+.slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.slot {
+  height: 46px; border-radius: 12px; background: var(--card); border: 1.5px solid var(--line);
+  font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;
+}
+.slot[aria-pressed="true"] { background: var(--sun); border-color: var(--sun); color: var(--sun-ink); }
+.slot:disabled { cursor: not-allowed; color: var(--off); background: transparent; border-style: dashed; font-weight: 500; text-decoration: line-through; text-decoration-thickness: 1px; }
+.note { font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+.empty { background: var(--mist); border-radius: 14px; padding: 16px; font-size: 15px; color: var(--ink-2); }
+
+/* footer */
+.bar {
+  flex: none; background: var(--card); border-top: 1px solid var(--line);
+  padding: 12px 20px calc(14px + env(safe-area-inset-bottom));
+}
+.sum { font-size: 14px; color: var(--ink-2); margin-bottom: 10px; min-height: 20px; }
+.sum strong { color: var(--ink); font-weight: 650; }
+.cta {
+  width: 100%; height: 54px; border: 0; border-radius: 16px; background: var(--fern); color: var(--on-fern);
+  font-size: 17px; font-weight: 700;
+}
+.cta:disabled { background: var(--mist); color: var(--off); cursor: not-allowed; }
+.cta:not(:disabled):active { transform: scale(.985); }
+
+/* confirmation */
+.done-view { display: none; flex: 1; flex-direction: column; padding: 36px 20px 24px; overflow-y: auto; }
+.app.booked .scroll, .app.booked .bar { display: none; }
+.app.booked .done-view { display: flex; }
+.tick { width: 64px; height: 64px; border-radius: 50%; background: var(--fern); color: var(--on-fern); display: grid; place-items: center; animation: pop .45s cubic-bezier(.2,1.4,.4,1) both; }
+@keyframes pop { from { transform: scale(.6); opacity: 0; } }
+.done-view h2 { font-size: 26px; margin-top: 20px; letter-spacing: -.02em; }
+.done-view p { color: var(--ink-2); margin-top: 6px; max-width: 32ch; }
+.ticket { margin-top: 24px; background: var(--card); border: 1.5px solid var(--line); border-radius: 18px; padding: 4px 18px; }
+.ticket dl { display: grid; grid-template-columns: auto 1fr; }
+.ticket dt, .ticket dd { padding: 13px 0; border-bottom: 1px solid var(--line); }
+.ticket dt { color: var(--ink-2); font-size: 14px; padding-right: 16px; }
+.ticket dd { text-align: right; font-weight: 600; }
+.ticket dt:nth-last-of-type(1), .ticket dd:last-of-type { border-bottom: 0; }
+.ghost { margin-top: auto; width: 100%; height: 52px; border-radius: 16px; border: 1.5px solid var(--fern); background: transparent; color: var(--fern); font-weight: 700; font-size: 16px; }
+.spacer { height: 24px; flex: none; }
+
+@media (prefers-reduced-motion: reduce) { .tick { animation: none; } .cta:active { transform: none; } }
+</style>
+</head>
+<body>
+<main class="app" id="app">
+  <header class="top">
+    <svg class="frond" viewBox="0 0 150 130" fill="none" stroke="#6cc79a" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <path d="M140 10 C110 30 80 60 40 120"/>
+      <g>
+        <path d="M128 18 C118 14 110 18 104 26"/><path d="M121 26 C130 30 134 38 133 46"/>
+        <path d="M112 38 C102 33 93 37 88 46"/><path d="M106 46 C116 50 120 59 118 67"/>
+        <path d="M95 59 C85 54 76 58 71 67"/><path d="M89 67 C99 71 102 80 100 88"/>
+        <path d="M77 82 C67 77 58 81 53 90"/><path d="M71 90 C80 94 83 102 81 110"/>
+      </g>
+    </svg>
+    <div class="nav">
+      <button class="back" type="button" aria-label="Back to home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <span class="clinic">Fernlea Dental, 14 Alder Row</span>
+    </div>
+    <h1>Book a check-up</h1>
+    <p class="visit">30 minutes, with an exam and a clean.</p>
+  </header>
+
+  <div class="scroll" id="scroll">
+    <section aria-labelledby="h-dentist">
+      <div class="head"><span class="step" id="s1">1</span><h2 id="h-dentist">Dentist</h2></div>
+      <ul class="dentists" id="dentists" role="radiogroup" aria-labelledby="h-dentist"></ul>
+    </section>
+    <section aria-labelledby="h-date">
+      <div class="head"><span class="step" id="s2">2</span><h2 id="h-date">Date</h2><span class="pick" id="pick-date"></span></div>
+      <div class="dates" id="dates"></div>
+    </section>
+    <section aria-labelledby="h-time">
+      <div class="head"><span class="step" id="s3">3</span><h2 id="h-time">Time</h2><span class="pick" id="pick-time"></span></div>
+      <div id="times"></div>
+    </section>
+    <div class="spacer"></div>
+  </div>
+
+  <div class="bar" id="bar">
+    <p class="sum" id="sum" aria-live="polite"></p>
+    <button class="cta" id="cta" type="button" disabled>Book check-up</button>
+  </div>
+
+  <div class="done-view" id="done" aria-live="polite">
+    <div class="tick"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>Check-up booked</h2>
+    <p>We sent a confirmation to your phone. Arrive 5 minutes early.</p>
+    <div class="ticket"><dl id="ticket"></dl></div>
+    <div class="spacer"></div>
+    <button class="ghost" id="change" type="button">Change booking</button>
+  </div>
+</main>
+
+<script>
+const DENTISTS = [
+  { id: 0, name: "Dr Amara Osei",      role: "Lead dentist, 14 years", ini: "AO", cls: "a1", days: [1,2,3,4,5] },
+  { id: 1, name: "Dr Tomas Reyes",     role: "General dentist, 8 years", ini: "TR", cls: "a2", days: [2,3,4,5,6] },
+  { id: 2, name: "Dr Hannah Lindqvist", role: "Gentle care for nervous patients", ini: "HL", cls: "a3", days: [1,3,4,5] }
+];
+const WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MORNING = ["09:00","09:30","10:00","10:30","11:00","11:30"];
+const AFTERNOON = ["13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30"];
+const NOW_MIN = 11 * 60; // "now" is Fri 27 Nov, 11:00
+
+// 14 bookable days from today, Sundays closed
+const today = new Date(2026, 10, 27);
+const DAYS = [];
+for (let i = 0; DAYS.length < 14; i++) {
+  const d = new Date(today); d.setDate(today.getDate() + i);
+  if (d.getDay() !== 0) DAYS.push(d);
+}
+const dayKey = d => d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+const mins = t => +t.slice(0, 2) * 60 + +t.slice(3);
+const fmtLong = d => `${WD[d.getDay()]} ${d.getDate()} ${MO[d.getMonth()]}`;
+
+function slotFree(dent, d, t) {
+  if (!DENTISTS[dent].days.includes(d.getDay())) return false;
+  if (dayKey(d) === dayKey(today) && mins(t) <= NOW_MIN) return false;
+  const h = (dent * 131 + dayKey(d) * 17 + mins(t) * 7) % 100;
+  return h >= 38;
+}
+const allSlots = [...MORNING, ...AFTERNOON];
+const dayHasFree = (dent, d) => allSlots.some(t => slotFree(dent, d, t));
+function nextFree(dent) {
+  for (const d of DAYS) for (const t of allSlots) if (slotFree(dent, d, t)) return { d, t };
+}
+
+const state = { dentist: 0, day: null, time: null };
+state.day = DAYS.findIndex(d => dayHasFree(0, d));
+
+const $ = id => document.getElementById(id);
+const app = $("app");
+
+function renderDentists() {
+  $("dentists").innerHTML = DENTISTS.map(x => {
+    const n = nextFree(x.id);
+    return `<li><button class="dentist" type="button" role="radio" data-id="${x.id}" aria-checked="${state.dentist === x.id}">
+      <span class="avatar ${x.cls}" aria-hidden="true">${x.ini}</span>
+      <span><span class="name">${x.name}</span><br><span class="role">${x.role}</span><br>
+      <span class="next">Next free: ${fmtLong(n.d)}, ${n.t}</span></span>
+      <span class="radio" aria-hidden="true"></span></button></li>`;
+  }).join("");
+}
+
+function renderDates() {
+  $("dates").innerHTML = DAYS.map((d, i) => {
+    const first = i === 0 || d.getDate() === 1;
+    const off = !dayHasFree(state.dentist, d);
+    return `<button class="day" type="button" data-i="${i}" aria-pressed="${state.day === i}" ${off ? "disabled" : ""}
+      aria-label="${fmtLong(d)}${off ? ", fully booked" : ""}">
+      <span class="wd">${WD[d.getDay()]}</span><span class="dn">${d.getDate()}</span><span class="mo">${first ? MO[d.getMonth()] : ""}</span></button>`;
+  }).join("");
+}
+
+function renderTimes() {
+  const d = DAYS[state.day], dent = state.dentist;
+  const group = (label, list) => `<p class="period">${label}</p><div class="slots">` +
+    list.map(t => {
+      const free = slotFree(dent, d, t);
+      return `<button class="slot" type="button" data-t="${t}" aria-pressed="${state.time === t}" ${free ? "" : "disabled"}${free ? "" : ' aria-label="' + t + ', taken"'}>${t}</button>`;
+    }).join("") + `</div>`;
+  $("times").innerHTML = group("Morning", MORNING) + group("Afternoon", AFTERNOON) +
+    `<p class="note">Struck-through times are taken.</p>`;
+}
+
+function renderSummary() {
+  const dent = DENTISTS[state.dentist], d = DAYS[state.day];
+  $("s1").classList.add("done"); $("s1").textContent = "✓";
+  $("s2").classList.toggle("done", state.day != null); $("s2").textContent = state.day != null ? "✓" : "2";
+  $("s3").classList.toggle("done", !!state.time); $("s3").textContent = state.time ? "✓" : "3";
+  $("pick-date").textContent = fmtLong(d);
+  $("pick-time").textContent = state.time || "";
+  $("cta").disabled = !state.time;
+  $("sum").innerHTML = state.time
+    ? `<strong>${fmtLong(d)}, ${state.time}</strong> with ${dent.name}`
+    : `Choose a time on ${fmtLong(d)} to continue.`;
+}
+
+function renderAll() { renderDentists(); renderDates(); renderTimes(); renderSummary(); }
+
+$("dentists").addEventListener("click", e => {
+  const b = e.target.closest("[data-id]"); if (!b) return;
+  state.dentist = +b.dataset.id;
+  if (!dayHasFree(state.dentist, DAYS[state.day])) state.day = DAYS.findIndex(d => dayHasFree(state.dentist, d));
+  if (state.time && !slotFree(state.dentist, DAYS[state.day], state.time)) state.time = null;
+  renderAll();
+});
+$("dates").addEventListener("click", e => {
+  const b = e.target.closest("[data-i]"); if (!b || b.disabled) return;
+  state.day = +b.dataset.i;
+  if (state.time && !slotFree(state.dentist, DAYS[state.day], state.time)) state.time = null;
+  renderDates(); renderTimes(); renderSummary();
+});
+$("times").addEventListener("click", e => {
+  const b = e.target.closest("[data-t]"); if (!b || b.disabled) return;
+  state.time = b.dataset.t;
+  renderTimes(); renderSummary();
+});
+$("cta").addEventListener("click", () => {
+  const dent = DENTISTS[state.dentist], d = DAYS[state.day];
+  $("ticket").innerHTML = [["Dentist", dent.name], ["Date", fmtLong(d)], ["Time", state.time], ["Length", "30 minutes"], ["Where", "14 Alder Row"]]
+    .map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+  app.classList.add("booked");
+});
+$("change").addEventListener("click", () => { state.time = null; app.classList.remove("booked"); renderAll(); });
+
+renderAll();
+</script>
+</body>
+</html>

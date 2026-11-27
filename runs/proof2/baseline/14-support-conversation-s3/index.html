@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harborline - Late order for Priya Nair</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f4f5f7; --panel:#fff; --panel-2:#f8f9fb; --line:#e3e6ec; --text:#1b2030; --muted:#5d6577;
+  --brand:#0f5fd6; --brand-ink:#fff; --brand-soft:#e8f0fd;
+  --warn-bg:#fff4dc; --warn-ink:#7a4a00; --warn-line:#f0d9a0;
+  --bad-bg:#fde8e8; --bad-ink:#9b1c1c; --ok-bg:#e3f5ea; --ok-ink:#17613a;
+  --note-bg:#fff8e1; --note-line:#ecd9a0;
+  --cust:#eef1f6; --agent:#e8f0fd;
+  --focus:#0f5fd6;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1218; --panel:#171b24; --panel-2:#1c212c; --line:#2a303d; --text:#e8ebf2; --muted:#9aa3b5;
+    --brand:#5b9bff; --brand-ink:#08162e; --brand-soft:#1b2a45;
+    --warn-bg:#3a2d10; --warn-ink:#f3cf86; --warn-line:#5a4518;
+    --bad-bg:#3d1b1d; --bad-ink:#f5a3a3; --ok-bg:#15301f; --ok-ink:#8fdcae;
+    --note-bg:#2d2810; --note-line:#54491a;
+    --cust:#222836; --agent:#1b2a45;
+    --focus:#8ab8ff;
+  }
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.app{display:grid;grid-template-columns:300px minmax(0,1fr) 320px;height:100vh;height:100dvh}
+.pane{background:var(--panel);min-width:0;display:flex;flex-direction:column;min-height:0}
+.list{border-right:1px solid var(--line)}
+.side{border-left:1px solid var(--line);overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);font-weight:650}
+.brand svg{flex:none}
+.tabs{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.tab{border:0;background:none;padding:5px 10px;border-radius:6px;color:var(--muted);cursor:pointer}
+.tab[aria-selected=true]{background:var(--brand-soft);color:var(--brand);font-weight:600}
+.convs{overflow:auto;flex:1;margin:0;padding:0;list-style:none}
+.conv{display:block;padding:12px 16px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;border-left:3px solid transparent}
+.conv:hover{background:var(--panel-2)}
+.conv[aria-current=true]{background:var(--brand-soft);border-left-color:var(--brand)}
+.conv .row{display:flex;justify-content:space-between;gap:8px}
+.conv b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv time,.conv .snip{color:var(--muted);font-size:12.5px}
+.conv .snip{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.main{min-width:0}
+.head{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.head h1{font-size:17px;margin:0 0 4px;line-height:1.3}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:1px 9px;border-radius:99px;font-size:12px;font-weight:600;background:var(--panel-2);border:1px solid var(--line);color:var(--muted)}
+.pill.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line)}
+.pill.bad{background:var(--bad-bg);color:var(--bad-ink);border-color:transparent}
+.pill.ok{background:var(--ok-bg);color:var(--ok-ink);border-color:transparent}
+.actions{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.btn:hover{background:var(--panel-2)}
+.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:600}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.thread{flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:16px;background:var(--bg)}
+.day{align-self:center;font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:1px 10px;border-radius:99px}
+.msg{display:flex;gap:10px;max-width:760px}
+.msg.agent{align-self:flex-end;flex-direction:row-reverse}
+.av{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:#c9d6ee;color:#1c2f57}
+.msg.agent .av{background:var(--brand);color:var(--brand-ink)}
+.bubble{background:var(--cust);border-radius:12px;padding:10px 14px;min-width:0}
+.msg.agent .bubble{background:var(--agent)}
+.who{font-size:12.5px;color:var(--muted);margin-bottom:2px;display:flex;gap:8px;flex-wrap:wrap}
+.who b{color:var(--text)}
+.bubble p{margin:0 0 8px}.bubble p:last-child{margin:0}
+.note{align-self:stretch;max-width:760px;background:var(--note-bg);border:1px dashed var(--note-line);border-radius:10px;padding:10px 14px}
+.note .who{color:var(--warn-ink)}
+.note .who b{color:var(--warn-ink)}
+.note p{margin:0 0 8px}.note p:last-child{margin:0}
+.sys{align-self:center;font-size:12.5px;color:var(--muted);text-align:center}
+.compose{border-top:1px solid var(--line);padding:12px 20px 16px;background:var(--panel)}
+.modes{display:flex;gap:4px;margin-bottom:8px}
+.compose textarea{width:100%;min-height:120px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel);line-height:1.5}
+.compose.note-mode textarea{background:var(--note-bg);border-color:var(--note-line)}
+.bar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap}
+.bar .left{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:13px}
+select{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 8px}
+.sec{padding:16px;border-bottom:1px solid var(--line)}
+.sec h2{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:650}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px}
+dt{color:var(--muted)}dd{margin:0;text-align:right;min-width:0;overflow-wrap:anywhere}
+.cust{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.cust .av{width:40px;height:40px;font-size:14px}
+.steps{list-style:none;margin:0;padding:0}
+.steps li{position:relative;padding:0 0 14px 22px;font-size:13px}
+.steps li:last-child{padding-bottom:0}
+.steps li::before{content:"";position:absolute;left:4px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--ok-ink)}
+.steps li::after{content:"";position:absolute;left:8px;top:15px;bottom:-4px;width:1px;background:var(--line)}
+.steps li:last-child::after{display:none}
+.steps li.stuck::before{background:#d98a00;box-shadow:0 0 0 3px var(--warn-bg)}
+.steps li.todo::before{background:transparent;border:1.5px solid var(--muted)}
+.steps small{display:block;color:var(--muted)}
+.lines{width:100%;border-collapse:collapse;font-size:13px}
+.lines td{padding:3px 0}.lines td:last-child{text-align:right}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:8px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sidetoggle{display:none}
+@media (max-width:1180px){
+  .app{grid-template-columns:260px minmax(0,1fr)}
+  .side{display:none}
+  .sidetoggle{display:inline-flex}
+  .app.show-side{grid-template-columns:1fr}
+  .app.show-side .list,.app.show-side .main{display:none}
+  .app.show-side .side{display:flex;border:0}
+  .app.show-side .sidetoggle{display:none}
+}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr}.list{display:none}
+  .head{padding:12px 16px}.thread{padding:14px 16px}.compose{padding:10px 16px 14px}
+  .msg,.msg.agent{max-width:100%}.btn.primary{flex:1;justify-content:center}.bar .left{width:100%}
+  .compose textarea{min-height:96px}
+}
+.sidebar-back{display:none;padding:10px 16px;border-bottom:1px solid var(--line)}
+.app.show-side .sidebar-back{display:flex}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="pane list" aria-label="Conversations">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect width="24" height="24" rx="6" fill="var(--brand)"/><path d="M5 15c2 0 2-1.5 4-1.5S11 15 13 15s2-1.5 4-1.5 1 .8 2 1M12 5v7M9.5 7.5h5" stroke="var(--brand-ink)" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Harborline
+    </div>
+    <div class="tabs" role="tablist" aria-label="Inbox filter">
+      <button class="tab" role="tab" aria-selected="true">Mine <span>(4)</span></button>
+      <button class="tab" role="tab" aria-selected="false">Unassigned <span>(7)</span></button>
+      <button class="tab" role="tab" aria-selected="false">All</button>
+    </div>
+    <ul class="convs">
+      <li><a class="conv" href="#" aria-current="true"><span class="row"><b>Priya Nair</b><time>9:41</time></span><span class="snip">Where is my order? Still not here</span></a></li>
+      <li><a class="conv" href="#"><span class="row"><b>Tomas Albrecht</b><time>9:12</time></span><span class="snip">Wrong size sent, need exchange</span></a></li>
+      <li><a class="conv" href="#"><span class="row"><b>Grace Okafor</b><time>8:50</time></span><span class="snip">Discount code not applying at checkout</span></a></li>
+      <li><a class="conv" href="#"><span class="row"><b>Liam Fitzgerald</b><time>Tue</time></span><span class="snip">Thanks, the refund arrived</span></a></li>
+    </ul>
+  </aside>
+
+  <main class="pane main">
+    <header class="head">
+      <div>
+        <h1>Order #HL-48213 has not arrived</h1>
+        <div class="meta">
+          <span class="pill warn" id="status">Open</span>
+          <span class="pill bad">Reply due in 1h 12m</span>
+          <span>Conversation #7391 &middot; via email &middot; Kestrel &amp; Oak</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn sidetoggle" id="sideBtn">Order details</button>
+        <button class="btn" id="snooze">Snooze</button>
+        <button class="btn" id="solve">Mark solved</button>
+      </div>
+    </header>
+
+    <div class="thread" id="thread" tabindex="0" aria-label="Conversation messages">
+      <span class="day">Mon, 24 Nov</span>
+      <div class="msg">
+        <div class="av" aria-hidden="true">PN</div>
+        <div class="bubble">
+          <div class="who"><b>Priya Nair</b><time>10:02</time></div>
+          <p>Hi, I ordered a wool throw and two cushion covers on 12 November. The estimate said 18 November. It is now the 24th and tracking has said "In transit" since the 17th.</p>
+          <p>Can you tell me where it is?</p>
+        </div>
+      </div>
+      <div class="sys">Auto-reply sent &middot; 10:02 &middot; "We received your message"</div>
+      <span class="day">Tue, 25 Nov</span>
+      <div class="msg agent">
+        <div class="av" aria-hidden="true">DW</div>
+        <div class="bubble">
+          <div class="who"><b>Dana Whitfield</b><time>08:30</time></div>
+          <p>Hi Priya, sorry for the wait. I have asked the carrier, Northway Parcel, to trace the parcel. I will update you tomorrow.</p>
+        </div>
+      </div>
+      <div class="note">
+        <div class="who"><b>Internal note &middot; Dana Whitfield</b><time>08:34</time></div>
+        <p>Trace opened with Northway, ref NW-220918. Depot scan missing since Leeds hub, 17 Nov. If no answer by Thursday, reship.</p>
+      </div>
+      <span class="day">Today</span>
+      <div class="msg">
+        <div class="av" aria-hidden="true">PN</div>
+        <div class="bubble">
+          <div class="who"><b>Priya Nair</b><time>09:41</time></div>
+          <p>It is the 27th and I still have nothing. The throw is a birthday gift for Saturday. Either send a replacement now or refund me, please.</p>
+        </div>
+      </div>
+    </div>
+
+    <form class="compose" id="compose" aria-label="Reply">
+      <div class="modes" role="tablist" aria-label="Reply type">
+        <button type="button" class="tab" role="tab" aria-selected="true" data-mode="reply">Reply to customer</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-mode="note">Internal note</button>
+      </div>
+      <label class="sr" for="body">Message</label>
+      <textarea id="body" placeholder="Write a reply to Priya..." required></textarea>
+      <div class="bar">
+        <div class="left">
+          <label for="macro" class="sr">Insert saved reply</label>
+          <select id="macro">
+            <option value="">Saved replies</option>
+            <option value="reship">Reship a lost parcel</option>
+            <option value="refund">Offer a refund</option>
+            <option value="trace">Trace update</option>
+          </select>
+          <span id="count">0 characters</span>
+        </div>
+        <button class="btn primary" type="submit" id="send">Send reply</button>
+      </div>
+    </form>
+  </main>
+
+  <aside class="pane side" id="side" aria-label="Customer and order details">
+    <div class="sidebar-back"><button class="btn" id="backBtn">Back to conversation</button></div>
+    <section class="sec">
+      <div class="cust">
+        <div class="av" aria-hidden="true">PN</div>
+        <div><b>Priya Nair</b><br><span style="color:var(--muted)">priya.nair@example.com</span></div>
+      </div>
+      <dl>
+        <dt>Customer since</dt><dd>Mar 2023</dd>
+        <dt>Orders</dt><dd>6 &middot; &pound;412 total</dd>
+        <dt>Past tickets</dt><dd>1, solved</dd>
+        <dt>Ship to</dt><dd>Leeds LS6 2AB</dd>
+      </dl>
+    </section>
+    <section class="sec">
+      <h2>Order #HL-48213</h2>
+      <table class="lines">
+        <tr><td>Wool throw, heather</td><td>&pound;68.00</td></tr>
+        <tr><td>Cushion cover x2</td><td>&pound;36.00</td></tr>
+        <tr><td>Shipping</td><td>&pound;4.95</td></tr>
+        <tr><td><b>Total</b></td><td><b>&pound;108.95</b></td></tr>
+      </table>
+    </section>
+    <section class="sec">
+      <h2>Shipment &middot; Northway Parcel</h2>
+      <ol class="steps">
+        <li>Order placed<small>12 Nov</small></li>
+        <li>Handed to carrier<small>13 Nov, Manchester depot</small></li>
+        <li class="stuck">Last scan: Leeds hub<small>17 Nov &middot; no scan for 10 days</small></li>
+        <li class="todo">Estimated delivery<small>18 Nov (missed)</small></li>
+      </ol>
+    </section>
+    <section class="sec" style="border:0">
+      <h2>Conversation</h2>
+      <dl>
+        <dt>Assignee</dt><dd>Dana Whitfield</dd>
+        <dt>Priority</dt><dd>High</dd>
+        <dt>Tags</dt><dd>late-order, carrier-trace</dd>
+      </dl>
+    </section>
+  </aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const body = $('#body'), thread = $('#thread'), compose = $('#compose'), send = $('#send');
+let mode = 'reply';
+const macros = {
+  reship: "Hi Priya,\n\nI am sorry the parcel has not reached you. Northway has no scan since 17 November, so I have arranged a replacement. It ships today with next-day delivery, so it will arrive before Saturday.\n\nYou do not need to do anything. If the first parcel turns up, you can keep it.\n\nDana",
+  refund: "Hi Priya,\n\nI am sorry about the delay. I have refunded £108.95 to your original payment method. It usually shows within 3 to 5 working days.\n\nDana",
+  trace: "Hi Priya,\n\nA quick update. Northway is still searching for the parcel under trace NW-220918. I will write again by end of day tomorrow.\n\nDana"
+};
+const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const toast = t => { const e = $('#toast'); e.textContent = t; e.classList.add('show'); setTimeout(() => e.classList.remove('show'), 2200); };
+const sync = () => { $('#count').textContent = body.value.length + ' characters'; send.disabled = !body.value.trim(); };
+document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.mode;
+  document.querySelectorAll('[data-mode]').forEach(x => x.setAttribute('aria-selected', x === b));
+  compose.classList.toggle('note-mode', mode === 'note');
+  send.textContent = mode === 'note' ? 'Add note' : 'Send reply';
+  body.placeholder = mode === 'note' ? 'Write a note only your team can see...' : 'Write a reply to Priya...';
+}));
+$('#macro').addEventListener('change', e => { if (e.target.value) { body.value = macros[e.target.value]; e.target.value = ''; sync(); body.focus(); } });
+body.addEventListener('input', sync);
+body.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') compose.requestSubmit(); });
+compose.addEventListener('submit', e => {
+  e.preventDefault();
+  const text = body.value.trim(); if (!text) return;
+  const time = new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+  const paras = text.split(/\n{2,}/).map(p => '<p>' + esc(p).replace(/\n/g, '<br>') + '</p>').join('');
+  const el = document.createElement('div');
+  if (mode === 'note') {
+    el.className = 'note';
+    el.innerHTML = '<div class="who"><b>Internal note &middot; Dana Whitfield</b><time>' + time + '</time></div>' + paras;
+  } else {
+    el.className = 'msg agent';
+    el.innerHTML = '<div class="av" aria-hidden="true">DW</div><div class="bubble"><div class="who"><b>Dana Whitfield</b><time>' + time + '</time></div>' + paras + '</div>';
+  }
+  thread.appendChild(el);
+  thread.scrollTop = thread.scrollHeight;
+  body.value = ''; sync();
+  toast(mode === 'note' ? 'Note added' : 'Reply sent to priya.nair@example.com');
+});
+$('#solve').addEventListener('click', e => { const p = $('#status'); p.textContent = 'Solved'; p.className = 'pill ok'; e.currentTarget.disabled = true; toast('Conversation marked solved'); });
+$('#snooze').addEventListener('click', () => toast('Snoozed until tomorrow 09:00'));
+$('#sideBtn').addEventListener('click', () => $('#app').classList.add('show-side'));
+$('#backBtn').addEventListener('click', () => $('#app').classList.remove('show-side'));
+thread.scrollTop = thread.scrollHeight;
+sync();
+</script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock levels - Larderly</title>
+<style>
+:root{
+  --bg:#edf1f0; --surface:#fff; --ink:#142b26; --muted:#58706a; --line:#d2dcd9; --line-soft:#e4ebe9;
+  --brand:#0e5b50; --brand-ink:#fff; --brand-tint:#dcece8;
+  --low:#b0261c; --low-tint:#fbe6e3; --watch:#8a5a00; --watch-tint:#f8ecd0;
+  --ok:#2f7d6d; --track:#e1e8e6; --focus:#1456d8;
+  --radius:6px;
+  --font:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0e1816; --surface:#15231f; --ink:#e3eeeb; --muted:#93aaa4; --line:#2a3d38; --line-soft:#1f3029;
+    --brand:#58c4b0; --brand-ink:#08201b; --brand-tint:#1b3a34;
+    --low:#ff8f84; --low-tint:#3b1d1b; --watch:#e9b95a; --watch-tint:#372b12;
+    --ok:#4fb39f; --track:#22342f; --focus:#8db4ff;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--font);font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1360px;margin:0 auto;padding:0 28px}
+
+/* top bar */
+.bar{background:var(--surface);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:21px;font-weight:700;letter-spacing:-.01em}
+.brand svg{width:26px;height:26px;color:var(--brand)}
+.bar nav{display:flex;gap:4px}
+.bar nav a{padding:8px 12px;border-radius:var(--radius);color:var(--muted);text-decoration:none;font-weight:500}
+.bar nav a[aria-current]{color:var(--ink);background:var(--brand-tint)}
+.bar nav a:hover{color:var(--ink)}
+.where{color:var(--muted);font-size:14px;white-space:nowrap}
+
+/* heading */
+.head{padding:30px 0 20px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+h1{font-family:var(--display);font-size:38px;line-height:1.1;margin:0 0 8px;letter-spacing:-.02em;font-weight:700}
+.head p{margin:0;color:var(--muted);max-width:60ch;font-size:16px}
+.head p b{color:var(--ink);font-weight:600}
+.counted{font-size:14px;color:var(--muted);text-align:right}
+
+/* controls */
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.tabs{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:3px;gap:2px}
+.tabs button{border:0;background:none;padding:7px 13px;border-radius:4px;cursor:pointer;color:var(--muted);font-weight:500}
+.tabs button .n{margin-left:6px;font-size:13px;opacity:.85}
+.tabs button[aria-pressed=true]{background:var(--brand);color:var(--brand-ink)}
+.field{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:0 12px;height:40px;min-width:220px}
+.field svg{width:16px;height:16px;color:var(--muted);flex:none}
+.field input,.field select{border:0;background:none;outline:0;width:100%;height:100%;min-width:0}
+.field select{cursor:pointer;color-scheme:light dark}
+.field:focus-within{outline:2px solid var(--focus);outline-offset:2px}
+.spacer{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start;padding-bottom:56px}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.cols,.row{display:grid;grid-template-columns:28px minmax(150px,1.1fr) minmax(220px,1.5fr) 112px minmax(110px,.8fr);gap:18px;align-items:center;padding:0 18px}
+.cols{height:40px;font-size:13px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line)}
+.group{padding:10px 18px;font-weight:700;font-size:14px;background:var(--bg);border-bottom:1px solid var(--line);border-top:1px solid var(--line);display:flex;gap:8px;align-items:baseline}
+.group:first-of-type{border-top:0}
+.group span{font-weight:400;color:var(--muted)}
+.row{min-height:68px;padding-top:10px;padding-bottom:10px;border-bottom:1px solid var(--line-soft)}
+.row:last-child{border-bottom:0}
+.row.sel{background:var(--brand-tint)}
+.row input[type=checkbox]{width:18px;height:18px;accent-color:var(--brand);margin:0;cursor:pointer}
+.name{font-weight:600}
+.cat{color:var(--muted);font-size:13px}
+.lvl .txt{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:6px}
+.lvl .txt b{font-weight:600;font-size:14px}
+.lvl .txt span{color:var(--muted)}
+.gauge{position:relative;height:10px;background:var(--track);border-radius:2px}
+.gauge i{position:absolute;inset:0 auto 0 0;border-radius:2px;background:var(--ok)}
+.gauge u{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);opacity:.75;text-decoration:none}
+.low .gauge i{background:var(--low)}
+.watch .gauge i{background:var(--watch)}
+.days{font-weight:600}
+.days small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.low .days{color:var(--low)}
+.sup{font-size:14px}
+.sup small{display:block;color:var(--muted);font-size:12px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;margin-top:3px}
+.pill.ord{background:var(--brand-tint);color:var(--brand)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;align-items:center}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend u{display:inline-block;width:2px;height:12px;background:var(--ink);opacity:.75;margin-right:6px;vertical-align:-2px}
+.empty{padding:40px 18px;text-align:center;color:var(--muted)}
+
+/* order panel */
+.order{position:sticky;top:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.order h2{margin:0;font-family:var(--display);font-size:22px;padding:18px 20px 4px;letter-spacing:-.01em}
+.order .sub{padding:0 20px 14px;color:var(--muted);font-size:14px;border-bottom:1px solid var(--line)}
+.order .none{padding:22px 20px;color:var(--muted)}
+.sg{padding:14px 20px 4px}
+.sg h3{margin:0 0 6px;font-size:14px;display:flex;justify-content:space-between}
+.sg h3 span{font-weight:400;color:var(--muted)}
+.line{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid var(--line-soft);align-items:center}
+.line:last-child{border-bottom:0}
+.line .t{font-size:14px;font-weight:500}
+.line .p{font-size:14px;text-align:right}
+.line .u{font-size:12px;color:var(--muted)}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:var(--radius);justify-self:end}
+.step button{width:32px;height:32px;border:0;background:none;cursor:pointer;font-size:18px;line-height:1;color:var(--ink)}
+.step button:hover{background:var(--brand-tint)}
+.step output{min-width:26px;text-align:center;font-weight:600;font-size:14px}
+.tot{display:flex;justify-content:space-between;padding:16px 20px;border-top:1px solid var(--line);font-weight:700;font-size:16px;margin-top:8px}
+.order .btn{margin:0 20px 20px;width:calc(100% - 40px);height:44px}
+.done{margin:0 20px 18px;padding:10px 12px;border-radius:var(--radius);background:var(--brand-tint);color:var(--ink);font-size:14px}
+
+@media (max-width:1080px){
+  .layout{grid-template-columns:1fr}
+  .order{position:static}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  .bar nav,.where{display:none}
+  h1{font-size:30px}
+  .counted{text-align:left}
+  .cols{display:none}
+  .controls{gap:10px}
+  .tabs{width:100%;overflow-x:auto}
+  .tabs button{white-space:nowrap;flex:1;padding:7px 6px}
+  .field{min-width:0;flex:1 1 100%}
+  .spacer{display:none}
+  .btn{flex:1 1 100%}
+  .row{grid-template-columns:28px 1fr auto;grid-template-areas:"c n d" ". l l" ". s s";gap:8px 12px;padding:14px 16px;align-items:start}
+  .row>:nth-child(1){grid-area:c;padding-top:2px}
+  .row>:nth-child(2){grid-area:n}
+  .row>:nth-child(3){grid-area:l}
+  .row>:nth-child(4){grid-area:d;text-align:right}
+  .row>:nth-child(5){grid-area:s}
+  .group{padding:10px 16px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .gauge i{transition:width .4s ease}
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16v11H4z"/><path d="M7 9V5h10v4"/><path d="M9 14h6"/></svg>
+      Larderly
+    </div>
+    <nav aria-label="Main">
+      <a href="#">Today</a><a href="#" aria-current="page">Stock levels</a><a href="#">Orders</a><a href="#">Suppliers</a><a href="#">Recipes</a>
+    </nav>
+    <div class="where">Marrow &amp; Rye, Bermondsey</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="head">
+    <div>
+      <h1>Stock levels</h1>
+      <p id="summary"></p>
+    </div>
+    <div class="counted">Last counted today at 6:40 am by Priya<br>Usage is the 14-day average</div>
+  </div>
+
+  <div class="controls">
+    <div class="tabs" role="group" aria-label="Filter by status" id="tabs"></div>
+    <label class="field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="q" type="search" placeholder="Search ingredients" aria-label="Search ingredients"></label>
+    <label class="field" style="min-width:190px"><select id="sup" aria-label="Filter by supplier"></select></label>
+    <span class="spacer"></span>
+    <button class="btn" id="addLow" type="button"></button>
+  </div>
+
+  <div class="layout">
+    <section class="list" aria-label="Ingredients">
+      <div class="cols" aria-hidden="true"><span></span><span>Ingredient</span><span>On hand against par</span><span>Days left</span><span>Supplier</span></div>
+      <div id="rows"></div>
+      <div class="legend">
+        <span><u></u>Reorder point</span>
+        <span>Bar is on hand, full bar is par</span>
+        <span><i style="background:var(--low)"></i>At or below reorder point</span>
+        <span><i style="background:var(--watch)"></i>Within 50% of it</span>
+        <span><i style="background:var(--ok)"></i>Stocked</span>
+      </div>
+    </section>
+
+    <aside class="order" aria-label="Order">
+      <h2>Order</h2>
+      <div class="sub" id="osub"></div>
+      <div id="olines"></div>
+      <div id="otot"></div>
+      <div id="odone"></div>
+      <button class="btn primary" id="send" type="button">Send orders</button>
+    </aside>
+  </div>
+</main>
+
+<script>
+// pack = the unit a supplier sells. Quantities everywhere else are in the stock unit.
+const ITEMS = [
+ {id:1, n:"Whole milk", c:"Dairy", u:"L", on:6, par:40, re:14, use:7.5, s:"Hartwell Dairy", pk:"crate of 12 L", ps:12, pr:14.4, lead:"Tomorrow"},
+ {id:2, n:"Unsalted butter", c:"Dairy", u:"kg", on:2.5, par:12, re:4, use:0.9, s:"Hartwell Dairy", pk:"5 kg block", ps:5, pr:41, lead:"Tomorrow"},
+ {id:3, n:"Double cream", c:"Dairy", u:"L", on:3, par:10, re:3, use:0.8, s:"Hartwell Dairy", pk:"2 L tub", ps:2, pr:7.8, lead:"Tomorrow"},
+ {id:4, n:"Free-range eggs", c:"Dairy", u:"trays", on:2, par:8, re:3, use:0.9, s:"Hartwell Dairy", pk:"tray of 30", ps:1, pr:8.9, lead:"Tomorrow"},
+ {id:5, n:"Parmesan, aged 24 months", c:"Dairy", u:"kg", on:3.1, par:6, re:1.5, use:0.2, s:"Hartwell Dairy", pk:"1 kg wedge", ps:1, pr:24.5, lead:"Tomorrow"},
+ {id:6, n:"Strong white flour", c:"Dry store", u:"kg", on:9, par:50, re:20, use:3.4, s:"Millbrook Wholesale", pk:"16 kg sack", ps:16, pr:19.2, lead:"Friday"},
+ {id:7, n:"Arborio rice", c:"Dry store", u:"kg", on:7.5, par:15, re:5, use:0.6, s:"Millbrook Wholesale", pk:"5 kg bag", ps:5, pr:16.5, lead:"Friday"},
+ {id:8, n:"Rapeseed oil", c:"Dry store", u:"L", on:12, par:30, re:10, use:1.4, s:"Millbrook Wholesale", pk:"10 L drum", ps:10, pr:21, lead:"Friday"},
+ {id:9, n:"San Marzano tomatoes", c:"Dry store", u:"tins", on:34, par:96, re:30, use:3.1, s:"Millbrook Wholesale", pk:"case of 6 tins", ps:6, pr:13.2, lead:"Friday"},
+ {id:10, n:"Flaked sea salt", c:"Dry store", u:"kg", on:4, par:6, re:1.5, use:0.1, s:"Millbrook Wholesale", pk:"1.5 kg box", ps:1.5, pr:6.4, lead:"Friday"},
+ {id:11, n:"Brown onions", c:"Veg", u:"kg", on:5, par:30, re:10, use:2.6, s:"Spitalfields Produce", pk:"10 kg sack", ps:10, pr:9.5, lead:"Tomorrow"},
+ {id:12, n:"Flat-leaf parsley", c:"Veg", u:"bunches", on:3, par:20, re:8, use:2.2, s:"Spitalfields Produce", pk:"10 bunches", ps:10, pr:7.5, lead:"Tomorrow"},
+ {id:13, n:"Lemons", c:"Veg", u:"kg", on:4.2, par:10, re:3, use:0.7, s:"Spitalfields Produce", pk:"3 kg box", ps:3, pr:6.9, lead:"Tomorrow"},
+ {id:14, n:"Garlic bulbs", c:"Veg", u:"kg", on:1.1, par:3, re:0.8, use:0.2, s:"Spitalfields Produce", pk:"1 kg net", ps:1, pr:5.8, lead:"Tomorrow"},
+ {id:15, n:"Chicken thighs, bone-in", c:"Meat", u:"kg", on:7, par:40, re:15, use:5.2, s:"Harlow & Sons Butchers", pk:"5 kg case", ps:5, pr:32.5, lead:"Tomorrow"},
+ {id:16, n:"Pork shoulder", c:"Meat", u:"kg", on:18, par:30, re:10, use:2.8, s:"Harlow & Sons Butchers", pk:"6 kg joint", ps:6, pr:39, lead:"Tomorrow"},
+ {id:17, n:"Smoked streaky bacon", c:"Meat", u:"kg", on:2.2, par:8, re:2.5, use:0.5, s:"Harlow & Sons Butchers", pk:"2 kg pack", ps:2, pr:23, lead:"Tomorrow"},
+ {id:18, n:"Cod loin", c:"Fish", u:"kg", on:5.5, par:12, re:4, use:1.6, s:"Billingsgate Direct", pk:"3 kg box", ps:3, pr:51, lead:"Tomorrow"},
+ {id:19, n:"Mussels", c:"Fish", u:"kg", on:6, par:10, re:4, use:2, s:"Billingsgate Direct", pk:"2 kg net", ps:2, pr:11.4, lead:"Tomorrow"}
+];
+const money = n => "$" + n.toFixed(2);
+const num = n => String(+n.toFixed(1));
+const state = {filter:"reorder", q:"", sup:"All suppliers", sel:{}, ordered:{}, msg:""};
+
+ITEMS.forEach(i=>{
+  i.days = i.on / i.use;
+  i.st = i.on <= i.re ? "low" : i.on <= i.re*1.5 ? "watch" : "ok";
+  i.sugg = Math.max(1, Math.ceil((i.par - i.on) / i.ps)); // packs that bring stock back to par
+});
+const $ = id => document.getElementById(id);
+
+function visible(){
+  const q = state.q.trim().toLowerCase();
+  return ITEMS.filter(i =>
+    (state.filter==="all" || (state.filter==="reorder" && i.st!=="ok") || state.filter===i.st) &&
+    (state.sup==="All suppliers" || i.s===state.sup) &&
+    (!q || (i.n+" "+i.c+" "+i.s).toLowerCase().includes(q)));
+}
+
+function renderTabs(){
+  const c = k => ITEMS.filter(i=> k==="all" ? true : k==="reorder" ? i.st!=="ok" : i.st===k).length;
+  const t = [["reorder","Needs attention"],["low","Reorder now"],["all","All items"]];
+  $("tabs").innerHTML = t.map(([k,l])=>`<button type="button" data-f="${k}" aria-pressed="${state.filter===k}">${l}<span class="n">${c(k)}</span></button>`).join("");
+}
+
+function row(i){
+  const pct = Math.min(100, i.on/i.par*100), tick = i.re/i.par*100;
+  const ord = state.ordered[i.id];
+  return `<div class="row ${i.st} ${state.sel[i.id]?"sel":""}">
+    <input type="checkbox" data-id="${i.id}" ${state.sel[i.id]?"checked":""} ${ord?"disabled":""} aria-label="Add ${i.n} to order">
+    <div><div class="name">${i.n}</div><div class="cat">${i.c}</div></div>
+    <div class="lvl"><div class="txt"><b>${num(i.on)} ${i.u}</b><span>par ${num(i.par)}, reorder at ${num(i.re)}</span></div>
+      <div class="gauge" role="img" aria-label="${num(i.on)} of ${num(i.par)} ${i.u}, reorder point ${num(i.re)}"><i style="width:${pct}%"></i><u style="left:${tick}%"></u></div></div>
+    <div class="days">${i.days<10?i.days.toFixed(1):Math.round(i.days)} d<small>${num(i.use)} ${i.u}/day</small></div>
+    <div class="sup">${i.s}<small>${ord ? "" : i.pk}</small>${ord?`<span class="pill ord">Ordered, due ${ord}</span>`:""}</div>
+  </div>`;
+}
+
+function renderList(){
+  const v = visible().sort((a,b)=>a.days-b.days);
+  if(!v.length){ $("rows").innerHTML = `<div class="empty">No ingredients match. Clear the search or choose another supplier.</div>`; return; }
+  const groups = [["low","Reorder now","at or below reorder point"],["watch","Running low","within 50% of reorder point"],["ok","Stocked",""]];
+  $("rows").innerHTML = groups.map(([k,t,s])=>{
+    const g = v.filter(i=>i.st===k); if(!g.length) return "";
+    return `<div class="group">${t}<span>${g.length} ${g.length===1?"item":"items"}${s?", "+s:""}</span></div>` + g.map(row).join("");
+  }).join("");
+}
+
+function renderOrder(){
+  const ids = Object.keys(state.sel).map(Number);
+  const by = {};
+  ids.forEach(id=>{ const i = ITEMS.find(x=>x.id===id); (by[i.s] ||= []).push(i); });
+  const sups = Object.keys(by);
+  let total = 0, n = 0;
+  $("olines").innerHTML = sups.length ? sups.map(s=>{
+    const sub = by[s].reduce((a,i)=>a+state.sel[i.id]*i.pr,0); total += sub; n += by[s].length;
+    return `<div class="sg"><h3>${s}<span>${money(sub)}</span></h3>` + by[s].map(i=>`
+      <div class="line"><div class="t">${i.n}</div><div class="p">${money(state.sel[i.id]*i.pr)}</div>
+      <div class="u">${i.pk}, ${money(i.pr)} each<br>Arrives ${i.lead.toLowerCase()}</div>
+      <div class="step" role="group" aria-label="Packs of ${i.n}"><button type="button" data-d="-1" data-id="${i.id}" aria-label="Fewer ${i.n}">&minus;</button><output>${state.sel[i.id]}</output><button type="button" data-d="1" data-id="${i.id}" aria-label="More ${i.n}">+</button></div></div>`).join("") + `</div>`;
+  }).join("") : `<div class="none">Tick the ingredients to reorder. Each line starts at the quantity that brings stock back to par.</div>`;
+  $("osub").textContent = sups.length ? `${n} ${n===1?"ingredient":"ingredients"} from ${sups.length} ${sups.length===1?"supplier":"suppliers"}` : "Nothing selected yet";
+  $("otot").innerHTML = sups.length ? `<div class="tot"><span>Total</span><span>${money(total)}</span></div>` : "";
+  $("odone").innerHTML = state.msg ? `<div class="done" role="status">${state.msg}</div>` : "";
+  const b = $("send"); b.disabled = !sups.length;
+  b.textContent = sups.length ? `Send ${sups.length} ${sups.length===1?"order":"orders"}` : "Send orders";
+}
+
+function renderTop(){
+  const low = ITEMS.filter(i=>i.st==="low"), watch = ITEMS.filter(i=>i.st==="watch");
+  const open = low.filter(i=>!state.ordered[i.id]);
+  const cost = open.reduce((a,i)=>a+i.sugg*i.pr,0);
+  $("summary").innerHTML = open.length
+    ? `<b>${open.length} ${open.length===1?"ingredient is":"ingredients are"} at or below the reorder point.</b> Topping them up to par costs about ${money(cost)}. ${watch.length} more will need ordering soon.`
+    : `<b>Nothing is below its reorder point.</b> ${watch.length} ${watch.length===1?"ingredient":"ingredients"} will need ordering soon.`;
+  const ready = ITEMS.filter(i=>i.st==="low" && !state.ordered[i.id] && !state.sel[i.id]).length;
+  $("addLow").textContent = ready ? `Add ${ready} below reorder point to order` : "Below-reorder items are in the order";
+  $("addLow").disabled = !ready;
+}
+
+function render(){ renderTabs(); renderList(); renderOrder(); renderTop(); }
+
+$("sup").innerHTML = ["All suppliers",...new Set(ITEMS.map(i=>i.s))].map(s=>`<option>${s}</option>`).join("");
+$("sup").onchange = e => { state.sup = e.target.value; render(); };
+$("q").oninput = e => { state.q = e.target.value; renderList(); };
+$("tabs").onclick = e => { const b = e.target.closest("button"); if(b){ state.filter = b.dataset.f; render(); } };
+$("rows").onchange = e => {
+  const id = e.target.dataset.id; if(!id) return;
+  e.target.checked ? state.sel[id] = ITEMS.find(i=>i.id==id).sugg : delete state.sel[id];
+  state.msg = ""; render();
+};
+$("olines").onclick = e => {
+  const b = e.target.closest("button"); if(!b) return;
+  const id = b.dataset.id, v = state.sel[id] + +b.dataset.d;
+  if(v < 1) delete state.sel[id]; else state.sel[id] = Math.min(v, 20);
+  state.msg = ""; render();
+};
+$("addLow").onclick = () => {
+  ITEMS.forEach(i=>{ if(i.st==="low" && !state.ordered[i.id]) state.sel[i.id] ??= i.sugg; });
+  state.msg = ""; render();
+};
+$("send").onclick = () => {
+  const ids = Object.keys(state.sel), sups = new Set();
+  ids.forEach(id=>{ const i = ITEMS.find(x=>x.id==id); state.ordered[id] = i.lead; sups.add(i.s); });
+  state.msg = `Sent ${sups.size} ${sups.size===1?"order":"orders"} covering ${ids.length} ${ids.length===1?"ingredient":"ingredients"}. They show as ordered in the list.`;
+  state.sel = {}; render();
+};
+render();
+</script>
+</body>
+</html>

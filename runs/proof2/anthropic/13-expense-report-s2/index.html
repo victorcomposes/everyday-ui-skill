@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expense report - Outlay</title>
+<style>
+:root {
+  --bg: #e9edf1;
+  --surface: #ffffff;
+  --surface-2: #f4f6f8;
+  --ink: #13202c;
+  --ink-2: #4b5b69;
+  --line: #d3dae1;
+  --accent: #0d5c63;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcecee;
+  --flag: #a85d00;
+  --flag-soft: #fbecd2;
+  --err: #b3261e;
+  --err-soft: #fbe3e0;
+  --ok: #1f6b3a;
+  --slip: #fffdf6;
+  --slip-line: #cfc9b4;
+  --shadow: 0 1px 0 rgba(19,32,44,.06), 0 8px 24px -12px rgba(19,32,44,.18);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e151c;
+    --surface: #17212b;
+    --surface-2: #1d2935;
+    --ink: #e8eef3;
+    --ink-2: #9fb0be;
+    --line: #2d3b49;
+    --accent: #5cc2c8;
+    --accent-ink: #06222a;
+    --accent-soft: #163a40;
+    --flag: #f0b45a;
+    --flag-soft: #3a2b10;
+    --err: #ff8f86;
+    --err-soft: #3d1c19;
+    --ok: #7fd49a;
+    --slip: #202a34;
+    --slip-line: #3a4856;
+    --shadow: 0 1px 0 rgba(0,0,0,.3), 0 10px 28px -12px rgba(0,0,0,.6);
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* top bar */
+.bar {
+  background: var(--ink);
+  color: var(--bg);
+}
+.bar-in {
+  max-width: 1280px; margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 20px; font-weight: 700; letter-spacing: .01em; }
+.brand svg { display: block; }
+.bar .who { margin-left: auto; font-size: 13px; opacity: .8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bar { background: #0a1016; border-bottom: 1px solid var(--line); color: var(--ink); } }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding: 32px 24px 64px; }
+
+.crumbs { font-size: 13px; color: var(--ink-2); margin-bottom: 8px; }
+.crumbs a { color: inherit; }
+h1 {
+  font: 700 clamp(30px, 4vw, 44px)/1.1 var(--serif);
+  letter-spacing: -.01em;
+  margin: 0 0 6px;
+}
+.sub { color: var(--ink-2); margin: 0 0 28px; max-width: 62ch; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+.panel > h2 {
+  font: 700 18px/1.3 var(--serif);
+  margin: 0; padding: 18px 22px 0;
+}
+.panel > .hint { margin: 2px 22px 0; color: var(--ink-2); font-size: 13.5px; }
+
+/* trip fields */
+.fields { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; padding: 18px 22px 22px; }
+.f { display: flex; flex-direction: column; gap: 6px; grid-column: span 3; min-width: 0; }
+.f.w2 { grid-column: span 2; }
+.f.w6 { grid-column: span 6; }
+.f > span, .lab { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.f input, .f select, .row input, .row select, .row textarea {
+  width: 100%; min-height: 40px; padding: 8px 10px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+}
+.f input:hover, .row input:hover, .row select:hover, .f select:hover { border-color: var(--ink-2); }
+.f input[readonly] { background: var(--surface-2); color: var(--ink-2); }
+.f small { color: var(--ink-2); font-size: 12.5px; }
+
+/* day groups */
+.day { border-top: 1px solid var(--line); margin-top: 18px; }
+.day-head {
+  display: flex; align-items: baseline; gap: 12px; padding: 14px 22px 8px;
+}
+.day-head h3 { margin: 0; font: 700 16px/1.3 var(--sans); }
+.day-head .date { color: var(--ink-2); font-size: 13.5px; }
+.day-head .sub-total { margin-left: auto; font-weight: 700; }
+
+.cols, .row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px 104px 206px 32px;
+  gap: 10px; align-items: center;
+  padding: 0 22px;
+}
+.cols { font-size: 12.5px; font-weight: 600; color: var(--ink-2); padding-bottom: 4px; }
+.cols .r { text-align: right; }
+.row { padding-top: 6px; padding-bottom: 6px; align-items: start; }
+.row .del { margin-top: 4px; }
+.row .lab { display: none; }
+.row > label { display: block; min-width: 0; }
+.amt .in { position: relative; display: block; }
+.amt b { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--ink-2); font-weight: 400; pointer-events: none; }
+.row .amt input { padding-left: 24px; text-align: right; }
+.row textarea { resize: none; line-height: 1.35; display: block; min-height: 44px; }
+.row.bad input, .row.bad textarea, .row.bad select { border-color: var(--err); }
+
+.rec { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.rec-btn {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 10px;
+  border: 1px dashed var(--ink-2); border-radius: 6px; background: transparent; cursor: pointer;
+  font-size: 13.5px; width: 100%; justify-content: flex-start; white-space: nowrap;
+}
+.rec-btn:hover { background: var(--surface-2); }
+.rec-btn.need { border-color: var(--flag); color: var(--flag); background: var(--flag-soft); border-style: solid; }
+.rec-btn.have { border-style: solid; border-color: var(--line); background: var(--surface-2); }
+.rec-btn { min-width: 0; }
+.rec-btn .nm { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.rec-btn svg { flex: none; }
+.rec input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.rec .clear { width: 28px; min-height: 28px; border: 0; background: none; cursor: pointer; color: var(--ink-2); border-radius: 4px; display: none; }
+.rec.has .clear { display: inline-block; }
+.rec.has .rec-btn { width: auto; flex: 1; }
+
+.del {
+  width: 32px; height: 32px; border: 0; background: none; border-radius: 6px; cursor: pointer; color: var(--ink-2);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.del:hover { background: var(--err-soft); color: var(--err); }
+
+.add {
+  margin: 6px 22px 16px; display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 0; color: var(--accent); font-weight: 600; cursor: pointer; padding: 8px 6px; border-radius: 6px;
+}
+.add:hover { background: var(--accent-soft); }
+
+.policy {
+  margin: 0; padding: 14px 22px; border-top: 1px solid var(--line);
+  font-size: 13.5px; color: var(--ink-2); background: var(--surface-2); border-radius: 0 0 10px 10px;
+}
+
+/* summary slip */
+aside { position: sticky; top: 20px; }
+.slip {
+  position: relative;
+  background: var(--slip);
+  border: 1px solid var(--slip-line);
+  border-bottom: 0;
+  padding: 22px 22px 8px;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+.slip::after {
+  content: ""; position: absolute; left: -1px; right: -1px; top: 100%; height: 10px;
+  background:
+    linear-gradient(135deg, var(--slip) 5px, transparent 0) 0 0 / 10px 10px,
+    linear-gradient(-135deg, var(--slip) 5px, transparent 0) 0 0 / 10px 10px;
+  filter: drop-shadow(0 1px 0 var(--slip-line));
+}
+.slip h2 { font: 700 16px/1.3 var(--serif); margin: 0 0 14px; }
+.total-l { color: var(--ink-2); font-size: 13px; }
+.total {
+  font: 700 46px/1.05 var(--serif); letter-spacing: -.02em; margin: 2px 0 4px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.perf { border: 0; border-top: 2px dotted var(--slip-line); margin: 16px 0; }
+.cats { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cats li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; font-size: 14px; }
+.cats .bar-t { grid-column: 1 / -1; height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.cats .bar-t i { display: block; height: 100%; background: var(--accent); }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: 6px 8px; margin: 0; font-size: 14px; }
+.kv dd { margin: 0; text-align: right; font-weight: 600; }
+.kv .warn { color: var(--flag); }
+.kv .good { color: var(--ok); }
+
+.submit-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 22px; box-shadow: var(--shadow); }
+.submit-card p { margin: 0 0 12px; font-size: 13.5px; color: var(--ink-2); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  min-height: 46px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-weight: 700;
+}
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.ghost { background: transparent; border-color: var(--line); margin-top: 8px; font-weight: 600; }
+.btn.ghost:hover { background: var(--surface-2); }
+.saved { font-size: 12.5px; color: var(--ink-2); text-align: center; margin-top: 10px; min-height: 18px; }
+
+.errors {
+  border: 1px solid var(--err); background: var(--err-soft); border-radius: 8px;
+  padding: 12px 14px; margin-bottom: 12px; font-size: 13.5px;
+}
+.errors[hidden] { display: none; }
+.errors strong { display: block; margin-bottom: 4px; color: var(--err); }
+.errors ul { margin: 0; padding-left: 18px; }
+.errors a { color: inherit; }
+
+.done { text-align: left; }
+.done h2 { font: 700 22px/1.2 var(--serif); margin: 0 0 8px; }
+.done p { color: var(--ink-2); margin: 0 0 8px; font-size: 14px; }
+.done .ref { font-weight: 700; color: var(--ink); }
+.done .btn { margin-top: 8px; }
+.locked .row input, .locked .row select, .locked .add, .locked .del, .locked .rec-btn, .locked .clear { pointer-events: none; opacity: .65; }
+.locked .f input { pointer-events: none; }
+
+/* mobile */
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; gap: 0; }
+  aside { position: static; }
+}
+@media (max-width: 720px) {
+  .wrap { padding: 24px 16px 48px; }
+  .bar-in { padding: 12px 16px; }
+  .bar .who { display: none; }
+  .fields { grid-template-columns: 1fr 1fr; padding: 16px; }
+  .f, .f.w2, .f.w6 { grid-column: span 2; }
+  .f.d { grid-column: span 1; }
+  .panel > h2 { padding: 16px 16px 0; }
+  .panel > .hint { margin: 2px 16px 0; }
+  .day-head { padding: 14px 16px 8px; }
+  .cols { display: none; }
+  .row {
+    grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 16px; margin: 0;
+    border-top: 1px solid var(--line); position: relative;
+  }
+  .row > :nth-child(1) { grid-column: 1 / -1; }
+  .row .lab { display: block; margin-bottom: 4px; }
+  .row .rec { grid-column: 1 / -1; }
+  .row .rec-btn { width: 100%; }
+  .row .del { position: absolute; top: 8px; right: 12px; }
+  .row .desc .lab { padding-right: 40px; }
+  .add { margin: 6px 12px 14px; }
+  .policy { padding: 14px 16px; }
+  .total { font-size: 40px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cats .bar-t i { transition: width .25s ease; }
+  .slip .total.bump { animation: bump .25s ease; }
+  @keyframes bump { 50% { transform: translateY(-2px); } }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M7 13.5h9m-3.5-4.5L16.5 13.5 12.5 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Outlay
+    </div>
+    <div class="who">Priya Nair - Account Executive, Enterprise</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs"><a href="#">Expenses</a> / New report</div>
+  <h1>Manchester client visit</h1>
+  <p class="sub">List what you spent on each day of the trip, attach a receipt for every item of &pound;15 or more, then send the report to your approver.</p>
+
+  <div class="layout" id="layout">
+    <div id="form">
+      <section class="panel" aria-labelledby="h-trip">
+        <h2 id="h-trip">Trip details</h2>
+        <div class="fields">
+          <label class="f"><span>Report name</span><input id="name" value="Manchester client visit"></label>
+          <label class="f"><span>Client</span><input id="client" value="Halvorsen Marine Ltd"></label>
+          <label class="f d"><span>First day</span><input value="Tue 17 Nov 2026" readonly aria-describedby="dayhelp"></label>
+          <label class="f d"><span>Last day</span><input value="Thu 19 Nov 2026" readonly aria-describedby="dayhelp"></label>
+          <label class="f w6"><span>Business purpose</span><input id="purpose" value="Onsite renewal workshop and contract review with the Halvorsen finance team"></label>
+          <label class="f"><span>Cost centre</span>
+            <select id="cc"><option>4120 - Enterprise Sales</option><option>4125 - Customer Success</option><option>6010 - Marketing events</option></select>
+          </label>
+          <label class="f"><span>Approver</span><input value="Marcus Oyelaran" readonly></label>
+          <small id="dayhelp" class="sr">The trip runs three days. Add items to each day below.</small>
+        </div>
+      </section>
+
+      <section class="panel" id="itemised" aria-labelledby="h-items">
+        <h2 id="h-items">Expenses by day</h2>
+        <p class="hint">Amounts are in pounds sterling. Pay-by-card items from your Outlay card are already matched.</p>
+        <div id="days"></div>
+        <p class="policy"><strong>Policy:</strong> hotel up to &pound;170 a night, evening meals up to &pound;45 a head, client meals need the guest names in the description.</p>
+      </section>
+    </div>
+
+    <aside aria-label="Report summary">
+      <div class="slip" id="slip">
+        <h2>Report summary</h2>
+        <div class="total-l">Total to reimburse</div>
+        <div class="total" id="total">&pound;0.00</div>
+        <hr class="perf">
+        <ul class="cats" id="cats"></ul>
+        <hr class="perf">
+        <dl class="kv" id="kv"></dl>
+      </div>
+
+      <div class="submit-card" id="submitcard">
+        <div class="errors" id="errors" role="alert" hidden></div>
+        <p>Marcus Oyelaran approves reports within two working days.</p>
+        <button class="btn primary" id="submit" type="button">Submit for approval</button>
+        <button class="btn ghost" id="draft" type="button">Save draft</button>
+        <div class="saved" id="saved" aria-live="polite"></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script>
+(function () {
+  var CATS = ["Rail and air", "Lodging", "Meals", "Local transport", "Client hosting", "Other"];
+  var RECEIPT_AT = 15;
+  var uid = 0;
+  function it(desc, cat, amt, file) { return { id: ++uid, desc: desc, cat: cat, amt: amt, file: file || "" }; }
+
+  var days = [
+    { label: "Day 1", date: "Tuesday 17 November", items: [
+      it("Avanti West Coast, London Euston to Manchester Piccadilly, return", "Rail and air", 148.60, "avanti-eticket-ZK4471.pdf"),
+      it("Hotel Gotham, 2 nights", "Lodging", 318.00, "hotel-gotham-folio.pdf"),
+      it("Taxi, Piccadilly station to Halvorsen offices", "Local transport", 12.40, ""),
+      it("Dinner with Ruth Halvorsen and Tomas Berg, Hawksmoor Manchester", "Client hosting", 212.40, "hawksmoor-bill.jpg")
+    ]},
+    { label: "Day 2", date: "Wednesday 18 November", items: [
+      it("Breakfast, Hotel Gotham", "Meals", 11.50, ""),
+      it("Lunch for 8 workshop attendees, Ancoats Deli", "Client hosting", 86.00, ""),
+      it("Tram day pass, Metrolink", "Local transport", 8.20, "")
+    ]},
+    { label: "Day 3", date: "Thursday 19 November", items: [
+      it("Handout printing, Northern Print Shop", "Other", 23.50, ""),
+      it("Taxi, Halvorsen offices to Piccadilly station", "Local transport", 12.40, ""),
+      it("Sandwich and coffee for the train, Pret", "Meals", 9.85, "")
+    ]}
+  ];
+
+  var daysEl = document.getElementById("days");
+  var money = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
+  function m(n) { return money.format(n || 0); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  var clip = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 7.5l-5 5a3 3 0 01-4.2-4.2l5.4-5.4a2 2 0 112.8 2.8L6.6 11a1 1 0 01-1.4-1.4L10 4.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+  var bin = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.6 8h5.8l.6-8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function rowHTML(d, di, x) {
+    var need = !x.file && x.amt >= RECEIPT_AT;
+    var rid = "r" + x.id;
+    var cls = need ? "need" : (x.file ? "have" : "");
+    var txt = x.file ? esc(x.file) : (need ? "Receipt needed" : "Attach receipt");
+    var opts = CATS.map(function (c) { return '<option' + (c === x.cat ? " selected" : "") + '>' + c + '</option>'; }).join("");
+    return '<div class="row" data-id="' + x.id + '" data-day="' + di + '">' +
+      '<label class="desc"><span class="lab">Description</span><textarea rows="2" data-f="desc" placeholder="What was it for?" aria-label="Description, ' + esc(d.label) + '">' + esc(x.desc) + '</textarea></label>' +
+      '<label><span class="lab">Category</span><select data-f="cat" aria-label="Category">' + opts + '</select></label>' +
+      '<label class="amt"><span class="lab">Amount</span><span class="in"><b aria-hidden="true">&pound;</b><input data-f="amt" inputmode="decimal" value="' + (x.amt ? x.amt.toFixed(2) : "") + '" placeholder="0.00" aria-label="Amount in pounds"></span></label>' +
+      '<div class="rec' + (x.file ? " has" : "") + '"><span class="lab">Receipt</span>' +
+        '<label class="rec-btn ' + cls + '" for="' + rid + '">' + clip + '<span class="nm">' + txt + '</span></label>' +
+        '<input type="file" id="' + rid + '" accept="image/*,.pdf" aria-label="Attach receipt">' +
+        '<button type="button" class="clear" aria-label="Remove receipt ' + esc(x.file) + '">&times;</button>' +
+      '</div>' +
+      '<button type="button" class="del" aria-label="Delete this expense">' + bin + '</button>' +
+    '</div>';
+  }
+
+  function render() {
+    daysEl.innerHTML = days.map(function (d, di) {
+      return '<div class="day" data-day="' + di + '">' +
+        '<div class="day-head"><h3>' + d.label + '</h3><span class="date">' + d.date + '</span><span class="sub-total" data-sub="' + di + '"></span></div>' +
+        '<div class="cols" aria-hidden="true"><span>Description</span><span>Category</span><span class="r">Amount</span><span>Receipt</span><span></span></div>' +
+        d.items.map(function (x) { return rowHTML(d, di, x); }).join("") +
+        '<button type="button" class="add" data-add="' + di + '"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add expense to ' + d.label + '</button>' +
+      '</div>';
+    }).join("");
+    totals();
+  }
+
+  function find(id) {
+    for (var i = 0; i < days.length; i++)
+      for (var j = 0; j < days[i].items.length; j++)
+        if (days[i].items[j].id === id) return { d: i, j: j, x: days[i].items[j] };
+  }
+
+  function totals(bump) {
+    var sum = 0, by = {}, withReceipt = 0, needed = 0, missing = 0;
+    days.forEach(function (d, di) {
+      var s = 0;
+      d.items.forEach(function (x) {
+        s += x.amt || 0;
+        by[x.cat] = (by[x.cat] || 0) + (x.amt || 0);
+        if (x.amt >= RECEIPT_AT) { needed++; if (x.file) withReceipt++; else missing++; }
+      });
+      sum += s;
+      var el = document.querySelector('[data-sub="' + di + '"]');
+      if (el) el.textContent = m(s);
+    });
+    var t = document.getElementById("total");
+    t.textContent = m(sum);
+    if (bump) { t.classList.remove("bump"); void t.offsetWidth; t.classList.add("bump"); }
+    document.getElementById("cats").innerHTML = CATS.filter(function (c) { return by[c]; }).map(function (c) {
+      return '<li><span>' + c + '</span><b>' + m(by[c]) + '</b><span class="bar-t"><i style="width:' + Math.round(by[c] / sum * 100) + '%"></i></span></li>';
+    }).join("");
+    var n = days.reduce(function (a, d) { return a + d.items.length; }, 0);
+    document.getElementById("kv").innerHTML =
+      '<dt>Items</dt><dd>' + n + ' over 3 days</dd>' +
+      '<dt>Receipts</dt><dd class="' + (missing ? "warn" : "good") + '">' + withReceipt + ' of ' + needed + ' needed</dd>' +
+      (missing ? '<dt>Still missing</dt><dd class="warn">' + missing + '</dd>' : '');
+    return sum;
+  }
+
+  function parseAmt(s) { var v = parseFloat(String(s).replace(/[^0-9.]/g, "")); return isFinite(v) ? Math.round(v * 100) / 100 : 0; }
+
+  daysEl.addEventListener("input", function (e) {
+    var row = e.target.closest(".row"); if (!row) return;
+    var r = find(+row.dataset.id), f = e.target.dataset.f;
+    if (!r || !f) return;
+    if (f === "amt") r.x.amt = parseAmt(e.target.value);
+    else r.x[f] = e.target.value;
+    row.classList.remove("bad");
+    totals(f === "amt");
+    refreshReceipt(row, r.x);
+  });
+  daysEl.addEventListener("blur", function (e) {
+    if (e.target.dataset && e.target.dataset.f === "amt") { var v = parseAmt(e.target.value); e.target.value = v ? v.toFixed(2) : ""; }
+  }, true);
+
+  function refreshReceipt(row, x) {
+    var btn = row.querySelector(".rec-btn"), need = !x.file && x.amt >= RECEIPT_AT;
+    btn.className = "rec-btn " + (need ? "need" : (x.file ? "have" : ""));
+    btn.querySelector(".nm").textContent = x.file || (need ? "Receipt needed" : "Attach receipt");
+  }
+
+  daysEl.addEventListener("change", function (e) {
+    if (e.target.type !== "file") return;
+    var row = e.target.closest(".row"), r = find(+row.dataset.id), f = e.target.files[0];
+    if (!f) return;
+    r.x.file = f.name; row.classList.remove("bad");
+    var id = r.x.id; render(); document.getElementById("r" + id).focus();
+  });
+
+  daysEl.addEventListener("click", function (e) {
+    var add = e.target.closest("[data-add]");
+    if (add) {
+      var di = +add.dataset.add, x = it("", "Meals", 0, "");
+      days[di].items.push(x); render();
+      document.querySelector('[data-id="' + x.id + '"] textarea').focus();
+      return;
+    }
+    var row = e.target.closest(".row"); if (!row) return;
+    var r = find(+row.dataset.id);
+    if (e.target.closest(".del")) {
+      var next = row.nextElementSibling;
+      days[r.d].items.splice(r.j, 1); render();
+      document.querySelector('[data-add="' + r.d + '"]').focus();
+    } else if (e.target.closest(".clear")) {
+      r.x.file = ""; var id = r.x.id; render(); document.querySelector('[data-id="' + id + '"] .rec-btn').focus();
+    }
+  });
+
+  // submit
+  var errBox = document.getElementById("errors");
+  document.getElementById("submit").addEventListener("click", function () {
+    var issues = [];
+    days.forEach(function (d) {
+      d.items.forEach(function (x) {
+        var short = x.desc ? (x.desc.length > 38 ? x.desc.slice(0, 36) + "..." : x.desc) : "Untitled item";
+        if (!x.desc.trim()) issues.push({ id: x.id, f: "textarea", t: d.label + ": add a description for the " + m(x.amt) + " item" });
+        else if (!x.amt) issues.push({ id: x.id, f: '[data-f="amt"]', t: d.label + ": enter an amount for " + short });
+        else if (x.amt >= RECEIPT_AT && !x.file) issues.push({ id: x.id, f: ".rec-btn", t: d.label + ": attach a receipt for " + short + " (" + m(x.amt) + ")" });
+      });
+    });
+    document.querySelectorAll(".row.bad").forEach(function (r) { r.classList.remove("bad"); });
+    if (issues.length) {
+      issues.forEach(function (i) { var r = document.querySelector('[data-id="' + i.id + '"]'); if (r) r.classList.add("bad"); });
+      errBox.hidden = false;
+      errBox.innerHTML = '<strong>' + issues.length + (issues.length === 1 ? ' item needs' : ' items need') + ' fixing before you submit</strong><ul>' +
+        issues.map(function (i, k) { return '<li><a href="#" data-k="' + k + '">' + esc(i.t) + '</a></li>'; }).join("") + '</ul>';
+      errBox.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", function (ev) {
+          ev.preventDefault();
+          var i = issues[+a.dataset.k], el = document.querySelector('[data-id="' + i.id + '"] ' + i.f);
+          if (el) { el.scrollIntoView({ block: "center" }); el.focus(); }
+        });
+      });
+      errBox.scrollIntoView({ block: "nearest" });
+      return;
+    }
+    errBox.hidden = true;
+    var sum = totals();
+    document.getElementById("form").classList.add("locked");
+    document.getElementById("submitcard").innerHTML =
+      '<div class="done" role="status"><h2>Sent to Marcus Oyelaran</h2>' +
+      '<p>Report <span class="ref">EXP-20418</span> for ' + m(sum) + ' is waiting for approval. You will get an email when he decides.</p>' +
+      '<button class="btn ghost" id="recall" type="button">Recall report</button></div>';
+    document.getElementById("recall").addEventListener("click", function () { location.reload(); });
+    document.getElementById("recall").focus();
+  });
+
+  var savedEl = document.getElementById("saved");
+  document.getElementById("draft").addEventListener("click", function () {
+    var d = new Date(); savedEl.textContent = "Draft saved at " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

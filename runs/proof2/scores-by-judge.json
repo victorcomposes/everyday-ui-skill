@@ -1,0 +1,4474 @@
+{
+  "judges": {
+    "opus1": "opus",
+    "opus2": "opus",
+    "sonnet1": "sonnet",
+    "sonnet2": "sonnet"
+  },
+  "groups": {
+    "09-team-members-s1": {
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 4,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 4
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 4
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 6,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        }
+      }
+    },
+    "09-team-members-s2": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 7,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 5,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 9,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 9,
+          "dark": 8,
+          "overall": 9
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 4,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 4,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 4,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        }
+      }
+    },
+    "09-team-members-s3": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 7,
+          "realism": 5,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 9,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 4,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        }
+      }
+    },
+    "10-notifications-s1": {
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 5,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        }
+      }
+    },
+    "10-notifications-s2": {
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 5,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 5
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        }
+      }
+    },
+    "10-notifications-s3": {
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 7,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 5
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 9,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        }
+      }
+    },
+    "11-search-results-s1": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 5,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 4
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 6,
+          "realism": 5,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      }
+    },
+    "11-search-results-s2": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 4
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 5,
+          "craft": 4,
+          "realism": 5,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 4
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 5,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 9,
+          "typography": 9,
+          "colour": 8,
+          "craft": 9,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 9,
+          "overall": 9
+        }
+      }
+    },
+    "11-search-results-s3": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 8,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 5,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 4
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 9,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 9
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 5,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 5,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        }
+      }
+    },
+    "12-mobile-product-s1": {
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 9,
+          "typography": 8,
+          "colour": 9,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 9,
+          "overall": 9
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 5,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        }
+      }
+    },
+    "12-mobile-product-s2": {
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 7,
+          "realism": 9,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 8,
+          "colour": 9,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 9,
+          "overall": 9
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 5,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      }
+    },
+    "12-mobile-product-s3": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 6,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      }
+    },
+    "13-expense-report-s1": {
+      "baseline": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 5,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      }
+    },
+    "13-expense-report-s2": {
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      }
+    },
+    "13-expense-report-s3": {
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 4,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 9,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      }
+    },
+    "14-support-conversation-s1": {
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 9,
+          "dark": 8,
+          "overall": 9
+        },
+        "sonnet1": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 9,
+          "overall": 9
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 5,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 4,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 5,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 4,
+          "dark": 6,
+          "overall": 5
+        }
+      }
+    },
+    "14-support-conversation-s2": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 9,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 4,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        }
+      }
+    },
+    "14-support-conversation-s3": {
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 9
+        },
+        "sonnet1": {
+          "hierarchy": 9,
+          "layout": 9,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 9,
+          "overall": 9
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 5,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      }
+    },
+    "15-mobile-booking-s1": {
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 4,
+          "typography": 7,
+          "colour": 7,
+          "craft": 4,
+          "realism": 5,
+          "mobile": 4,
+          "dark": 6,
+          "overall": 4
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 5,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        }
+      }
+    },
+    "15-mobile-booking-s2": {
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 5,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 6,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 4,
+          "mobile": 4,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 4,
+          "mobile": 4,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 5,
+          "craft": 5,
+          "realism": 4,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 7
+        }
+      }
+    },
+    "15-mobile-booking-s3": {
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 6,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 4,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 5,
+          "layout": 5,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 5,
+          "craft": 5,
+          "realism": 4,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 9,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 9,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 7
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        }
+      }
+    },
+    "16-stock-levels-s1": {
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 5,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 5,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 5,
+          "overall": 7
+        }
+      },
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 8,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 5,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 4,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 5,
+          "realism": 7,
+          "mobile": 4,
+          "dark": 7,
+          "overall": 5
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 9,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 9,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 9,
+          "typography": 9,
+          "colour": 8,
+          "craft": 9,
+          "realism": 9,
+          "mobile": 7,
+          "dark": 9,
+          "overall": 9
+        }
+      }
+    },
+    "16-stock-levels-s2": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 5,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 5,
+          "craft": 5,
+          "realism": 5,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 6,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 9,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 9,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 8,
+          "dark": 8,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 5,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        }
+      }
+    },
+    "16-stock-levels-s3": {
+      "skill": {
+        "opus1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 7,
+          "realism": 6,
+          "mobile": 8,
+          "dark": 7,
+          "overall": 5
+        },
+        "sonnet1": {
+          "hierarchy": 5,
+          "layout": 6,
+          "typography": 5,
+          "colour": 5,
+          "craft": 5,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 6,
+          "overall": 5
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 6
+        }
+      },
+      "prompt": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 7,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "opus2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 8,
+          "overall": 8
+        },
+        "sonnet2": {
+          "hierarchy": 7,
+          "layout": 8,
+          "typography": 8,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 7
+        }
+      },
+      "anthropic": {
+        "opus1": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 7,
+          "colour": 8,
+          "craft": 7,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 7
+        },
+        "opus2": {
+          "hierarchy": 9,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 7,
+          "mobile": 7,
+          "dark": 7,
+          "overall": 8
+        },
+        "sonnet1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 7,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 6,
+          "dark": 6,
+          "overall": 6
+        },
+        "sonnet2": {
+          "hierarchy": 8,
+          "layout": 8,
+          "typography": 8,
+          "colour": 8,
+          "craft": 8,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 8
+        }
+      },
+      "baseline": {
+        "opus1": {
+          "hierarchy": 6,
+          "layout": 7,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 5,
+          "dark": 6,
+          "overall": 5
+        },
+        "opus2": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 7,
+          "colour": 7,
+          "craft": 6,
+          "realism": 7,
+          "mobile": 6,
+          "dark": 8,
+          "overall": 6
+        },
+        "sonnet1": {
+          "hierarchy": 7,
+          "layout": 7,
+          "typography": 6,
+          "colour": 7,
+          "craft": 7,
+          "realism": 8,
+          "mobile": 6,
+          "dark": 7,
+          "overall": 7
+        },
+        "sonnet2": {
+          "hierarchy": 6,
+          "layout": 6,
+          "typography": 6,
+          "colour": 6,
+          "craft": 6,
+          "realism": 6,
+          "mobile": 5,
+          "dark": 7,
+          "overall": 5
+        }
+      }
+    }
+  }
+}

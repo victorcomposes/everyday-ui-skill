@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 4,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(42, 33, 24)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 25,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Saltbox Kitchen",
+        "w": 170,
+        "h": 30
+      },
+      {
+        "tag": "a",
+        "text": "chana masala",
+        "w": 113,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "coconut chickpea curry",
+        "w": 172,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "chickpea spinach stew",
+        "w": 167,
+        "h": 33
+      },
+      {
+        "tag": "a",
+        "text": "vegan curry",
+        "w": 102,
+        "h": 33
+      },
+      {
+        "tag": "button",
+        "text": "Filters",
+        "w": 98,
+        "h": 39
+      },
+      {
+        "tag": "select",
+        "text": "Best match\nHighest rated\nMost ",
+        "w": 220,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Save Creamy Coconut Chickpea C",
+        "w": 36,
+        "h": 36
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

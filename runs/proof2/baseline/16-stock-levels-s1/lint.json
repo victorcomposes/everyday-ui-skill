@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(31, 42, 36)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(26, 95, 208)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": true,
+    "px": 7
+  },
+  "smallTapTargets": {
+    "count": 29,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Stock",
+        "w": 53,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Orders",
+        "w": 62,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Suppliers",
+        "w": 79,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Recipes",
+        "w": 67,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 328,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "All categories\nDairy\nDrinks\nDr",
+        "w": 132,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "Most urgent first\nName A-Z\nCat",
+        "w": 153,
+        "h": 38
+      },
+      {
+        "tag": "button",
+        "text": "Add 12 low and out to order",
+        "w": 221,
+        "h": 38
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

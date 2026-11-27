@@ -1,0 +1,155 @@
+{
+  "seed": "2026",
+  "conditions": [
+    "baseline",
+    "prompt",
+    "anthropic",
+    "skill"
+  ],
+  "tasks": {
+    "09-team-members-s1": {
+      "A": "baseline",
+      "B": "prompt",
+      "C": "skill",
+      "D": "anthropic"
+    },
+    "09-team-members-s2": {
+      "A": "skill",
+      "B": "prompt",
+      "C": "anthropic",
+      "D": "baseline"
+    },
+    "09-team-members-s3": {
+      "A": "skill",
+      "B": "anthropic",
+      "C": "prompt",
+      "D": "baseline"
+    },
+    "10-notifications-s1": {
+      "A": "anthropic",
+      "B": "baseline",
+      "C": "skill",
+      "D": "prompt"
+    },
+    "10-notifications-s2": {
+      "A": "anthropic",
+      "B": "skill",
+      "C": "baseline",
+      "D": "prompt"
+    },
+    "10-notifications-s3": {
+      "A": "prompt",
+      "B": "skill",
+      "C": "baseline",
+      "D": "anthropic"
+    },
+    "11-search-results-s1": {
+      "A": "skill",
+      "B": "baseline",
+      "C": "prompt",
+      "D": "anthropic"
+    },
+    "11-search-results-s2": {
+      "A": "skill",
+      "B": "baseline",
+      "C": "anthropic",
+      "D": "prompt"
+    },
+    "11-search-results-s3": {
+      "A": "skill",
+      "B": "anthropic",
+      "C": "prompt",
+      "D": "baseline"
+    },
+    "12-mobile-product-s1": {
+      "A": "prompt",
+      "B": "skill",
+      "C": "anthropic",
+      "D": "baseline"
+    },
+    "12-mobile-product-s2": {
+      "A": "prompt",
+      "B": "baseline",
+      "C": "anthropic",
+      "D": "skill"
+    },
+    "12-mobile-product-s3": {
+      "A": "skill",
+      "B": "baseline",
+      "C": "prompt",
+      "D": "anthropic"
+    },
+    "13-expense-report-s1": {
+      "A": "baseline",
+      "B": "anthropic",
+      "C": "skill",
+      "D": "prompt"
+    },
+    "13-expense-report-s2": {
+      "A": "prompt",
+      "B": "baseline",
+      "C": "anthropic",
+      "D": "skill"
+    },
+    "13-expense-report-s3": {
+      "A": "prompt",
+      "B": "skill",
+      "C": "anthropic",
+      "D": "baseline"
+    },
+    "14-support-conversation-s1": {
+      "A": "prompt",
+      "B": "anthropic",
+      "C": "skill",
+      "D": "baseline"
+    },
+    "14-support-conversation-s2": {
+      "A": "skill",
+      "B": "prompt",
+      "C": "anthropic",
+      "D": "baseline"
+    },
+    "14-support-conversation-s3": {
+      "A": "prompt",
+      "B": "baseline",
+      "C": "anthropic",
+      "D": "skill"
+    },
+    "15-mobile-booking-s1": {
+      "A": "anthropic",
+      "B": "skill",
+      "C": "baseline",
+      "D": "prompt"
+    },
+    "15-mobile-booking-s2": {
+      "A": "anthropic",
+      "B": "baseline",
+      "C": "skill",
+      "D": "prompt"
+    },
+    "15-mobile-booking-s3": {
+      "A": "anthropic",
+      "B": "baseline",
+      "C": "prompt",
+      "D": "skill"
+    },
+    "16-stock-levels-s1": {
+      "A": "anthropic",
+      "B": "skill",
+      "C": "baseline",
+      "D": "prompt"
+    },
+    "16-stock-levels-s2": {
+      "A": "skill",
+      "B": "prompt",
+      "C": "anthropic",
+      "D": "baseline"
+    },
+    "16-stock-levels-s3": {
+      "A": "skill",
+      "B": "prompt",
+      "C": "anthropic",
+      "D": "baseline"
+    }
+  }
+}

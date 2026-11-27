@@ -1,5 +1,45 @@
 # Lessons
 
+## Lessons from proof2
+
+Round `proof2` was pre-registered in `docs/PREREG.md`. Skill v4 lost to `anthropic` by 0.98 light-mean points, 95% CI [-1.37, -0.50], and to `prompt` by 1.38. It was level with `baseline` (+0.22, CI includes 0). It topped 0 of 24 groups. Details are in `docs/METHOD.md`.
+
+### 1. One sample per task can produce a win that does not hold
+
+The final round put `skill` 0.81 above `anthropic` on tasks 09 to 12, one sample each. `proof2` re-ran those same tasks with the same frozen skill and three samples. `skill` scored 6.37 and `anthropic` 7.39. A headline needs several samples and a fixed analysis before it is public.
+
+### 2. Give every arm the same tools, or the comparison measures the tools
+
+In earlier rounds only `skill` and `anthropic` are known to have looked at their pages. In `proof2`, `prompt` got the same screenshot tool. On tasks 09 to 12 it rose from 6.31 to 7.92 and passed `anthropic`. Interpretation: the earlier `skill` win likely came mostly from its look loop, not its rules. No ablation confirms this.
+
+### 3. Volume may have been part of the old score
+
+`proof2` told judges not to reward more content. On tasks 09 to 12, `skill` fell from 8.03 to 6.37 with no change to the skill. The rule is a suspect, not a proven cause. Caveat 9 in `docs/METHOD.md` had flagged it. `baseline` rose 2.12 on the same tasks with no new tool, so absolute levels between rounds are weak evidence.
+
+### 4. Mechanical quality does not buy judge scores
+
+`skill` pages led every lint check. Per-page means: 0.9 tap targets under 44 px against 19.7 to 28.4, and 0.00 axe serious + critical nodes against 1.50 to 3.71. Yet `skill` scored lowest of the instructed arms on mobile quality (6.21 against 7.17 for `prompt`). Judges see screenshots, where a small tap target may look fine.
+
+### 5. What the judges marked down on skill pages
+
+These notes recur across tasks and judges in `runs/proof2/scores.json`:
+
+- A primary button looks enabled before a required choice, for example "Book check-up" with no time picked.
+- The primary job is buried on phones.
+- Dead gaps in the layout.
+- Identical repeated icons, for example the same pot icon on every search result.
+- Plain, low-brand visuals next to illustrated competitors.
+
+The last one repeats the v1 failure: principles without character. Skill v5 is being built from these notes and will be tested in round `proof3`.
+
+### 6. Pre-registration and integrity checks made the loss easy to trust
+
+The plan fixed the outcome, the bootstrap and the analysis script before any page existed. After scoring, all 480 blind images matched their sources by md5, and the arm means recomputed from the raw judge files matched. Both judge families gave the same sign. The run issues listed in `docs/METHOD.md` touch one page or all arms alike. They are unlikely to explain a gap of this size.
+
+## Lessons from rounds r0 to final
+
+The rest of this page predates `proof2`. Where `proof2` contradicts a lesson, a note says so.
+
 This page ranks what moved the scores and lists what did not. No ablation exists, so each lesson rests on a round-to-round change. Judge noise is about 0.5 per round, and several changes shipped together. Read each cause as a strong suspect, not as proof. The method is in `docs/METHOD.md`.
 
 All numbers are light-mean scores or per-criterion means from `runs/<round>/results.md`.
@@ -14,6 +54,8 @@ v4 did not add a rule. It removed rules that fought each other. The skill had as
 
 Held-out proof: v4 scored 8.03 on four tasks it had not seen. The gain did not come only from fitting tasks 01 to 08.
 
+> Updated after `proof2`: this held-out result did not hold. With three samples per task, v4 scored 6.37 on the same four tasks and lost to `anthropic` and `prompt`.
+
 ### 2. A brand identity step (v2, round r1)
 
 Light mean rose from 7.28 to 7.64. Colour rose 6.88 to 7.56 and realism 7.75 to 8.25. Three weak tasks improved: 03-sign-in 6.0 to 7.5, 04-empty-onboarding 6.0 to 7.0 and 07-dashboard 6.5 to 8.5.
@@ -27,6 +69,8 @@ The `skill` arm led on mobile quality from r0: 7.44 against 6.56 for `baseline` 
 `ui-check.mjs` tests sideways scroll, tap targets, tables, input zoom and sticky bar height at 390 px. The independent lint agrees. In the final round the four `skill` pages have 0 tap targets under 44 px. The other arms have 2 to 28 on 11 of 12 pages.
 
 The loop is part of v1, so no round isolates it.
+
+> Updated after `proof2`: once `prompt` and `anthropic` had the same screenshot tool, the mobile lead in judge scores disappeared. The lint lead stayed.
 
 ### 4. Coherent fixtures and the states list (v2 and v3)
 
@@ -45,6 +89,8 @@ A feature outside the prompt can decide a headline. The light-only rule fixed th
 ### Prompting for taste
 
 The `prompt` arm got a strong "senior product designer" instruction. Its light mean was below `baseline` in r0 (6.60 against 6.97) and r1 (6.59 against 6.89). It was about equal in r2 and r3 (6.74 and 6.64 against 6.59 and 6.50). Words about taste did not give the generator a way to see or measure the page.
+
+> Updated after `proof2`: with a screenshot tool, the same `prompt` instruction scored highest of all arms (7.80). Interpretation: the missing piece was the look, not more rules.
 
 The `prompt` arm did beat `baseline` in the final round (6.31 against 4.06). That was because `baseline` fell. It does not show that the instruction helped.
 

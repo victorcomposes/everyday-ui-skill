@@ -1,0 +1,20 @@
+{
+  "15-mobile-booking-s1": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the last date chip is cropped at the card edge with no fade or scroll cue" },
+    "B": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 6, "mobile": 7, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the Book check-up button looks active although no time is chosen" },
+    "C": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 5, "mobile": 5, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the date strip starts flush at the left edge with the Sat chip cropped, and the time step shows only an empty prompt" },
+    "D": { "hierarchy": 7, "layout": 6, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the large floating summary card covers the bottom of the date strip and fades the selected day chip" }
+  },
+  "15-mobile-booking-s2": {
+    "A": { "hierarchy": 7, "layout": 7, "typography": 8, "colour": 7, "craft": 8, "realism": 7, "mobile": 7, "dark": 6, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "dark.png: the page backdrop is a flat mid-grey that clashes with the near-black card" },
+    "B": { "hierarchy": 5, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 6, "mobile": 6, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: no default dentist and a big empty gap in the footer above a disabled button, so the first screen offers no clear next step" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile.png: the available time chips have a grey fill that reads as disabled" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 7, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: dentist cards show surname then first name (Dr Hargreaves / Tom), which reads oddly" }
+  },
+  "15-mobile-booking-s3": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 7, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 8, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the tall dark header pushes the time step below the fold" },
+    "B": { "hierarchy": 5, "layout": 6, "typography": 6, "colour": 6, "craft": 6, "realism": 6, "mobile": 5, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the date strip starts flush at the left edge with the Mon chip cropped" },
+    "C": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the disabled Book - 48 pounds button is low contrast beige on beige" },
+    "D": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 7, "craft": 6, "realism": 7, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: no times are visible on the first screen and the dentist list is a flat divided list with a weak selected state" }
+  }
+}

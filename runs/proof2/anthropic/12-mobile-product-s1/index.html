@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vektor 3 - Stride</title>
+<style>
+:root{
+  --page:#DDE1E8;
+  --surface:#FFFFFF;
+  --sunken:#EEF0F4;
+  --ink:#12151C;
+  --ink-2:#4A5160;
+  --line:#D8DCE4;
+  --action:#2438F0;
+  --on-action:#FFFFFF;
+  --good:#12805C;
+  --bad:#C4321F;
+  --radius:14px;
+  --display:"Bahnschrift","DIN Alternate","Roboto Condensed","Arial Narrow","Helvetica Neue",sans-serif;
+  --body:"Segoe UI Variable Text","Segoe UI","SF Pro Text",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  /* colourway: set per selection */
+  --field:#CFDCFF; --upper:#F4F6FA; --accent:#2438F0; --sole:#FFFFFF; --lace:#12151C; --shade:#1b2a6b22;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --page:#07080C; --surface:#161922; --sunken:#1F232E; --ink:#EEF0F5; --ink-2:#A3AABB; --line:#2A2F3C;
+    --action:#8C98FF; --on-action:#0B0D14; --good:#4FD1A0; --bad:#FF8A78;
+  }
+}
+/* colourways: light then dark field */
+[data-cw="harbour"]{--field:#CFDCFF;--upper:#F4F6FA;--accent:#2438F0;--sole:#FFFFFF;--lace:#12151C;--shade:#1b2a6b30}
+[data-cw="signal"] {--field:#FFD3C9;--upper:#F6F1EE;--accent:#E0381F;--sole:#FFFFFF;--lace:#12151C;--shade:#6b221b30}
+[data-cw="moss"]   {--field:#D4E3C8;--upper:#5F7A52;--accent:#E8DCC2;--sole:#E8DCC2;--lace:#E8DCC2;--shade:#27401b30}
+[data-cw="black"]  {--field:#D9D6D1;--upper:#22252D;--accent:#C79A66;--sole:#C79A66;--lace:#E9E6E0;--shade:#00000030}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) [data-cw="harbour"]{--field:#18224F}
+  :root:not([data-theme="light"]) [data-cw="signal"] {--field:#4A1D16}
+  :root:not([data-theme="light"]) [data-cw="moss"]   {--field:#1D2A17}
+  :root:not([data-theme="light"]) [data-cw="black"]  {--field:#2A2C33}
+}
+
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--page);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;
+  min-height:100vh;display:flex;justify-content:center;align-items:flex-start;
+}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--action);outline-offset:2px}
+
+/* ---------- app shell ---------- */
+.app{
+  position:relative;width:100%;max-width:430px;background:var(--surface);
+  display:flex;flex-direction:column;
+}
+@media (min-width:600px){
+  .app{width:390px;max-width:390px;border-left:1px solid var(--line);border-right:1px solid var(--line);box-shadow:0 0 60px -20px rgba(10,14,30,.3)}
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:var(--field);transition:background-color .3s ease;overflow:hidden}
+.topbar{
+  position:absolute;inset:0 0 auto 0;z-index:3;display:flex;justify-content:space-between;align-items:center;
+  padding:14px 14px 0;
+}
+.topbar .grp{display:flex;gap:10px}
+.iconbtn{
+  position:relative;width:44px;height:44px;border-radius:50%;border:0;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--surface) 82%,transparent);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.iconbtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.iconbtn[aria-pressed="true"] svg{fill:var(--bad);stroke:var(--bad)}
+.count{
+  position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;
+  background:var(--action);color:var(--on-action);font:700 12px/20px var(--body);text-align:center;
+}
+
+.gallery{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;position:relative;
+}
+.gallery::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;height:340px;position:relative;display:grid;place-items:center}
+.slide svg.art{width:100%;height:100%;display:block}
+.ghost{
+  position:absolute;left:0;right:0;top:74px;text-align:center;z-index:0;pointer-events:none;
+  font:700 112px/1 var(--display);letter-spacing:-.02em;color:transparent;
+  -webkit-text-stroke:1.5px color-mix(in srgb,var(--ink) 16%,transparent);white-space:nowrap;
+}
+.slide svg.art{position:relative;z-index:1}
+.slide .note{
+  position:absolute;left:16px;bottom:34px;z-index:2;max-width:200px;
+  background:var(--surface);border-radius:10px;padding:8px 12px;font-size:13px;line-height:1.35;
+}
+.slide .note b{display:block;font-size:15px}
+
+.dots{position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:6px;z-index:3}
+.dots i{width:7px;height:7px;border-radius:4px;background:color-mix(in srgb,var(--ink) 30%,transparent);transition:width .2s ease,background-color .2s ease}
+.dots i.on{width:22px;background:var(--ink)}
+
+/* ---------- body ---------- */
+main{padding:20px 20px 0}
+.title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{font:700 34px/1.02 var(--display);letter-spacing:-.01em}
+.sub{color:var(--ink-2);font-size:15px;margin-top:4px}
+.price{font:700 28px/1 var(--display);text-align:right;white-space:nowrap}
+.price small{display:block;font:400 13px/1.3 var(--body);color:var(--ink-2);margin-top:6px}
+
+.rating{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;color:var(--ink-2)}
+.stars{display:flex;gap:2px}
+.stars svg{width:16px;height:16px;fill:var(--ink)}
+.stars svg.half{fill:url(#halfstar)}
+.rating a{color:var(--ink);text-underline-offset:3px}
+
+.sec{margin-top:26px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+h2{font:700 19px/1.2 var(--display);letter-spacing:.005em}
+.sec-head .val{font-size:14px;color:var(--ink-2)}
+
+/* swatches */
+.swatches{display:flex;gap:12px}
+.sw{position:relative}
+.sw input,.sz input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.sw label{
+  display:block;width:58px;height:58px;border-radius:14px;overflow:hidden;position:relative;
+  border:2px solid var(--line);background:var(--field);pointer-events:none;
+}
+.sw label::before{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;background:var(--upper)}
+.sw label::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;background:var(--accent)}
+.sw input:checked + label{border-color:var(--ink);box-shadow:0 0 0 2px var(--surface) inset}
+.sw input:focus-visible + label{outline:3px solid var(--action);outline-offset:2px}
+
+/* sizes */
+.seg{display:inline-flex;background:var(--sunken);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:5px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink-2);min-height:32px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sz{position:relative}
+.sz label{
+  display:grid;place-items:center;height:48px;border-radius:12px;border:1.5px solid var(--line);
+  font-weight:600;font-size:16px;pointer-events:none;background:var(--surface);
+}
+.sz input:checked + label{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.sz input:focus-visible + label{outline:3px solid var(--action);outline-offset:2px}
+.sz input:disabled{cursor:not-allowed}
+.sz input:disabled + label{color:var(--ink-2);opacity:.55;
+  background:linear-gradient(to top right,transparent calc(50% - 1px),var(--line) 50%,transparent calc(50% + 1px)),var(--surface)}
+.fit{margin-top:12px;font-size:14px;color:var(--ink-2);display:flex;gap:8px;align-items:center}
+.fit .scale{flex:0 0 64px;height:6px;border-radius:3px;background:var(--sunken);position:relative}
+.fit .scale i{position:absolute;left:30%;top:-3px;width:12px;height:12px;border-radius:50%;background:var(--ink);transform:translateX(-50%)}
+.err{min-height:22px;margin-top:8px;color:var(--bad);font-size:14px;font-weight:600}
+
+/* promises */
+.promise{display:grid;gap:0;margin-top:22px;border:1px solid var(--line);border-radius:var(--radius)}
+.promise div{display:flex;gap:14px;align-items:center;padding:14px 16px}
+.promise div + div{border-top:1px solid var(--line)}
+.promise svg{flex:0 0 24px;width:24px;height:24px;fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.promise b{display:block;font-size:15px}
+.promise span{font-size:14px;color:var(--ink-2)}
+.promise .ok{color:var(--good);font-weight:600}
+
+/* accordion */
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{
+  list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:56px;cursor:pointer;
+  font:700 17px/1.2 var(--display);letter-spacing:.005em;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"";width:10px;height:10px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s ease;
+}
+details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.panel{padding:0 0 18px;color:var(--ink-2);font-size:15px;max-width:60ch}
+.panel p + p{margin-top:10px}
+dl.spec{display:grid;grid-template-columns:auto 1fr;gap:10px 20px}
+dl.spec dt{color:var(--ink-2)}
+dl.spec dd{color:var(--ink);font-weight:600;text-align:right}
+.review{padding:2px 0 4px}
+.review .who{display:flex;justify-content:space-between;color:var(--ink);font-weight:600;font-size:14px;margin-bottom:4px}
+.review .who span{color:var(--ink-2);font-weight:400}
+
+/* sticky bar */
+.bar{
+  position:sticky;bottom:0;z-index:5;margin-top:28px;display:flex;align-items:center;gap:14px;
+  padding:12px 20px calc(14px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);
+}
+.bar .sum{flex:1;min-width:0}
+.bar .sum b{font:700 22px/1.1 var(--display);display:block}
+.bar .sum span{font-size:13px;color:var(--ink-2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cta{
+  flex:0 0 auto;height:54px;padding:0 28px;border-radius:14px;border:0;background:var(--action);color:var(--on-action);
+  font:700 17px/1 var(--display);letter-spacing:.01em;min-width:160px;
+}
+.cta:active{transform:translateY(1px)}
+.cta.done{background:var(--good);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cta.done{color:#07150f}}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="halfstar"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#9aa1b0"/></linearGradient>
+    <symbol id="shoe" viewBox="0 0 400 200">
+      <!-- ground shadow -->
+      <ellipse cx="204" cy="184" rx="176" ry="9" style="fill:var(--shade)"/>
+      <!-- midsole -->
+      <path d="M24 134 L372 134 C387 134 395 142 392 150 C387 162 368 169 338 169 L68 169 C44 169 26 161 24 148 Z" style="fill:var(--sole)"/>
+      <path d="M30 160 C46 166 62 167 80 167 L336 167 C362 167 380 162 390 152 C380 160 360 163 336 163 L76 163 C56 163 40 162 30 160 Z" style="fill:var(--ink);opacity:.85"/>
+      <path d="M26 148 C90 154 220 150 390 148" style="fill:none;stroke:var(--ink);stroke-opacity:.16;stroke-width:2"/>
+      <!-- upper -->
+      <path d="M36 134 C32 108 36 82 46 62 C52 54 62 54 70 60 C84 70 104 72 122 62 L150 38 C158 32 170 34 178 40 C198 62 236 84 282 96 C326 106 372 112 384 134 Z" style="fill:var(--upper)"/>
+      <path d="M300 104 C336 112 370 118 384 134 L322 134 C318 122 310 112 300 104 Z" style="fill:var(--ink);opacity:.1"/>
+      <path d="M36 134 C32 108 36 82 46 62 C52 54 62 54 70 60 C64 86 68 112 82 134 Z" style="fill:var(--ink);opacity:.14"/>
+      <!-- accent swoosh -->
+      <path d="M96 132 C132 120 176 98 200 66" style="fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round"/>
+      <path d="M116 132 C150 122 190 104 214 78" style="fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;opacity:.55"/>
+      <!-- collar opening and tongue -->
+      <path d="M70 60 C84 70 104 72 122 62 L150 38 C140 36 130 40 124 48 C104 44 84 48 70 60 Z" style="fill:var(--ink);opacity:.45"/>
+      <!-- laces, inside the throat line -->
+      <g style="stroke:var(--lace);stroke-width:4.5;stroke-linecap:round;opacity:.9">
+        <path d="M180 48 L170 62"/><path d="M200 62 L190 76"/><path d="M222 74 L212 88"/><path d="M246 84 L238 98"/><path d="M270 92 L264 105"/>
+      </g>
+      <!-- pull tab -->
+      <path d="M46 62 C40 52 44 42 52 36 C58 42 58 52 56 60 Z" style="fill:var(--accent)"/>
+      <!-- heel foam window -->
+      <path d="M40 146 C70 152 110 152 140 148" style="fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round"/>
+    </symbol>
+    <pattern id="tread" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
+      <rect width="14" height="14" fill="var(--ink)" opacity=".86"/>
+      <rect width="14" height="5" y="0" fill="var(--accent)"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="app" id="app" data-cw="harbour">
+  <section class="hero" aria-label="Product photos">
+    <div class="topbar">
+      <button class="iconbtn" type="button" aria-label="Back to running shoes">
+        <svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
+      </button>
+      <div class="grp">
+        <button class="iconbtn" id="fav" type="button" aria-pressed="false" aria-label="Save to favourites">
+          <svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.5 2.4C19.500 15.400 12 20 12 20Z"/></svg>
+        </button>
+        <button class="iconbtn" type="button" aria-label="Bag, 2 items" id="bagbtn">
+          <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.500a3 3 0 0 1 6 0V8"/></svg>
+          <span class="count" id="count">2</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="gallery" id="gallery" tabindex="0" aria-label="Photo carousel, 3 photos">
+      <div class="slide">
+        <div class="ghost" aria-hidden="true">VEKTOR</div>
+        <svg class="art" viewBox="0 0 400 340" role="img" aria-label="Side view of the Vektor 3 running shoe">
+          <g transform="translate(10 74) scale(0.95)"><use href="#shoe" width="400" height="200"/></g>
+        </svg>
+      </div>
+      <div class="slide">
+        <svg class="art" viewBox="0 0 400 340" role="img" aria-label="Close view of the heel and midsole foam">
+          <g transform="translate(40 -30) scale(3.1)"><use href="#shoe" width="400" height="200" transform="translate(-12 -20)"/></g>
+        </svg>
+        <div class="note"><b>38 mm foam stack</b>Soft heel, firm toe-off.</div>
+      </div>
+      <div class="slide">
+        <svg class="art" viewBox="0 0 400 340" role="img" aria-label="Outsole tread pattern">
+          <g transform="translate(0 40) scale(1)">
+            <path d="M28 120 C28 70 62 52 108 56 L300 70 C366 76 386 104 380 128 C372 158 330 170 286 170 L108 176 C60 178 28 160 28 120Z" fill="url(#tread)"/>
+            <path d="M28 120 C28 70 62 52 108 56 L300 70 C366 76 386 104 380 128 C372 158 330 170 286 170 L108 176 C60 178 28 160 28 120Z" fill="none" stroke="var(--ink)" stroke-opacity=".5" stroke-width="3"/>
+          </g>
+        </svg>
+        <div class="note"><b>Wet-grip rubber</b>Tread tested to 600 km.</div>
+      </div>
+    </div>
+    <div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+  </section>
+
+  <main>
+    <div class="title-row">
+      <div>
+        <h1>Vektor 3</h1>
+        <p class="sub">Men's road running shoe</p>
+      </div>
+      <div class="price">$148<small>or 4 x $37</small></div>
+    </div>
+
+    <div class="rating">
+      <div class="stars" aria-hidden="true" style="color:var(--ink)">
+        <svg viewBox="0 0 24 24"><path d="m12 2.500 2.900 6.200 6.600.8-4.900 4.600 1.300 6.700L12 17.500 6.100 20.800l1.300-6.700L2.500 9.500l6.600-.8Z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="m12 2.500 2.900 6.200 6.600.8-4.900 4.600 1.300 6.700L12 17.500 6.100 20.800l1.300-6.700L2.500 9.500l6.600-.8Z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="m12 2.500 2.900 6.200 6.600.8-4.900 4.600 1.300 6.700L12 17.500 6.100 20.800l1.300-6.700L2.500 9.500l6.600-.8Z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="m12 2.500 2.900 6.200 6.600.8-4.900 4.600 1.300 6.700L12 17.500 6.100 20.800l1.300-6.700L2.500 9.500l6.600-.8Z"/></svg>
+        <svg viewBox="0 0 24 24" class="half"><path d="m12 2.500 2.900 6.200 6.600.8-4.900 4.600 1.300 6.700L12 17.500 6.100 20.800l1.300-6.700L2.500 9.500l6.600-.8Z"/></svg>
+      </div>
+      <span><b style="color:var(--ink)">4.6</b> from <a href="#reviews">1,284 reviews</a></span>
+    </div>
+
+    <section class="sec" aria-labelledby="h-col">
+      <div class="sec-head"><h2 id="h-col">Colour</h2><span class="val" id="cwname">Harbour blue and white</span></div>
+      <div class="swatches" role="radiogroup" aria-labelledby="h-col">
+        <div class="sw" data-cw="harbour"><input type="radio" name="cw" id="cw1" value="harbour" data-name="Harbour blue and white" checked><label for="cw1"><span class="sr">Harbour blue and white</span></label></div>
+        <div class="sw" data-cw="signal"><input type="radio" name="cw" id="cw2" value="signal" data-name="Signal red and white"><label for="cw2"><span class="sr">Signal red and white</span></label></div>
+        <div class="sw" data-cw="moss"><input type="radio" name="cw" id="cw3" value="moss" data-name="Moss and sand"><label for="cw3"><span class="sr">Moss and sand</span></label></div>
+        <div class="sw" data-cw="black"><input type="radio" name="cw" id="cw4" value="black" data-name="Black and gum"><label for="cw4"><span class="sr">Black and gum</span></label></div>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="h-size">
+      <div class="sec-head">
+        <h2 id="h-size">Size</h2>
+        <div class="seg" role="group" aria-label="Size system">
+          <button type="button" id="us" aria-pressed="true">US</button>
+          <button type="button" id="eu" aria-pressed="false">EU</button>
+        </div>
+      </div>
+      <div class="sizes" id="sizes" role="radiogroup" aria-labelledby="h-size"></div>
+      <p class="err" id="err" role="alert"></p>
+      <div class="fit">
+        <div class="scale" aria-hidden="true"><i></i></div>
+        <span>Runs small. Most runners go up half a size.</span>
+      </div>
+    </section>
+
+    <div class="promise">
+      <div>
+        <svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.500" r="1.800"/><circle cx="17" cy="17.500" r="1.800"/></svg>
+        <p><b>Arrives Tue, Dec 1</b><span><span class="ok">Free</span> delivery on orders over $100</span></p>
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.500-5.800M4 4v4.500h4.500"/></svg>
+        <p><b>Free returns for 30 days</b><span>Worn once outdoors? We still take them back.</span></p>
+      </div>
+    </div>
+
+    <section class="sec" style="margin-top:22px">
+      <details open>
+        <summary>About this shoe</summary>
+        <div class="panel">
+          <p>The Vektor 3 is a daily trainer for easy miles and long runs. A wide forefoot gives your toes room late in a run.</p>
+          <p>The upper is a single piece of engineered mesh, 22% lighter than the Vektor 2.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Specs</summary>
+        <div class="panel">
+          <dl class="spec">
+            <dt>Weight</dt><dd>262 g (men's US 9)</dd>
+            <dt>Heel to toe drop</dt><dd>8 mm</dd>
+            <dt>Stack height</dt><dd>38 mm heel, 30 mm toe</dd>
+            <dt>Best for</dt><dd>Road, 5 km to marathon</dd>
+          </dl>
+        </div>
+      </details>
+      <details id="reviews">
+        <summary>Reviews (1,284)</summary>
+        <div class="panel">
+          <div class="review">
+            <div class="who">Dana K. <span>Verified buyer, 3 weeks ago</span></div>
+            <p>Ran my first half in these. No blisters, and the heel stays put without lacing tight. Go up half a size as they say.</p>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <div style="height:4px"></div>
+  </main>
+
+  <div class="bar">
+    <div class="sum">
+      <b>$148</b>
+      <span id="pick">Choose a size</span>
+    </div>
+    <button class="cta" id="add" type="button">Add to bag</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var app=document.getElementById('app');
+  // sizes: US men's 7 to 12.5, EU equivalents
+  var us=[7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5];
+  var eu=[40,40.5,41,42,42.5,43,44,44.5,45,45.5,46,47];
+  var gone={7:1,8.5:1,11.5:1,12.5:1};
+  var sys='us', box=document.getElementById('sizes'), picked=null;
+  function render(){
+    box.innerHTML='';
+    us.forEach(function(v,i){
+      var d=document.createElement('div'); d.className='sz';
+      var label=(sys==='us'?v:eu[i]);
+      d.innerHTML='<input type="radio" name="sz" id="s'+i+'" value="'+v+'"'+(gone[v]?' disabled':'')+(picked===v?' checked':'')+'>'
+        +'<label for="s'+i+'">'+label+'</label>';
+      var inp=d.querySelector('input');
+      inp.setAttribute('aria-label',(sys==='us'?'US ':'EU ')+label+(gone[v]?', sold out':''));
+      box.appendChild(d);
+    });
+    summary();
+  }
+  function cwName(){return document.querySelector('input[name=cw]:checked').dataset.name}
+  function summary(){
+    var i=us.indexOf(picked);
+    document.getElementById('pick').textContent=picked===null?'Choose a size':
+      (sys==='us'?'US ':'EU ')+(sys==='us'?picked:eu[i])+', '+cwName();
+  }
+  box.addEventListener('change',function(e){picked=parseFloat(e.target.value);document.getElementById('err').textContent='';summary();});
+  function setSys(s){sys=s;document.getElementById('us').setAttribute('aria-pressed',s==='us');document.getElementById('eu').setAttribute('aria-pressed',s==='eu');render();}
+  document.getElementById('us').onclick=function(){setSys('us')};
+  document.getElementById('eu').onclick=function(){setSys('eu')};
+  render();
+
+  // colourway
+  document.querySelectorAll('input[name=cw]').forEach(function(r){
+    r.addEventListener('change',function(){
+      app.dataset.cw=r.value;
+      document.getElementById('cwname').textContent=r.dataset.name;
+      summary();
+    });
+  });
+
+  // favourite
+  var fav=document.getElementById('fav');
+  fav.onclick=function(){var p=fav.getAttribute('aria-pressed')==='true';fav.setAttribute('aria-pressed',!p);fav.setAttribute('aria-label',p?'Save to favourites':'Remove from favourites');};
+
+  // gallery dots
+  var g=document.getElementById('gallery'), dots=document.querySelectorAll('#dots i');
+  g.addEventListener('scroll',function(){
+    var n=Math.round(g.scrollLeft/g.clientWidth);
+    dots.forEach(function(d,i){d.classList.toggle('on',i===n)});
+  },{passive:true});
+
+  // add to bag
+  var btn=document.getElementById('add'), count=document.getElementById('count'), n=2, t;
+  btn.onclick=function(){
+    if(picked===null){
+      document.getElementById('err').textContent='Pick a size to add to bag.';
+      box.scrollIntoView({block:'center',behavior:'smooth'});
+      return;
+    }
+    n++; count.textContent=n; document.getElementById('bagbtn').setAttribute('aria-label','Bag, '+n+' items');
+    btn.textContent='Added to bag'; btn.classList.add('done');
+    clearTimeout(t); t=setTimeout(function(){btn.textContent='Add to bag';btn.classList.remove('done');},2200);
+  };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notifications - Gigwell</title>
+<style>
+:root{
+  --bg:#EDF1F3; --surface:#FFFFFF; --ink:#12222B; --ink-2:#4A5E6A; --line:#D3DCE1; --line-soft:#E4EAEE;
+  --well:#17607A; --well-on:#FFFFFF; --well-tint:#DCEBF1;
+  --signal:#8A5200; --signal-bg:#FFEFCF; --signal-dot:#E39A12;
+  --money:#1E7A52; --money-tint:#DDF0E6; --danger:#B3322E; --danger-tint:#FBE4E2;
+  --shadow:0 1px 0 rgba(18,34,43,.04);
+  --display:"Bahnschrift","DIN Alternate","Avenir Next Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0D191F; --surface:#142830; --ink:#E7EFF3; --ink-2:#9FB3BE; --line:#27404B; --line-soft:#1E343D;
+    --well:#63BBD9; --well-on:#08202A; --well-tint:#1B3F4D;
+    --signal:#F4BD52; --signal-bg:#3A2C10; --signal-dot:#F0AA27;
+    --money:#62CB9B; --money-tint:#173A2C; --danger:#F28E89; --danger-tint:#44201F;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--well);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* top bar */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1320px;margin:0 auto;padding:0 32px;height:60px;display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:10px;font:600 22px/1 var(--display);letter-spacing:.01em;color:var(--ink);text-decoration:none}
+.brand svg{width:28px;height:28px;color:var(--well)}
+.tabs{display:flex;gap:4px;height:100%;margin-left:8px}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:0 14px;height:100%;color:var(--ink-2);font-weight:600}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--well)}
+.me{margin-left:auto;display:flex;align-items:center;gap:10px;color:var(--ink-2);font-size:14px}
+.av{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:600 14px/1 var(--display);letter-spacing:.03em;background:var(--well-tint);color:var(--well)}
+.me .av{width:34px;height:34px;font-size:13px;background:var(--well);color:var(--well-on)}
+
+/* layout */
+.shell{max-width:1320px;margin:0 auto;padding:36px 32px 80px;display:grid;grid-template-columns:224px minmax(0,1fr) 290px;column-gap:40px}
+.head{grid-column:1/-1;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
+h1{font:600 44px/1 var(--display);letter-spacing:-.005em;margin:0 0 10px}
+.sub{margin:0;color:var(--ink-2);max-width:60ch}
+.sub b{color:var(--ink);font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:14px;white-space:nowrap}
+.btn:hover{border-color:var(--ink-2)}
+.btn.primary{background:var(--well);border-color:var(--well);color:var(--well-on)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.5;cursor:default}
+
+/* filters */
+.filters{align-self:start;position:sticky;top:20px}
+.filters ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.filters button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;background:none;border:0;border-left:3px solid transparent;padding:8px 10px 8px 12px;text-align:left;color:var(--ink-2);border-radius:0 8px 8px 0}
+.filters button:hover{background:var(--line-soft);color:var(--ink)}
+.filters button[aria-pressed=true]{border-left-color:var(--well);background:var(--surface);color:var(--ink);font-weight:600;box-shadow:var(--shadow)}
+.count{min-width:22px;padding:0 7px;height:20px;border-radius:10px;font-size:12px;font-weight:600;line-height:20px;text-align:center;background:var(--well-tint);color:var(--well);font-variant-numeric:tabular-nums}
+.count.zero{background:none;color:var(--ink-2);font-weight:400}
+
+/* feed */
+.feed{min-width:0}
+.day{margin:0 0 8px;font:600 16px/1.2 var(--display);letter-spacing:.02em;color:var(--ink-2)}
+.list{list-style:none;margin:0 0 32px;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.row{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr) auto;column-gap:14px;padding:16px 16px 16px 20px;border-top:1px solid var(--line-soft)}
+.row:first-child{border-top:0}
+.row.unread::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--well)}
+.row.needs.unread::before{background:var(--signal-dot)}
+.ico{flex:none;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--well-tint);color:var(--well)}
+.ico svg{width:20px;height:20px}
+.ico.money{background:var(--money-tint);color:var(--money)}
+.ico.alert{background:var(--danger-tint);color:var(--danger)}
+.row h3{margin:0;font-size:15px;line-height:1.4;font-weight:400}
+.row.unread h3{font-weight:600}
+.row h3 b{font-weight:600}
+.detail{margin:2px 0 0;color:var(--ink-2);max-width:68ch}
+.quote{margin:6px 0 0;padding:2px 0 2px 12px;border-left:2px solid var(--line);color:var(--ink);max-width:68ch}
+.deadline{display:inline-block;margin-top:8px;padding:1px 8px;border-radius:6px;background:var(--signal-bg);color:var(--signal);font-size:13px;font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.done{margin:8px 0 0;display:flex;gap:8px;align-items:flex-start;color:var(--money);font-weight:600;font-size:14px}
+.done svg{flex:none;width:18px;height:18px;margin-top:2px}
+.side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.time{color:var(--ink-2);font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tools{display:flex;gap:2px}
+.ib{width:32px;height:32px;display:grid;place-items:center;background:none;border:0;border-radius:8px;color:var(--ink-2)}
+.ib:hover{background:var(--line-soft);color:var(--ink)}
+.ib svg{width:18px;height:18px}
+.reply{margin-top:12px;display:flex;flex-direction:column;gap:8px;max-width:560px}
+.reply textarea{width:100%;min-height:76px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);resize:vertical}
+.reply textarea:focus{outline:2px solid var(--well);outline-offset:0;border-color:transparent}
+.reply .actions{margin-top:0}
+
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:48px 24px;text-align:center}
+.empty h2{font:600 24px/1.2 var(--display);margin:0 0 6px}
+.empty p{margin:0 auto 18px;color:var(--ink-2);max-width:44ch}
+
+/* deadline ruler */
+.rail{align-self:start;position:sticky;top:20px}
+.rail h2{font:600 22px/1.2 var(--display);margin:0 0 4px}
+.rail > p{margin:0 0 18px;color:var(--ink-2);font-size:14px}
+.ruler{list-style:none;margin:0;padding:0;position:relative}
+.ruler::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--signal-dot),var(--line) 70%)}
+.ruler li{position:relative;padding:0 0 18px 28px}
+.ruler li:last-child{padding-bottom:0}
+.ruler li::before{content:"";position:absolute;left:0;top:5px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--ink-2)}
+.ruler li.hot::before{background:var(--signal-dot);border-color:var(--signal-dot)}
+.ruler .left{display:block;font:600 20px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.ruler .hot .left{color:var(--signal)}
+.ruler .what{display:block;color:var(--ink-2);font-size:14px;margin-top:2px}
+.ruler-empty{color:var(--ink-2);font-size:14px;margin:0}
+
+/* settings */
+.settings{grid-column:1/-1;max-width:820px}
+.settings[hidden],.inbox[hidden]{display:none}
+.inbox{display:contents}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:24px;box-shadow:var(--shadow)}
+.panel h2{font:600 22px/1.2 var(--display);margin:0;padding:20px 24px 4px}
+.panel > p{margin:0;padding:0 24px 12px;color:var(--ink-2)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 24px;text-align:left;border-top:1px solid var(--line-soft);vertical-align:middle}
+th{font-weight:400}
+thead th{font-weight:600;font-size:14px;color:var(--ink-2);text-align:center;width:90px}
+thead th:first-child{text-align:left;width:auto}
+td.c{text-align:center}
+tbody th small{display:block;color:var(--ink-2);font-size:13px}
+.sw{position:relative;display:inline-block;width:44px;height:26px;vertical-align:middle}
+.sw input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.sw i{position:absolute;inset:0;border-radius:13px;background:var(--ink-2);opacity:.45;transition:background .15s}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .15s}
+.sw input:checked + i{background:var(--well);opacity:1}
+.sw input:disabled{cursor:default}
+.sw input:disabled:checked + i{opacity:.6}
+.sw input:checked + i::after{transform:translateX(18px)}
+.sw input:focus-visible + i{outline:2px solid var(--well);outline-offset:2px}
+.field{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;border-top:1px solid var(--line-soft)}
+.field label small{display:block;color:var(--ink-2);font-size:13px}
+.field select{min-height:38px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.foot{display:flex;justify-content:flex-end;gap:8px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:14px;padding:10px 12px 10px 16px;border-radius:10px;background:var(--ink);color:var(--bg);font-weight:600;font-size:14px;transition:opacity .18s,transform .18s;z-index:10;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{background:none;border:0;color:inherit;font-weight:700;text-decoration:underline;padding:4px 6px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){.toast,.sw i,.sw i::after{transition:none}}
+
+/* narrower */
+@media (max-width:1180px){
+  .shell{grid-template-columns:180px minmax(0,1fr);column-gap:32px}
+  .rail{grid-column:2;grid-row:2;position:static;margin-bottom:28px}
+  .filters{grid-row:2/4}
+  .feed{grid-column:2}
+  .ruler{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+  .ruler::before{display:none}
+  .ruler li{flex:none;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:150px;max-width:200px}
+  .ruler li::before{display:none}
+  .ruler li.hot{border-color:var(--signal-dot)}
+}
+@media (max-width:760px){
+  .top-in{padding:0 16px;gap:12px;height:56px}
+  .me span{display:none}
+  .tabs{margin-left:0}
+  .tabs button{padding:0 10px}
+  .shell{display:block;padding:24px 16px 80px}
+  .head{flex-direction:column;align-items:stretch;gap:16px;margin-bottom:20px}
+  h1{font-size:36px}
+  .filters{position:static;margin:0 -16px 20px;padding:0 16px;overflow-x:auto}
+  .filters ul{flex-direction:row;gap:8px;width:max-content;padding-bottom:4px}
+  .filters button{width:auto;border:1px solid var(--line);border-radius:18px;padding:6px 12px;background:var(--surface);white-space:nowrap}
+  .filters button[aria-pressed=true]{background:var(--well);color:var(--well-on);border-color:var(--well)}
+  .filters button[aria-pressed=true] .count{background:rgba(255,255,255,.22);color:inherit}
+  .inbox{display:flex;flex-direction:column;min-width:0}
+  .inbox > *{min-width:0;align-self:stretch}
+  .rail{order:1;margin:0 -16px 20px;padding:0 16px}
+  .filters{order:2}
+  .feed{order:3}
+  .ruler li{min-width:170px}
+  .rail > p{display:none}
+  .row{grid-template-columns:36px minmax(0,1fr);padding:14px 14px 14px 18px;column-gap:12px}
+  .ico,.av{width:36px;height:36px}
+  .side{grid-column:2;flex-direction:row;align-items:center;justify-content:space-between;margin-top:6px}
+  .btn{min-height:42px}
+  .ib{width:40px;height:40px}
+  th,td,.panel h2,.panel > p,.field{padding-left:16px;padding-right:16px}
+  thead th{width:56px;font-size:12px;padding-left:4px;padding-right:4px}
+  td.c{padding-left:4px;padding-right:4px}
+  .field{flex-direction:column;align-items:stretch}
+  .foot .btn{flex:1}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#" aria-label="Gigwell home">
+      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="14" cy="14" r="3.2" fill="currentColor" stroke="none"/><circle cx="14" cy="14" r="8"/><path d="M3.5 14a10.5 10.5 0 0 1 21 0" stroke-width="1.6" opacity=".45"/></svg>
+      Gigwell
+    </a>
+    <div class="tabs" role="tablist" aria-label="Notifications sections">
+      <button role="tab" id="tab-inbox" aria-selected="true" aria-controls="inbox">Inbox</button>
+      <button role="tab" id="tab-settings" aria-selected="false" aria-controls="settings" tabindex="-1">Settings</button>
+    </div>
+    <div class="me"><span>Priya Nair</span><div class="av" aria-hidden="true">PN</div></div>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="head">
+    <div>
+      <h1>Notifications</h1>
+      <p class="sub" id="summary"></p>
+    </div>
+    <button class="btn" id="markAll" type="button">Mark all as read</button>
+  </div>
+
+  <div class="inbox" id="inbox" role="tabpanel" aria-labelledby="tab-inbox">
+    <nav class="filters" aria-label="Filter notifications"><ul id="filters"></ul></nav>
+    <section class="feed" id="feed" aria-live="polite"></section>
+    <aside class="rail" aria-labelledby="railTitle">
+      <h2 id="railTitle">Running out of time</h2>
+      <p>Things with a clock on them, soonest first.</p>
+      <ol class="ruler" id="ruler"></ol>
+    </aside>
+  </div>
+
+  <section class="settings" id="settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
+    <div class="panel">
+      <h2>Where Gigwell reaches you</h2>
+      <p>Pick a channel for each kind of update. Everything always shows in your inbox.</p>
+      <table>
+        <thead><tr><th scope="col"><span class="sr">Kind of update</span></th><th scope="col">Email</th><th scope="col">Phone</th><th scope="col">Inbox</th></tr></thead>
+        <tbody id="matrix"></tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Timing</h2>
+      <p>Urgent items still get through when an offer is about to expire.</p>
+      <div class="field"><label for="quiet">Quiet hours<small>No phone alerts in this window</small></label>
+        <select id="quiet"><option>Off</option><option selected>22:00 to 07:00</option><option>20:00 to 08:00</option></select></div>
+      <div class="field"><label for="digest">Email summary<small>One email instead of one per update</small></label>
+        <select id="digest"><option>Send each update</option><option selected>Daily at 08:00</option><option>Weekly on Monday</option></select></div>
+    </div>
+    <div class="foot"><button class="btn primary" id="save" type="button">Save settings</button></div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button type="button" id="toastUndo" hidden>Undo</button></div>
+
+<script>
+const ICON = {
+  offer:'<path d="M3 12V5a1 1 0 0 1 1-1h7l9 9-7 7-9-9Z"/><circle cx="7.5" cy="8.5" r="1.2"/>',
+  money:'<circle cx="12" cy="12" r="9"/><path d="M14.800 9.200c-.5-1-1.500-1.400-2.800-1.400-1.600 0-2.700.8-2.700 2 0 3 5.600 1.400 5.600 4.400 0 1.200-1.200 2.100-2.900 2.100-1.400 0-2.500-.5-3-1.600M12 6.200v1.600M12 16.200v1.600"/>',
+  star:'<path d="m12 3 2.700 5.600 6.100.8-4.500 4.200 1.100 6-5.400-3-5.400 3 1.100-6L3.200 9.400l6.100-.8Z"/>',
+  shield:'<path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6Z"/><path d="M12 8v5M12 16v.5"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="m8 12.500 2.700 2.700L16 9.500"/>',
+  read:'<path d="M4 12.500 9.500 18 20 6"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>'
+};
+const svg = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
+
+const CATS = [
+  {id:'all',label:'Everything'},
+  {id:'offers',label:'Offers and invites'},
+  {id:'messages',label:'Messages'},
+  {id:'work',label:'Contracts and delivery'},
+  {id:'money',label:'Payments'},
+  {id:'reviews',label:'Reviews'},
+  {id:'account',label:'Account and updates'}
+];
+
+const items = [
+ {id:1,day:'Today',cat:'offers',av:'NS',tone:'person',unread:true,time:'42 min ago',
+  title:'<b>Northfold Studio</b> sent you an offer',detail:'Brand refresh for Lumen Tea. Fixed price of $2,400 in three milestones. Starts Monday 30 Nov.',
+  due:{left:'6 h',what:'Northfold offer expires',tag:'Expires today at 8:30 pm',h:6},
+  actions:[{l:'Accept offer',p:1,done:'You accepted this offer. The contract starts Monday 30 Nov.'},{l:'Decline',done:'You declined this offer.'}]},
+ {id:2,day:'Today',cat:'messages',av:'HL',tone:'person',unread:true,time:'1 h ago',
+  title:'<b>Hannah Lindqvist</b> sent you a message',quote:'Can you send the revised logo files before the 4 pm call? Marcus wants to look at them first.',
+  due:{left:'5 h',what:'Logo files for the 4 pm call',h:5},reply:true},
+ {id:3,day:'Today',cat:'money',icon:'money',tone:'money',unread:true,time:'3 h ago',
+  title:'<b>Milestone 2 paid</b> on Brightpath app wireframes',detail:'$900.00 moved to your Gigwell balance. You can withdraw it now.'},
+ {id:4,day:'Today',cat:'work',av:'TR',tone:'person',unread:true,time:'5 h ago',
+  title:'<b>Tomas Reyes</b> asked for 2 revisions on Dashboard icon set',quote:'Please match the stroke weight to the nav icons and add the 24 px sizes.',
+  due:{left:'4 days',what:'Dashboard icon revisions due',tag:'Due Tuesday 1 Dec',h:100},
+  actions:[{l:'Start revisions',p:1,done:'Revisions started. Tomas can see the new status.'}]},
+ {id:5,day:'Yesterday',cat:'offers',av:'LL',tone:'person',unread:true,time:'Thu 16:20',
+  title:'<b>Ledgerline</b> invited you to interview for Mobile onboarding redesign',detail:'Budget of $60 to $80 an hour. Eight hours a week for six weeks.',
+  due:{left:'3 days',what:'Ledgerline interview slots close',tag:'Slots close Monday 30 Nov',h:72},
+  actions:[{l:'Pick a time',p:1,done:'Interview booked for Monday 30 Nov at 10:00.'},{l:'Decline',done:'You declined the interview.'}]},
+ {id:6,day:'Yesterday',cat:'reviews',av:'KM',tone:'person',unread:true,time:'Thu 11:05',
+  title:'<b>Kenji Mori</b> left you a 5-star review',quote:'Priya turned a messy brief into a clean system in nine days. Would hire again.'},
+ {id:7,day:'Yesterday',cat:'money',icon:'money',tone:'money',unread:false,time:'Thu 09:00',
+  title:'<b>Payout of $1,284.50</b> sent to Wise',detail:'To the account ending 4471. It arrives by Monday 30 Nov.'},
+ {id:8,day:'Earlier this week',cat:'account',icon:'shield',tone:'alert',unread:true,time:'Wed 21:14',
+  title:'<b>New sign-in</b> from Lisbon, Portugal',detail:'Chrome on Windows. If this was not you, sign out other devices and change your password.',
+  actions:[{l:'Secure my account',p:1,done:'Signed out of every other device. Change your password next.'},{l:'This was me',done:'You confirmed this sign-in.'}]},
+ {id:9,day:'Earlier this week',cat:'messages',av:'AR',tone:'person',unread:false,time:'Tue 14:42',
+  title:'<b>Amit Rao</b> replied in Packaging labels',quote:'Approved. Send the print-ready PDFs whenever you are ready.'},
+ {id:10,day:'Earlier this week',cat:'money',icon:'money',tone:'money',unread:false,time:'Mon 10:30',
+  title:'<b>Brightpath funded Milestone 3</b>',detail:'$1,200.00 is held in escrow until you deliver the final screens.'},
+ {id:11,day:'Last week',cat:'account',icon:'chart',tone:'system',unread:false,time:'Fri 20 Nov',
+  title:'<b>Your service fee drops to 8%</b> on 1 Dec',detail:'Your lifetime earnings passed $20,000. The new rate applies to every contract you start from 1 Dec.'},
+ {id:12,day:'Last week',cat:'reviews',icon:'star',tone:'system',unread:false,time:'Thu 19 Nov',
+  title:'<b>Review Brightpath</b> before the window closes',detail:'You can review a client for 14 days after a contract ends.',
+  due:{left:'4 days',what:'Brightpath review window closes',tag:'Closes Tuesday 1 Dec',h:96},
+  actions:[{l:'Write review',p:1,done:'Review started. Your draft is saved.'}]},
+ {id:13,day:'Last week',cat:'account',icon:'chart',tone:'system',unread:false,time:'Tue 17 Nov',
+  title:'<b>Your profile was viewed 38 times</b> this week',detail:'That is 38% more than last week. Most views came from Mobile design searches.'}
+];
+const DAYS=['Today','Yesterday','Earlier this week','Last week'];
+const $=s=>document.querySelector(s);
+let filter='all', replying=null, lastDismissed=null, toastTimer;
+
+const live = () => items.filter(i=>!i.gone);
+const needsYou = i => !i.gone && !i.resolved && (i.actions||i.reply);
+
+function toast(msg,undo){
+  $('#toastMsg').textContent=msg; $('#toastUndo').hidden=!undo;
+  $('#toast').classList.add('show'); clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),5000);
+}
+
+function renderFilters(){
+  $('#filters').innerHTML = CATS.map(c=>{
+    const n = live().filter(i=>i.unread && (c.id==='all'||i.cat===c.id)).length;
+    return `<li><button type="button" data-f="${c.id}" aria-pressed="${filter===c.id}"><span>${c.label}</span><span class="count ${n?'':'zero'}" aria-label="${n} unread">${n}</span></button></li>`;
+  }).join('');
+}
+
+function renderRow(i){
+  const lead = i.tone==='person' && i.av ? `<div class="av" aria-hidden="true">${i.av}</div>`
+    : `<div class="ico ${i.tone==='money'?'money':i.tone==='alert'?'alert':''}" aria-hidden="true">${svg(i.icon||'offer')}</div>`;
+  let body = `<h3>${i.title}</h3>`;
+  if(i.detail) body += `<p class="detail">${i.detail}</p>`;
+  if(i.quote) body += `<p class="quote">${i.quote}</p>`;
+  if(i.due && !i.resolved) body += `<span class="deadline">${i.due.tag || i.due.what}</span>`;
+  if(i.resolved){
+    body += `<p class="done">${svg('check')}<span>${i.resolved}</span></p>`;
+  } else if(replying===i.id){
+    body += `<form class="reply" data-id="${i.id}"><label class="sr" for="r${i.id}">Reply to Hannah Lindqvist</label><textarea id="r${i.id}" placeholder="Write your reply"></textarea><div class="actions"><button class="btn primary" type="submit">Send reply</button><button class="btn" type="button" data-cancel>Cancel</button></div></form>`;
+  } else if(i.reply){
+    body += `<div class="actions"><button class="btn primary" type="button" data-reply="${i.id}">Reply</button></div>`;
+  } else if(i.actions){
+    body += `<div class="actions">${i.actions.map((a,n)=>`<button class="btn ${a.p?'primary':''}" type="button" data-act="${i.id}:${n}">${a.l}</button>`).join('')}</div>`;
+  }
+  const t = i.unread?'Mark as read':'Mark as unread';
+  return `<li class="row ${i.unread?'unread':''} ${needsYou(i)?'needs':''}">${lead}<div>${body}</div>
+    <div class="side"><span class="time">${i.time}</span><span class="tools">
+    <button class="ib" type="button" data-read="${i.id}" title="${t}" aria-label="${t}">${svg('read')}</button>
+    <button class="ib" type="button" data-dismiss="${i.id}" title="Dismiss" aria-label="Dismiss">${svg('x')}</button></span></div></li>`;
+}
+
+function renderFeed(){
+  const shown = live().filter(i=>filter==='all'||i.cat===filter);
+  if(!shown.length){
+    const c = CATS.find(c=>c.id===filter).label;
+    $('#feed').innerHTML = `<div class="empty"><h2>${filter==='all'?'You are all caught up':'Nothing in '+c.toLowerCase()}</h2><p>${filter==='all'?'New offers, messages and payments will show up here.':'Updates of this kind will show up here when they arrive.'}</p>${filter==='all'?'':'<button class="btn primary" type="button" data-f="all">Show everything</button>'}</div>`;
+    return;
+  }
+  $('#feed').innerHTML = DAYS.map(d=>{
+    const rows = shown.filter(i=>i.day===d);
+    return rows.length ? `<h2 class="day">${d}</h2><ul class="list">${rows.map(renderRow).join('')}</ul>` : '';
+  }).join('');
+  if(replying){ const t=$('#r'+replying); if(t) t.focus(); }
+}
+
+function renderRuler(){
+  const d = live().filter(i=>i.due && !i.resolved).sort((a,b)=>a.due.h-b.due.h);
+  $('#ruler').innerHTML = d.length ? d.map(i=>`<li class="${i.due.h<=12?'hot':''}"><span class="left">${i.due.left}</span><span class="what">${i.due.what}</span></li>`).join('')
+    : '<li style="padding:0"><p class="ruler-empty">Nothing is due soon.</p></li>';
+}
+
+function renderHead(){
+  const n = live().filter(needsYou).length, u = live().filter(i=>i.unread).length;
+  $('#summary').innerHTML = n ? `<b>${n} ${n===1?'update needs':'updates need'} your answer.</b> ${u} unread in total.` : `Nothing needs your answer. ${u} unread in total.`;
+  $('#markAll').disabled = !u;
+}
+
+function render(){ renderHead(); renderFilters(); renderFeed(); renderRuler(); }
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  const find = id => items.find(i=>i.id==id);
+  if(t.dataset.f){ filter=t.dataset.f; render(); }
+  else if(t.dataset.read){ const i=find(t.dataset.read); i.unread=!i.unread; render(); }
+  else if(t.dataset.dismiss){ const i=find(t.dataset.dismiss); i.gone=true; lastDismissed=i; render(); toast('Notification dismissed',true); }
+  else if(t.dataset.reply){ replying=+t.dataset.reply; render(); }
+  else if(t.hasAttribute('data-cancel')){ replying=null; render(); }
+  else if(t.dataset.act){ const [id,n]=t.dataset.act.split(':'); const i=find(id); const a=i.actions[n]; i.resolved=a.done; i.unread=false; render(); toast(a.done.split('. ')[0].replace(/\.$/,'')); }
+  else if(t.id==='toastUndo'){ if(lastDismissed){ lastDismissed.gone=false; lastDismissed=null; render(); } $('#toast').classList.remove('show'); }
+  else if(t.id==='markAll'){ items.forEach(i=>i.unread=false); render(); toast('All notifications marked as read'); }
+});
+document.addEventListener('submit',e=>{
+  const f=e.target.closest('.reply'); if(!f) return; e.preventDefault();
+  const txt=f.querySelector('textarea').value.trim();
+  if(!txt){ f.querySelector('textarea').focus(); return; }
+  const i=items.find(x=>x.id==f.dataset.id); i.resolved='You replied just now: "'+txt.replace(/</g,'&lt;')+'"'; i.unread=false; replying=null; render(); toast('Reply sent');
+});
+
+/* tabs */
+function tab(which){
+  const s = which==='settings';
+  $('#tab-inbox').setAttribute('aria-selected',!s); $('#tab-settings').setAttribute('aria-selected',s);
+  $('#tab-inbox').tabIndex=s?-1:0; $('#tab-settings').tabIndex=s?0:-1;
+  $('#inbox').hidden=s; $('#settings').hidden=!s;
+  $('.head').style.display = s?'none':'';
+}
+$('#tab-inbox').onclick=()=>tab('inbox'); $('#tab-settings').onclick=()=>tab('settings');
+$('.tabs').addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ const s=$('#tab-settings').getAttribute('aria-selected')!=='true'; tab(s?'settings':'inbox'); $(s?'#tab-settings':'#tab-inbox').focus(); }});
+
+/* settings matrix */
+const PREFS=[
+ ['Offers and invites','A client wants to hire you',[1,1]],
+ ['Messages','Replies in a conversation',[0,1]],
+ ['Contracts and delivery','Revisions, approvals, timesheets',[1,1]],
+ ['Payments','Payouts and escrow funding',[1,1]],
+ ['Reviews','New reviews and review reminders',[1,0]],
+ ['Account and updates','Sign-ins, fee changes, profile tips',[1,0]]
+];
+$('#matrix').innerHTML = PREFS.map(p=>`<tr><th scope="row">${p[0]}<small>${p[1]}</small></th>${['Email','Phone'].map((c,k)=>`<td class="c"><label class="sw"><input type="checkbox" ${p[2][k]?'checked':''} aria-label="${p[0]} by ${c.toLowerCase()}"><i></i></label></td>`).join('')}<td class="c"><label class="sw"><input type="checkbox" checked disabled aria-label="${p[0]} in inbox, always on"><i></i></label></td></tr>`).join('');
+$('#save').onclick=()=>toast('Settings saved');
+
+render();
+</script>
+</body>
+</html>

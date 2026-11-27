@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Book a check-up - Fernlea Dental</title>
+<style>
+:root{
+  --bg:#eef2ee; --surface:#ffffff; --surface-2:#f4f7f4; --line:#dbe3dc;
+  --text:#18241d; --muted:#5a6a60; --accent:#1f6b4a; --accent-hover:#185a3d; --on-accent:#ffffff;
+  --accent-soft:#e1f0e7; --disabled-bg:#eef1ee; --disabled-text:#7d8a82; --focus:#0b5cd5;
+  --shadow:0 1px 2px rgba(24,36,29,.06),0 8px 30px rgba(24,36,29,.08);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0c120e; --surface:#151d18; --surface-2:#1b251f; --line:#2b382f;
+    --text:#e8f0ea; --muted:#9db0a3; --accent:#5fc08f; --accent-hover:#79d0a3; --on-accent:#0a1a11;
+    --accent-soft:#1d3a2b; --disabled-bg:#19211c; --disabled-text:#7f8f85; --focus:#7fb1ff;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:flex-start}
+.app{width:100%;max-width:430px;min-height:100vh;background:var(--surface);display:flex;flex-direction:column;position:relative}
+@media (min-width:600px){
+  body{padding:32px 0}
+  .app{min-height:0;height:min(860px,calc(100vh - 64px));border-radius:32px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+header.top{display:flex;align-items:center;gap:12px;padding:14px 16px 12px;border-bottom:1px solid var(--line)}
+.logo{width:36px;height:36px;flex:none;border-radius:11px;background:var(--accent);display:grid;place-items:center}
+.logo svg{width:22px;height:22px;stroke:var(--on-accent)}
+.top h1{font-size:18px;line-height:1.2;margin:0}
+.top p{margin:1px 0 0;font-size:13px;color:var(--muted)}
+
+form{display:contents}
+main{flex:1;overflow-y:auto;padding:4px 0 16px;scroll-padding-bottom:24px}
+section{padding:16px 16px 4px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 10px}
+.sec-head h2{font-size:15px;margin:0;display:flex;align-items:center;gap:8px}
+.num{width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:700;display:grid;place-items:center}
+.sec-head small{color:var(--muted);font-size:13px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{padding:0}
+
+.opt{position:relative;display:block}
+.opt input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;width:100%;height:100%}
+.opt input:disabled{cursor:not-allowed}
+.opt .face{pointer-events:none}
+.opt input:focus-visible + .face{outline:3px solid var(--focus);outline-offset:2px}
+
+.dentists{display:grid;gap:10px}
+.dentist .face{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--line);border-radius:16px;background:var(--surface);min-height:72px;transition:border-color .15s,background .15s}
+.dentist input:checked + .face{border-color:var(--accent);background:var(--accent-soft)}
+.avatar{width:48px;height:48px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:16px;color:#fff}
+.dentist .info{flex:1;min-width:0}
+.dentist .name{font-weight:650;display:block}
+.dentist .role{font-size:13px;color:var(--muted);display:block}
+.dentist .next{font-size:12.5px;color:var(--accent);font-weight:600;display:block;margin-top:2px}
+.tick{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);flex:none;display:grid;place-items:center}
+.dentist input:checked + .face .tick{background:var(--accent);border-color:var(--accent)}
+.tick svg{width:12px;height:12px;opacity:0;stroke:var(--on-accent)}
+.dentist input:checked + .face .tick svg{opacity:1}
+
+.dates{display:flex;gap:8px;overflow-x:auto;padding:2px 16px 8px;margin:0 -16px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.date{flex:none;scroll-snap-align:start}
+.date .face{width:56px;min-height:72px;border:1.5px solid var(--line);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--surface);transition:background .15s,border-color .15s}
+.date .dow{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.date .dom{font-size:20px;font-weight:700;line-height:1.1}
+.date .mon{font-size:11px;color:var(--muted)}
+.date input:checked + .face{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.date input:checked + .face .dow,.date input:checked + .face .mon{color:var(--on-accent)}
+.date input:disabled + .face{background:var(--disabled-bg);color:var(--disabled-text);border-style:dashed}
+.date input:disabled + .face .dow,.date input:disabled + .face .mon{color:var(--disabled-text)}
+.date .off{font-size:11px;font-weight:600}
+
+.slot-group{margin:0 0 14px}
+.slot-group h3{font-size:12.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:0 0 8px}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slot .face{display:grid;place-items:center;min-height:46px;border:1.5px solid var(--line);border-radius:12px;font-weight:600;font-variant-numeric:tabular-nums;background:var(--surface);transition:background .15s,border-color .15s}
+.slot input:checked + .face{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.slot input:disabled + .face{background:var(--disabled-bg);color:var(--disabled-text);text-decoration:line-through;font-weight:500}
+.empty{padding:18px 14px;border:1.5px dashed var(--line);border-radius:14px;color:var(--muted);font-size:14px;text-align:center;margin:0}
+.empty b{color:var(--text)}
+
+.visit{margin:8px 16px 0;padding:12px 14px;border-radius:14px;background:var(--surface-2);display:flex;gap:12px;font-size:13.5px;color:var(--muted)}
+.visit svg{width:20px;height:20px;flex:none;color:var(--accent);margin-top:1px}
+.visit b{color:var(--text)}
+
+footer.bar{border-top:1px solid var(--line);background:var(--surface);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.summary{font-size:13.5px;color:var(--muted);margin:0 0 10px;min-height:20px}
+.summary b{color:var(--text);font-weight:650}
+.cta{width:100%;min-height:52px;border:1.5px solid var(--accent);border-radius:14px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:16px;cursor:pointer;transition:background .15s}
+.cta:hover:not(:disabled){background:var(--accent-hover)}
+.cta:disabled{background:var(--disabled-bg);color:var(--disabled-text);cursor:not-allowed;border-color:var(--line)}
+
+.done{flex:1;overflow-y:auto;padding:40px 24px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.done .check{width:72px;height:72px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;margin-bottom:10px}
+.done .check svg{width:36px;height:36px;color:var(--accent)}
+.done h2{margin:0;font-size:22px}
+.done p{margin:0;color:var(--muted);max-width:30ch}
+.ticket{margin:20px 0 0;width:100%;text-align:left;border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.ticket div{display:flex;justify-content:space-between;gap:16px;padding:12px 14px;border-top:1px solid var(--line)}
+.ticket div:first-child{border-top:0}
+.ticket dt{color:var(--muted);font-size:14px}
+.ticket dd{margin:0;font-weight:650;text-align:right}
+.ref{font-size:13px;color:var(--muted);margin-top:14px}
+.link{margin-top:10px;background:none;border:0;color:var(--accent);font-weight:650;min-height:44px;padding:0 12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c-3-4-8-6.500-8-11a5 5 0 0 1 8-3.500A5 5 0 0 1 20 9c0 4.500-5 7-8 11z"/><path d="M12 5.500c0-2 1-3 3-3"/></svg>
+    </div>
+    <div>
+      <h1>Book a check-up</h1>
+      <p>Fernlea Dental, 14 Alder Row</p>
+    </div>
+  </header>
+
+  <form id="form" novalidate>
+  <main id="main">
+    <section>
+      <div class="sec-head"><h2><span class="num" aria-hidden="true">1</span>Choose your dentist</h2></div>
+      <fieldset>
+        <legend class="sr">Dentist</legend>
+        <div class="dentists" id="dentists"></div>
+      </fieldset>
+    </section>
+
+    <section>
+      <div class="sec-head"><h2><span class="num" aria-hidden="true">2</span>Pick a date</h2><small id="monthLabel">Nov 2026</small></div>
+      <fieldset>
+        <legend class="sr">Date</legend>
+        <div class="dates" id="dates"></div>
+      </fieldset>
+    </section>
+
+    <section>
+      <div class="sec-head"><h2><span class="num" aria-hidden="true">3</span>Select a time</h2><small>30 minutes</small></div>
+      <fieldset>
+        <legend class="sr">Time slot</legend>
+        <div id="slots"></div>
+      </fieldset>
+    </section>
+
+    <div class="visit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span><b>Your check-up includes</b> an exam, X-rays if needed and a clean. Arrive 5 minutes early. Free cancellation up to 24 hours before.</span>
+    </div>
+  </main>
+
+  <footer class="bar" id="bar">
+    <p class="summary" id="summary" aria-live="polite"></p>
+    <button class="cta" id="cta" type="submit" disabled>Choose a dentist</button>
+  </footer>
+  </form>
+
+  <div id="success" class="done" hidden>
+    <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg></div>
+    <h2 tabindex="-1" id="doneTitle">You're booked in</h2>
+    <p>We've sent a confirmation to your phone and will remind you the day before.</p>
+    <dl class="ticket" id="ticket"></dl>
+    <div class="ref" id="ref"></div>
+    <button class="link" id="again" type="button">Change or book another</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var DENTISTS=[
+    {id:'okafor',name:'Dr Amara Okafor',role:'General dentist, 12 years',initials:'AO',color:'#1f6b4a',off:[0]},
+    {id:'lindqvist',name:'Dr Tomas Lindqvist',role:'General dentist, 8 years',initials:'TL',color:'#2f5f9e',off:[0,1]},
+    {id:'raman',name:'Dr Priya Raman',role:'Family dentist, 15 years',initials:'PR',color:'#9a4a7a',off:[0,2]}
+  ];
+  var MORNING=['09:00','09:30','10:00','10:30','11:00','11:30'];
+  var AFTERNOON=['13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00'];
+  var DAYS=[];for(var i=0;i<14;i++){DAYS.push(new Date(2026,10,30+i));} // from Mon 30 Nov 2026
+  var fmt={
+    dow:new Intl.DateTimeFormat('en-GB',{weekday:'short'}),
+    mon:new Intl.DateTimeFormat('en-GB',{month:'short'}),
+    full:new Intl.DateTimeFormat('en-GB',{weekday:'long',day:'numeric',month:'long'}),
+    short:new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'numeric',month:'short'}),
+    month:new Intl.DateTimeFormat('en-GB',{month:'short',year:'numeric'})
+  };
+  var state={dentist:null,date:null,time:null};
+  var $=function(id){return document.getElementById(id)};
+  function dentist(id){return DENTISTS.filter(function(x){return x.id===id})[0];}
+
+  function works(id,di){return dentist(id).off.indexOf(DAYS[di].getDay())<0;}
+  function timesFor(id,di){
+    if(!works(id,di))return [];
+    var sat=DAYS[di].getDay()===6,k=DENTISTS.indexOf(dentist(id))+1;
+    return MORNING.concat(sat?[]:AFTERNOON).map(function(t,idx){
+      return {t:t,free:((k*73+di*41+idx*29+k*idx)%7)>=2,pm:AFTERNOON.indexOf(t)>=0};
+    });
+  }
+  function freeCount(id,di){return timesFor(id,di).filter(function(x){return x.free}).length;}
+  function nextAvail(id){
+    for(var i=0;i<DAYS.length;i++){var f=timesFor(id,i).filter(function(x){return x.free})[0];if(f)return {di:i,t:f.t};}
+    return null;
+  }
+  function isFree(id,di,t){return timesFor(id,di).some(function(x){return x.t===t&&x.free});}
+
+  var TICK='<svg viewBox="0 0 12 12" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.500l2.500 2.500L10 3.500"/></svg>';
+
+  function renderDentists(){
+    $('dentists').innerHTML=DENTISTS.map(function(d){
+      var n=nextAvail(d.id);
+      var nx=n?'Next free: '+fmt.short.format(DAYS[n.di])+', '+n.t:'No availability';
+      return '<label class="opt dentist"><input type="radio" name="dentist" value="'+d.id+'"'+(state.dentist===d.id?' checked':'')+' aria-describedby="n-'+d.id+'">'
+        +'<span class="face"><span class="avatar" style="background:'+d.color+'" aria-hidden="true">'+d.initials+'</span>'
+        +'<span class="info"><span class="name">'+d.name+'</span><span class="role">'+d.role+'</span><span class="next" id="n-'+d.id+'">'+nx+'</span></span>'
+        +'<span class="tick" aria-hidden="true">'+TICK+'</span></span></label>';
+    }).join('');
+  }
+
+  function renderDates(){
+    var d=state.dentist;
+    $('dates').innerHTML=DAYS.map(function(day,i){
+      var dis=!!d&&freeCount(d,i)===0;
+      var off=dis?(works(d,i)?'Full':'Off'):'';
+      return '<label class="opt date"><input type="radio" name="date" value="'+i+'"'+(state.date===i?' checked':'')+(dis?' disabled':'')
+        +' aria-label="'+fmt.full.format(day)+(dis?(off==='Off'?', dentist not working':', fully booked'):'')+'">'
+        +'<span class="face"><span class="dow">'+fmt.dow.format(day)+'</span><span class="dom">'+day.getDate()+'</span>'
+        +(off?'<span class="off">'+off+'</span>':'<span class="mon">'+fmt.mon.format(day)+'</span>')+'</span></label>';
+    }).join('');
+    $('monthLabel').textContent=fmt.month.format(DAYS[state.date==null?0:state.date]);
+  }
+
+  function slotHtml(s){
+    return '<label class="opt slot"><input type="radio" name="time" value="'+s.t+'"'+(state.time===s.t?' checked':'')+(s.free?'':' disabled')
+      +' aria-label="'+s.t+(s.free?'':', booked')+'"><span class="face">'+s.t+'</span></label>';
+  }
+  function renderSlots(){
+    var box=$('slots');
+    if(!state.dentist){box.innerHTML='<p class="empty">Choose a dentist and a date to see times.</p>';return;}
+    if(state.date==null){box.innerHTML='<p class="empty">Pick a date to see <b>'+dentist(state.dentist).name+'&rsquo;s</b> times.</p>';return;}
+    var s=timesFor(state.dentist,state.date);
+    var am=s.filter(function(x){return !x.pm}),pm=s.filter(function(x){return x.pm});
+    var html='<div class="slot-group"><h3>Morning</h3><div class="slots">'+am.map(slotHtml).join('')+'</div></div>';
+    html+=pm.length?'<div class="slot-group"><h3>Afternoon</h3><div class="slots">'+pm.map(slotHtml).join('')+'</div></div>'
+      :'<p class="empty">Saturday surgery runs in the mornings only.</p>';
+    box.innerHTML=html;
+  }
+
+  function renderBar(){
+    var cta=$('cta'),parts=[];
+    if(state.dentist)parts.push('<b>'+dentist(state.dentist).name+'</b>');
+    if(state.date!=null)parts.push(fmt.short.format(DAYS[state.date]));
+    if(state.time)parts.push(state.time);
+    $('summary').innerHTML=parts.length?parts.join(' &middot; '):'Nothing selected yet';
+    cta.disabled=!(state.dentist&&state.date!=null&&state.time);
+    cta.textContent=!state.dentist?'Choose a dentist':state.date==null?'Pick a date':!state.time?'Select a time':'Confirm check-up';
+  }
+
+  $('form').addEventListener('change',function(e){
+    var t=e.target;
+    if(t.name==='dentist'){
+      state.dentist=t.value;
+      if(state.date!=null&&freeCount(state.dentist,state.date)===0)state.date=null;
+      if(state.date==null||!isFree(state.dentist,state.date,state.time))state.time=null;
+      renderDates();renderSlots();
+    }else if(t.name==='date'){
+      state.date=+t.value;
+      if(!state.dentist||!isFree(state.dentist,state.date,state.time))state.time=null;
+      $('monthLabel').textContent=fmt.month.format(DAYS[state.date]);
+      renderSlots();
+    }else if(t.name==='time'){state.time=t.value;}
+    renderBar();
+  });
+
+  $('form').addEventListener('submit',function(e){
+    e.preventDefault();
+    if($('cta').disabled)return;
+    var d=dentist(state.dentist);
+    $('ticket').innerHTML=[['Dentist',d.name],['Date',fmt.full.format(DAYS[state.date])],['Time',state.time+' (30 min)'],['Visit','Routine check-up'],['Where','Fernlea Dental, 14 Alder Row']]
+      .map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('');
+    $('ref').textContent='Reference FL-'+(40210+state.date*137+parseInt(state.time.replace(':',''),10)%997);
+    $('form').hidden=true;$('success').hidden=false;
+    $('doneTitle').focus();
+  });
+  $('again').addEventListener('click',function(){
+    state={dentist:null,date:null,time:null};
+    $('success').hidden=true;$('form').hidden=false;
+    renderDentists();renderDates();renderSlots();renderBar();
+    $('main').scrollTop=0;
+  });
+
+  renderDentists();renderDates();renderSlots();renderBar();
+})();
+</script>
+</body>
+</html>

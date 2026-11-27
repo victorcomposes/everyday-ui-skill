@@ -1,0 +1,20 @@
+{
+  "10-notifications-s1": {
+    "D": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the top nav row runs off the right edge and cuts the last item to a single letter" },
+    "C": { "hierarchy": 7, "layout": 6, "typography": 7, "colour": 7, "craft": 6, "realism": 8, "mobile": 7, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the right rail lists actions as plain underlined links under a huge bare '5', which reads unfinished" },
+    "B": { "hierarchy": 7, "layout": 5, "typography": 7, "colour": 7, "craft": 6, "realism": 8, "mobile": 5, "dark": 6, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the sidebar background ends at 900 px and the page below it turns grey" },
+    "A": { "hierarchy": 9, "layout": 7, "typography": 7, "colour": 8, "craft": 8, "realism": 7, "mobile": 6, "dark": 8, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the filter chips run off the right edge and cut 'Offers and invites 3'" }
+  },
+  "10-notifications-s2": {
+    "D": { "hierarchy": 8, "layout": 7, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the sidebar border and panel stop at about 840 px and leave the left column open below" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 6, "realism": 8, "mobile": 6, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the type badge overlaps the avatar initials and clips 'DK'" },
+    "B": { "hierarchy": 6, "layout": 6, "typography": 6, "colour": 6, "craft": 5, "realism": 8, "mobile": 6, "dark": 6, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: underlined links in nearly every title make the list noisy and hard to scan" },
+    "A": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 6, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: read and unread rows look almost the same, both white with the same check and close icons" }
+  },
+  "10-notifications-s3": {
+    "D": { "hierarchy": 8, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 6, "dark": 7, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the 'Add your reply' button label wraps onto two lines" },
+    "C": { "hierarchy": 5, "layout": 6, "typography": 6, "colour": 6, "craft": 5, "realism": 8, "mobile": 6, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the 'System' tab is clipped by the card edge, and almost every row has a filled primary button" },
+    "B": { "hierarchy": 6, "layout": 7, "typography": 6, "colour": 6, "craft": 6, "realism": 7, "mobile": 7, "dark": 6, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: every action is the same outline button and no row has a type icon, so urgent items do not stand out" },
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the sidebar border ends at about 900 px and leaves the left column open below" }
+  }
+}

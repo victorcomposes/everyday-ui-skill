@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock levels - Larderly</title>
+<style>
+/* Brief: Larderly stock levels. Ember kit, Copper variant, soft shape, system sans (no network), warm feel. */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #a84a12; --accent-hover: #86390c; --accent-subtle: #fdeee5; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f7f7f8; --brand-deep: #1c1f26; --on-deep: #ffffff; --on-deep-muted: #b4b9c4;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px; --lh-xs: 16px;
+  --text-sm: 14px; --lh-sm: 20px;
+  --text-md: 16px; --lh-md: 24px;
+  --text-xl: 20px; --lh-xl: 28px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --w-sidebar: 248px; --w-content: 1200px;
+  --h-topbar: 56px; --h-row: 48px; --h-row-compact: 40px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #f0a060; --accent-hover: #f5bb88; --accent-subtle: #36210f; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #17191d; --brand-deep: #0f1115; --on-deep: #e9ebef; --on-deep-muted: #a0a6b2;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 759px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-bottom: 72px; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.ico { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.ico-sm { width: 16px; height: 16px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 100dvh; }
+.side { display: none; }
+.topbar { display: flex; align-items: center; justify-content: space-between; height: var(--h-topbar); padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); }
+.brand { display: inline-flex; align-items: center; gap: 10px; font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; }
+.avatar { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: 12px; flex-shrink: 0; }
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: grid; grid-template-columns: repeat(5, 1fr); height: calc(56px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+  background: var(--frame); border-top: 1px solid var(--border); }
+.tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 44px; font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; color: var(--text-muted); }
+.tabbar a[aria-current="page"] { color: var(--accent); }
+@media (min-width: 1100px) {
+  .shell { grid-template-columns: var(--w-sidebar) minmax(0, 1fr); }
+  .side { display: block; background: var(--frame); border-right: 1px solid var(--border); }
+  .side-inner { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-5) var(--s-3) var(--s-4); }
+  .topbar, .tabbar { display: none; }
+  .side .brand { padding: 0 var(--s-2); margin-bottom: var(--s-6); }
+  .nav { display: grid; gap: 2px; }
+  .nav a { display: flex; align-items: center; gap: var(--s-2); height: 36px; padding: 0 var(--s-2); border-radius: var(--r-md); color: var(--text-muted); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+  .nav a:hover { background: var(--bg-subtle); color: var(--text); }
+  .nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text); }
+  .nav a[aria-current="page"] .ico { color: var(--accent); }
+  .nav + .nav { margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--border); }
+  .account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-2) 0; border-top: 1px solid var(--border); min-width: 0; }
+  .account b { display: block; font-weight: 600; }
+  .account div span { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+  .account div { min-width: 0; }
+}
+main { padding: var(--s-5) var(--s-4) var(--s-12); }
+.page { max-width: var(--w-content); margin: 0 auto; }
+@media (min-width: 760px) { main { padding: var(--s-8) var(--s-6) var(--s-12); } }
+
+/* header */
+.page-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--s-4); }
+.page-head .sub { margin-top: var(--rhythm-title); color: var(--text-muted); }
+.actions { display: flex; gap: var(--s-2); align-items: center; }
+@media (max-width: 759px) {
+  h1 { font-size: 26px; }
+  .page-head { gap: var(--s-3); }
+  .actions { width: 100%; }
+  .actions .btn-primary { flex: 1; }
+  .page-head .sub { font-size: var(--text-md); line-height: var(--lh-md); }
+  .wide { display: none; }
+}
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface);
+  font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+@media (max-width: 759px) { .btn { font-size: var(--text-md); } }
+
+/* key numbers */
+.stats { display: flex; align-items: flex-start; gap: var(--s-10); margin-top: var(--rhythm-content); padding: var(--s-4) 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.stat { min-width: 0; }
+.stat + .stat { padding-left: var(--s-10); border-left: 1px solid var(--border); }
+.stat-label { color: var(--text-muted); font-weight: 500; font-size: 13px; line-height: 18px; }
+.stat-value { font: 700 40px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: var(--s-1); }
+.stat-value.sm { font-size: var(--text-xl); line-height: var(--lh-xl); font-weight: 600; letter-spacing: -0.01em; }
+.stat-note { color: var(--text-muted); font-size: 13px; line-height: 18px; margin-top: var(--s-1); }
+@media (max-width: 759px) {
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); align-items: start; margin-top: var(--s-5); padding: var(--s-4) 0; }
+  .stat + .stat { padding-left: var(--s-4); }
+  .stat-value { font-size: 36px; }
+}
+
+/* views and toolbar */
+.views { display: flex; gap: var(--s-6); margin-top: var(--rhythm-content); border-bottom: 1px solid var(--border); }
+.view { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0; background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: var(--text-muted); font-weight: 500; cursor: pointer; }
+.view:hover { color: var(--text); }
+.view[aria-pressed="true"] { color: var(--text); font-weight: 600; border-bottom-color: var(--accent); }
+.view .count { color: var(--text-muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+.tools { margin-top: var(--s-4); min-height: var(--control-h); }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+.search { position: relative; flex: 0 1 300px; }
+.search .ico { position: absolute; left: var(--s-3); top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.field { height: var(--control-h); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); padding: 0 var(--s-3); min-width: 0; }
+.search .field { width: 100%; padding-left: 40px; }
+.filter-fields { display: flex; gap: var(--s-3); }
+select.field { padding-right: var(--s-2); }
+.filters > summary { display: none; list-style: none; }
+.filters > summary::-webkit-details-marker { display: none; }
+.btn-text { min-height: var(--control-h); padding: 0 var(--s-2); background: none; border: 0; color: var(--accent); font-weight: 500; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.bulk { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); padding: var(--s-2) var(--s-3); background: var(--accent-subtle); border-radius: var(--r-md); }
+.bulk b { font-weight: 600; margin-right: var(--s-2); }
+.bulk .btn { background: var(--surface); }
+@media (max-width: 759px) {
+  .views { gap: var(--s-5); }
+  .views .view { font-size: var(--text-md); }
+  .toolbar { gap: var(--s-2); }
+  .search { flex: 1 1 100%; }
+  .field { font-size: var(--text-md); }
+  .filters { flex: 1 1 auto; }
+  .filters > summary { display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-4); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface); font-weight: 600; cursor: pointer; font-size: var(--text-md); }
+  .filters[open] > summary { margin-bottom: var(--s-2); }
+  .filters .filter-fields { flex-direction: column; width: calc(100vw - 32px); }
+  .filters .filter-fields select { width: 100%; }
+  .toolbar .btn-text { font-size: var(--text-md); }
+  .bulk { font-size: var(--text-md); }
+}
+
+/* table */
+.table-wrap { margin-top: var(--s-4); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: clip; }
+table { width: 100%; border-collapse: collapse; }
+th { position: sticky; top: 0; z-index: 1; height: 40px; padding: 0 var(--s-3); background: var(--bg-subtle); border-bottom: 1px solid var(--border); text-align: left; font-weight: 500; font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+td { height: var(--h-row-compact); padding: 0 var(--s-3); border-bottom: 1px solid var(--border); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--bg-subtle); }
+tbody tr[aria-selected="true"] { background: var(--accent-subtle); }
+.r { text-align: right; }
+.c-check { width: 44px; padding-right: 0; }
+.c-name { width: 100%; max-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.c-name a { font-weight: 500; }
+.c-name a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.c-muted { color: var(--text-muted); }
+.c-act { width: 96px; text-align: right; padding-left: var(--s-2); }
+.sort { display: inline-flex; align-items: center; gap: var(--s-1); padding: 0; background: none; border: 0; color: inherit; font-weight: 500; font-size: inherit; cursor: pointer; }
+.sort:hover { color: var(--text); }
+.check { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.chk { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
+.b-out { background: var(--danger-subtle); color: var(--danger); }
+.b-low { background: var(--warning-subtle); color: var(--warning); }
+.b-ok { background: var(--bg-subtle); color: var(--text-muted); }
+.badge { padding: 2px 8px; border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; }
+.meter { position: relative; width: 96px; height: 8px; border-radius: var(--r-full); background: var(--border); }
+.meter i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--r-full); background: var(--border-strong); }
+.meter.low i { background: var(--warning); }
+.meter.out i { background: var(--danger); }
+.meter s { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--text); border-radius: 1px; }
+.reorder { min-width: 80px; min-height: var(--control-h-sm); padding: 0 var(--s-3); background: none; border: 1px solid transparent; border-radius: var(--r-md); color: var(--accent); font-weight: 600; cursor: pointer; transition: background-color var(--t-fast) var(--ease); }
+.reorder:hover { background: var(--accent-subtle); }
+.reorder.hot { border-color: var(--accent); }
+.on-order { display: inline-flex; align-items: center; justify-content: flex-end; gap: var(--s-1); min-width: 80px; min-height: var(--control-h-sm); color: var(--text-muted); font-weight: 500; }
+.dash { color: var(--text-muted); }
+.skel { display: block; height: 12px; border-radius: var(--r-sm); background: var(--border); }
+.pager { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-4); color: var(--text-muted); }
+.pager .btns { display: flex; align-items: center; gap: var(--s-2); }
+.pager .btn { font-weight: 500; }
+.pager .btn[aria-disabled="true"] { color: var(--text-muted); cursor: default; background: var(--bg-subtle); }
+.hide-wide { display: none; }
+.wide-only { display: inline; }
+
+@media (max-width: 1279px) { .c-cat, .c-sup { display: none; } }
+@media (max-width: 759px) {
+  .c-cat { display: none; }
+  .table-wrap { border: 0; border-radius: 0; margin-top: var(--s-2); overflow: visible; }
+  table.reflow thead { display: none; }
+  table.reflow, table.reflow tbody { display: block; }
+  table.reflow tr { display: grid; grid-template-columns: 44px repeat(3, minmax(0, 1fr)); grid-template-areas: "check name name status" ". bar bar bar" ". qty par lasts" ". sup sup act"; gap: var(--s-2) var(--s-3); align-items: center; padding: var(--s-3) 0; border-bottom: 1px solid var(--border); }
+  table.reflow tr.skel-row { grid-template-areas: "name name name name"; grid-template-columns: 1fr; }
+  table.reflow td { display: block; height: auto; padding: 0; border: 0; white-space: normal; }
+  table.reflow td.c-cat { display: none; }
+  table.reflow td.c-check { grid-area: check; width: auto; }
+  table.reflow td.c-name { grid-area: name; max-width: none; width: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-md); }
+  table.reflow td.c-status { grid-area: status; justify-self: end; }
+  table.reflow td.c-bar { grid-area: bar; }
+  table.reflow td.c-qty { grid-area: qty; text-align: left; }
+  table.reflow td.c-par { grid-area: par; text-align: left; }
+  table.reflow td.c-lasts { grid-area: lasts; text-align: left; }
+  table.reflow td.c-sup { display: block; grid-area: sup; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  table.reflow td.c-act { grid-area: act; width: auto; justify-self: end; }
+  table.reflow td[data-label]::before { content: attr(data-label); display: block; color: var(--text-muted); font-size: 13px; line-height: 18px; }
+  .meter { width: 100%; }
+  .pager .btn { font-size: var(--text-md); }
+  .chk { width: 44px; height: 44px; margin-left: -12px; }
+  .topbar .brand { min-height: 44px; }
+  .hide-wide { display: inline; }
+  .wide-only { display: none; }
+}
+
+/* states */
+.state { display: grid; justify-items: start; gap: var(--s-3); padding: var(--s-10) var(--s-6); border: 1px solid var(--border); border-radius: var(--r-lg); margin-top: var(--rhythm-content); max-width: 640px; }
+.state h2 { margin-top: var(--s-2); }
+.state p { color: var(--text-muted); max-width: 52ch; }
+.state .row-links { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-2); flex-wrap: wrap; }
+.state .btn { min-height: var(--control-h-touch); }
+.state .link { display: inline-flex; align-items: center; min-height: 44px; }
+.no-results td { height: 160px; text-align: center; white-space: normal; }
+.no-results p { color: var(--text-muted); margin: var(--s-1) 0 var(--s-3); }
+@media (max-width: 759px) {
+  .state { padding: var(--s-6) var(--s-4); }
+  table.reflow tr.no-results { display: block; padding: var(--s-6) 0; text-align: center; }
+  table.reflow td.no-results-cell { text-align: center; }
+}
+
+.toast { position: fixed; left: 50%; bottom: calc(72px + env(safe-area-inset-bottom)); z-index: 30; transform: translateX(-50%); display: flex; align-items: center; gap: var(--s-4); max-width: calc(100vw - 32px); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4);
+  background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md); box-shadow: var(--shadow-pop); }
+.toast .btn-text { min-height: 44px; }
+@media (min-width: 1100px) { .toast { bottom: var(--s-6); } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to stock table</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-stock" viewBox="0 0 24 24"><path d="M12 3 3 7.5 12 12l9-4.5L12 3z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></symbol>
+  <symbol id="i-orders" viewBox="0 0 24 24"><path d="M5 7h14l-1 12H6L5 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></symbol>
+  <symbol id="i-suppliers" viewBox="0 0 24 24"><path d="M3 6h11v10H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+  <symbol id="i-recipes" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></symbol>
+  <symbol id="i-counts" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="m9 14 2 2 4-4"/></symbol>
+  <symbol id="i-waste" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="m6 7 1 13h10l1-13"/></symbol>
+  <symbol id="i-reports" viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16v.5"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside class="side">
+    <div class="side-inner">
+      <a class="brand" href="#" aria-label="Larderly home"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><rect x="9" y="5.5" width="10" height="4" rx="1.5" fill="var(--on-accent)"/><rect x="7.5" y="10.5" width="13" height="12" rx="3.5" fill="var(--on-accent)"/><path d="M7.5 17h13" stroke="var(--accent)" stroke-width="1.8"/></svg>Larderly</a>
+      <nav class="nav" aria-label="Main">
+        <a href="#" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#i-stock"/></svg>Stock levels</a>
+        <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-orders"/></svg>Orders</a>
+        <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-suppliers"/></svg>Suppliers</a>
+        <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-counts"/></svg>Stock counts</a>
+        <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-recipes"/></svg>Recipes</a>
+        <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-waste"/></svg>Waste log</a>
+      </nav>
+      <nav class="nav" aria-label="Account">
+        <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-reports"/></svg>Reports</a>
+        <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-settings"/></svg>Settings</a>
+      </nav>
+      <div class="account"><span class="avatar" aria-hidden="true">MO</span><div><b>Marta Okafor</b><span>Fennel &amp; Fig, Dock Street</span></div></div>
+    </div>
+  </aside>
+
+  <div class="content">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Larderly home"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><rect x="9" y="5.5" width="10" height="4" rx="1.5" fill="var(--on-accent)"/><rect x="7.5" y="10.5" width="13" height="12" rx="3.5" fill="var(--on-accent)"/><path d="M7.5 17h13" stroke="var(--accent)" stroke-width="1.8"/></svg>Larderly</a>
+      <span class="avatar" aria-label="Marta Okafor">MO</span>
+    </header>
+
+    <main id="main">
+      <div class="page">
+        <div class="page-head">
+          <div>
+            <h1>Stock levels</h1>
+            <p class="sub" id="sub"></p>
+          </div>
+          <div class="actions" id="actions"></div>
+        </div>
+        <div id="stats"></div>
+        <div id="views"></div>
+        <div id="body"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+  <a href="#" aria-current="page"><svg class="ico" aria-hidden="true"><use href="#i-stock"/></svg>Stock</a>
+  <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-orders"/></svg>Orders</a>
+  <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-suppliers"/></svg>Suppliers</a>
+  <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-counts"/></svg>Counts</a>
+  <a href="#"><svg class="ico" aria-hidden="true"><use href="#i-more"/></svg>More</a>
+</nav>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* ---------- fixtures: one module, everything on screen derives from it ---------- */
+const TODAY = new Date('2026-11-27T10:30:00');
+const LAST_COUNT = 'today at 07:40';
+const PAGE_SIZE = 20;
+const SUPPLIERS = {
+  'Millbrook Produce': '15:00', 'Harlow Dairy': '15:30', 'Corvin Meats': '16:00',
+  'Tidewater Fish Co.': '14:00', 'Stonemill Dry Goods': '12:00', 'Brightside Beverages': '17:00'
+};
+// name, category, unit, on hand, reorder at, full level, used per day, supplier, already on order
+const RAW = [
+  ['Roma tomatoes', 'Produce', 'kg', 6, 10, 30, 5, 'Millbrook Produce'],
+  ['Yellow onions', 'Produce', 'kg', 24, 10, 40, 4, 'Millbrook Produce'],
+  ['Garlic', 'Produce', 'heads', 18, 12, 60, 6, 'Millbrook Produce'],
+  ['Baby spinach', 'Produce', 'kg', 2, 4, 12, 2, 'Millbrook Produce'],
+  ['Lemons', 'Produce', 'pcs', 90, 30, 120, 12, 'Millbrook Produce'],
+  ['Flat-leaf parsley', 'Produce', 'bunches', 0, 6, 20, 3, 'Millbrook Produce'],
+  ['Carrots', 'Produce', 'kg', 14, 8, 30, 3, 'Millbrook Produce'],
+  ['Waxy potatoes', 'Produce', 'kg', 32, 20, 80, 8, 'Millbrook Produce'],
+  ['Fennel bulbs', 'Produce', 'pcs', 9, 8, 24, 3, 'Millbrook Produce'],
+  ['Whole milk', 'Dairy and eggs', 'L', 8, 20, 60, 10, 'Harlow Dairy'],
+  ['Double cream', 'Dairy and eggs', 'L', 9, 6, 20, 2, 'Harlow Dairy'],
+  ['Unsalted butter', 'Dairy and eggs', 'kg', 11, 8, 30, 2, 'Harlow Dairy'],
+  ['Free-range eggs', 'Dairy and eggs', 'pcs', 180, 120, 600, 60, 'Harlow Dairy'],
+  ['Parmesan, aged 24 months', 'Dairy and eggs', 'kg', 3, 2, 8, 0.4, 'Harlow Dairy'],
+  ['Greek yoghurt', 'Dairy and eggs', 'kg', 10, 6, 20, 1.5, 'Harlow Dairy', true],
+  ['Chicken thighs, bone-in', 'Meat and fish', 'kg', 9, 15, 40, 6, 'Corvin Meats'],
+  ['Beef short rib', 'Meat and fish', 'kg', 22, 10, 40, 4, 'Corvin Meats'],
+  ['Pork belly', 'Meat and fish', 'kg', 12, 8, 30, 3, 'Corvin Meats'],
+  ['Smoked streaky bacon', 'Meat and fish', 'kg', 7, 4, 16, 1, 'Corvin Meats'],
+  ['Sea bass fillets', 'Meat and fish', 'kg', 4, 6, 14, 3, 'Tidewater Fish Co.'],
+  ['Rope-grown mussels', 'Meat and fish', 'kg', 0, 8, 20, 4, 'Tidewater Fish Co.'],
+  ['Arborio rice', 'Dry goods', 'kg', 18, 10, 50, 3, 'Stonemill Dry Goods'],
+  ['Strong white flour', 'Dry goods', 'kg', 14, 25, 100, 10, 'Stonemill Dry Goods'],
+  ['Dried penne', 'Dry goods', 'kg', 20, 8, 40, 2, 'Stonemill Dry Goods'],
+  ['Dried chickpeas', 'Dry goods', 'kg', 9, 5, 25, 1, 'Stonemill Dry Goods'],
+  ['San Marzano tomatoes, peeled (2.5 kg tin)', 'Dry goods', 'tins', 14, 12, 48, 3, 'Stonemill Dry Goods'],
+  ['Fine sea salt', 'Dry goods', 'kg', 11, 4, 20, 0.5, null],
+  ['Extra virgin olive oil', 'Oils and condiments', 'L', 18, 12, 60, 4, 'Stonemill Dry Goods'],
+  ['Sherry vinegar', 'Oils and condiments', 'L', 4, 2, 8, 0.2, 'Stonemill Dry Goods'],
+  ['Still water, 75 cl', 'Drinks', 'bottles', 220, 72, 360, 40, 'Brightside Beverages'],
+  ['Sparkling water, 75 cl', 'Drinks', 'bottles', 60, 72, 360, 48, 'Brightside Beverages'],
+  ['House red wine, 75 cl', 'Drinks', 'bottles', 36, 24, 120, 8, 'Brightside Beverages', true]
+];
+function makeItems(state) {
+  const base = RAW.map((r, i) => ({ id: 'i' + i, name: r[0], cat: r[1], unit: r[2], onHand: r[3], par: r[4], max: r[5], use: r[6], sup: r[7], ordered: !!r[8] }));
+  if (state !== 'stress') return base;
+  // stress: 1,284 rows, long and missing values, huge numbers
+  const cats = ['Produce', 'Dairy and eggs', 'Meat and fish', 'Dry goods', 'Drinks'];
+  const sups = Object.keys(SUPPLIERS);
+  const out = base.slice();
+  for (let n = base.length; n < 1284; n++) {
+    const s = (n * 7919) % 97;
+    out.push({ id: 'i' + n, name: 'Ingredient ' + (n + 1) + (n % 11 === 0 ? ', hand-picked heritage variety, graded, washed and packed in returnable crates of twelve' : ''),
+      cat: cats[n % 5], unit: n % 3 ? 'pcs' : 'kg', onHand: n % 13 === 0 ? 0 : (n % 17 === 0 ? 12480 : s * 3), par: 60 + (s % 40), max: 12500, use: n % 19 === 0 ? 0 : 5 + (s % 25),
+      sup: n % 23 === 0 ? null : sups[n % sups.length], ordered: n % 29 === 0 });
+  }
+  out[3].name = 'Pneumonoultramicroscopicsilicovolcanoconiosis-grade-flour-nowhitespace-anywhere-in-this-name';
+  return out;
+}
+
+/* ---------- derived values ---------- */
+const nf = new Intl.NumberFormat('en-GB');
+const plural = (n, one, many) => `${nf.format(n)} ${n === 1 ? one : many}`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const status = (i) => i.onHand === 0 ? 'out' : i.onHand <= i.par ? 'low' : 'ok';
+const daysLeft = (i) => i.use > 0 ? i.onHand / i.use : Infinity;
+const STATUS_TEXT = { out: 'Out of stock', low: 'Low', ok: 'In stock' };
+function lastsText(i) {
+  const d = daysLeft(i);
+  if (d === Infinity) return '<span class="dash" aria-label="Not tracked">–</span>';
+  if (d === 0) return '0 days';
+  if (d < 1) return 'Under 1 day';
+  return plural(Math.floor(d), 'day', 'days');
+}
+
+/* ---------- state ---------- */
+const mode = new URLSearchParams(location.search).get('state') || '';
+const ITEMS = mode === 'empty' || mode === 'loading' || mode === 'error' ? [] : makeItems(mode);
+const S = { tab: 'all', q: '', cat: '', sup: '', sortKey: 'lasts', sortDir: 1, page: 1, sel: new Set(), ordered: new Set(ITEMS.filter((i) => i.ordered).map((i) => i.id)) };
+let undo = null, toastTimer = null;
+
+const needs = (i) => status(i) !== 'ok' && !S.ordered.has(i.id);
+const $ = (id) => document.getElementById(id);
+
+function visible() {
+  const q = S.q.trim().toLowerCase();
+  let rows = ITEMS.filter((i) => (S.tab === 'all' || (S.tab === 'reorder' && needs(i)) || (S.tab === 'ordered' && S.ordered.has(i.id)))
+    && (!S.cat || i.cat === S.cat) && (!S.sup || i.sup === S.sup)
+    && (!q || (i.name + ' ' + i.cat + ' ' + (i.sup || '')).toLowerCase().includes(q)));
+  const k = S.sortKey, d = S.sortDir;
+  rows = rows.slice().sort((a, b) => {
+    const r = k === 'name' ? a.name.localeCompare(b.name) : (daysLeft(a) === daysLeft(b) ? 0 : daysLeft(a) < daysLeft(b) ? -1 : 1);
+    return (r || a.name.localeCompare(b.name)) * d;
+  });
+  return rows;
+}
+
+/* ---------- render ---------- */
+const meter = (i) => {
+  const pct = Math.min(100, (i.onHand / i.max) * 100), par = Math.min(100, (i.par / i.max) * 100);
+  return `<div class="meter ${status(i)}" role="img" aria-label="${nf.format(i.onHand)} ${i.unit} on hand, reorder at ${nf.format(i.par)}"><i style="width:${pct}%"></i><s style="left:${par}%"></s></div>`;
+};
+function rowHtml(i) {
+  const st = status(i), ordered = S.ordered.has(i.id), sel = S.sel.has(i.id);
+  const act = ordered
+    ? `<span class="on-order"><svg class="ico ico-sm" aria-hidden="true"><use href="#i-check"/></svg>On order</span>`
+    : `<button class="reorder ${st === 'ok' ? '' : 'hot'}" data-act="order" data-id="${i.id}" aria-label="Reorder ${esc(i.name)}">Reorder</button>`;
+  return `<tr data-id="${i.id}" aria-selected="${sel}">
+    <td class="c-check"><label class="chk"><input class="check" type="checkbox" data-act="sel" data-id="${i.id}" ${sel ? 'checked' : ''}><span class="sr-only">Select ${esc(i.name)}</span></label></td>
+    <td class="c-name" title="${esc(i.name)}"><a href="#" data-row="${i.id}">${esc(i.name)}</a></td>
+    <td class="c-cat c-muted">${esc(i.cat)}</td>
+    <td class="c-status"><span class="badge b-${st}">${STATUS_TEXT[st]}</span></td>
+    <td class="c-bar">${meter(i)}</td>
+    <td class="c-qty r num" data-label="On hand">${nf.format(i.onHand)} ${i.unit}</td>
+    <td class="c-par r num c-muted" data-label="Reorder at">${nf.format(i.par)} ${i.unit}</td>
+    <td class="c-lasts r num" data-label="Lasts">${lastsText(i)}</td>
+    <td class="c-sup c-muted">${i.sup ? esc(i.sup) : '<span class="dash" aria-label="None">–</span>'}</td>
+    <td class="c-act">${act}</td>
+  </tr>`;
+}
+const sortBtn = (key, label, cls) => {
+  const on = S.sortKey === key;
+  return `<th class="${cls || ''}" aria-sort="${on ? (S.sortDir === 1 ? 'ascending' : 'descending') : 'none'}"><button class="sort" data-act="sort" data-key="${key}">${label}${on ? `<svg class="ico ico-sm" aria-hidden="true"><use href="#i-${S.sortDir === 1 ? 'up' : 'down'}"/></svg>` : ''}</button></th>`;
+};
+function theadHtml(allOnPage, anyOnPage) {
+  return `<thead><tr>
+    <th class="c-check"><label class="chk"><input class="check" type="checkbox" id="all" data-act="selall" ${allOnPage ? 'checked' : ''}><span class="sr-only">Select all on this page</span></label></th>
+    ${sortBtn('name', 'Ingredient', 'c-name')}
+    <th class="c-cat">Category</th><th>Status</th><th>Stock level</th>
+    <th class="r">On hand</th><th class="r">Reorder at</th>${sortBtn('lasts', 'Lasts', 'r')}
+    <th class="c-sup">Supplier</th><th class="c-act"><span class="sr-only">Action</span></th></tr></thead>`;
+}
+
+function renderHeader() {
+  const n = ITEMS.filter(needs).length;
+  $('sub').textContent = mode === 'empty' ? 'Add what you stock and set a reorder point for each ingredient.'
+    : mode === 'loading' || mode === 'error' ? ' ' : `${plural(ITEMS.length, 'ingredient', 'ingredients')} from ${plural(new Set(ITEMS.map((i) => i.sup).filter(Boolean)).size, 'supplier', 'suppliers')}. Last counted ${LAST_COUNT}.`;
+  const add = (primary) => `<button class="btn ${primary ? 'btn-primary' : ''}" data-act="add"><svg class="ico ico-sm" aria-hidden="true"><use href="#i-plus"/></svg><span>Add<span class="wide"> ingredient</span></span></button>`;
+  if (mode === 'empty' || mode === 'error') { $('actions').innerHTML = mode === 'empty' ? '' : add(false); return; }
+  if (mode === 'loading') { $('actions').innerHTML = add(false); return; }
+  $('actions').innerHTML = add(false) + (n
+    ? `<button class="btn btn-primary" data-act="order-all">Reorder ${plural(n, 'low item', 'low items')}</button>`
+    : `<button class="btn" data-act="noop">All low items ordered</button>`);
+}
+function renderStats() {
+  if (!ITEMS.length) { $('stats').innerHTML = ''; return; }
+  const list = ITEMS.filter(needs), out = ITEMS.filter((i) => status(i) === 'out').length, low = ITEMS.filter((i) => status(i) === 'low').length;
+  const cut = list.filter((i) => i.sup).map((i) => SUPPLIERS[i.sup]).sort()[0];
+  const first = cut && list.find((i) => i.sup && SUPPLIERS[i.sup] === cut);
+  const nowHM = TODAY.toTimeString().slice(0, 5);
+  $('stats').innerHTML = `<div class="stats">
+    <div class="stat"><div class="stat-label">To reorder</div><div class="stat-value">${nf.format(list.length)}</div><div class="stat-note">${nf.format(out)} out of stock, ${nf.format(low)} low</div></div>
+    <div class="stat"><div class="stat-label">Next order cutoff</div><div class="stat-value sm">${cut ? `${cut} ${cut > nowHM ? 'today' : 'tomorrow'}` : 'Nothing to order'}</div><div class="stat-note">${first ? esc(first.sup) : 'Every low item is on order'}</div></div></div>`;
+}
+function renderViews() {
+  if (!ITEMS.length) { $('views').innerHTML = ''; return; }
+  const tabs = [['all', 'All', ITEMS.length], ['reorder', 'To reorder', ITEMS.filter(needs).length], ['ordered', 'On order', S.ordered.size]];
+  $('views').innerHTML = `<div class="views" role="group" aria-label="View">${tabs.map(([k, l, c]) => `<button class="view" data-act="tab" data-key="${k}" aria-pressed="${S.tab === k}">${l} <span class="count">${nf.format(c)}</span></button>`).join('')}</div>`;
+}
+
+let toolsBuilt = false;
+function buildTools() {
+  const cats = [...new Set(ITEMS.map((i) => i.cat))], sups = [...new Set(ITEMS.map((i) => i.sup).filter(Boolean))];
+  $('body').innerHTML = `<div class="tools" id="tools">
+    <div class="toolbar" id="toolbar">
+      <label class="search"><span class="sr-only">Search ingredients</span><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg><input class="field" id="q" type="search" placeholder="Search ingredients" autocomplete="off"></label>
+      <details class="filters" id="filters"><summary><svg class="ico ico-sm" aria-hidden="true"><use href="#i-filter"/></svg><span id="fsum">Filters</span></summary>
+        <div class="filter-fields">
+          <select class="field" id="cat" aria-label="Category"><option value="">All categories</option>${cats.map((c) => `<option>${esc(c)}</option>`).join('')}</select>
+          <select class="field" id="sup" aria-label="Supplier"><option value="">All suppliers</option>${sups.map((c) => `<option>${esc(c)}</option>`).join('')}</select>
+        </div></details>
+      <button class="btn-text" id="clear" data-act="clear" hidden>Clear filters</button>
+    </div>
+    <div class="bulk" id="bulk" hidden></div>
+  </div><div id="results"></div>`;
+  $('q').addEventListener('input', (e) => { S.q = e.target.value; S.page = 1; render(); });
+  $('cat').addEventListener('change', (e) => { S.cat = e.target.value; S.page = 1; render(); });
+  $('sup').addEventListener('change', (e) => { S.sup = e.target.value; S.page = 1; render(); });
+  const mq = matchMedia('(min-width: 760px)'), sync = () => { $('filters').open = mq.matches; };
+  sync(); mq.addEventListener('change', sync);
+  toolsBuilt = true;
+}
+function renderResults() {
+  const rows = visible(), pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  S.page = Math.min(S.page, pages);
+  const slice = rows.slice((S.page - 1) * PAGE_SIZE, S.page * PAGE_SIZE);
+  const allOnPage = slice.length > 0 && slice.every((i) => S.sel.has(i.id));
+  const filters = [S.cat, S.sup].filter(Boolean).length;
+  $('clear').hidden = !(filters || S.q);
+  $('fsum').textContent = filters ? `Filters (${filters})` : 'Filters';
+  const n = S.sel.size;
+  $('toolbar').hidden = n > 0; $('bulk').hidden = n === 0;
+  if (n) $('bulk').innerHTML = `<b>${nf.format(n)} selected</b><button class="btn" data-act="order-sel">Reorder ${nf.format(n)} selected</button><button class="btn-text" data-act="unsel">Clear selection</button>`;
+  const noRes = `<tr class="no-results"><td class="no-results-cell" colspan="10"><b>No ingredients match these filters</b><p>Try a different word or clear the filters.</p><button class="btn" data-act="clear">Clear filters</button></td></tr>`;
+  const from = rows.length ? (S.page - 1) * PAGE_SIZE + 1 : 0, to = Math.min(rows.length, S.page * PAGE_SIZE);
+  $('results').innerHTML = `<div class="table-wrap"><table class="reflow">${theadHtml(allOnPage)}<tbody>${slice.length ? slice.map(rowHtml).join('') : noRes}</tbody></table></div>
+    <div class="pager"><span class="num">${rows.length ? `${nf.format(from)}–${nf.format(to)} of ${nf.format(rows.length)}` : '0 ingredients'}</span>
+      <div class="btns"><button class="btn" data-act="prev" aria-disabled="${S.page === 1}">Previous</button><span class="num"><span class="hide-wide">${S.page}/${pages}</span><span class="wide-only">Page ${nf.format(S.page)} of ${nf.format(pages)}</span></span><button class="btn" data-act="next" aria-disabled="${S.page === pages}">Next</button></div></div>`;
+  const all = $('all'); if (all) all.indeterminate = !allOnPage && slice.some((i) => S.sel.has(i.id));
+}
+function renderStatic() {
+  const skel = (w) => `<span class="skel" style="width:${w}"></span>`;
+  if (mode === 'loading') {
+    $('stats').innerHTML = `<div class="stats"><div class="stat">${skel('64px')}<div style="height:12px"></div>${skel('96px')}</div><div class="stat">${skel('120px')}</div></div>`;
+    let r = ''; for (let k = 0; k < 10; k++) r += `<tr class="skel-row"><td class="c-name" style="max-width:none">${skel(`${30 + (k * 13) % 40}%`)}</td></tr>`;
+    $('body').innerHTML = `<div class="table-wrap" aria-busy="true"><table class="reflow"><tbody>${r}</tbody></table></div><p class="sr-only" role="status">Loading stock levels</p>`;
+  } else if (mode === 'empty') {
+    $('body').innerHTML = `<section class="state"><svg width="144" height="96" viewBox="0 0 144 96" aria-hidden="true"><rect x="4" y="8" width="136" height="24" rx="8" fill="var(--accent-subtle)"/><rect x="16" y="16" width="44" height="8" rx="4" fill="var(--border-strong)"/><rect x="4" y="40" width="136" height="24" rx="8" fill="var(--bg-subtle)" stroke="var(--border)"/><rect x="16" y="48" width="64" height="8" rx="4" fill="var(--border)"/><rect x="4" y="72" width="136" height="24" rx="8" fill="var(--bg-subtle)" stroke="var(--border)"/><rect x="16" y="80" width="36" height="8" rx="4" fill="var(--border)"/><rect x="104" y="14" width="24" height="12" rx="6" fill="var(--accent)"/></svg>
+      <h2>No ingredients yet</h2><p>Larderly shows what is running low once you add the ingredients you stock, with a reorder point for each.</p>
+      <div class="row-links"><button class="btn btn-primary" data-act="add"><svg class="ico ico-sm" aria-hidden="true"><use href="#i-plus"/></svg>Add your first ingredient</button><a class="link" href="#">Import from a spreadsheet</a></div></section>`;
+  } else if (mode === 'error') {
+    $('body').innerHTML = `<section class="state" role="alert"><svg class="ico" style="width:32px;height:32px;color:var(--danger)" aria-hidden="true"><use href="#i-alert"/></svg>
+      <h2>Stock levels did not load</h2><p>Larderly could not reach the server. Your stock counts are safe. Try again in a moment, or contact support if it keeps happening.</p>
+      <div class="row-links"><button class="btn btn-primary" data-act="retry">Try again</button><a class="link" href="#">Contact support</a></div></section>`;
+  }
+}
+function render() {
+  renderHeader();
+  if (['loading', 'empty', 'error'].includes(mode)) return;
+  renderStats(); renderViews();
+  if (!toolsBuilt) buildTools();
+  renderResults();
+}
+
+/* ---------- actions ---------- */
+function showToast(msg, undoFn) {
+  const t = $('toast'); undo = undoFn;
+  t.innerHTML = `<span>${esc(msg)}</span>${undoFn ? '<button class="btn-text" data-act="undo">Undo</button>' : ''}`;
+  t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 8000);
+}
+function order(ids) {
+  const prev = new Set(S.ordered); ids.forEach((id) => S.ordered.add(id));
+  S.sel.clear(); render();
+  showToast(`${plural(ids.length, 'ingredient', 'ingredients')} added to your next order`, () => { S.ordered = prev; render(); });
+}
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-act], [data-row]'); if (!el) return;
+  if (el.dataset.row) { e.preventDefault(); return; }
+  const act = el.dataset.act, id = el.dataset.id;
+  if (el.tagName === 'A') e.preventDefault();
+  if (act === 'order') { order([id]); const b = document.querySelector(`[data-row="${id}"]`); if (b) b.focus(); }
+  else if (act === 'order-all') order(ITEMS.filter(needs).map((i) => i.id));
+  else if (act === 'order-sel') order([...S.sel].filter((x) => !S.ordered.has(x)));
+  else if (act === 'tab') { S.tab = el.dataset.key; S.page = 1; render(); }
+  else if (act === 'sort') { const k = el.dataset.key; if (S.sortKey === k) S.sortDir *= -1; else { S.sortKey = k; S.sortDir = 1; } S.page = 1; render(); }
+  else if (act === 'clear') { S.q = S.cat = S.sup = ''; $('q').value = ''; $('cat').value = ''; $('sup').value = ''; S.page = 1; render(); }
+  else if (act === 'unsel') { S.sel.clear(); render(); }
+  else if (act === 'prev' && S.page > 1) { S.page--; render(); }
+  else if (act === 'next') { S.page++; render(); }
+  else if (act === 'undo') { if (undo) undo(); $('toast').hidden = true; }
+  else if (act === 'retry') location.search = '';
+});
+document.addEventListener('change', (e) => {
+  const el = e.target; if (!el.dataset || !el.dataset.act) return;
+  if (el.dataset.act === 'sel') { el.checked ? S.sel.add(el.dataset.id) : S.sel.delete(el.dataset.id); render(); }
+  if (el.dataset.act === 'selall') {
+    const rows = visible().slice((S.page - 1) * PAGE_SIZE, S.page * PAGE_SIZE);
+    rows.forEach((i) => el.checked ? S.sel.add(i.id) : S.sel.delete(i.id)); render();
+  }
+});
+
+renderStatic();
+render();
+</script>
+</body>
+</html>

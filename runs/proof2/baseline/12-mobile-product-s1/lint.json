@@ -1,0 +1,119 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 1
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 1
+      },
+      "scrollable-region-focusable": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 2,
+        "nodes": 2
+      },
+      "moderate": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 1
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 4,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(22, 22, 26)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(47, 91, 255)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 15,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "312 reviews",
+        "w": 74,
+        "h": 21
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "on",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "button",
+        "text": "Size guide",
+        "w": 79,
+        "h": 32
+      },
+      {
+        "tag": "input",
+        "text": "7.5",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "8",
+        "w": 1,
+        "h": 1
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

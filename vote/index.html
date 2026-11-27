@@ -1,0 +1,334 @@
+<title>Blind design vote</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f5f4f0, #151618);
+  --surface: light-dark(#ffffff, #1e1f22);
+  --text: light-dark(#1b1c1e, #ecebe8);
+  --muted: light-dark(#5b5d63, #a3a5ab);
+  --line: light-dark(#d9d7d0, #34363a);
+  --accent: light-dark(#1d5fb4, #7db2ff);
+  --on-accent: light-dark(#ffffff, #0d1b30);
+  --danger: light-dark(#a3261d, #ff9a90);
+  --shot-bg: light-dark(#eceae4, #101113);
+}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+* { box-sizing: border-box; min-width: 0; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.gutter { padding-left: max(5vw, 16px, env(safe-area-inset-left, 0px)); padding-right: max(5vw, 16px, env(safe-area-inset-right, 0px)); }
+.inner { max-width: 1240px; margin: 0 auto; }
+header { padding-top: 16px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
+h1 { margin: 0; font-size: 15px; font-weight: 650; }
+.meta { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.track { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+.fill { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.note, .err { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+.err { color: var(--danger); }
+.err button { margin-left: 8px; }
+main { padding-top: 20px; padding-bottom: 32px; }
+h2 { margin: 0 0 16px; font-size: 22px; line-height: 1.25; font-weight: 650; }
+p { margin: 0 0 16px; max-width: 60ch; }
+p.lead { font-size: 20px; line-height: 1.4; }
+button {
+  font: inherit; font-size: 15px; color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 16px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed="true"], button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+button[hidden], [hidden] { display: none !important; }
+.link { background: none; border: 0; color: var(--accent); padding: 8px; text-decoration: underline; border-radius: 6px; }
+.pair { display: grid; gap: 20px; grid-template-columns: 1fr; }
+.design { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.design h3 { margin: 0 0 12px; font-size: 16px; font-weight: 650; }
+.cap { margin: 12px 0 6px; font-size: 13px; color: var(--muted); }
+.cap:first-of-type { margin-top: 0; }
+.shot { display: block; padding: 0; min-height: 0; background: var(--shot-bg); border-radius: 8px; overflow: hidden; line-height: 0; cursor: zoom-in; }
+.shot img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.shot.phone { width: min(100%, 180px); }
+.choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding-top: 12px; padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+.choices button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; line-height: 1.25; }
+kbd { display: none; font: inherit; font-size: 13px; opacity: .75; }
+@media (hover: hover) { kbd { display: inline; } }
+.bar { position: sticky; bottom: 0; background: var(--bg); border-top: 1px solid var(--line); }
+@media (min-width: 900px) {
+  .pair { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .choices { max-width: 720px; margin: 0 auto; }
+}
+#overlay { position: fixed; inset: 0; z-index: 10; overflow: auto; background: rgb(8 9 10 / .92); cursor: zoom-out; }
+#overlay img { display: block; max-width: none; margin: 64px auto 24px; background: #fff; }
+#close { position: fixed; top: 8px; right: max(8px, env(safe-area-inset-right, 0px)); z-index: 11; }
+.state { padding: 24px 0; }
+</style>
+
+<header class="gutter">
+  <div class="inner">
+    <div class="top">
+      <h1>Blind design vote</h1>
+      <div class="meta">
+        <button id="back" class="link" type="button" hidden>Back</button>
+        <span id="count"></span>
+      </div>
+    </div>
+    <div class="track" id="track" hidden><div class="fill" id="fill"></div></div>
+    <p class="note" id="note" hidden>Sign in to claude.ai to save your votes</p>
+    <p class="err" id="err" role="alert" hidden><span id="errtext"></span><button id="retry" class="link" type="button" hidden>Retry now</button></p>
+  </div>
+</header>
+
+<main class="gutter"><div class="inner" id="app"></div></main>
+
+<div class="bar" id="bar" hidden>
+  <div class="gutter"><div class="inner">
+    <div class="choices" role="group" aria-label="Your choice">
+      <button type="button" data-c="0" aria-pressed="false">Design 1 is better<kbd>Key 1</kbd></button>
+      <button type="button" data-c="tie" aria-pressed="false">Can't tell<kbd>Key 3</kbd></button>
+      <button type="button" data-c="1" aria-pressed="false">Design 2 is better<kbd>Key 2</kbd></button>
+    </div>
+  </div></div>
+</div>
+
+<div id="overlay" role="dialog" aria-modal="true" aria-label="Full size screenshot" hidden>
+  <button id="close" type="button">Close (Esc)</button>
+  <img id="big" alt="">
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, attrs = {}, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) k === 'class' ? (n.className = v) : n.setAttribute(k, v);
+    n.append(...kids);
+    return n;
+  };
+  const app = $('app');
+  const state = { view: 'loading', pairs: [], order: [], idx: 0, answers: {}, ref: null, uid: null, seed: '', shown: [], shownAt: 0, timedOut: false, pairsOk: false };
+
+  // FNV-1a hash and mulberry32: a voter's seed fixes their pair order and left/right sides.
+  const hash = (s) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const prng = (a) => () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+
+  const setErr = (msg, retry) => { $('err').hidden = !msg; $('errtext').textContent = msg || ''; $('retry').hidden = !(msg && retry); };
+  const answered = () => Object.keys(state.answers).length;
+  const total = () => state.pairs.length;
+  const firstOpen = () => state.order.findIndex((p) => !state.answers[p.pair]);
+
+  function chrome() {
+    const pairView = state.view === 'pair';
+    $('bar').hidden = !pairView;
+    $('track').hidden = !(pairView || state.view === 'done');
+    $('back').hidden = !((pairView && state.idx > 0) || state.view === 'done');
+    $('count').textContent = pairView ? `${state.idx + 1} of ${total()}` : '';
+    $('fill').style.width = total() ? `${(answered() / total()) * 100}%` : '0';
+    $('note').hidden = !(state.pairsOk && !state.ref);
+  }
+
+  function render() {
+    chrome();
+    if (state.view === 'pair') return showPair();
+    if (state.view === 'intro') return showIntro();
+    if (state.view === 'done') return showDone();
+    if (state.view === 'error') return;
+    app.replaceChildren(el('p', { class: 'state' }, 'Loading the designs'));
+  }
+
+  function showIntro() {
+    const n = answered();
+    const start = el('button', { class: 'primary', type: 'button' }, n && n < total() ? `Continue at ${n + 1} of ${total()}` : n ? 'Review your votes' : 'Start');
+    start.addEventListener('click', begin);
+    app.replaceChildren(
+      el('p', { class: 'lead' }, `Pick the better product screen. You will not see who made it. ${total()} pairs, about 10 minutes. Stop any time.`),
+      start,
+    );
+    start.focus({ preventScroll: true });
+  }
+
+  function begin() {
+    const i = firstOpen();
+    if (i < 0) { state.view = 'done'; } else { state.idx = i; state.view = 'pair'; }
+    render();
+  }
+
+  function showDone() {
+    app.replaceChildren(
+      el('h2', {}, 'Thank you'),
+      el('p', {}, `You judged ${answered()} of ${total()} pairs. Your votes help show which screens people prefer.`),
+    );
+  }
+
+  function design(n, id, picked) {
+    const shot = (kind, label, cls) => {
+      const b = el('button', { class: `shot ${cls}`, type: 'button', 'aria-label': `Enlarge Design ${n}, ${label} first screen` });
+      const img = el('img', { alt: `Design ${n}, ${label} first screen`, width: kind === 'd' ? '1440' : '780', height: kind === 'd' ? '900' : '1688', decoding: 'async' });
+      img.src = `img/${encodeURIComponent(id)}-${kind}.jpg`;
+      b.append(img);
+      b.addEventListener('click', () => zoom(img.src, kind, img.alt));
+      return b;
+    };
+    return el('section', { class: 'design', 'aria-label': `Design ${n}` },
+      el('h3', {}, `Design ${n}`),
+      el('p', { class: 'cap' }, 'Desktop'), shot('d', 'desktop', 'desk'),
+      el('p', { class: 'cap' }, 'Phone'), shot('m', 'phone', 'phone'));
+  }
+
+  function showPair() {
+    const p = state.order[state.idx];
+    const swap = prng(hash(`${state.seed}|${p.pair}`))() < 0.5;
+    state.shown = swap ? [p.b, p.a] : [p.a, p.b];
+    state.shownAt = performance.now();
+    const cur = state.answers[p.pair]?.pick;
+    app.replaceChildren(
+      el('h2', {}, p.task),
+      el('div', { class: 'pair' }, design(1, state.shown[0]), design(2, state.shown[1])),
+    );
+    for (const b of document.querySelectorAll('.choices button')) {
+      const c = b.dataset.c;
+      b.setAttribute('aria-pressed', String(cur !== undefined && (c === 'tie' ? cur === 'tie' : cur === state.shown[Number(c)])));
+    }
+    for (const q of state.order.slice(state.idx + 1, state.idx + 3)) for (const id of [q.a, q.b]) for (const k of ['d', 'm']) new Image().src = `img/${id}-${k}.jpg`;
+  }
+
+  function vote(c) {
+    if (state.view !== 'pair' || performance.now() - state.shownAt < 250) return;
+    const p = state.order[state.idx];
+    const pick = c === 'tie' ? 'tie' : state.shown[Number(c)];
+    state.answers[p.pair] = { pick, ms: Math.round(performance.now() - state.shownAt), at: new Date().toISOString() };
+    flush();
+    const i = firstOpen();
+    if (i < 0) state.view = 'done'; else state.idx = i;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function back() {
+    if (state.view === 'done') { state.idx = state.order.length - 1; state.view = 'pair'; }
+    else if (state.view === 'pair' && state.idx > 0) state.idx--;
+    else return;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  // One write at a time. Each write sends the whole answers map, so a failed write is covered by the next vote.
+  let busy = false, dirty = false;
+  async function flush() {
+    if (!state.ref) return;
+    if (busy) { dirty = true; return; }
+    busy = true;
+    do {
+      dirty = false;
+      const body = { answers: JSON.parse(JSON.stringify(state.answers)), n: answered() };
+      try {
+        try { await state.ref.set(body); }
+        catch (e) {
+          if (e?.code !== 'unavailable') throw e;
+          await new Promise((r) => setTimeout(r, 500 + Math.random() * 700));
+          await state.ref.set(body);
+        }
+        setErr('');
+      } catch (e) {
+        setErr(`Could not save your votes (${e?.code || 'error'}). They stay on this page. The next vote tries again.`, true);
+      }
+    } while (dirty);
+    busy = false;
+  }
+  $('retry').addEventListener('click', () => { dirty = false; flush(); });
+
+  function zoom(src, kind, alt) {
+    const big = $('big');
+    big.onload = () => { big.style.width = `${big.naturalWidth / (kind === 'd' ? 1 : 2)}px`; };
+    big.src = src; big.alt = alt;
+    $('overlay').hidden = false;
+    $('close').focus();
+  }
+  const unzoom = () => { $('overlay').hidden = true; $('big').removeAttribute('src'); };
+  $('overlay').addEventListener('click', unzoom);
+
+  document.addEventListener('keydown', (e) => {
+    if (!$('overlay').hidden) {
+      if (e.key === 'Escape') unzoom();
+      else if (e.key === 'Tab') { e.preventDefault(); $('close').focus(); }
+      return;
+    }
+    if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+    const c = { 1: '0', 2: '1', 3: 'tie' }[e.key];
+    if (c !== undefined) vote(c);
+  });
+  for (const b of document.querySelectorAll('.choices button')) b.addEventListener('click', () => vote(b.dataset.c));
+  $('back').addEventListener('click', back);
+
+  function ready() {
+    if (state.view !== 'loading' && !state.timedOut) return;
+    state.timedOut = false;
+    setErr('');
+    state.view = 'intro';
+    render();
+  }
+
+  function failView(msg, canContinue) {
+    state.view = 'error';
+    chrome();
+    const kids = [el('h2', {}, 'The vote could not load'), el('p', {}, msg)];
+    if (canContinue) {
+      const go = el('button', { type: 'button' }, 'Continue without saving');
+      go.addEventListener('click', () => { state.ref = null; state.abandon = true; state.timedOut = false; state.view = 'loading'; ready(); });
+      kids.push(go);
+    }
+    app.replaceChildren(...kids);
+  }
+
+  async function load() {
+    render();
+    // After 10 s without an answer, show an error state. Loading goes on in the background and takes over if it finishes.
+    const timer = setTimeout(() => {
+      if (state.view !== 'loading') return;
+      state.timedOut = true;
+      failView('The designs or the vote store did not answer in 10 seconds. This page keeps trying. You can also continue without saving.', state.pairsOk);
+    }, 10000);
+    let db = null, user = null;
+    const pairsP = fetch('pairs.json').then((r) => { if (!r.ok) throw new Error(`pairs.json ${r.status}`); return r.json(); });
+    pairsP.catch(() => {});
+    try { db = window.claude?.use ? await window.claude.use('db') : null; } catch { db = null; }
+    try { user = window.claude?.use ? await window.claude.use('user') : null; } catch { user = null; }
+    let pairs;
+    try { pairs = await pairsP; if (!Array.isArray(pairs) || !pairs.length) throw new Error('empty'); }
+    catch { clearTimeout(timer); failView('The list of pairs could not be loaded. Refresh the page to try again.', false); return; }
+    state.pairs = pairs;
+    state.pairsOk = true;
+    const uid = db && user ? await user.id() : null;
+    state.uid = uid;
+    state.seed = uid || Math.random().toString(36).slice(2);
+    const rnd = prng(hash(state.seed));
+    state.order = pairs.map((p) => [rnd(), p]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
+    if (db && uid) {
+      try {
+        const ref = db.doc(`votes/${uid}`);
+        const snap = await ref.get();
+        if (state.abandon) return;
+        const saved = snap.exists ? snap.data()?.answers : null;
+        const known = new Set(pairs.map((p) => p.pair));
+        if (saved && typeof saved === 'object') {
+          for (const [k, v] of Object.entries(saved)) if (known.has(k) && v && typeof v.pick === 'string') state.answers[k] = { pick: v.pick, ms: Number(v.ms) || 0, at: String(v.at || '') };
+        }
+        state.ref = ref;
+      } catch (e) {
+        clearTimeout(timer);
+        failView(`Your saved votes could not be read (${e?.code || 'error'}). Voting is paused so a new save cannot overwrite them.`, true);
+        return;
+      }
+    }
+    clearTimeout(timer);
+    ready();
+  }
+
+  load();
+})();
+</script>

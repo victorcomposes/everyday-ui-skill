@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>New expense report - Outlay</title>
+<style>
+:root{
+  --bg:#f4f3ef; --surface:#ffffff; --sunken:#f0eee8;
+  --ink:#1b1c1e; --ink-2:#55585e; --line:#e1dfd7; --field:#8a8d92;
+  --accent:#0b5d4b; --accent-ink:#ffffff; --accent-soft:#e0f0eb;
+  --ok:#1b6a38; --ok-soft:#e1f1e6;
+  --warn:#7a4700; --warn-soft:#fcefd6;
+  --bad:#b0231b; --bad-soft:#fbe6e3;
+  --c1:#0b5d4b; --c2:#c47a12; --c3:#3a5a9b; --c4:#b4502f; --c5:#7c8a2e; --c6:#7b7f86;
+  --shadow:0 1px 2px rgba(27,28,30,.06),0 4px 16px rgba(27,28,30,.05);
+  --r:10px;
+  --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#111312; --surface:#1a1d1c; --sunken:#151817;
+    --ink:#ecece8; --ink-2:#a9aca8; --line:#2d3231; --field:#7d827f;
+    --accent:#5fcfb2; --accent-ink:#07251e; --accent-soft:#17342c;
+    --ok:#7fd49a; --ok-soft:#173223;
+    --warn:#f0c26e; --warn-soft:#3a2d12;
+    --bad:#ff9d94; --bad-soft:#3f1c19;
+    --c1:#5fcfb2; --c2:#e3a43f; --c3:#8aa9e6; --c4:#e48a68; --c5:#b3c25a; --c6:#9a9fa6;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.num{font-variant-numeric:tabular-nums}
+
+/* app bar */
+.bar{background:var(--surface);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1200px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.nav{display:flex;gap:4px;flex:1}
+.nav a{padding:8px 12px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--sunken);color:var(--ink)}
+.nav a[aria-current]{color:var(--ink);background:var(--sunken)}
+.me{display:flex;align-items:center;gap:10px;color:var(--ink-2);font-size:14px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:600;font-size:13px}
+
+.wrap{max-width:1200px;margin:0 auto;padding:28px 24px 64px}
+.crumbs{font-size:14px;color:var(--ink-2);margin:0 0 12px}
+.crumbs a{color:var(--ink-2)}
+.crumbs span[aria-hidden]{margin:0 6px}
+.titlerow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+h1{font-size:28px;line-height:1.2;letter-spacing:-.02em;margin:0}
+.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font-size:13px;font-weight:600;background:var(--sunken);color:var(--ink);border:1px solid var(--line)}
+.chip.sent{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.sub{margin:0 0 28px;color:var(--ink-2)}
+.sub .saved{margin-left:8px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:32px;align-items:start}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:20px}
+.card>header{padding:20px 24px 0;display:flex;align-items:baseline;gap:12px;justify-content:space-between}
+.card h2{font-size:17px;margin:0;letter-spacing:-.01em}
+.card h2 small{font-weight:500;color:var(--ink-2);font-size:14px;margin-left:8px}
+.card .body{padding:16px 24px 24px}
+.hint{color:var(--ink-2);font-size:14px;margin:4px 0 0}
+
+/* fields */
+.fields{display:grid;grid-template-columns:repeat(6,1fr);gap:16px 16px}
+.f{grid-column:span 3;min-width:0}
+.f.w2{grid-column:span 2}.f.w6{grid-column:span 6}.f.w4{grid-column:span 4}
+label,.lbl{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.opt{font-weight:400;color:var(--ink-2)}
+input[type=text],input[type=date],select,textarea{width:100%;height:42px;padding:0 12px;background:var(--surface);border:1px solid var(--field);border-radius:8px;appearance:none;-webkit-appearance:none}
+textarea{height:auto;min-height:84px;padding:10px 12px;resize:vertical}
+select{padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238a8d92' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+input:hover,select:hover,textarea:hover{border-color:var(--ink-2)}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+[aria-invalid=true]{border-color:var(--bad)!important;box-shadow:0 0 0 1px var(--bad)}
+.money{position:relative}
+.money span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-2);pointer-events:none}
+.money input{padding-left:24px;text-align:right}
+.err{color:var(--bad);font-size:13px;margin:4px 0 0}
+.static{height:42px;display:flex;align-items:center;padding:0 12px;background:var(--sunken);border-radius:8px;color:var(--ink-2)}
+
+/* expense items */
+ol.items{list-style:none;margin:0;padding:0}
+.item{border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;background:var(--surface)}
+.item-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.item-n{font-weight:600;font-size:14px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-grid{display:grid;grid-template-columns:150px minmax(0,1fr) 180px 140px;gap:12px}
+.item-grid .note{grid-column:1/-1}
+.pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+.pill svg{flex:none}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.na{background:var(--sunken);color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:8px;border:1px solid var(--field);background:var(--surface);font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--sunken)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{height:32px;padding:0 12px;font-size:13px}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.ghost:hover{background:var(--sunken)}
+.iconbtn{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;border:0;background:transparent;color:var(--ink-2);cursor:pointer}
+.iconbtn:hover{background:var(--bad-soft);color:var(--bad)}
+.addrow{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+.subtotal{font-weight:600}
+.subtotal b{font-size:18px}
+
+/* receipts */
+.drop{display:flex;align-items:center;gap:16px;border:1.5px dashed var(--field);border-radius:var(--r);padding:18px 20px;background:var(--sunken);cursor:pointer;position:relative}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop strong{display:block}
+.drop .ic{flex:none;width:44px;height:44px;border-radius:50%;background:var(--surface);display:grid;place-items:center;color:var(--accent);border:1px solid var(--line)}
+ul.files{list-style:none;margin:16px 0 0;padding:0}
+.file{display:grid;grid-template-columns:44px minmax(0,1fr) 230px 32px;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.file:first-child{border-top:0}
+.thumb{width:44px;height:52px;border-radius:6px;border:1px solid var(--line);background:var(--sunken);display:flex;align-items:flex-end;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--ink-2);padding-bottom:5px;position:relative;overflow:hidden}
+.thumb::before{content:"";position:absolute;left:8px;right:8px;top:8px;height:18px;background:repeating-linear-gradient(var(--line) 0 2px,transparent 2px 6px)}
+.thumb.img::before{background:linear-gradient(135deg,var(--accent-soft),var(--line));border-radius:3px}
+.fname{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fmeta{color:var(--ink-2);font-size:13px}
+.file select{height:38px;font-size:14px}
+
+/* certify */
+.check{display:flex;gap:12px;align-items:flex-start;margin-top:16px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--sunken)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent);flex:none}
+.check label{margin:0;font-weight:500;font-size:14px}
+
+/* summary */
+aside .sticky{position:sticky;top:20px}
+.sum .body{padding-top:12px}
+.total-l{color:var(--ink-2);font-size:14px}
+.total{font-size:38px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:2px 0 4px}
+.stack{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;margin:16px 0 14px;background:var(--sunken)}
+.stack i{display:block;height:100%}
+dl.cats{margin:0;display:grid;gap:8px}
+dl.cats div{display:flex;align-items:center;gap:8px;font-size:14px}
+dl.cats dt{flex:1;display:flex;align-items:center;gap:8px}
+dl.cats dd{margin:0;font-weight:600}
+.sw{width:10px;height:10px;border-radius:3px;flex:none}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.sum h3{font-size:13px;margin:0 0 10px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+ul.checks li{display:flex;gap:10px;font-size:14px;align-items:flex-start}
+ul.checks svg{flex:none;margin-top:2px}
+ul.checks .ok svg{color:var(--ok)}
+ul.checks .bad svg{color:var(--bad)}
+ul.checks .bad{color:var(--ink)}
+.approver{display:flex;gap:12px;align-items:center}
+.approver .avatar{background:var(--c3);color:#fff;width:36px;height:36px}
+.approver small{display:block;color:var(--ink-2)}
+.actions{display:grid;gap:10px;margin-top:18px}
+.actions .btn{height:46px;width:100%}
+.banner{border-radius:var(--r);padding:12px 16px;margin-bottom:20px;font-size:14px}
+.banner.errs{background:var(--bad-soft);border:1px solid var(--bad);color:var(--ink)}
+.banner.errs strong{color:var(--bad);display:block;margin-bottom:6px}
+.banner.errs ul{margin:0;padding-left:18px}
+.banner.errs a{color:var(--ink)}
+.banner.done{background:var(--ok-soft);border:1px solid var(--ok);color:var(--ink)}
+.banner.done strong{color:var(--ok)}
+.mbar{display:none}
+
+@media (max-width:1020px){
+  .grid{grid-template-columns:1fr}
+  aside .sticky{position:static}
+  .item-grid{grid-template-columns:140px minmax(0,1fr) 160px 130px}
+  .file{grid-template-columns:44px minmax(0,1fr) 32px}
+  .file .match{grid-column:2/3;grid-row:2}
+  .nav{display:none}
+}
+@media (max-width:640px){
+  .bar-in{padding:0 16px;gap:12px}
+  .me span.nm{display:none}
+  .wrap{padding:20px 16px 110px}
+  h1{font-size:24px}
+  .card>header{padding:18px 16px 0}
+  .card .body{padding:14px 16px 20px}
+  .f,.f.w2,.f.w4{grid-column:span 6}
+  .f.half{grid-column:span 3}
+  input[type=text],input[type=date],select{height:46px}
+  .item{padding:14px}
+  .file .match{grid-column:1/-1}.file select{height:44px}
+  .item-grid{grid-template-columns:1fr 1fr}
+  .item-grid .merchant,.item-grid .cat,.item-grid .note{grid-column:1/-1}
+  .item-grid .merchant{order:1}.item-grid .cat{order:2}.item-grid>div{order:3}.item-grid .note{order:4}
+  .item-head{flex-wrap:wrap}
+  .item-n{flex:1 0 60%}
+  .pill{order:3}
+  .iconbtn{width:40px;height:40px}
+  .drop{flex-direction:column;text-align:center;padding:20px 16px}
+  .addrow .btn{width:100%}
+  .total{font-size:34px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));align-items:center;gap:16px;box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+  .mbar div{flex:1;line-height:1.2}
+  .mbar small{color:var(--ink-2);font-size:12px;display:block}
+  .mbar b{font-size:20px}
+  .mbar .btn{height:46px;padding:0 22px}
+  aside .actions .btn.primary{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="#" aria-label="Outlay home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="var(--accent)"/><path d="M9 14a5 5 0 1 1 5 5" fill="none" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linecap="round"/><path d="M14 19l-3.2-3.2M14 19l3.2-3.2" stroke="var(--accent-ink)" stroke-width="2.4" stroke-linecap="round" fill="none" opacity="0"/><circle cx="14" cy="14" r="1.8" fill="var(--accent-ink)"/></svg>
+      Outlay
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#">Home</a><a href="#" aria-current="page">Reports</a><a href="#">Cards</a><a href="#">Approvals</a><a href="#">Policy</a>
+    </nav>
+    <div class="me"><span class="nm">Priya Raman</span><span class="avatar" aria-hidden="true">PR</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="crumbs"><a href="#">Reports</a><span aria-hidden="true">/</span>New report</p>
+  <div class="titlerow">
+    <h1>New expense report</h1>
+    <span class="chip" id="status">Draft</span>
+  </div>
+  <p class="sub">Itemise your spend, attach receipts and send it to Marcus Chen for approval. <span class="saved" id="saved" role="status">Draft saved 2 min ago</span></p>
+
+  <div id="banner" tabindex="-1"></div>
+
+  <form id="form" class="grid" novalidate>
+    <div>
+      <section class="card" aria-labelledby="h-trip">
+        <header><h2 id="h-trip">Trip details</h2></header>
+        <div class="body">
+          <div class="fields">
+            <div class="f w6"><label for="title">Report title</label><input type="text" id="title" value="Meridian Freight on-site, Chicago" autocomplete="off"></div>
+            <div class="f"><label for="client">Client or project</label>
+              <select id="client"><option>Meridian Freight - Q4 renewal</option><option>Northwind Logistics - onboarding</option><option>Internal - no client</option></select></div>
+            <div class="f"><label for="cost">Cost centre</label>
+              <select id="cost"><option>4120 Enterprise Sales</option><option>4130 Mid-market Sales</option><option>5200 Customer Success</option></select></div>
+            <div class="f half"><label for="start">Trip start</label><input type="date" id="start" value="2026-11-17"></div>
+            <div class="f half"><label for="end">Trip end</label><input type="date" id="end" value="2026-11-19"></div>
+            <div class="f w6"><label for="purpose">Business purpose</label><textarea id="purpose">Quarterly business review and renewal negotiation with the Meridian Freight operations team at their Chicago headquarters.</textarea></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="h-exp">
+        <header><div><h2 id="h-exp">Expenses<small id="count"></small></h2><p class="hint">Receipts are required for anything over $25. Client meals need the attendee names.</p></div></header>
+        <div class="body">
+          <ol class="items" id="items"></ol>
+          <div class="addrow">
+            <button type="button" class="btn" id="add"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Add expense</button>
+            <p class="subtotal" style="margin:0">Total <b class="num" id="subtotal"></b></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="h-rec">
+        <header><div><h2 id="h-rec">Receipts<small id="rcount"></small></h2><p class="hint">PDF, JPG or PNG up to 10 MB. We match each file to the first expense that still needs one.</p></div></header>
+        <div class="body">
+          <label class="drop" id="drop">
+            <span class="ic"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M11 15V4M6.5 8.5L11 4l4.5 4.5M4 14v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span><strong>Drop receipts here or choose files</strong><span class="hint">You can also forward email receipts to receipts@outlay.example</span></span>
+            <input type="file" id="file" multiple accept=".pdf,.jpg,.jpeg,.png" aria-label="Choose receipt files">
+          </label>
+          <ul class="files" id="files"></ul>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="h-note">
+        <header><h2 id="h-note">Note for your approver <small>Optional</small></h2></header>
+        <div class="body">
+          <label class="sr" for="notes">Note for your approver</label>
+          <textarea id="notes" placeholder="Anything Marcus should know, for example why you took a cab instead of the train."></textarea>
+          <div class="check">
+            <input type="checkbox" id="certify">
+            <label for="certify">I confirm these expenses are accurate, were incurred for business and follow the Outlay travel and expense policy.</label>
+          </div>
+          <p class="err" id="certify-err" hidden>Confirm the statement above before you submit.</p>
+        </div>
+      </section>
+    </div>
+
+    <aside aria-label="Report summary">
+      <div class="sticky">
+        <section class="card sum" aria-labelledby="h-sum">
+          <header><h2 id="h-sum">Summary</h2></header>
+          <div class="body">
+            <div class="total-l">To be reimbursed</div>
+            <div class="total num" id="total"></div>
+            <div class="stack" id="stack" aria-hidden="true"></div>
+            <dl class="cats" id="cats"></dl>
+            <hr>
+            <h3>Policy checks</h3>
+            <ul class="checks" id="checks"></ul>
+            <hr>
+            <h3>Approval</h3>
+            <div class="approver">
+              <span class="avatar" aria-hidden="true">MC</span>
+              <div><strong>Marcus Chen</strong><small>Director of Sales. Usually approves in 2 working days.</small></div>
+            </div>
+            <div class="actions">
+              <button type="submit" class="btn primary" id="submit">Submit for approval</button>
+              <button type="button" class="btn" id="draft">Save draft</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </aside>
+  </form>
+</main>
+
+<div class="mbar">
+  <div><small>To be reimbursed</small><b class="num" id="mtotal"></b></div>
+  <button type="submit" class="btn primary" form="form">Submit</button>
+</div>
+
+<script>
+const CATS=["Airfare","Lodging","Ground transport","Meals","Client meal","Other"];
+const COL={"Airfare":"--c3","Lodging":"--c1","Ground transport":"--c2","Meals":"--c5","Client meal":"--c4","Other":"--c6"};
+const CAP=375, RECEIPT_OVER=25;
+let uid=10, submitted=false;
+const items=[
+ {id:1,date:"2026-11-17",merchant:"United Airlines",cat:"Airfare",amount:"418.60",note:"SFO to ORD return, UA 1482 and UA 1203"},
+ {id:2,date:"2026-11-17",merchant:"Uber",cat:"Ground transport",amount:"46.20",note:"O'Hare to hotel"},
+ {id:3,date:"2026-11-19",merchant:"Kimpton Gray Hotel",cat:"Lodging",amount:"724.18",note:"2 nights, 17 to 19 Nov, including tax"},
+ {id:4,date:"2026-11-18",merchant:"Girl & the Goat",cat:"Client meal",amount:"312.40",note:"Dinner with Dara Okafor, Sven Lindqvist and Ravi Patel (Meridian Freight)"},
+ {id:5,date:"2026-11-18",merchant:"Lou Mitchell's",cat:"Meals",amount:"18.75",note:"Breakfast"},
+ {id:6,date:"2026-11-19",merchant:"Yellow Cab",cat:"Ground transport",amount:"52.00",note:"Hotel to O'Hare"}
+];
+const receipts=[
+ {id:1,name:"united-itinerary-receipt.pdf",size:"84 KB",itemId:1},
+ {id:2,name:"uber-trip-nov17.pdf",size:"61 KB",itemId:2},
+ {id:3,name:"gray-hotel-folio.pdf",size:"142 KB",itemId:3},
+ {id:4,name:"IMG_4821.jpg",size:"1.9 MB",itemId:4}
+];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>n.toLocaleString("en-US",{style:"currency",currency:"USD"});
+const amt=s=>{const v=parseFloat(String(s).replace(/[$,\s]/g,""));return isFinite(v)&&v>=0?v:NaN};
+const hasRec=it=>receipts.some(r=>r.itemId===it.id);
+const needsRec=it=>amt(it.amount)>RECEIPT_OVER&&!hasRec(it);
+const ICON={
+ ok:'<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.5" fill="currentColor" opacity=".18"/><path d="M4 7.2l2 2 4-4.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ bad:'<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.2L13 12H1z" fill="currentColor" opacity=".18" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 5.5v3M7 10v.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+ na:'<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+};
+function pill(it){
+  const a=amt(it.amount);
+  if(hasRec(it))return['ok','Receipt attached'];
+  if(!(a>RECEIPT_OVER))return['na','No receipt needed'];
+  return['bad','Receipt needed'];
+}
+function fmtDate(d){return d?new Date(d+"T12:00").toLocaleDateString("en-US",{month:"short",day:"numeric"}):""}
+function label(it){return (it.merchant||"New expense")+(it.date?" - "+fmtDate(it.date):"")}
+
+function renderItems(){
+  $("#items").innerHTML=items.map((it,i)=>{
+    const id=it.id;
+    return `<li class="item" data-id="${id}">
+    <div class="item-head"><span class="item-n">Expense ${i+1}</span><span class="pill" data-pill="${id}"></span>
+      <button type="button" class="iconbtn" data-del="${id}" aria-label="Remove expense ${i+1}"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 5h10M7.5 5V3.5h3V5M5.5 5l.6 9h5.8l.6-9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <div class="item-grid">
+      <div><label for="d-${id}">Date</label><input type="date" id="d-${id}" data-k="date" value="${esc(it.date)}"></div>
+      <div class="merchant"><label for="m-${id}">Merchant</label><input type="text" id="m-${id}" data-k="merchant" value="${esc(it.merchant)}" autocomplete="off"></div>
+      <div class="cat"><label for="c-${id}">Category</label><select id="c-${id}" data-k="cat">${CATS.map(c=>`<option${c===it.cat?" selected":""}>${c}</option>`).join("")}</select></div>
+      <div><label for="a-${id}">Amount</label><div class="money"><span aria-hidden="true">$</span><input type="text" inputmode="decimal" id="a-${id}" data-k="amount" value="${esc(it.amount)}" autocomplete="off"></div></div>
+      <div class="note"><label for="n-${id}">${it.cat==="Client meal"?"Attendees and purpose":"Note"} <span class="opt">${it.cat==="Client meal"?"(required)":"(optional)"}</span></label><input type="text" id="n-${id}" data-k="note" value="${esc(it.note)}" autocomplete="off"></div>
+    </div></li>`}).join("");
+  refresh();
+}
+function renderReceipts(){
+  $("#files").innerHTML=receipts.map(r=>{
+    const img=/\.(jpe?g|png)$/i.test(r.name);
+    return `<li class="file" data-rid="${r.id}">
+      <span class="thumb${img?" img":""}" aria-hidden="true">${r.name.split(".").pop().toUpperCase()}</span>
+      <div><div class="fname">${esc(r.name)}</div><div class="fmeta">${esc(r.size)}</div></div>
+      <div class="match"><label class="sr" for="r-${r.id}">Expense for ${esc(r.name)}</label>
+        <select id="r-${r.id}" data-r="${r.id}"><option value="0">Not matched yet</option>${items.map(it=>`<option value="${it.id}"${it.id===r.itemId?" selected":""}>${esc(label(it))}</option>`).join("")}</select></div>
+      <button type="button" class="iconbtn" data-rdel="${r.id}" aria-label="Remove ${esc(r.name)}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></li>`}).join("");
+  $("#rcount").textContent=receipts.length?` ${receipts.length} attached`:"";
+}
+function checks(){
+  const out=[];
+  const miss=items.filter(needsRec);
+  out.push(miss.length?["bad",`${miss.length} receipt${miss.length>1?"s":""} missing: ${miss.map(m=>esc(m.merchant||"New expense")).join(", ")}`]:["ok","Every expense over $25 has a receipt"]);
+  const cm=items.filter(i=>i.cat==="Client meal"&&i.note.trim().length<10);
+  out.push(cm.length?["bad","Add attendee names to the client meal"]:["ok","Client meals list their attendees"]);
+  const s=$("#start").value,e=$("#end").value;
+  const nights=s&&e?Math.round((new Date(e)-new Date(s))/864e5):0;
+  const lodg=items.filter(i=>i.cat==="Lodging").reduce((t,i)=>t+(amt(i.amount)||0),0);
+  if(lodg&&nights>0){const n=lodg/nights;out.push(n>CAP?["bad",`Lodging is ${money(n)} a night, over the ${money(CAP)} cap`]:["ok",`Lodging is ${money(n)} a night, under the ${money(CAP)} cap`])}
+  return out;
+}
+function refresh(){
+  let total=0;const by={};
+  items.forEach(it=>{const a=amt(it.amount)||0;total+=a;by[it.cat]=(by[it.cat]||0)+a;
+    const p=document.querySelector(`[data-pill="${it.id}"]`);if(p){const [k,t]=pill(it);p.className="pill "+k;p.innerHTML=ICON[k]+t}});
+  $("#count").textContent=` ${items.length} item${items.length===1?"":"s"}`;
+  $("#subtotal").textContent=$("#total").textContent=$("#mtotal").textContent=money(total);
+  const rows=CATS.filter(c=>by[c]);
+  $("#stack").innerHTML=rows.map(c=>`<i style="width:${total?by[c]/total*100:0}%;background:var(${COL[c]})"></i>`).join("");
+  $("#cats").innerHTML=rows.map(c=>`<div><dt><span class="sw" style="background:var(${COL[c]})"></span>${c}</dt><dd class="num">${money(by[c])}</dd></div>`).join("");
+  $("#checks").innerHTML=checks().map(([k,t])=>`<li class="${k}">${ICON[k]}<span>${t}</span></li>`).join("");
+}
+function touch(){$("#saved").textContent="Draft saved just now"}
+
+$("#items").addEventListener("input",e=>{
+  const li=e.target.closest(".item");if(!li||!e.target.dataset.k)return;
+  const it=items.find(x=>x.id==li.dataset.id);it[e.target.dataset.k]=e.target.value;
+  if(e.target.dataset.k==="amount"||e.target.dataset.k==="note"){e.target.removeAttribute("aria-invalid")}
+  touch();refresh();
+});
+$("#items").addEventListener("change",e=>{
+  if(e.target.dataset.k==="cat"){const y=document.activeElement===e.target;renderItems();renderReceipts();if(y)$("#"+e.target.id)?.focus();}
+  else if(e.target.dataset.k==="merchant"||e.target.dataset.k==="date"){renderReceipts()}
+});
+$("#items").addEventListener("click",e=>{
+  const b=e.target.closest("[data-del]");if(!b)return;
+  const id=+b.dataset.del;items.splice(items.findIndex(i=>i.id===id),1);
+  receipts.forEach(r=>{if(r.itemId===id)r.itemId=0});
+  renderItems();renderReceipts();touch();$("#add").focus();
+});
+$("#add").onclick=()=>{
+  const id=uid++;items.push({id,date:$("#end").value||"",merchant:"",cat:"Meals",amount:"",note:""});
+  renderItems();renderReceipts();touch();$("#m-"+id).focus();
+};
+$("#files").addEventListener("change",e=>{const r=receipts.find(x=>x.id==e.target.dataset.r);if(r){r.itemId=+e.target.value;refresh();touch()}});
+$("#files").addEventListener("click",e=>{
+  const b=e.target.closest("[data-rdel]");if(!b)return;
+  receipts.splice(receipts.findIndex(r=>r.id==b.dataset.rdel),1);
+  renderReceipts();refresh();touch();$("#file").focus();
+});
+function addFiles(list){
+  [...list].forEach(f=>{
+    const used=new Set(receipts.map(r=>r.itemId));
+    const target=items.find(i=>amt(i.amount)>RECEIPT_OVER&&!used.has(i.id))||items.find(i=>!used.has(i.id));
+    const kb=f.size/1024;
+    receipts.push({id:uid++,name:f.name,size:kb>1024?(kb/1024).toFixed(1)+" MB":Math.max(1,Math.round(kb))+" KB",itemId:target?target.id:0});
+  });
+  renderReceipts();refresh();touch();
+}
+$("#file").addEventListener("change",e=>{addFiles(e.target.files);e.target.value=""});
+const drop=$("#drop");
+["dragenter","dragover"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add("over")}));
+["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("over")}));
+drop.addEventListener("drop",e=>addFiles(e.dataTransfer.files));
+["start","end"].forEach(i=>$("#"+i).addEventListener("input",()=>{refresh();touch()}));
+$("#form").addEventListener("input",e=>{if(e.target.id==="certify"){$("#certify-err").hidden=true;e.target.removeAttribute("aria-invalid")}if(e.target.removeAttribute&&e.target.getAttribute("aria-invalid")&&e.target.value)e.target.removeAttribute("aria-invalid")});
+$("#draft").onclick=()=>{touch();$("#saved").textContent="Draft saved just now";};
+
+$("#form").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(submitted)return;
+  const errs=[];
+  const need=(id,msg)=>{const el=$("#"+id);if(!el.value.trim()){el.setAttribute("aria-invalid","true");errs.push([id,msg])}};
+  need("title","Give the report a title");need("start","Enter the trip start date");need("end","Enter the trip end date");need("purpose","Describe the business purpose");
+  if($("#start").value&&$("#end").value&&$("#end").value<$("#start").value){$("#end").setAttribute("aria-invalid","true");errs.push(["end","Trip end cannot be before trip start"])}
+  items.forEach((it,i)=>{
+    const n=i+1;
+    if(!it.merchant.trim()){$("#m-"+it.id).setAttribute("aria-invalid","true");errs.push(["m-"+it.id,`Expense ${n}: enter the merchant`])}
+    if(isNaN(amt(it.amount))||amt(it.amount)===0){$("#a-"+it.id).setAttribute("aria-invalid","true");errs.push(["a-"+it.id,`Expense ${n}: enter an amount greater than $0`])}
+    if(it.cat==="Client meal"&&it.note.trim().length<10){$("#n-"+it.id).setAttribute("aria-invalid","true");errs.push(["n-"+it.id,`Expense ${n}: list the attendees`])}
+    if(needsRec(it))errs.push(["r-"+it.id,`Expense ${n}: attach a receipt for ${it.merchant||"this expense"}`,it.id]);
+  });
+  if(!items.length)errs.push(["add","Add at least one expense"]);
+  if(!$("#certify").checked){$("#certify").setAttribute("aria-invalid","true");$("#certify-err").hidden=false;errs.push(["certify","Confirm the policy statement"])}
+  const b=$("#banner");
+  if(errs.length){
+    b.innerHTML=`<div class="banner errs" role="alert"><strong>${errs.length} thing${errs.length>1?"s":""} to fix before you can submit</strong><ul>${errs.map(([id,m,rid])=>`<li><a href="#${rid?"file":id}" data-go="${rid?"file":id}">${esc(m)}</a></li>`).join("")}</ul></div>`;
+    b.focus();b.scrollIntoView({block:"start",behavior:"smooth"});return;
+  }
+  submitted=true;
+  const t=$("#total").textContent;
+  b.innerHTML=`<div class="banner done" role="status"><strong>Submitted to Marcus Chen</strong>${t} is on its way for approval. We will email you when he responds. Report ID EXP-20417.</div>`;
+  $("#status").textContent="Pending approval";$("#status").className="chip sent";
+  $("#submit").textContent="Submitted";$("#submit").disabled=true;$("#draft").hidden=true;
+  $(".mbar .btn").textContent="Submitted";$(".mbar .btn").disabled=true;
+  $("#saved").textContent="Sent just now";
+  b.focus();b.scrollIntoView({block:"start",behavior:"smooth"});
+});
+$("#banner").addEventListener("click",e=>{
+  const a=e.target.closest("[data-go]");if(!a)return;e.preventDefault();
+  const t=document.getElementById(a.dataset.go);if(t){t.scrollIntoView({block:"center"});t.focus({preventScroll:true})}
+});
+$("#banner").style.outline="none";
+
+renderItems();renderReceipts();
+</script>
+</body>
+</html>

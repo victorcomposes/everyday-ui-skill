@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harborline - Order 48213 is late</title>
+<style>
+:root{
+  --bg:#e6edee; --panel:#f7fafa; --ink:#14303a; --muted:#4f656d; --line:#cbd8db;
+  --harbor:#0e5a6e; --on-harbor:#fff; --buoy:#e8a317; --buoy-ink:#6b4700;
+  --cust:#ffffff; --agent:#d9eaee; --note:#fbefc9; --note-line:#d9b653;
+  --focus:#0e5a6e;
+  --sans:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0b171c; --panel:#12232a; --ink:#e2eef0; --muted:#97adb4; --line:#27414a;
+    --harbor:#5cc0d6; --on-harbor:#06232b; --buoy:#f0b43a; --buoy-ink:#f3cf83;
+    --cust:#18303a; --agent:#1b4350; --note:#352c14; --note-line:#7a6528;
+    --focus:#5cc0d6;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+h1,h2,h3,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+
+.app{display:grid;grid-template-columns:272px minmax(0,1fr) 316px;height:100vh;min-height:620px}
+.pane{background:var(--panel);overflow:auto;min-height:0}
+.queue{border-right:1px solid var(--line);display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;padding:16px 18px;font-weight:650;font-size:16px;letter-spacing:.01em}
+.brand svg{width:26px;height:26px;color:var(--harbor)}
+.queue h2{font-size:13px;font-weight:600;color:var(--muted);padding:6px 18px 8px}
+.queue li button{display:block;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;padding:11px 18px;cursor:pointer}
+.queue li button:hover{background:var(--bg)}
+.queue li[aria-current] button{background:var(--bg);border-left-color:var(--harbor)}
+.queue .who{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:14px}
+.queue .when{font-weight:400;color:var(--muted);font-size:12.5px;white-space:nowrap}
+.queue .subj{display:block;color:var(--muted);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.queue .late{color:var(--buoy-ink);font-weight:600}
+
+/* conversation */
+.convo{display:flex;flex-direction:column;min-width:0;background:var(--bg);overflow:hidden}
+.head{background:var(--panel);border-bottom:1px solid var(--line);padding:13px 28px 11px}
+.head .meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;color:var(--muted);font-size:13.5px;margin-top:6px}
+.head h1{font-size:21px;line-height:1.25;font-weight:650;letter-spacing:-.005em}
+.badge{display:inline-block;border:1px solid var(--buoy);color:var(--buoy-ink);border-radius:99px;padding:0 9px;font-size:12.5px;font-weight:600}
+
+/* the passage: the parcel's route */
+.passage{background:var(--panel);border-bottom:1px solid var(--line);padding:12px 28px 14px}
+.passage h2{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:9px}
+.stops{display:grid;grid-template-columns:repeat(5,1fr)}
+.stop{position:relative;padding-top:22px;font-size:13px;line-height:1.35;padding-right:8px}
+.stop::before{content:"";position:absolute;top:6px;left:0;right:0;height:3px;background:var(--harbor)}
+.stop::after{content:"";position:absolute;top:0;left:0;width:15px;height:15px;border-radius:50%;background:var(--panel);border:3px solid var(--harbor)}
+.stop b{display:block;font-weight:600}
+.stop span{color:var(--muted)}
+.stop.stall::before{background:repeating-linear-gradient(90deg,var(--buoy) 0 8px,transparent 8px 14px)}
+.stop.stall::after{background:var(--buoy);border-color:var(--buoy)}
+.stop.miss::before{display:none}
+.stop.miss::after{border-color:var(--buoy);border-style:dashed}
+.stop.stall b{color:var(--buoy-ink)}
+
+.thread{flex:1;overflow:auto;padding:22px 28px;min-height:0}
+.day{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;margin:6px 0 14px}
+.day::before,.day::after{content:"";flex:1;height:1px;background:var(--line)}
+.msg{max-width:640px;margin-bottom:18px}
+.msg.agent,.msg.note{margin-left:auto}
+.msg header{display:flex;gap:10px;align-items:baseline;font-size:13px;margin-bottom:5px;color:var(--muted)}
+.msg header strong{color:var(--ink);font-weight:600;font-size:14px}
+.msg.agent header,.msg.note header{justify-content:flex-end}
+.body{border-radius:4px 14px 14px 14px;padding:12px 16px;background:var(--cust);border:1px solid var(--line);font-family:var(--serif);font-size:16.5px;line-height:1.6}
+.body p+p{margin-top:.7em}
+.msg.agent .body{background:var(--agent);border-color:transparent;border-radius:14px 4px 14px 14px}
+.msg.note .body{background:var(--note);border:1px dashed var(--note-line);border-radius:10px;font-family:var(--sans);font-size:14.5px;line-height:1.5}
+.msg.system{text-align:center;max-width:none;color:var(--muted);font-size:13px}
+.sent-flag{color:var(--harbor);font-weight:600}
+
+/* composer */
+.composer{background:var(--panel);border-top:1px solid var(--line);padding:12px 28px 16px}
+.tabs{display:flex;gap:4px;margin-bottom:10px}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:4px 10px;cursor:pointer;color:var(--muted);font-weight:600}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--harbor)}
+.field{display:block;width:100%;resize:vertical;min-height:92px;height:128px;max-height:30vh;background:var(--cust);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-family:var(--serif);font-size:16px;line-height:1.55}
+.composer.is-note .field{background:var(--note);border:1px dashed var(--note-line);font-family:var(--sans);font-size:14.5px}
+.macros{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;align-items:center;font-size:13px;color:var(--muted)}
+.macros button{background:none;border:1px solid var(--line);border-radius:99px;padding:3px 11px;cursor:pointer;font-size:13px}
+.macros button:hover{border-color:var(--harbor);color:var(--harbor)}
+.actions{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;margin-top:12px}
+.actions label{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13.5px}
+.actions select{background:var(--cust);border:1px solid var(--line);border-radius:6px;padding:5px 8px}
+.send{background:var(--harbor);color:var(--on-harbor);border:0;border-radius:8px;padding:9px 20px;font-weight:650;cursor:pointer}
+.send:hover{filter:brightness(1.08)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* order context */
+.side{border-left:1px solid var(--line);padding:18px 20px 28px}
+.side section+section{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.side h2{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.side dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.side dt{color:var(--muted)}
+.side dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.who-card{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--agent);display:grid;place-items:center;font-weight:650;color:var(--harbor);flex:none}
+.who-card strong{display:block;font-size:15px}
+.who-card span{color:var(--muted);font-size:13.5px;overflow-wrap:anywhere}
+.items li{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:3px 0}
+.items .qty{color:var(--muted)}
+.hint{margin-top:12px;font-size:13.5px;color:var(--muted)}
+.hint button{background:none;border:0;padding:0;color:var(--harbor);text-decoration:underline;cursor:pointer;font-size:inherit}
+.policy{background:var(--bg);border-radius:8px;padding:10px 12px;font-size:13.5px}
+
+@media (max-width:1180px){
+  .app{grid-template-columns:minmax(0,1fr) 300px}
+  .queue{display:none}
+}
+@media (max-width:860px){
+  .app{display:block;height:auto}
+  .pane{overflow:visible}
+  .convo{display:block;overflow:visible}
+  .head,.passage,.thread,.composer{padding-left:16px;padding-right:16px}
+  .thread{overflow:visible}
+  .head h1{font-size:19px}
+  .stops{grid-template-columns:1fr}
+  .stop{padding:0 0 8px 28px;min-height:0}
+  .stop::before{top:15px;bottom:0;left:6px;right:auto;width:3px;height:auto}
+  .stop::after{top:2px}
+  .stop.stall::before{background:repeating-linear-gradient(180deg,var(--buoy) 0 8px,transparent 8px 14px)}
+  .stop:last-child{padding-bottom:0}
+  .msg{max-width:none}
+  .body{font-size:16px}
+  .side{border-left:0;border-top:1px solid var(--line);padding:18px 16px 28px}
+  .actions{flex-direction:column;align-items:stretch}
+  .send{width:100%;padding:12px}
+  .actions label{justify-content:space-between}
+}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<nav class="pane queue" aria-label="Open conversations">
+  <div class="brand">
+    <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="6" r="2.6"/><path d="M14 9v14M8.5 13h11M4 17c1 4.5 5 7 10 7s9-2.5 10-7"/></svg>
+    Harborline
+  </div>
+  <h2>Assigned to you, 5 open</h2>
+  <ul>
+    <li aria-current="true"><button type="button"><span class="who"><span>Amara Okafor</span><span class="when">9:12</span></span><span class="subj late">Late order 48213</span></button></li>
+    <li><button type="button"><span class="who"><span>Tomasz Wrobel</span><span class="when">8:40</span></span><span class="subj">Wrong size on the linen apron</span></button></li>
+    <li><button type="button"><span class="who"><span>Priya Raman</span><span class="when">Yesterday</span></span><span class="subj">Can I change my delivery address?</span></button></li>
+    <li><button type="button"><span class="who"><span>Gareth Lloyd</span><span class="when">Yesterday</span></span><span class="subj">Refund has not arrived</span></button></li>
+    <li><button type="button"><span class="who"><span>Noor Haddad</span><span class="when">Tue</span></span><span class="subj">Discount code rejected at checkout</span></button></li>
+  </ul>
+</nav>
+
+<main class="pane convo" aria-label="Conversation with Amara Okafor">
+  <div class="head">
+    <h1>Where is my order? It was due last Friday</h1>
+    <div class="meta">
+      <span>Fernwood Candle Co.</span>
+      <span>Conversation 48213</span>
+      <span>Opened Mon 24 Nov</span>
+      <span class="badge">Waiting on you</span>
+    </div>
+  </div>
+
+  <section class="passage" aria-labelledby="route-h">
+    <h2 id="route-h">Where the parcel is, with Northway Parcels tracking NW 7740 2291 05</h2>
+    <ol class="stops">
+      <li class="stop"><b>Ordered</b><span>Fri 14 Nov</span></li>
+      <li class="stop"><b>Left the warehouse</b><span>Sat 15 Nov</span></li>
+      <li class="stop"><b>Arrived at Leeds hub</b><span>Mon 17 Nov</span></li>
+      <li class="stop stall"><b>No scan for 10 days</b><span>Last seen 17 Nov, 21:46</span></li>
+      <li class="stop miss"><b>Promised by</b><span>Thu 20 Nov, missed</span></li>
+    </ol>
+  </section>
+
+  <div class="thread" id="thread" tabindex="0" aria-label="Messages">
+    <div class="day">Monday 24 November</div>
+    <article class="msg">
+      <header><strong>Amara Okafor</strong><span>9:12</span></header>
+      <div class="body">
+        <p>Hello, I ordered two candle sets for my sister's housewarming on 14 November. The confirmation said they would arrive by the 20th.</p>
+        <p>The party was on Saturday. Nothing came, and the tracking link has said "Arrived at hub" for a week. Where is my order?</p>
+      </div>
+    </article>
+    <div class="msg system">Harborline sent the automatic acknowledgement at 9:12</div>
+
+    <div class="day">Tuesday 25 November</div>
+    <article class="msg agent">
+      <header><span>10:03</span><strong>Daniel Reyes</strong></header>
+      <div class="body">
+        <p>Hi Amara, I am sorry about the missed party. I have asked Northway Parcels to trace the parcel and will write to you as soon as they answer.</p>
+      </div>
+    </article>
+    <article class="msg note">
+      <header><span>10:05</span><strong>Daniel Reyes</strong><span>Internal note</span></header>
+      <div class="body">Trace opened with Northway, reference TR-559018. They promise an answer in 48 hours. If it is not found, reship from stock (both sets are in stock).</div>
+    </article>
+
+    <div class="day">Thursday 27 November</div>
+    <article class="msg">
+      <header><strong>Amara Okafor</strong><span>8:47</span></header>
+      <div class="body">
+        <p>Any news? The tracking has not moved at all. I would like either the parcel or my money back. I cannot keep waiting.</p>
+      </div>
+    </article>
+    <article class="msg note">
+      <header><span>9:20</span><strong>Northway trace desk</strong><span>Pasted by Daniel</span></header>
+      <div class="body">Parcel NW 7740 2291 05 was misrouted at Leeds hub and is now at Doncaster depot. Delivery slot offered: Mon 1 Dec. It cannot be guaranteed.</div>
+    </article>
+  </div>
+
+  <form class="composer" id="composer" aria-label="Write a reply">
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="t-reply" aria-selected="true" data-mode="reply">Reply to customer</button>
+      <button type="button" role="tab" id="t-note" aria-selected="false" data-mode="note">Internal note</button>
+    </div>
+    <textarea class="field" id="field" aria-label="Message" rows="4">Hi Amara,
+
+Thank you for your patience, and I am sorry the sets missed the housewarming. Northway Parcels sent your parcel to the wrong depot at Leeds. It is now in Doncaster, and they offer delivery on Monday 1 December.
+
+I do not want you to wait on a promise I cannot guarantee. I can do either of these today:
+1. Send two new candle sets from our stock by next-day delivery, free of charge.
+2. Refund the full £84.00 now.
+
+Tell me which you prefer and I will start it straight away.
+
+Daniel
+Harborline support for Fernwood Candle Co.</textarea>
+    <div class="macros" id="macros">
+      <span>Insert</span>
+      <button type="button" data-text="Your refund of £84.00 goes back to the card you paid with. Your bank usually shows it in 3 to 5 working days.">Refund timing</button>
+      <button type="button" data-text="I have added a £10 credit to your account as an apology. It applies to your next order.">Goodwill credit</button>
+      <button type="button" data-text="Your tracking number is NW 7740 2291 05. You can follow it at northway.example/track.">Tracking link</button>
+    </div>
+    <div class="actions">
+      <label>After sending, set status to
+        <select id="status">
+          <option>Waiting on customer</option>
+          <option>Open</option>
+          <option>Solved</option>
+        </select>
+      </label>
+      <button class="send" type="submit" id="send">Send reply</button>
+    </div>
+  </form>
+</main>
+
+<aside class="pane side" aria-label="Order and customer details">
+  <section>
+    <h2>Customer</h2>
+    <div class="who-card">
+      <div class="avatar" aria-hidden="true">AO</div>
+      <div><strong>Amara Okafor</strong><span>amara.okafor@mailbox.example</span></div>
+    </div>
+    <dl>
+      <dt>Orders with Fernwood</dt><dd>3</dd>
+      <dt>Customer since</dt><dd>Mar 2024</dd>
+      <dt>Earlier complaints</dt><dd>None</dd>
+    </dl>
+  </section>
+  <section>
+    <h2>Order 48213</h2>
+    <ul class="items">
+      <li><span>Fig and cedar candle set</span><span class="qty">x 1</span></li>
+      <li><span>Winter pine candle set</span><span class="qty">x 1</span></li>
+    </ul>
+    <dl style="margin-top:10px">
+      <dt>Paid</dt><dd>£84.00 by card</dd>
+      <dt>Postage</dt><dd>Included</dd>
+      <dt>Ship to</dt><dd>Leeds LS6 2QP</dd>
+      <dt>Stock now</dt><dd>2 sets of each</dd>
+    </dl>
+  </section>
+  <section>
+    <h2>Shop policy</h2>
+    <p class="policy">Fernwood refunds or reships any parcel that is 7 or more days past its promised date. This parcel is 7 days past, so the customer qualifies.</p>
+    <p class="hint">A reship costs Fernwood about £6.40. <button type="button" id="refundDraft">Draft the refund-only reply</button></p>
+  </section>
+</aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const field = $('field'), composer = $('composer'), thread = $('thread');
+  let mode = "reply"; thread.scrollTop = thread.scrollHeight;
+  const drafts = { reply: field.value, note: '' };
+
+  function toast(t){ const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove('on'), 2200); }
+
+  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+    drafts[mode] = field.value;
+    mode = b.dataset.mode;
+    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+    composer.classList.toggle('is-note', mode === 'note');
+    field.value = drafts[mode];
+    $('send').textContent = mode === 'note' ? 'Add note' : 'Send reply';
+    $('status').disabled = mode === 'note';
+    field.placeholder = mode === 'note' ? 'Write a note only your team can see' : '';
+    field.focus();
+  }));
+
+  $('macros').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const sep = field.value && !field.value.endsWith('\n') ? '\n\n' : '';
+    field.value += sep + b.dataset.text;
+    field.focus();
+  });
+
+  $('refundDraft').addEventListener('click', () => {
+    if (mode !== 'reply') $('t-reply').click();
+    field.value = "Hi Amara,\n\nI am sorry the sets missed the housewarming. Northway Parcels sent your parcel to the wrong depot, and I cannot promise the date they offer.\n\nI have refunded the full £84.00 to your card. Your bank usually shows it in 3 to 5 working days. If the parcel does arrive, you can keep it.\n\nDaniel\nHarborline support for Fernwood Candle Co.";
+    toast('Refund-only reply drafted. Read it before you send.');
+  });
+
+  composer.addEventListener('submit', e => {
+    e.preventDefault();
+    const text = field.value.trim();
+    if (!text) { toast('Write a message first'); field.focus(); return; }
+    const art = document.createElement('article');
+    art.className = 'msg ' + (mode === 'note' ? 'note' : 'agent');
+    const time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    const head = document.createElement('header');
+    head.innerHTML = '<span></span><strong>Daniel Reyes</strong><span></span>';
+    head.children[0].textContent = time;
+    head.children[2].textContent = mode === 'note' ? 'Internal note' : 'Sent';
+    if (mode === 'reply') head.children[2].className = 'sent-flag';
+    const body = document.createElement('div'); body.className = 'body';
+    text.split(/\n{2,}/).forEach(p => { const el = document.createElement('p'); el.textContent = p; el.style.whiteSpace = 'pre-line'; body.append(el); });
+    art.append(head, body);
+    thread.append(art);
+    thread.scrollTop = thread.scrollHeight;
+    field.value = ''; drafts[mode] = '';
+    toast(mode === 'note' ? 'Note added' : 'Reply sent. Status set to ' + $('status').value);
+  });
+})();
+</script>
+</body>
+</html>

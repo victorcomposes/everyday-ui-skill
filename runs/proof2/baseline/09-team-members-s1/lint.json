@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 3
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 3
+      }
+    },
+    "contrastFailures": 3
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 6,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(93, 104, 119)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(47, 91, 234)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 29,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Invite people",
+        "w": 358,
+        "h": 39
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 324,
+        "h": 39
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nReviewer\nDesigner\nViewer",
+        "w": 324,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "Send invite",
+        "w": 324,
+        "h": 39
+      },
+      {
+        "tag": "input",
+        "text": "Search members",
+        "w": 332,
+        "h": 39
+      },
+      {
+        "tag": "select",
+        "text": "All roles\nAdmin\nReviewer\nDesig",
+        "w": 332,
+        "h": 39
+      },
+      {
+        "tag": "select",
+        "text": "All statuses\nActive\nPending",
+        "w": 332,
+        "h": 39
+      },
+      {
+        "tag": "select",
+        "text": "Admin\nReviewer\nDesigner\nViewer",
+        "w": 239,
+        "h": 39
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

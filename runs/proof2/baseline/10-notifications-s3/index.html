@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notifications - Gigwell</title>
+<style>
+:root{
+  --bg:#f6f5f2;--surface:#fff;--surface-2:#faf9f7;--line:#e7e4dd;--text:#1d1c1a;--muted:#6b6862;
+  --brand:#0f6b4f;--brand-ink:#fff;--unread:#f1f8f5;
+  --blue:#2457c5;--blue-soft:#e6edfb;--amber:#9a5b00;--amber-soft:#fcf0d9;--green:#0f6b4f;--green-soft:#e3f2ec;
+  --red:#b3261e;--red-soft:#fbe7e5;--violet:#6a3fb5;--violet-soft:#efe8fa;--focus:#2457c5;
+  --shadow:0 1px 2px rgba(20,20,10,.05),0 4px 16px rgba(20,20,10,.05);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#121311;--surface:#1b1c1a;--surface-2:#20211f;--line:#2f302c;--text:#ecebe7;--muted:#a09d95;
+    --brand:#4cc79b;--brand-ink:#08150f;--unread:#1a2621;
+    --blue:#8fb0ff;--blue-soft:#1b2640;--amber:#f0b95a;--amber-soft:#35290f;--green:#4cc79b;--green-soft:#15302a;
+    --red:#ff8a80;--red-soft:#3a1b19;--violet:#bd9cff;--violet-soft:#2a2040;--focus:#8fb0ff;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1120px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:18px;letter-spacing:-.02em;color:var(--text);text-decoration:none}
+.logo svg{width:26px;height:26px}
+.nav{display:flex;gap:4px;flex:1}
+.nav a{padding:8px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500}
+.nav a:hover{background:var(--surface-2);color:var(--text)}
+.me{display:flex;align-items:center;gap:12px}
+.bell{position:relative;width:38px;height:38px;border:1px solid var(--line);background:var(--surface-2);border-radius:10px;display:grid;place-items:center}
+.bell svg{width:19px;height:19px}
+.bell b{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;line-height:18px;text-align:center}
+.bell b[hidden]{display:none}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:600;font-size:13px}
+
+main{max-width:1120px;margin:0 auto;padding:32px 24px 64px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+h1{margin:0;font-size:28px;letter-spacing:-.02em;line-height:1.2}
+.sub{margin:4px 0 0;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:9px;border:1px solid var(--line);background:var(--surface);font-weight:500;min-height:38px}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn svg{width:16px;height:16px}
+
+.layout{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+
+.tabs{display:flex;gap:2px;padding:10px 12px 0;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:thin}
+.tab{border:0;background:none;padding:10px 12px;color:var(--muted);font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:flex;gap:7px;align-items:center}
+.tab:hover{color:var(--text)}
+.tab[aria-selected=true]{color:var(--text);border-bottom-color:var(--brand)}
+.tab .n{font-size:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:0 7px;line-height:18px;color:var(--muted)}
+.tab[aria-selected=true] .n{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+
+.day{margin:0;padding:14px 20px 6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+ul.list{list-style:none;margin:0;padding:0}
+.item{position:relative;display:grid;grid-template-columns:40px 1fr auto;gap:14px;padding:14px 20px;border-top:1px solid var(--line)}
+.item.unread{background:var(--unread)}
+.item.unread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand)}
+.ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center}
+.ico svg{width:20px;height:20px}
+.ico.proposal{background:var(--blue-soft);color:var(--blue)}
+.ico.message{background:var(--violet-soft);color:var(--violet)}
+.ico.payment{background:var(--green-soft);color:var(--green)}
+.ico.contract{background:var(--amber-soft);color:var(--amber)}
+.ico.system{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.ico.alert{background:var(--red-soft);color:var(--red)}
+.body{min-width:0}
+.title{margin:0;font-size:15px;line-height:1.4}
+.item.unread .title{font-weight:600}
+.title a{color:inherit;text-decoration:none}
+.title a:hover{text-decoration:underline}
+.detail{margin:2px 0 0;color:var(--muted);font-size:14px}
+.quote{margin:8px 0 0;padding:8px 12px;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;font-size:14px}
+.meta{margin-top:6px;font-size:12.5px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{padding:1px 8px;border-radius:10px;font-size:12px;font-weight:500;background:var(--surface-2);border:1px solid var(--line)}
+.acts{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.acts .btn{padding:5px 12px;min-height:32px;font-size:14px}
+.side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.side .icon-btn{width:32px;height:32px;border:0;background:none;border-radius:8px;display:grid;place-items:center;color:var(--muted)}
+.side .icon-btn:hover{background:var(--surface-2);color:var(--text)}
+.side svg{width:17px;height:17px}
+
+.empty{padding:56px 24px;text-align:center;color:var(--muted)}
+.empty svg{width:72px;height:72px;color:var(--brand);margin-bottom:8px}
+.empty h2{margin:0 0 4px;font-size:18px;color:var(--text)}
+.empty p{margin:0 auto;max-width:340px}
+
+aside .panel{padding:18px 20px}
+aside h2{margin:0 0 4px;font-size:16px}
+aside p.hint{margin:0 0 10px;color:var(--muted);font-size:13.5px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.row small{display:block;color:var(--muted);font-size:12.5px;font-weight:400}
+.row label{font-weight:500}
+.sw{appearance:none;-webkit-appearance:none;width:40px;height:24px;border-radius:12px;background:var(--line);position:relative;border:0;flex:none;cursor:pointer;transition:background .15s;margin:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.sw:checked{background:var(--brand)}
+.sw:checked::after{transform:translateX(16px)}
+.digest{margin-top:4px;padding-top:14px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.digest select{margin-top:6px;width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:10px;display:flex;gap:14px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:10;white-space:nowrap}
+.toast[hidden]{display:none}
+.toast button{background:none;border:0;color:inherit;font-weight:600;text-decoration:underline;padding:4px}
+
+@media (max-width:900px){.layout{grid-template-columns:1fr}.nav{display:none}.top-in{justify-content:space-between}}
+@media (max-width:600px){
+  main{padding:20px 0 48px}
+  .head{padding:0 16px}h1{font-size:24px}
+  .head .btn{width:100%;justify-content:center}
+  .panel{border-left:0;border-right:0;border-radius:0}
+  .top-in{padding:0 16px}
+  .item{grid-template-columns:36px 1fr;padding:14px 16px;gap:12px}
+  .ico{width:36px;height:36px}
+  .side{grid-column:2;flex-direction:row;justify-content:flex-start;margin-top:-4px}
+  .day{padding:14px 16px 6px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--brand)"/><path d="M9 21c0-5 3-9 8-9 2 0 4 1 5 2m1 3c0 5-3 8-8 8-2 0-4-1-5-2m7-7h6v6" fill="none" stroke="var(--brand-ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Gigwell</a>
+    <nav class="nav" aria-label="Main"><a href="#">Find work</a><a href="#">Proposals</a><a href="#">Contracts</a><a href="#">Messages</a><a href="#">Earnings</a></nav>
+    <div class="me">
+      <span class="bell" role="img" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0"/></svg><b id="bellCount" aria-hidden="true"></b></span>
+      <span class="avatar" title="Maya Okafor">MO</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <h1>Notifications</h1>
+      <p class="sub" id="summary" aria-live="polite"></p>
+    </div>
+    <button class="btn primary" id="markAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12l5 5L18 6M12 17l1 1L23 8"/></svg>Mark all as read</button>
+  </div>
+
+  <div class="layout">
+    <section class="panel" aria-label="Notification list">
+      <div class="tabs" role="tablist" id="tabs" aria-label="Filter notifications"></div>
+      <div id="out" role="tabpanel" aria-live="polite"></div>
+    </section>
+
+    <aside>
+      <div class="panel">
+        <h2>Notify me about</h2>
+        <p class="hint">Choose what reaches your inbox and phone.</p>
+        <div class="row"><label for="p1">New invitations<small>Clients inviting you to bid</small></label><input id="p1" class="sw" type="checkbox" checked></div>
+        <div class="row"><label for="p2">Proposal updates<small>Viewed, shortlisted, declined</small></label><input id="p2" class="sw" type="checkbox" checked></div>
+        <div class="row"><label for="p3">Messages<small>Replies from clients</small></label><input id="p3" class="sw" type="checkbox" checked></div>
+        <div class="row"><label for="p4">Payments<small>Escrow, payouts, invoices</small></label><input id="p4" class="sw" type="checkbox" checked></div>
+        <div class="row"><label for="p5">Tips and promotions<small>Product news from Gigwell</small></label><input id="p5" class="sw" type="checkbox"></div>
+        <div class="digest">
+          <label for="dg">Email digest</label>
+          <select id="dg"><option>Instantly</option><option selected>Daily at 8:00 AM</option><option>Weekly on Monday</option><option>Never</option></select>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" hidden><span id="toastMsg"></span><button id="undo">Undo</button></div>
+
+<script>
+const I={
+ proposal:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4"/>',
+ message:'<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/>',
+ payment:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/>',
+ contract:'<path d="M9 12l2 2 4-4M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+ system:'<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/>',
+ alert:'<path d="M12 3l10 18H2zM12 10v5M12 18v.01"/>'
+};
+const svg=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const TABS=[['all','All'],['unread','Unread'],['proposal','Proposals'],['message','Messages'],['payment','Payments'],['contract','Contracts'],['system','System']];
+// Offsets are relative to now so the demo always reads "Today / Yesterday".
+const ago_=(h,m)=>new Date(Date.now()-(h*60+m)*6e4);
+const dayAt=(n,h,m)=>{const d=new Date();d.setDate(d.getDate()-n);d.setHours(h,m,0,0);return d};
+let data=[
+ {id:1,type:'message',unread:1,t:ago_(0,12),title:'<b>Daniel Hartmann</b> replied on <a href="#">Brand identity for Lumen Coffee</a>',quote:'"Love the second logo direction. Can you send the vector files by Friday so we can brief the printer?"',acts:['Reply']},
+ {id:2,type:'payment',unread:1,t:ago_(0,95),title:'<b>$1,850.00</b> released from escrow for milestone 2',detail:'Lumen Coffee packaging concepts. Funds reach your bank account within 2 working days.',acts:['View payment']},
+ {id:3,type:'proposal',unread:1,t:ago_(0,160),title:'<b>Northwind Logistics</b> shortlisted your proposal',detail:'Dashboard redesign for a fleet tracking app. 3 of 41 freelancers made the shortlist.',acts:['View proposal','Message client']},
+ {id:4,type:'proposal',unread:1,t:ago_(0,250),title:'You were invited to bid on <a href="#">Illustrations for a children\'s book</a>',detail:'Fixed price, $2,000 to $3,500. The invitation closes in 2 days.',acts:['Send proposal','Decline']},
+ {id:5,type:'contract',unread:0,t:ago_(0,390),title:'<b>Priya Nair</b> sent you a contract to sign',detail:'Social media kit for Bloomfield Florists. 4 weeks, $2,400 fixed price.',acts:['Review contract']},
+ {id:6,type:'alert',unread:0,t:ago_(0,560),title:'Your payout method needs attention',detail:'The bank account ending 4417 could not be verified. Update it to avoid delays on your next payout.',acts:['Update bank details']},
+ {id:7,type:'message',unread:0,t:dayAt(1,17,48),title:'<b>Sofia Alvarez</b> sent 2 files in <a href="#">Podcast cover art</a>',detail:'cover-v3.png and cover-v3-dark.png',acts:[]},
+ {id:8,type:'proposal',unread:0,t:dayAt(1,9,5),title:'<b>Kestrel Labs</b> viewed your proposal',detail:'Landing page for a developer tool. Proposals viewed within 24 hours get a reply 2.4x more often.',acts:[]},
+ {id:9,type:'payment',unread:0,t:dayAt(2,14,20),title:'Invoice #GW-2043 was paid by <b>Harbour &amp; Co</b>',detail:'$960.00 for 12 hours of design work. The Gigwell fee of $96.00 was deducted.',acts:['Download receipt']},
+ {id:10,type:'contract',unread:0,t:dayAt(3,11,0),title:'Milestone approved on <a href="#">Onboarding flow for Tandem Fitness</a>',detail:'The client approved "High-fidelity screens". 1 milestone remaining.',acts:[]},
+ {id:11,type:'system',unread:0,t:dayAt(4,8,30),title:'Your profile is 85% complete',detail:'Add two portfolio items to appear in more client searches.',acts:['Edit profile']},
+ {id:12,type:'system',unread:0,t:dayAt(6,16,0),title:'New feature: milestone reminders',detail:'Gigwell now nudges clients when a milestone has waited for review more than 3 days.',acts:[]},
+ {id:13,type:'payment',unread:0,t:dayAt(9,10,12),title:'<b>$3,200.00</b> was paid out to your bank account',detail:'Reference GW-PO-88213. Sent to the account ending 4417.',acts:[]}
+];
+let filter='all',saved=null,tm;
+const $=s=>document.querySelector(s);
+const unreadN=()=>data.filter(n=>n.unread).length;
+const inTab=(n,k)=>k==='all'||(k==='unread'?n.unread:n.type===k||(k==='system'&&n.type==='alert'));
+
+function ago(d){
+  const m=Math.round((Date.now()-d)/6e4);
+  if(m<1)return 'Just now';
+  if(m<60)return m+' min ago';
+  if(bucket(d)==='Today')return Math.round(m/60)+' h ago';
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+function bucket(d){
+  const s=x=>new Date(x.getFullYear(),x.getMonth(),x.getDate());
+  const diff=Math.round((s(new Date())-s(d))/864e5);
+  return diff<=0?'Today':diff===1?'Yesterday':diff<7?'This week':'Earlier';
+}
+function render(){
+  const u=unreadN();
+  $('#summary').textContent=u?`${u} unread of ${data.length} notifications`:`You're all caught up. ${data.length} notifications.`;
+  const bc=$('#bellCount');bc.hidden=!u;bc.textContent=u;
+  $('#markAll').disabled=!u;
+  $('#tabs').innerHTML=TABS.map(([k,l])=>
+    `<button class="tab" role="tab" id="tab-${k}" data-k="${k}" aria-selected="${k===filter}" tabindex="${k===filter?0:-1}">${l}<span class="n">${data.filter(n=>inTab(n,k)).length}</span></button>`).join('');
+  $('#out').setAttribute('aria-labelledby','tab-'+filter);
+  const v=data.filter(n=>inTab(n,filter)).sort((a,b)=>b.t-a.t);
+  if(!v.length){
+    const msg=filter==='unread'?['Nothing new','You have read every notification. New activity will show up here.']:['No notifications here','Activity in this category will appear when it happens.'];
+    $('#out').innerHTML=`<div class="empty"><svg viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="36" cy="36" r="30" opacity=".25"/><path d="M22 28a14 14 0 0 1 28 0c0 16 7 18 7 18H15s7-2 7-18M31 52a5 5 0 0 0 10 0M28 33l6 6 11-12"/></svg><h2>${msg[0]}</h2><p>${msg[1]}</p></div>`;
+    return;
+  }
+  let last='',h='';
+  v.forEach(n=>{
+    const b=bucket(n.t);
+    if(b!==last){h+=(last?'</ul>':'')+`<h2 class="day">${b}</h2><ul class="list">`;last=b}
+    const lbl={proposal:'Proposal',message:'Message',payment:'Payment',contract:'Contract',system:'System',alert:'Action needed'}[n.type];
+    const rl=n.unread?'Mark as read':'Mark as unread';
+    h+=`<li class="item${n.unread?' unread':''}">
+      <span class="ico ${n.type}">${svg(I[n.type])}</span>
+      <div class="body">
+        <p class="title">${n.unread?'<span class="sr">Unread: </span>':''}${n.title}</p>
+        ${n.detail?`<p class="detail">${n.detail}</p>`:''}
+        ${n.quote?`<p class="quote">${n.quote}</p>`:''}
+        <div class="meta"><span class="chip">${lbl}</span><time datetime="${n.t.toISOString()}">${ago(n.t)}</time></div>
+        ${n.acts.length?`<div class="acts">${n.acts.map((a,i)=>`<button class="btn${i===0?' primary':''}" data-act="${n.id}">${a}</button>`).join('')}</div>`:''}
+      </div>
+      <div class="side">
+        <button class="icon-btn" data-read="${n.id}" aria-label="${rl}" title="${rl}">${svg(n.unread?'<circle cx="12" cy="12" r="4" fill="currentColor"/>':'<circle cx="12" cy="12" r="4"/>')}</button>
+        <button class="icon-btn" data-del="${n.id}" aria-label="Dismiss notification" title="Dismiss">${svg('<path d="M6 6l12 12M18 6L6 18"/>')}</button>
+      </div></li>`;
+  });
+  $('#out').innerHTML=h+'</ul>';
+}
+function toast(msg){
+  clearTimeout(tm);$('#toastMsg').textContent=msg;$('#toast').hidden=false;
+  tm=setTimeout(()=>{$('#toast').hidden=true;saved=null},6000);
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.k){filter=t.dataset.k;render();$('#tab-'+filter).focus();return}
+  if(t.id==='markAll'){
+    const ids=data.filter(n=>n.unread).map(n=>n.id);
+    data.forEach(n=>n.unread=0);saved={read:ids};render();toast(`${ids.length} marked as read`);return}
+  if(t.id==='undo'){
+    if(saved?.read)data.forEach(n=>{if(saved.read.includes(n.id))n.unread=1});
+    if(saved?.del)data.push(saved.del);
+    saved=null;$('#toast').hidden=true;render();return}
+  if(t.dataset.read){const n=data.find(x=>x.id==t.dataset.read);n.unread=n.unread?0:1;render();return}
+  if(t.dataset.del){
+    const i=data.findIndex(x=>x.id==t.dataset.del);saved={del:data.splice(i,1)[0]};render();toast('Notification dismissed');return}
+  if(t.dataset.act){const n=data.find(x=>x.id==t.dataset.act);if(n.unread){n.unread=0;render()}}
+});
+$('#tabs').addEventListener('keydown',e=>{
+  const k=TABS.map(t=>t[0]),i=k.indexOf(filter);
+  const j=e.key==='ArrowRight'?(i+1)%k.length:e.key==='ArrowLeft'?(i+k.length-1)%k.length:-1;
+  if(j<0)return;e.preventDefault();filter=k[j];render();$('#tab-'+filter).focus();
+});
+render();
+</script>
+</body>
+</html>

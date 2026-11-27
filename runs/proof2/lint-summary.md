@@ -1,0 +1,102 @@
+# Lint summary: proof2
+
+Axe columns count failing nodes. Other = moderate + minor.
+
+| condition | task | axe critical | axe serious | axe other | contrast | overflow 390 | taps <44 | fixed overlap | vh gap | fonts | colors | min px | emoji | img no alt | focus ring |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| anthropic | 09-team-members-s1 | 0 | 1 | 0 | 1 | no | 43 | 0 | 0 | 1 | 12 | 12 | 0 | 0 | yes |
+| anthropic | 09-team-members-s2 | 0 | 0 | 0 | 0 | no | 33 | 0 | 1 | 2 | 14 | 12.5 | 0 | 0 | yes |
+| anthropic | 09-team-members-s3 | 0 | 3 | 0 | 3 | no | 24 | 0 | 0 | 2 | 18 | 12 | 0 | 0 | yes |
+| anthropic | 10-notifications-s1 | 0 | 16 | 0 | 16 | no | 47 | 0 | 0 | 2 | 7 | 11 | 0 | 0 | yes |
+| anthropic | 10-notifications-s2 | 0 | 0 | 0 | 0 | no | 44 | 0 | 0 | 2 | 5 | 12 | 0 | 0 | yes |
+| anthropic | 10-notifications-s3 | 0 | 1 | 1 | 1 | no | 24 | 0 | 0 | 1 | 15 | 13 | 0 | 0 | yes |
+| anthropic | 11-search-results-s1 | 0 | 0 | 0 | 0 | no | 5 | 0 | 0 | 2 | 5 | 13 | 0 | 0 | yes |
+| anthropic | 11-search-results-s2 | 0 | 1 | 0 | 1 | no | 13 | 0 | 0 | 2 | 7 | 12 | 0 | 0 | yes |
+| anthropic | 11-search-results-s3 | 0 | 0 | 0 | 0 | no | 13 | 0 | 0 | 2 | 4 | 12.9333 | 0 | 0 | yes |
+| anthropic | 12-mobile-product-s1 | 0 | 0 | 1 | 0 | no | 2 | 0 | 0 | 2 | 5 | 12 | 0 | 0 | yes |
+| anthropic | 12-mobile-product-s2 | 0 | 2 | 1 | 2 | no | 7 | 0 | 0 | 1 | 4 | 11 | 0 | 0 | yes |
+| anthropic | 12-mobile-product-s3 | 0 | 1 | 1 | 1 | no | 1 | 0 | 0 | 2 | 5 | 13 | 0 | 0 | yes |
+| anthropic | 13-expense-report-s1 | 11 | 0 | 0 | 0 | no | 61 | 0 | 0 | 2 | 6 | 12 | 0 | 0 | yes |
+| anthropic | 13-expense-report-s2 | 0 | 2 | 0 | 2 | no | 53 | 0 | 0 | 2 | 6 | 12.5 | 0 | 0 | yes |
+| anthropic | 13-expense-report-s3 | 0 | 0 | 0 | 0 | no | 23 | 0 | 0 | 2 | 8 | 10 | 0 | 0 | yes |
+| anthropic | 14-support-conversation-s1 | 0 | 0 | 0 | 0 | no | 7 | 0 | 0 | 2 | 5 | 12.5 | 0 | 0 | yes |
+| anthropic | 14-support-conversation-s2 | 0 | 1 | 0 | 0 | no | 7 | 0 | 0 | 1 | 6 | 12 | 0 | 0 | yes |
+| anthropic | 14-support-conversation-s3 | 0 | 0 | 0 | 0 | no | 6 | 0 | 0 | 2 | 5 | 12 | 0 | 0 | yes |
+| anthropic | 15-mobile-booking-s1 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 2 | 5 | 11 | 0 | 0 | yes |
+| anthropic | 15-mobile-booking-s2 | 0 | 9 | 0 | 0 | no | 0 | 0 | 0 | 2 | 3 | 13 | 0 | 0 | yes |
+| anthropic | 15-mobile-booking-s3 | 0 | 9 | 0 | 0 | no | 0 | 0 | 0 | 1 | 9 | 11 | 0 | 0 | yes |
+| anthropic | 16-stock-levels-s1 | 0 | 31 | 2 | 15 | no | 23 | 0 | 0 | 1 | 7 | 13 | 0 | 0 | yes |
+| anthropic | 16-stock-levels-s2 | 0 | 0 | 0 | 0 | no | 14 | 0 | 0 | 2 | 5 | 12.5 | 0 | 0 | yes |
+| anthropic | 16-stock-levels-s3 | 0 | 1 | 0 | 1 | no | 22 | 0 | 0 | 2 | 4 | 12 | 0 | 0 | yes |
+| baseline | 09-team-members-s1 | 0 | 3 | 0 | 3 | no | 29 | 0 | 0 | 1 | 6 | 11 | 0 | 0 | yes |
+| baseline | 09-team-members-s2 | 0 | 1 | 0 | 1 | no | 32 | 0 | 0 | 1 | 5 | 11 | 0 | 0 | yes |
+| baseline | 09-team-members-s3 | 0 | 14 | 0 | 14 | no | 33 | 0 | 0 | 1 | 6 | 11 | 0 | 0 | yes |
+| baseline | 10-notifications-s1 | 0 | 0 | 0 | 0 | yes 100px | 59 | 0 | 1 | 1 | 7 | 11 | 0 | 0 | yes |
+| baseline | 10-notifications-s2 | 0 | 0 | 0 | 0 | yes 404px | 54 | 0 | 0 | 1 | 8 | 11 | 0 | 0 | yes |
+| baseline | 10-notifications-s3 | 0 | 0 | 0 | 0 | no | 44 | 0 | 0 | 1 | 3 | 11 | 0 | 0 | yes |
+| baseline | 11-search-results-s1 | 0 | 0 | 0 | 0 | no | 17 | 0 | 0 | 1 | 5 | 12.5 | 0 | 0 | yes |
+| baseline | 11-search-results-s2 | 0 | 23 | 0 | 23 | no | 26 | 0 | 0 | 1 | 5 | 11.52 | 0 | 0 | yes |
+| baseline | 11-search-results-s3 | 0 | 0 | 0 | 0 | no | 25 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| baseline | 12-mobile-product-s1 | 0 | 2 | 1 | 1 | no | 15 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| baseline | 12-mobile-product-s2 | 0 | 3 | 1 | 2 | no | 1 | 0 | 0 | 1 | 6 | 12 | 0 | 0 | yes |
+| baseline | 12-mobile-product-s3 | 0 | 3 | 0 | 2 | no | 2 | 0 | 0 | 1 | 7 | 12 | 0 | 0 | yes |
+| baseline | 13-expense-report-s1 | 0 | 0 | 0 | 0 | no | 63 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| baseline | 13-expense-report-s2 | 0 | 0 | 0 | 0 | no | 86 | 0 | 0 | 1 | 6 | 11 | 0 | 0 | yes |
+| baseline | 13-expense-report-s3 | 0 | 0 | 0 | 0 | no | 8 | 0 | 0 | 1 | 5 | 10 | 0 | 0 | yes |
+| baseline | 14-support-conversation-s1 | 0 | 4 | 1 | 4 | no | 14 | 0 | 0 | 1 | 9 | 10.8333 | 0 | 0 | yes |
+| baseline | 14-support-conversation-s2 | 0 | 1 | 1 | 0 | no | 8 | 0 | 0 | 1 | 8 | 12 | 0 | 0 | yes |
+| baseline | 14-support-conversation-s3 | 0 | 0 | 0 | 0 | no | 6 | 0 | 0 | 1 | 7 | 10.8333 | 0 | 0 | yes |
+| baseline | 15-mobile-booking-s1 | 0 | 0 | 2 | 0 | no | 15 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| baseline | 15-mobile-booking-s2 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| baseline | 15-mobile-booking-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 5 | 11 | 0 | 0 | yes |
+| baseline | 16-stock-levels-s1 | 0 | 0 | 0 | 0 | yes 7px | 29 | 0 | 0 | 1 | 6 | 12 | 0 | 0 | yes |
+| baseline | 16-stock-levels-s2 | 0 | 10 | 0 | 1 | no | 21 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| baseline | 16-stock-levels-s3 | 0 | 0 | 1 | 0 | no | 51 | 0 | 0 | 1 | 6 | 12 | 0 | 0 | yes |
+| prompt | 09-team-members-s1 | 0 | 0 | 0 | 0 | no | 36 | 0 | 1 | 1 | 20 | 11 | 0 | 0 | yes |
+| prompt | 09-team-members-s2 | 0 | 1 | 0 | 0 | no | 38 | 0 | 0 | 1 | 23 | 11.5 | 0 | 0 | yes |
+| prompt | 09-team-members-s3 | 0 | 0 | 0 | 0 | no | 32 | 0 | 1 | 2 | 3 | 11.5 | 0 | 0 | yes |
+| prompt | 10-notifications-s1 | 0 | 1 | 0 | 0 | no | 41 | 0 | 0 | 2 | 7 | 11 | 0 | 0 | yes |
+| prompt | 10-notifications-s2 | 0 | 0 | 0 | 0 | no | 47 | 0 | 1 | 2 | 5 | 12 | 0 | 0 | yes |
+| prompt | 10-notifications-s3 | 0 | 0 | 0 | 0 | no | 34 | 0 | 1 | 2 | 6 | 12 | 0 | 0 | yes |
+| prompt | 11-search-results-s1 | 0 | 1 | 0 | 0 | no | 9 | 0 | 0 | 2 | 4 | 12.5 | 0 | 0 | yes |
+| prompt | 11-search-results-s2 | 0 | 0 | 0 | 0 | no | 22 | 0 | 0 | 2 | 7 | 12 | 0 | 0 | yes |
+| prompt | 11-search-results-s3 | 0 | 0 | 1 | 0 | no | 2 | 0 | 0 | 2 | 7 | 12 | 0 | 0 | yes |
+| prompt | 12-mobile-product-s1 | 0 | 0 | 4 | 0 | no | 17 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| prompt | 12-mobile-product-s2 | 0 | 0 | 1 | 0 | no | 3 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| prompt | 12-mobile-product-s3 | 0 | 0 | 0 | 0 | no | 5 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| prompt | 13-expense-report-s1 | 0 | 0 | 0 | 0 | no | 70 | 0 | 0 | 1 | 7 | 12 | 0 | 0 | yes |
+| prompt | 13-expense-report-s2 | 24 | 8 | 0 | 0 | no | 18 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| prompt | 13-expense-report-s3 | 0 | 0 | 0 | 0 | no | 13 | 0 | 0 | 1 | 5 | 10 | 0 | 0 | yes |
+| prompt | 14-support-conversation-s1 | 0 | 0 | 0 | 0 | no | 12 | 0 | 0 | 2 | 8 | 11.5 | 0 | 0 | yes |
+| prompt | 14-support-conversation-s2 | 0 | 0 | 2 | 0 | no | 12 | 0 | 0 | 1 | 7 | 11 | 0 | 0 | yes |
+| prompt | 14-support-conversation-s3 | 0 | 0 | 1 | 0 | no | 18 | 0 | 0 | 1 | 9 | 10.8333 | 0 | 0 | yes |
+| prompt | 15-mobile-booking-s1 | 0 | 0 | 0 | 0 | no | 0 | 1 | 0 | 1 | 7 | 12.5 | 0 | 0 | yes |
+| prompt | 15-mobile-booking-s2 | 0 | 0 | 10 | 0 | no | 20 | 1 | 0 | 1 | 9 | 11.5 | 0 | 0 | yes |
+| prompt | 15-mobile-booking-s3 | 0 | 0 | 0 | 0 | no | 21 | 0 | 0 | 2 | 3 | 12 | 0 | 0 | yes |
+| prompt | 16-stock-levels-s1 | 0 | 1 | 0 | 0 | no | 64 | 0 | 1 | 2 | 6 | 12 | 0 | 0 | yes |
+| prompt | 16-stock-levels-s2 | 0 | 0 | 0 | 0 | no | 101 | 0 | 1 | 2 | 9 | 12 | 0 | 0 | yes |
+| prompt | 16-stock-levels-s3 | 0 | 0 | 0 | 0 | no | 47 | 0 | 1 | 2 | 7 | 12 | 0 | 0 | yes |
+| skill | 09-team-members-s1 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 09-team-members-s2 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 6 | 12 | 0 | 0 | yes |
+| skill | 09-team-members-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 7 | 12 | 0 | 0 | yes |
+| skill | 10-notifications-s1 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 10-notifications-s2 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 6 | 12 | 0 | 0 | yes |
+| skill | 10-notifications-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 11-search-results-s1 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 11-search-results-s2 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 11-search-results-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 3 | 12 | 0 | 0 | yes |
+| skill | 12-mobile-product-s1 | 0 | 0 | 1 | 0 | no | 0 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 12-mobile-product-s2 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 12-mobile-product-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 13-expense-report-s1 | 0 | 0 | 0 | 0 | no | 11 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 13-expense-report-s2 | 0 | 0 | 0 | 0 | no | 4 | 0 | 1 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 13-expense-report-s3 | 0 | 0 | 0 | 0 | no | 3 | 0 | 1 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 14-support-conversation-s1 | 0 | 0 | 0 | 0 | no | 2 | 0 | 1 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 14-support-conversation-s2 | 0 | 0 | 0 | 0 | no | 2 | 0 | 0 | 1 | 6 | 12 | 0 | 0 | yes |
+| skill | 14-support-conversation-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 5 | 12 | 0 | 0 | yes |
+| skill | 15-mobile-booking-s1 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 15-mobile-booking-s2 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 15-mobile-booking-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 0 | 1 | 4 | 12 | 0 | 0 | yes |
+| skill | 16-stock-levels-s1 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 6 | 12 | 0 | 0 | yes |
+| skill | 16-stock-levels-s2 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 6 | 12 | 0 | 0 | yes |
+| skill | 16-stock-levels-s3 | 0 | 0 | 0 | 0 | no | 0 | 0 | 1 | 1 | 6 | 12 | 0 | 0 | yes |

@@ -1,0 +1,98 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "segoe ui"
+  ],
+  "textColors": 4,
+  "minFontPx": 12.9333,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(43, 29, 52)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 3px rgb(91, 42, 134)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 13,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Ladle",
+        "w": 88,
+        "h": 31
+      },
+      {
+        "tag": "select",
+        "text": "Best match\nHighest rated\nQuick",
+        "w": 137,
+        "h": 41
+      },
+      {
+        "tag": "a",
+        "text": "1",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "2",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "3",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "4",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "5",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "tag": "a",
+        "text": "Next",
+        "w": 59,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock levels - Larderly</title>
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f6f4ef; --surface:#fff; --surface-2:#f0ede6; --line:#e2ded3; --text:#1f2421; --muted:#5f665f;
+  --accent:#2b6a4d; --accent-ink:#fff; --accent-soft:#dcebe2;
+  --out:#b3261e; --out-soft:#fbe4e1; --low:#8a5a00; --low-soft:#fcefcf; --ok:#2b6a4d; --ok-soft:#dcebe2; --ord:#2a5a8a; --ord-soft:#dfeaf5;
+  --bar:#d3cebf; --shadow:0 1px 2px rgba(30,30,20,.06),0 4px 16px rgba(30,30,20,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#151815; --surface:#1d211e; --surface-2:#252a26; --line:#333a34; --text:#eceee9; --muted:#a3aba3;
+    --accent:#6fc79a; --accent-ink:#0d1a13; --accent-soft:#1f3a2c;
+    --out:#ff8a80; --out-soft:#3d1f1c; --low:#f2c25b; --low-soft:#3a2f14; --ok:#6fc79a; --ok-soft:#1f3a2c; --ord:#8fbdee; --ord-soft:#1d2e42;
+    --bar:#3d453e; --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1360px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;letter-spacing:-.01em}
+.logo svg{color:var(--accent)}
+.top nav{display:flex;gap:4px;flex:1}
+.top nav a{padding:8px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500;white-space:nowrap}
+.top nav a:hover{background:var(--surface-2);color:var(--text)}
+.top nav a[aria-current]{color:var(--text);background:var(--surface-2)}
+.site{color:var(--muted);font-size:14px;white-space:nowrap}
+main{max-width:1360px;margin:0 auto;padding:28px 24px 96px}
+h1{font-size:28px;line-height:1.2;margin:0 0 4px;letter-spacing:-.02em}
+.sub{margin:0;color:var(--muted)}
+.sub strong{color:var(--text)}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:14px;border-bottom:1px solid var(--line)}
+.seg{display:flex;gap:4px;background:var(--surface-2);padding:3px;border-radius:10px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:8px;cursor:pointer;color:var(--muted);font-weight:500;min-height:34px;white-space:nowrap}
+.seg button .n{font-variant-numeric:tabular-nums;margin-left:4px;opacity:.8}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.tools .grow{flex:1;min-width:180px}
+.field{width:100%;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+select.field{width:auto;min-width:150px}
+table{width:100%;border-collapse:collapse}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+.name{font-weight:600}
+.cat{color:var(--muted);font-size:13px}
+.stock{min-width:220px}
+.bar{position:relative;height:8px;border-radius:99px;background:var(--bar);overflow:hidden;margin-bottom:6px}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--ok)}
+.bar.low i{background:var(--low)} .bar.out i{background:var(--out)}
+.bar b{position:absolute;top:0;bottom:0;width:2px;background:var(--text);opacity:.55}
+.qty{font-variant-numeric:tabular-nums;font-size:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.qty span.u{color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.out{background:var(--out-soft);color:var(--out)} .pill.low{background:var(--low-soft);color:var(--low)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.ord{background:var(--ord-soft);color:var(--ord)}
+.days{font-variant-numeric:tabular-nums;white-space:nowrap}
+.sup{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:9px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.pri:hover{filter:brightness(1.08);background:var(--accent)}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.btn:disabled{cursor:default;opacity:.55}
+.btn:disabled:hover{background:var(--surface)}
+.btn.pri:disabled:hover{background:var(--accent);filter:none}
+.act{text-align:right;width:150px}
+.eta{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.empty{padding:36px 20px;text-align:center;color:var(--muted)}
+aside{position:sticky;top:16px}
+aside h2{font-size:16px;margin:0;padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+aside h2 span{font-weight:500;color:var(--muted);font-size:13px}
+.grp{padding:12px 16px;border-bottom:1px solid var(--line)}
+.grp h3{margin:0 0 6px;font-size:13px;display:flex;justify-content:space-between;color:var(--muted);font-weight:600}
+.line{display:grid;grid-template-columns:1fr auto;gap:0 10px;align-items:center;padding:6px 0}
+.line .l-name{font-weight:500}
+.line .l-sub{grid-column:1;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.step{grid-row:1 / span 2;grid-column:2;display:flex;align-items:center;border:1px solid var(--line);border-radius:8px}
+.step button{width:32px;height:32px;border:0;background:none;cursor:pointer;font-size:16px;border-radius:7px}
+.step button:hover{background:var(--surface-2)}
+.step output{min-width:24px;text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
+.total{display:flex;justify-content:space-between;padding:14px 16px;font-weight:700}
+.foot{padding:0 16px 16px;display:grid;gap:8px}
+.foot .btn{height:42px}
+.foot .hint{font-size:12px;color:var(--muted);margin:0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:20;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.mbar{display:none}
+@media (max-width:1040px){
+  .layout{grid-template-columns:1fr}
+  aside{position:static}
+}
+@media (max-width:720px){
+  .top-in{padding:0 16px;gap:12px;overflow-x:auto}
+  .site{display:none}
+  main{padding:20px 16px 110px}
+  h1{font-size:24px}
+  .tools{padding:12px}
+  .seg{width:100%;overflow-x:auto}
+  .seg button{flex:1;padding:6px 8px}
+  select.field{width:100%}
+  thead{display:none}
+  table,tbody{display:block}
+  tr{display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:14px;border-bottom:1px solid var(--line)}
+  tbody tr:last-child{border-bottom:0}
+  td{display:block;padding:0;border:0}
+  td.c-item{grid-column:1}
+  td.c-days{grid-column:2;grid-row:1;text-align:right}
+  td.c-stock{grid-column:1 / -1}
+  td.c-sup{grid-column:1;align-self:center}
+  td.c-act{grid-column:2;grid-row:3}
+  .act{width:auto}
+  .stock{min-width:0}
+  .eta{text-align:right}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px;gap:12px;align-items:center;justify-content:space-between;z-index:10}
+  .mbar .btn{height:42px}
+  .toast{bottom:84px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h16l-1.5 9a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7L4 10Z"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      Larderly
+    </div>
+    <nav aria-label="Main">
+      <a href="#" aria-current="page">Stock levels</a>
+      <a href="#">Orders</a>
+      <a href="#">Suppliers</a>
+      <a href="#">Recipes</a>
+    </nav>
+    <div class="site">The Salt House, Harbour Street</div>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <div>
+      <h1>Stock levels</h1>
+      <p class="sub" id="summary" aria-live="polite"></p>
+    </div>
+    <p class="sub">Last count: today, 6:40 am, by Priya N.</p>
+  </div>
+
+  <div class="layout">
+    <section class="card" aria-label="Ingredients">
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Filter by status" id="filters"></div>
+        <div class="grow"><input class="field" id="q" type="search" placeholder="Search ingredients" aria-label="Search ingredients"></div>
+        <select class="field" id="cat" aria-label="Category"></select>
+      </div>
+      <table>
+        <thead><tr><th>Ingredient</th><th>Stock vs par</th><th>Days left</th><th>Supplier</th><th class="act">Order</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>No ingredients match. Try another filter.</div>
+    </section>
+
+    <aside class="card" id="order" aria-label="Draft order">
+      <h2>Draft order <span id="ocount"></span></h2>
+      <div id="groups"></div>
+      <div class="total"><span>Estimated total</span><span id="grand">£0.00</span></div>
+      <div class="foot">
+        <button class="btn pri" id="place" type="button">Place orders</button>
+        <button class="btn" id="addall" type="button">Add everything that needs reordering</button>
+        <p class="hint">Quantities fill each ingredient back up to its par level, rounded up to whole packs.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="mbar">
+  <div><strong id="mcount">0 items in order</strong><br><span class="sub" id="mtotal">£0.00</span></div>
+  <button class="btn pri" id="mgo" type="button">Review order</button>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+// Static fake data. pack = units per pack, price = £ per pack, rp = reorder point, par = target stock, use = units per day.
+const items=[
+ {id:1,name:"Unsalted butter",cat:"Dairy",unit:"kg",on:2.5,par:12,rp:5,use:2.4,pack:5,price:38.5,sup:"Marlow Dairy"},
+ {id:2,name:"Whole milk",cat:"Dairy",unit:"L",on:18,par:40,rp:20,use:9,pack:12,price:14.4,sup:"Marlow Dairy"},
+ {id:3,name:"Double cream",cat:"Dairy",unit:"L",on:0,par:10,rp:4,use:2,pack:6,price:21,sup:"Marlow Dairy"},
+ {id:4,name:"Parmesan",cat:"Dairy",unit:"kg",on:3.2,par:6,rp:2,use:.6,pack:1,price:17.8,sup:"Marlow Dairy"},
+ {id:5,name:"Chicken thighs",cat:"Meat",unit:"kg",on:6,par:30,rp:15,use:7,pack:10,price:62,sup:"Hollis Butchers"},
+ {id:6,name:"Beef chuck",cat:"Meat",unit:"kg",on:9,par:20,rp:8,use:3,pack:5,price:47.5,sup:"Hollis Butchers"},
+ {id:7,name:"Streaky bacon",cat:"Meat",unit:"kg",on:1.8,par:8,rp:3,use:1.1,pack:2,price:19.6,sup:"Hollis Butchers",ord:8,eta:"Sat 28 Nov"},
+ {id:8,name:"Sea bass fillets",cat:"Fish",unit:"kg",on:0,par:6,rp:2,use:1.8,pack:3,price:42,sup:"Quay Fishmongers"},
+ {id:9,name:"Salmon side",cat:"Fish",unit:"kg",on:4.5,par:10,rp:4,use:2.2,pack:2.5,price:36,sup:"Quay Fishmongers"},
+ {id:10,name:"Yellow onions",cat:"Produce",unit:"kg",on:14,par:25,rp:10,use:4.5,pack:10,price:9.8,sup:"Greenfield Produce"},
+ {id:11,name:"Garlic bulbs",cat:"Produce",unit:"kg",on:.8,par:3,rp:1,use:.3,pack:1,price:8.4,sup:"Greenfield Produce"},
+ {id:12,name:"Lemons",cat:"Produce",unit:"each",on:22,par:80,rp:30,use:14,pack:50,price:17.5,sup:"Greenfield Produce"},
+ {id:13,name:"Flat-leaf parsley",cat:"Produce",unit:"bunch",on:3,par:12,rp:5,use:2.5,pack:6,price:7.2,sup:"Greenfield Produce",ord:12,eta:"Sat 28 Nov"},
+ {id:14,name:"Plum tomatoes, tinned",cat:"Dry goods",unit:"tin",on:26,par:48,rp:18,use:5,pack:24,price:31.2,sup:"Castellan Wholesale"},
+ {id:15,name:"Arborio rice",cat:"Dry goods",unit:"kg",on:7,par:10,rp:4,use:1.2,pack:5,price:14.5,sup:"Castellan Wholesale"},
+ {id:16,name:"Plain flour",cat:"Dry goods",unit:"kg",on:22,par:50,rp:20,use:6,pack:16,price:13.6,sup:"Castellan Wholesale"},
+ {id:17,name:"Olive oil",cat:"Dry goods",unit:"L",on:4,par:15,rp:6,use:1.8,pack:5,price:36,sup:"Castellan Wholesale"},
+ {id:18,name:"Sea salt flakes",cat:"Dry goods",unit:"kg",on:2.5,par:4,rp:1,use:.15,pack:1,price:6.2,sup:"Castellan Wholesale"},
+ {id:19,name:"Dry white wine",cat:"Drinks",unit:"bottle",on:5,par:24,rp:10,use:3,pack:6,price:33,sup:"Orme Wine Merchants"},
+ {id:20,name:"Sparkling water",cat:"Drinks",unit:"bottle",on:40,par:96,rp:36,use:14,pack:24,price:22.8,sup:"Orme Wine Merchants",ord:96,eta:"Mon 30 Nov"}
+];
+const cart={}; // id -> packs
+let filter="need", search="", cat="All";
+const $=s=>document.querySelector(s);
+const money=n=>"£"+n.toFixed(2);
+const num=n=>String(+n.toFixed(2));
+const days=i=>i.on/i.use;
+const level=i=>i.on===0?"out":i.on<=i.rp?"low":"ok"; // stock level, ignoring orders
+const state=i=>i.ord?"ord":level(i);
+const needs=i=>level(i)!=="ok"&&!i.ord;
+const suggest=i=>Math.max(1,Math.ceil((i.par-i.on)/i.pack));
+const label={out:"Out of stock",low:"Running low",ok:"In stock",ord:"On order"};
+const find=id=>items.find(x=>x.id===id);
+function daysText(i){const d=days(i);if(i.on===0)return"None left";if(d<1)return"Under 1 day";const r=Math.round(d);return r+(r===1?" day":" days")}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),2800)}
+
+function renderFilters(){
+  const defs=[["need","Needs reorder",items.filter(needs).length],["out","Out of stock",items.filter(i=>level(i)==="out").length],["ord","On order",items.filter(i=>i.ord).length],["all","All",items.length]];
+  $("#filters").innerHTML=defs.map(([k,l,n])=>`<button type="button" data-f="${k}" aria-pressed="${filter===k}">${l}<span class="n">${n}</span></button>`).join("");
+}
+function visible(){
+  return items.filter(i=>{
+    if(filter==="need"&&!needs(i))return false;
+    if(filter==="out"&&level(i)!=="out")return false;
+    if(filter==="ord"&&!i.ord)return false;
+    if(cat!=="All"&&i.cat!==cat)return false;
+    return i.name.toLowerCase().includes(search.trim().toLowerCase());
+  }).sort((a,b)=>days(a)-days(b));
+}
+function renderRows(){
+  const v=visible();
+  $("#rows").innerHTML=v.map(i=>{
+    const s=state(i),lv=level(i),pct=Math.min(100,i.on/i.par*100),mark=i.rp/i.par*100,inCart=!!cart[i.id];
+    const action=i.ord?`<button class="btn" disabled>Ordered</button><span class="eta">Arrives ${i.eta}</span>`
+      :`<button class="btn" type="button" data-add="${i.id}" aria-pressed="${inCart}" aria-label="${inCart?"Remove "+i.name+" from order":"Add "+i.name+" to order"}">${inCart?"In order":"Add to order"}</button>`;
+    return `<tr>
+      <td class="c-item"><div class="name">${i.name}</div><div class="cat">${i.cat}</div></td>
+      <td class="c-stock stock"><div class="bar ${lv}" role="img" aria-label="${num(i.on)} of ${i.par} ${i.unit} par, reorder at ${i.rp}"><i style="width:${pct}%"></i><b style="left:${mark}%"></b></div>
+        <div class="qty"><span><strong>${num(i.on)}</strong> <span class="u">of ${i.par} ${i.unit}</span></span><span class="pill ${s}">${label[s]}</span></div></td>
+      <td class="c-days days">${daysText(i)}</td>
+      <td class="c-sup sup">${i.sup}</td>
+      <td class="c-act act">${action}</td></tr>`;
+  }).join("");
+  $("#empty").hidden=v.length>0;
+}
+function renderSummary(){
+  const n=items.filter(needs).length,o=items.filter(i=>level(i)==="out"&&!i.ord).length;
+  $("#summary").innerHTML=n?`<strong>${n} ingredient${n===1?"":"s"}</strong> need reordering${o?`, ${o} out of stock`:""}.`:"Everything is at or above its reorder point.";
+}
+function renderOrder(){
+  const ids=Object.keys(cart).map(Number),by={};
+  ids.forEach(id=>{const i=find(id);(by[i.sup]=by[i.sup]||[]).push(i)});
+  let grand=0;
+  $("#groups").innerHTML=ids.length?Object.keys(by).sort().map(s=>{
+    const sub=by[s].reduce((t,i)=>t+cart[i.id]*i.price,0);grand+=sub;
+    return `<div class="grp"><h3><span>${s}</span><span>${money(sub)}</span></h3>${by[s].map(i=>`
+      <div class="line"><span class="l-name">${i.name}</span>
+      <span class="l-sub">${cart[i.id]} × ${num(i.pack)} ${i.unit} = ${num(cart[i.id]*i.pack)} ${i.unit}</span>
+      <div class="step"><button type="button" data-dec="${i.id}" aria-label="Fewer ${i.name}">−</button><output>${cart[i.id]}</output><button type="button" data-inc="${i.id}" aria-label="More ${i.name}">+</button></div></div>`).join("")}</div>`}).join("")
+    :`<div class="empty">Nothing in the order yet. Add ingredients from the list.</div>`;
+  const sup=Object.keys(by).length;
+  $("#ocount").textContent=ids.length?`${ids.length} item${ids.length===1?"":"s"}`:"";
+  $("#grand").textContent=money(grand);
+  $("#place").disabled=!ids.length;
+  $("#place").textContent=ids.length?`Place ${sup} order${sup===1?"":"s"}`:"Place orders";
+  $("#mcount").textContent=`${ids.length} item${ids.length===1?"":"s"} in order`;
+  $("#mtotal").textContent=money(grand);
+  $("#addall").disabled=!items.some(i=>needs(i)&&!cart[i.id]);
+}
+function renderAll(){renderFilters();renderRows();renderSummary();renderOrder()}
+
+$("#cat").innerHTML=["All",...new Set(items.map(i=>i.cat))].map(c=>`<option value="${c}">${c==="All"?"All categories":c}</option>`).join("");
+$("#cat").onchange=e=>{cat=e.target.value;renderRows()};
+$("#q").oninput=e=>{search=e.target.value;renderRows()};
+$("#filters").onclick=e=>{const b=e.target.closest("[data-f]");if(b){filter=b.dataset.f;renderFilters();renderRows()}};
+$("#rows").onclick=e=>{const b=e.target.closest("[data-add]");if(!b)return;const id=+b.dataset.add;
+  if(cart[id])delete cart[id];else cart[id]=suggest(find(id));
+  renderRows();renderOrder()};
+$("#groups").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  const id=+(b.dataset.inc||b.dataset.dec);if(b.dataset.inc)cart[id]++;else if(--cart[id]<1)delete cart[id];
+  renderRows();renderOrder()};
+$("#addall").onclick=()=>{items.filter(i=>needs(i)&&!cart[i.id]).forEach(i=>cart[i.id]=suggest(i));renderRows();renderOrder()};
+$("#place").onclick=()=>{
+  const sup=new Set();
+  Object.keys(cart).map(Number).forEach(id=>{const i=find(id);sup.add(i.sup);i.ord=cart[id]*i.pack;i.eta="Mon 30 Nov";delete cart[id]});
+  toast(`${sup.size} order${sup.size===1?"":"s"} sent. Items now show as on order.`);renderAll()};
+$("#mgo").onclick=()=>$("#order").scrollIntoView({behavior:"smooth"});
+renderAll();
+</script>
+</body>
+</html>

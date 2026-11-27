@@ -1,0 +1,92 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "segoe ui variable text"
+  ],
+  "textColors": 5,
+  "minFontPx": 12.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "button",
+    "before": {
+      "outline": "none 3px rgb(20, 48, 58)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(14, 90, 110)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 7,
+    "examples": [
+      {
+        "tag": "button",
+        "text": "Reply to customer",
+        "w": 144,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Internal note",
+        "w": 108,
+        "h": 34
+      },
+      {
+        "tag": "button",
+        "text": "Refund timing",
+        "w": 105,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Goodwill credit",
+        "w": 111,
+        "h": 28
+      },
+      {
+        "tag": "button",
+        "text": "Tracking link",
+        "w": 95,
+        "h": 28
+      },
+      {
+        "tag": "select",
+        "text": "Waiting on customer\nOpen\nSolve",
+        "w": 163,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "text": "Draft the refund-only reply",
+        "w": 160,
+        "h": 20
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

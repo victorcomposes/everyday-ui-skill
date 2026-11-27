@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New expense report - Outlay</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  --accent: #1f5f9e; --accent-hover: #174b7d; --accent-subtle: #eef3fd; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f4f7fd; --brand-deep: #14285a; --on-deep: #ffffff; --on-deep-muted: #b9c8ee; --accent-on-deep: #7a9cff;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px;  --lh-xs: 16px;
+  --text-sm: 14px;  --lh-sm: 20px;
+  --text-md: 16px;  --lh-md: 24px;
+  --text-lg: 18px;  --lh-lg: 28px;
+  --text-xl: 20px;  --lh-xl: 28px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px; --control-h-touch: 44px;
+  --w-sidebar: 248px; --w-rail: 360px; --w-content: 1200px;
+  --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #7fb0e6; --accent-hover: #a6c8ee; --accent-subtle: #1c2540; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #131a2b; --brand-deep: #0e1a38; --on-deep: #e9ebef; --on-deep-muted: #a9bbef;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+@media (max-width: 640px) { h1 { font-size: 26px; } }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 20; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+svg.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+svg.i.sm { width: 16px; height: 16px; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.shell > aside { background: var(--frame); border-right: 1px solid var(--border); }
+.side { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-5) var(--s-3); }
+.logo { display: flex; min-height: 44px; align-items: center; gap: 10px; padding: 0 var(--s-2); font: 700 18px/1 var(--font-display); letter-spacing: -0.02em; }
+.nav { display: flex; flex-direction: column; gap: 2px; margin-top: var(--s-8); }
+.nav a { display: flex; align-items: center; gap: var(--s-3); min-height: 40px; padding: 0 var(--s-3); border-radius: var(--r-md); color: var(--text-muted); font-weight: 500; transition: background-color var(--t-fast) var(--ease); }
+.nav a:hover { background: var(--accent-subtle); }
+.nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text); }
+.nav a[aria-current="page"] svg { color: var(--accent); }
+.acct { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-2) 0; border-top: 1px solid var(--border); }
+.acct b { display: block; font-weight: 600; }
+.acct span.m { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: 16px; }
+.av { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent); display: grid; place-items: center; font-size: var(--text-xs); font-weight: 600; flex: none; }
+.topbar { display: none; }
+.topbar > div { position: relative; }
+
+/* page */
+main { min-width: 0; padding: var(--s-8); }
+.page { max-width: var(--w-content); }
+.crumb { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--text-muted); margin-left: -4px; min-height: 28px; }
+.crumb:hover { color: var(--text); }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-3); }
+.head p.sub { margin-top: var(--rhythm-title); color: var(--text-muted); max-width: 75ch; }
+.head > .btn { flex: none; }
+.summary:not([hidden]) + .layout { margin-top: var(--rhythm-content); }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); grid-template-areas: "form rail" "actions rail"; column-gap: var(--s-12); margin-top: var(--rhythm-content); align-items: start; }
+#form-body { grid-area: form; }
+.rail { grid-area: rail; position: sticky; top: var(--s-8); }
+.actions { grid-area: actions; display: flex; align-items: center; gap: var(--s-4); margin-top: var(--rhythm-group); padding-top: var(--s-6); border-top: 1px solid var(--border); }
+
+/* form */
+section.grp + section.grp { margin-top: var(--rhythm-group); }
+.grp > p.intro { margin-top: var(--rhythm-tight); color: var(--text-muted); }
+.grp > .body { margin-top: var(--rhythm-content); }
+.fields { display: flex; flex-direction: column; gap: var(--s-6); }
+.field { display: flex; flex-direction: column; min-width: 0; }
+.field > label, .cl { font-weight: 500; color: var(--text); }
+.hint { margin-top: var(--s-1); color: var(--text-muted); }
+.field .ctl, .field > .pair { margin-top: var(--rhythm-tight); }
+.w-md { max-width: 480px; } .w-sm { max-width: 320px; }
+.pair { display: flex; gap: var(--s-4); max-width: 480px; }
+.pair > div { flex: 1; min-width: 0; }
+input, select, textarea { width: 100%; min-height: var(--control-h); padding: 0 var(--s-3); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--r-md); transition: border-color var(--t-fast) var(--ease); }
+textarea { padding: var(--s-2) var(--s-3); min-height: 88px; resize: vertical; line-height: 22px; }
+select { padding-right: var(--s-2); }
+input:hover, select:hover, textarea:hover { border-color: var(--text-muted); }
+[aria-invalid="true"] { border: 2px solid var(--danger); padding-left: 11px; }
+textarea[aria-invalid="true"] { padding: 7px 11px; }
+.err { color: var(--danger); margin-top: var(--s-2); font-weight: 500; display: flex; gap: var(--s-2); align-items: flex-start; }
+.field > .err { margin: var(--s-1) 0 0; }
+.f-amt input { text-align: right; font-variant-numeric: tabular-nums; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: 0 var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; cursor: pointer; white-space: nowrap; position: relative; transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.sm { min-height: var(--control-h-sm); padding: 0 var(--s-3); font-weight: 500; }
+.btn[aria-busy="true"] { cursor: progress; }
+.tbtn { background: none; border: 0; padding: 0 var(--s-2); min-height: var(--control-h-sm); color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; font-weight: 500; border-radius: var(--r-sm); }
+.tbtn:hover { color: var(--accent-hover); }
+.ibtn { width: var(--control-h); min-height: var(--control-h); display: grid; place-items: center; border: 0; background: none; color: var(--text-muted); border-radius: var(--r-md); cursor: pointer; transition: background-color var(--t-fast) var(--ease); }
+.ibtn:hover { background: var(--bg-subtle); color: var(--danger); }
+.cancel { color: var(--text-muted); display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); }
+.cancel:hover { color: var(--text); text-decoration: underline; }
+
+/* error summary */
+.summary { margin-top: var(--rhythm-content); border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent); background: var(--danger-subtle); border-radius: var(--r-lg); padding: var(--s-4) var(--s-5); max-width: calc(100% - var(--w-rail) - var(--s-12)); }
+.summary h2 { font-size: var(--text-md); line-height: var(--lh-md); display: flex; align-items: center; gap: var(--s-2); color: var(--danger); }
+.summary ul { margin-top: var(--s-2); display: flex; flex-direction: column; gap: 2px; }
+.summary a { text-decoration: underline; text-underline-offset: 2px; display: inline-flex; align-items: center; min-height: 28px; }
+
+/* expenses list */
+.list-head, .row { display: grid; grid-template-columns: minmax(0, 1fr) 132px 148px 104px 40px; column-gap: var(--s-3); }
+.list-head { padding: 0 0 var(--s-2); border-bottom: 1px solid var(--border); color: var(--text-muted); font-weight: 500; }
+.list-head .r { text-align: right; }
+.row { position: relative; padding: var(--s-4) 0 var(--s-3); border-bottom: 1px solid var(--border); align-items: start; }
+.row .cl { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.row .f { min-width: 0; }
+.row .rm { align-self: center; justify-self: end; }
+.row-err { grid-column: 1 / -1; margin: var(--s-2) 0 0; }
+.rline { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--s-3); margin-top: var(--s-2); min-height: var(--control-h-sm); min-width: 0; }
+.rhint { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); min-width: 0; }
+.rhint.need { color: var(--warning); font-weight: 500; }
+.rhint.bad { color: var(--danger); font-weight: 500; }
+.chip { display: inline-flex; align-items: center; gap: var(--s-2); min-width: 0; max-width: 100%; padding: 4px var(--s-3) 4px var(--s-2); background: var(--bg-subtle); border: 1px solid var(--border); border-radius: var(--r-md); color: var(--text); }
+.chip .fn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.chip .sz { color: var(--text-muted); font-size: var(--text-xs); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.chip svg { color: var(--text-muted); }
+.attach input { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; opacity: 0; cursor: pointer; padding: 0; border: 0; }
+.attach:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.add { margin-top: var(--s-4); }
+.empty-list { padding: var(--s-6) 0; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+
+/* summary rail */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); }
+.rail .card { padding: var(--s-6); }
+.rail h2 { font-size: var(--text-md); line-height: var(--lh-md); font-weight: 600; color: var(--text-muted); letter-spacing: 0; }
+.total { display: block; margin-top: var(--s-1); font: 700 40px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rail .meta { margin-top: var(--s-2); color: var(--text-muted); }
+.rail .blk { margin-top: var(--s-5); padding-top: var(--s-5); border-top: 1px solid var(--border); }
+.rail dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2) var(--s-4); }
+.rail dt { color: var(--text-muted); }
+.rail dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.rail dl.sum dd { font-weight: 500; }
+.bar { height: 8px; border-radius: var(--r-full); background: var(--border); margin-top: var(--s-3); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); border-radius: var(--r-full); }
+.bar.over > i { background: var(--danger); }
+.blk .lbl { display: flex; justify-content: space-between; gap: var(--s-3); font-weight: 500; }
+.blk .lbl span:last-child { font-variant-numeric: tabular-nums; color: var(--text-muted); font-weight: 400; }
+.blk p.note { margin-top: var(--s-2); color: var(--text-muted); }
+.rstat { display: flex; align-items: flex-start; gap: var(--s-2); }
+.rstat.warn { color: var(--warning); font-weight: 500; }
+.rstat.ok { color: var(--success); font-weight: 500; }
+.appr { display: flex; align-items: center; gap: var(--s-3); }
+.appr b { font-weight: 600; display: block; }
+.appr span.m { color: var(--text-muted); display: block; }
+
+/* toast */
+.toast { position: fixed; left: var(--s-8); bottom: var(--s-8); z-index: 30; display: flex; align-items: center; gap: var(--s-3); max-width: calc(100vw - 2 * var(--s-4)); padding: var(--s-3) var(--s-4); background: var(--text); color: var(--bg); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+.toast .tbtn { color: var(--bg); min-height: 32px; font-weight: 600; }
+.toast .tbtn:hover { color: var(--bg); opacity: 0.8; }
+
+/* done */
+.done { margin-top: var(--rhythm-content); max-width: 560px; }
+.done .ok-mark { width: 40px; height: 40px; border-radius: var(--r-full); background: var(--success-subtle); color: var(--success); display: grid; place-items: center; }
+.done dl { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: var(--s-3) var(--s-4); margin: var(--s-6) 0; padding: var(--s-5) 0; border-block: 1px solid var(--border); }
+.done dt { color: var(--text-muted); } .done dd { margin: 0; font-variant-numeric: tabular-nums; }
+.done .btns { display: flex; align-items: center; gap: var(--s-4); }
+
+/* narrower desktops and tablets */
+@media (max-width: 1180px) {
+  .layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "form" "rail" "actions"; row-gap: var(--rhythm-group); }
+  .rail { position: static; max-width: 560px; }
+  .summary { max-width: none; }
+}
+@media (max-width: 1024px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .shell > aside { display: none; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: var(--h-topbar); padding: 0 var(--s-4); background: var(--frame); border-bottom: 1px solid var(--border); position: relative; z-index: 10; }
+  .topbar summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-md); font-weight: 500; }
+  .topbar summary::-webkit-details-marker { display: none; }
+  .topbar .menu { position: absolute; right: 0; top: 100%; width: 260px; padding: var(--s-2); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-pop); }
+  .topbar .nav { margin-top: 0; }
+  .topbar .nav a { min-height: 44px; }
+  main { padding: var(--s-6) var(--s-8); }
+}
+@media (max-width: 640px) {
+  main { padding: var(--s-4); }
+  .crumb { min-height: 44px; }
+  .head { margin-top: 0; align-items: center; }
+  .head p.sub { margin-top: var(--rhythm-title); }
+  .head-row { display: flex; gap: var(--s-3); align-items: center; justify-content: space-between; }
+  .head > div { min-width: 0; flex: 1; }
+  .field .ctl, .w-md, .w-sm, .pair { max-width: none; }
+  input, select, textarea { font-size: 16px; }
+  textarea { min-height: 120px; }
+  .summary a { min-height: 44px; }
+  .list-head { display: none; }
+  .row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: var(--s-3); padding: var(--s-5) 0 var(--s-4); }
+  .row .cl { position: static; width: auto; height: auto; margin: 0 0 var(--s-1); overflow: visible; clip: auto; clip-path: none; white-space: normal; display: block; }
+  .row .f-m { grid-column: 1 / -1; }
+  .row .f-amt { grid-column: 1; }
+  .row .rm { grid-column: 2; align-self: end; }
+  .rline { flex-wrap: wrap; }
+  .actions { flex-direction: column-reverse; align-items: stretch; gap: var(--s-2); }
+  .actions .btn { width: 100%; }
+  .actions .cancel { justify-content: center; }
+  .rail .card { padding: var(--s-5); }
+  .total { font-size: 36px; }
+  .toast { left: var(--s-4); right: var(--s-4); bottom: var(--s-4); }
+  .done dl { grid-template-columns: 1fr; gap: 2px; }
+  .done dd { margin-bottom: var(--s-3); }
+  .done .btns { flex-direction: column; align-items: stretch; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to the report form</a>
+<div class="shell">
+  <aside aria-label="Sidebar">
+    <div class="side">
+      <a class="logo" href="#" data-logo></a>
+      <nav class="nav" aria-label="Main" data-nav></nav>
+      <div class="acct">
+        <span class="av" aria-hidden="true">IF</span>
+        <div><b>Imogen Farrell</b><span class="m">Enterprise sales</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div style="min-width:0">
+    <header class="topbar">
+      <a class="logo" href="#" data-logo></a>
+      <div>
+        <details>
+          <summary><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menu</summary>
+          <nav class="menu nav" aria-label="Main (menu)" data-nav></nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="page">
+        <a class="crumb" href="#"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Expense reports</a>
+        <div class="head">
+          <div>
+            <h1 id="title">New expense report</h1>
+            <p class="sub" id="subtitle">Priya Raman approves it. Approved reports are paid in the next Friday payment run.</p>
+          </div>
+          <button type="button" class="btn" id="save-draft">Save draft</button>
+        </div>
+
+        <div id="summary" class="summary" tabindex="-1" role="alert" hidden></div>
+        <form id="form" class="layout" novalidate>
+          <div id="form-body">
+            <section class="grp" aria-labelledby="h-trip">
+              <h2 id="h-trip">Trip details</h2>
+              <div class="body fields">
+                <div class="field">
+                  <label for="title-in">Report title</label>
+                  <input class="ctl" id="title-in" name="title" autocomplete="off" aria-describedby="e-title-in">
+                  <p class="err" id="e-title-in" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="client">Client visited</label>
+                  <input class="ctl w-sm" id="client" name="client" autocomplete="organization" aria-describedby="e-client">
+                  <p class="err" id="e-client" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="purpose">Business purpose</label>
+                  <p class="hint" id="purpose-hint">Your approver reads this first. Say what the trip achieved.</p>
+                  <textarea class="ctl" id="purpose" name="purpose" rows="3" aria-describedby="purpose-hint e-purpose"></textarea>
+                  <p class="err" id="e-purpose" hidden></p>
+                </div>
+                <div class="field">
+                  <span class="cl" id="dates-l">Trip dates</span>
+                  <div class="pair" role="group" aria-labelledby="dates-l">
+                    <div>
+                      <label for="start" class="sr-only">Start date</label>
+                      <input type="date" id="start" name="start" aria-describedby="e-start">
+                    </div>
+                    <div>
+                      <label for="end" class="sr-only">End date</label>
+                      <input type="date" id="end" name="end" aria-describedby="e-start">
+                    </div>
+                  </div>
+                  <p class="err" id="e-start" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="cc">Cost centre</label>
+                  <select class="ctl w-sm" id="cc" name="cc">
+                    <option>Enterprise sales (SALES-UK)</option>
+                    <option>Customer success (CS-UK)</option>
+                    <option>Marketing events (MKT-EVT)</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <section class="grp" aria-labelledby="h-exp">
+              <h2 id="h-exp">Expenses</h2>
+              <p class="intro" id="exp-intro">All amounts in pounds sterling. Receipts are required for any claim over £25.</p>
+              <div class="body">
+                <p class="err" id="e-items" hidden style="margin:0 0 var(--s-3)"></p>
+                <div class="list-head" aria-hidden="true"><span>Merchant</span><span>Date</span><span>Category</span><span class="r">Amount (£)</span><span></span></div>
+                <ol id="items"></ol>
+                <button type="button" class="btn sm add" id="add"><svg class="i sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add expense</button>
+              </div>
+            </section>
+          </div>
+
+          <aside class="rail" aria-label="Report summary">
+            <div class="card">
+              <h2>Report total</h2>
+              <output class="total" id="total" for="items">£0.00</output>
+              <p class="meta" id="count"></p>
+              <div class="blk"><dl class="sum" id="cats"></dl></div>
+              <div class="blk" id="meals"></div>
+              <div class="blk" id="rcpt"></div>
+              <div class="blk appr">
+                <span class="av" aria-hidden="true">PR</span>
+                <div><b>Priya Raman</b><span class="m">Approver, usually replies in 2 working days</span></div>
+              </div>
+            </div>
+          </aside>
+
+          <div class="actions">
+            <button type="submit" class="btn primary" id="submit">Submit for approval</button>
+            <a class="cancel" href="#">Cancel</a>
+          </div>
+        </form>
+
+        <section id="done" class="done" hidden aria-live="polite"></section>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* ---- data ---- */
+const TODAY = '2026-11-27';
+const CATS = ['Travel', 'Lodging', 'Meals', 'Entertainment', 'Other'];
+const RECEIPT_OVER = 25;
+const MEALS_PER_DAY = 75;
+const mode = new URLSearchParams(location.search).get('state');
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const dayFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+let uid = 0;
+const item = (merchant, date, cat, amount, receipt) => ({ id: ++uid, merchant, date, cat, amount, receipt: receipt || null });
+
+const report = {
+  title: 'Manchester client visit - Brightwater Logistics',
+  client: 'Brightwater Logistics',
+  purpose: 'Contract renewal workshop with the Brightwater operations team, and a site walkthrough of their Trafford Park depot. Renewal signed on 12 November.',
+  start: '2026-11-10', end: '2026-11-12', cc: 'Enterprise sales (SALES-UK)',
+  items: [
+    item('Avanti West Coast', '2026-11-10', 'Travel', '142.60', { name: 'avanti-eticket-10nov.pdf', size: 86016 }),
+    item('Crumb & Kettle', '2026-11-10', 'Meals', '8.45'),
+    item('Hotel Ardent Manchester', '2026-11-10', 'Lodging', '189.00', { name: 'ardent-hotel-folio.pdf', size: 145408 }),
+    item('Ox & Ember', '2026-11-10', 'Entertainment', '96.40', { name: 'ox-and-ember-receipt.jpg', size: 1258291 }),
+    item('Northline Cabs', '2026-11-11', 'Travel', '18.40', { name: 'northline-cab-11nov.jpg', size: 317440 }),
+    item('Deansgate Deli', '2026-11-11', 'Meals', '14.20'),
+    item('Salt & Ladle', '2026-11-11', 'Meals', '58.60'),
+    item('Northline Cabs', '2026-11-12', 'Travel', '12.80'),
+  ],
+};
+if (mode === 'empty') {
+  Object.assign(report, { title: '', client: '', purpose: '', start: '', end: '', items: [item('', '', 'Travel', '')] });
+}
+if (mode === 'stress') {
+  report.title = 'Manchester, Leeds and Edinburgh customer visits - Brightwater Logistics and Freight Forwarding Group';
+  report.client = 'Brightwater Logistics and Freight Forwarding International Holdings (UK) Limited';
+  report.end = '2026-11-16';
+  report.items[0].merchant = 'Avanti West Coast and CrossCountry combined rail booking via corporate travel desk';
+  report.items[0].receipt = { name: 'avanti-westcoast-crosscountry-combined-corporate-booking-confirmation-10-to-16-november-2026.pdf', size: 86016 };
+  report.items[2].amount = '1,284.90';
+  report.items.push(
+    item('Leeds Marriott', '2026-11-13', 'Lodging', '164.00', { name: 'leeds-folio.pdf', size: 131072 }),
+    item('Ristorante Bellavista Internazionale di Alessandro e Figli', '2026-11-13', 'Entertainment', '412.75'),
+    item('Q', '2026-11-14', 'Other', '0.50'),
+    item('LNER', '2026-11-14', 'Travel', '86.20', { name: 'lner.pdf', size: 52224 }),
+    item('Balmoral Hotel', '2026-11-14', 'Lodging', '', null),
+    item('Edinburgh Trams', '2026-11-15', 'Travel', '7.50'),
+    item('The Scran & Scallop', '2026-11-15', 'Meals', '31.00'),
+    item('Edinburgh Waverley parking', '2026-11-16', 'Travel', '23.40'),
+  );
+}
+
+/* ---- helpers ---- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const num = (s) => { const n = parseFloat(String(s).replace(/,/g, '')); return Number.isFinite(n) ? n : 0; };
+const size = (b) => b >= 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+const ico = (d, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const P = {
+  clip: '<path d="m20 11-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/>',
+  trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>',
+  alert: '<path d="M12 3 2 20h20zM12 10v4M12 17v.5"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+};
+const NAV = [
+  ['Expense reports', '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>', true],
+  ['Cards', '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/>'],
+  ['Approvals', '<circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16 9.5"/>'],
+  ['Reimbursements', '<path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z"/><circle cx="16" cy="14.5" r="1"/>'],
+  ['Policies', '<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/>'],
+  ['Settings', '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>'],
+];
+document.querySelectorAll('[data-nav]').forEach((n) => {
+  n.innerHTML = NAV.map(([l, d, cur]) => `<a href="#"${cur ? ' aria-current="page"' : ''}>${ico(d)}${l}</a>`).join('');
+});
+document.querySelectorAll('[data-logo]').forEach((l) => {
+  l.innerHTML = `<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><text x="14" y="19.5" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="16" fill="var(--on-accent)">O</text></svg>Outlay`;
+});
+
+/* trip days, derived from the two date fields */
+function days() {
+  const out = [];
+  if (!report.start || !report.end || report.end < report.start) return out;
+  const d = new Date(report.start + 'T00:00:00Z'), e = new Date(report.end + 'T00:00:00Z');
+  while (d <= e && out.length < 31) { out.push(d.toISOString().slice(0, 10)); d.setUTCDate(d.getUTCDate() + 1); }
+  return out;
+}
+
+/* ---- render ---- */
+const itemsEl = $('#items');
+function rowHTML(it) {
+  const k = it.id, ds = days();
+  const dateOpts = ds.length
+    ? ds.map((d) => `<option value="${d}"${d === it.date ? ' selected' : ''}>${dayFmt.format(new Date(d + 'T00:00:00Z'))}</option>`).join('')
+    : '<option value="">Set trip dates first</option>';
+  const catOpts = CATS.map((c) => `<option${c === it.cat ? ' selected' : ''}>${c}</option>`).join('');
+  const receipt = it.receipt
+    ? `<span class="chip">${ico(P.clip, 'sm')}<span class="fn" title="${esc(it.receipt.name)}">${esc(it.receipt.name)}</span><span class="sz">${size(it.receipt.size)}</span></span>
+       <button type="button" class="tbtn" data-act="unattach" id="rm-${k}" aria-label="Remove receipt from ${esc(it.merchant || 'expense')}">Remove</button>`
+    : `<label class="btn sm attach">${ico(P.clip, 'sm')}Attach receipt<input type="file" id="r-${k}" data-k="file" accept="image/*,application/pdf" aria-describedby="h-${k}"></label>
+       <span class="rhint" id="h-${k}"></span>`;
+  return `<li class="row" data-id="${k}">
+    <div class="f f-m"><label class="cl" for="m-${k}">Merchant</label><input id="m-${k}" data-k="merchant" value="${esc(it.merchant)}" autocomplete="off" aria-describedby="e-row-${k}"></div>
+    <div class="f"><label class="cl" for="d-${k}">Date</label><select id="d-${k}" data-k="date">${dateOpts}</select></div>
+    <div class="f"><label class="cl" for="c-${k}">Category</label><select id="c-${k}" data-k="cat">${catOpts}</select></div>
+    <div class="f f-amt"><label class="cl" for="a-${k}">Amount (£)</label><input id="a-${k}" data-k="amount" inputmode="decimal" autocomplete="off" value="${esc(it.amount)}" aria-describedby="e-row-${k}"></div>
+    <button type="button" class="ibtn rm" data-act="remove" id="x-${k}" aria-label="Remove expense ${esc(it.merchant || '')}">${ico(P.trash)}</button>
+    <p class="err row-err" id="e-row-${k}" hidden></p>
+    <div class="rline" id="rl-${k}">${receipt}</div>
+  </li>`;
+}
+function renderItems(focusId) {
+  itemsEl.innerHTML = report.items.length ? report.items.map(rowHTML).join('') : '<li class="empty-list">No expenses yet. Add the first one below.</li>';
+  update();
+  if (focusId) { const el = document.getElementById(focusId); if (el) el.focus(); }
+}
+
+let attempted = false;
+const errs = {};
+
+function needsReceipt(it) { return num(it.amount) > RECEIPT_OVER && !it.receipt; }
+function receiptMsg(it) { return `Attach a receipt for ${it.merchant || 'this expense'}. Claims over £${RECEIPT_OVER} need one.`; }
+
+function update() {
+  const ds = days();
+  const total = report.items.reduce((s, i) => s + num(i.amount), 0);
+  $('#total').textContent = gbp.format(total);
+  const n = report.items.length;
+  $('#count').textContent = n ? `${n} ${n === 1 ? 'expense' : 'expenses'} over ${ds.length} ${ds.length === 1 ? 'day' : 'days'}` : 'No expenses yet';
+  const by = CATS.map((c) => [c, report.items.filter((i) => i.cat === c).reduce((s, i) => s + num(i.amount), 0)]).filter(([, v]) => v > 0);
+  $('#cats').innerHTML = by.length ? by.map(([c, v]) => `<dt>${c}</dt><dd>${gbp.format(v)}</dd>`).join('') : '<dt>Nothing to total yet</dt><dd></dd>';
+  const meals = by.find(([c]) => c === 'Meals');
+  const mv = meals ? meals[1] : 0, cap = ds.length * MEALS_PER_DAY;
+  $('#meals').innerHTML = cap
+    ? `<div class="lbl"><span>Meals allowance</span><span>${gbp.format(mv)} of ${gbp.format(cap)}</span></div>
+       <div class="bar${mv > cap ? ' over' : ''}" aria-hidden="true"><i style="width:${Math.min(100, (mv / cap) * 100).toFixed(1)}%"></i></div>
+       <p class="note">${mv > cap ? `Over the allowance by ${gbp.format(mv - cap)}. Your approver will ask why.` : `£${MEALS_PER_DAY} a day for ${ds.length} ${ds.length === 1 ? 'day' : 'days'}. Client dinners are counted separately.`}</p>`
+    : `<div class="lbl"><span>Meals allowance</span></div><p class="note">Set your trip dates to see the £${MEALS_PER_DAY} a day allowance.</p>`;
+  const att = report.items.filter((i) => i.receipt).length, miss = report.items.filter(needsReceipt).length;
+  $('#rcpt').innerHTML = `<div class="lbl"><span>Receipts</span><span>${att} of ${n} attached</span></div>` +
+    (miss ? `<p class="rstat warn" style="margin-top:var(--s-2)">${ico(P.alert, 'sm')}<span>${miss} ${miss === 1 ? 'receipt is' : 'receipts are'} still needed before you can submit.</span></p>`
+      : n ? `<p class="rstat ok" style="margin-top:var(--s-2)">${ico(P.check, 'sm')}<span>Every claim over £${RECEIPT_OVER} has a receipt.</span></p>` : '');
+  report.items.forEach((it) => {
+    const h = document.getElementById('h-' + it.id);
+    if (!h) return;
+    const bad = errs['r-' + it.id];
+    h.className = 'rhint ' + (bad ? 'bad' : needsReceipt(it) ? 'need' : '');
+    h.innerHTML = bad ? ico(P.alert, 'sm') + esc(bad) : needsReceipt(it) ? ico(P.alert, 'sm') + `Receipt needed over £${RECEIPT_OVER}` : `Receipt optional under £${RECEIPT_OVER}`;
+  });
+}
+
+/* ---- validation ---- */
+function validate() {
+  const e = {};
+  if (!report.title.trim()) e['title-in'] = 'Enter a report title, for example "Manchester client visit".';
+  if (!report.client.trim()) e.client = 'Enter the client you visited.';
+  if (!report.purpose.trim()) e.purpose = 'Say why you travelled, so your approver can check the claim.';
+  if (!report.start || !report.end) e.start = 'Enter the first and last day of the trip.';
+  else if (report.end < report.start) e.start = 'The end date must be on or after the start date.';
+  if (!report.items.length) e.items = 'Add at least one expense.';
+  report.items.forEach((it) => {
+    if (!it.merchant.trim()) e['m-' + it.id] = 'Enter who you paid.';
+    if (!(num(it.amount) > 0)) e['a-' + it.id] = 'Enter an amount above £0.00.';
+    if (!it.date) e['d-' + it.id] = 'Choose the day you paid.';
+    if (needsReceipt(it)) e['r-' + it.id] = receiptMsg(it);
+  });
+  return e;
+}
+function showErrors(e, focusSummary) {
+  Object.keys(errs).forEach((k) => delete errs[k]);
+  Object.assign(errs, e);
+  document.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+  document.querySelectorAll('.err').forEach((p) => { p.hidden = true; });
+  Object.entries(e).forEach(([k, msg]) => {
+    const el = document.getElementById(k);
+    if (el && !k.startsWith('r-')) el.setAttribute('aria-invalid', 'true');
+    if (k === 'start' || k === 'end') { $('#end').setAttribute('aria-invalid', 'true'); $('#start').setAttribute('aria-invalid', 'true'); }
+    const p = document.getElementById('e-' + k);
+    if (p) { p.hidden = false; p.textContent = msg; }
+  });
+  report.items.forEach((it) => {
+    const msgs = ['m-', 'a-', 'd-'].map((p) => e[p + it.id]).filter(Boolean);
+    const p = document.getElementById('e-row-' + it.id);
+    if (p) { p.hidden = !msgs.length; p.textContent = msgs.join(' '); }
+  });
+  const list = Object.entries(e).map(([k, msg]) => [k.startsWith('r-') ? k : k === 'end' ? 'start' : k, msg]);
+  const s = $('#summary');
+  if (list.length) {
+    s.hidden = false;
+    s.innerHTML = `<h2>${ico(P.alert, 'sm')}There is a problem</h2><ul>${list.map(([k, m]) => `<li><a href="#${k}" data-jump="${k}">${esc(m)}</a></li>`).join('')}</ul>`;
+    if (focusSummary) { s.focus(); s.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  } else { s.hidden = true; s.innerHTML = ''; }
+  update();
+}
+const recheck = () => { if (attempted) showErrors(validate(), false); else update(); };
+
+/* ---- bind static fields ---- */
+const bind = { 'title-in': 'title', client: 'client', purpose: 'purpose', start: 'start', end: 'end', cc: 'cc' };
+Object.entries(bind).forEach(([id, key]) => {
+  const el = document.getElementById(id);
+  el.value = report[key];
+  el.addEventListener('input', () => {
+    report[key] = el.value;
+    if (key === 'start' || key === 'end') {
+      const keep = report.items.map((i) => i.date);
+      const ds = days();
+      report.items.forEach((i) => { if (!ds.includes(i.date)) i.date = ds[0] || ''; });
+      const f = document.activeElement && document.activeElement.id;
+      renderItems(f);
+    }
+    recheck();
+  });
+});
+
+/* ---- list events ---- */
+const byId = (id) => report.items.find((i) => i.id === +id);
+itemsEl.addEventListener('input', (e) => {
+  const k = e.target.dataset.k; if (!k || k === 'file') return;
+  const it = byId(e.target.closest('.row').dataset.id);
+  it[k] = e.target.value;
+  if (k === 'merchant') { const r = e.target.closest('.row'); r.querySelector('.rm').setAttribute('aria-label', 'Remove expense ' + it.merchant); }
+  recheck();
+});
+itemsEl.addEventListener('change', (e) => {
+  const t = e.target, row = t.closest('.row'); if (!row) return;
+  const it = byId(row.dataset.id);
+  if (t.dataset.k === 'amount') { const n = num(t.value); it.amount = t.value.trim() ? n.toFixed(2) : ''; t.value = it.amount; }
+  if (t.dataset.k === 'file' && t.files[0]) {
+    it.receipt = { name: t.files[0].name, size: t.files[0].size };
+    renderItems('rm-' + it.id); recheck();
+  }
+  recheck();
+});
+let removed = null, toastTimer;
+itemsEl.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const it = byId(b.closest('.row').dataset.id);
+  if (b.dataset.act === 'unattach') { it.receipt = null; renderItems('r-' + it.id); recheck(); }
+  if (b.dataset.act === 'remove') {
+    const idx = report.items.indexOf(it);
+    removed = { it, idx };
+    report.items.splice(idx, 1);
+    renderItems('add'); recheck();
+    toast(`Removed ${it.merchant || 'the expense'}.`, 'Undo', () => {
+      report.items.splice(removed.idx, 0, removed.it); removed = null; renderItems(); recheck(); hideToast();
+    });
+  }
+});
+$('#add').addEventListener('click', () => {
+  const last = report.items[report.items.length - 1];
+  const ds = days();
+  const it = item('', (last && last.date) || ds[0] || '', 'Meals', '');
+  report.items.push(it);
+  renderItems('m-' + it.id); recheck();
+});
+
+/* ---- toast ---- */
+function toast(msg, action, fn) {
+  const t = $('#toast');
+  t.innerHTML = `<span>${esc(msg)}</span>` + (action ? `<button type="button" class="tbtn">${action}</button>` : '');
+  t.hidden = false;
+  if (action) t.querySelector('button').onclick = fn;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, 7000);
+}
+function hideToast() { $('#toast').hidden = true; }
+
+/* ---- actions ---- */
+$('#summary').addEventListener('click', (e) => {
+  const a = e.target.closest('[data-jump]'); if (!a) return;
+  e.preventDefault();
+  const el = document.getElementById(a.dataset.jump);
+  const target = a.dataset.jump.startsWith('r-') ? (el.closest('label') || el) : el;
+  (target || el).scrollIntoView({ block: 'center' });
+  el.focus({ preventScroll: true });
+});
+$('#save-draft').addEventListener('click', (e) => {
+  const b = e.currentTarget; b.textContent = 'Saving…'; b.setAttribute('aria-busy', 'true');
+  setTimeout(() => { b.textContent = 'Save draft'; b.removeAttribute('aria-busy'); toast('Draft saved. You can finish it later from Expense reports.'); }, 600);
+});
+$('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  attempted = true;
+  const v = validate();
+  showErrors(v, true);
+  if (Object.keys(v).length) return;
+  const b = $('#submit');
+  b.textContent = 'Submitting…'; b.setAttribute('aria-busy', 'true');
+  b.style.pointerEvents = 'none';
+  $('#form-body').inert = true;
+  setTimeout(finish, 1400);
+});
+function finish() {
+  const total = report.items.reduce((s, i) => s + num(i.amount), 0);
+  $('#form').hidden = true; $('#save-draft').hidden = true;
+  $('#title').textContent = 'Report submitted';
+  $('#subtitle').textContent = 'Priya Raman has it now. We email you when she decides.';
+  const d = $('#done'); d.hidden = false;
+  d.innerHTML = `<dl>
+    <dt>Report</dt><dd>${esc(report.title)}</dd>
+    <dt>Reference</dt><dd>EXP-2026-1187</dd>
+    <dt>Total</dt><dd>${gbp.format(total)} across ${report.items.length} expenses</dd>
+    <dt>Next payment run</dt><dd>Friday 4 December, if approved by Wednesday</dd></dl>
+    <div class="btns"><a class="btn primary" href="#">View report</a><a class="cancel" href="#">Start another report</a></div>`;
+  $('#title').setAttribute('tabindex', '-1'); $('#title').focus();
+}
+
+renderItems();
+if (mode === 'error') {
+  report.purpose = ''; $('#purpose').value = '';
+  attempted = true; showErrors(validate(), false);
+}
+</script>
+</body>
+</html>

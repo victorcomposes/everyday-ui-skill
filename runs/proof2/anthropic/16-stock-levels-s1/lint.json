@@ -1,0 +1,119 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 15
+      },
+      "label-content-name-mismatch": {
+        "impact": "serious",
+        "nodes": 16
+      },
+      "region": {
+        "impact": "moderate",
+        "nodes": 2
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 2,
+        "nodes": 31
+      },
+      "moderate": {
+        "rules": 1,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 15
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "bahnschrift"
+  ],
+  "textColors": 7,
+  "minFontPx": 13,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(255, 255, 255)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(29, 90, 72)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 23,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Stock",
+        "w": 64,
+        "h": 39
+      },
+      {
+        "tag": "button",
+        "text": "All\n16",
+        "w": 87,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Out\n1",
+        "w": 87,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "Low\n7",
+        "w": 87,
+        "h": 37
+      },
+      {
+        "tag": "button",
+        "text": "OK\n8",
+        "w": 87,
+        "h": 37
+      },
+      {
+        "tag": "input",
+        "text": "Search ingredients",
+        "w": 358,
+        "h": 41
+      },
+      {
+        "tag": "select",
+        "text": "All storage\nWalk-in\nDry store\n",
+        "w": 358,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "text": "In order",
+        "w": 118,
+        "h": 41
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

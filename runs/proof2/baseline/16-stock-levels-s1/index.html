@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock levels - Larderly</title>
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#f6f4ef; --surface:#fff; --surface-2:#faf8f4; --line:#e4dfd5; --text:#1f2a24; --muted:#5f6b63;
+  --brand:#2f5d46; --brand-ink:#fff; --brand-soft:#e3eee7;
+  --out:#b3261e; --out-bg:#fbe7e4; --low:#8a5a00; --low-bg:#fcefd0; --ok:#2f6b46; --ok-bg:#e1f0e6;
+  --track:#e7e2d8; --focus:#1a5fd0; --shadow:0 1px 2px rgba(31,42,36,.06),0 4px 16px rgba(31,42,36,.05);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141a16; --surface:#1c241f; --surface-2:#212b25; --line:#2f3b34; --text:#e8eee9; --muted:#9aa89f;
+  --brand:#7cc29b; --brand-ink:#0f1f16; --brand-soft:#23352a;
+  --out:#ff9a90; --out-bg:#3d1f1c; --low:#f2c466; --low-bg:#3a2e12; --ok:#8fd4a9; --ok-bg:#1f3427;
+  --track:#2e3a33; --focus:#8ab4ff; --shadow:none;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;left:-9999px}
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1360px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand svg{color:var(--brand)}
+nav{display:flex;gap:4px;flex:1}
+nav a{padding:8px 12px;border-radius:8px;color:var(--muted);text-decoration:none;font-weight:500}
+nav a[aria-current]{background:var(--brand-soft);color:var(--text)}
+nav a:hover{color:var(--text)}
+.who{color:var(--muted);font-size:13px}
+main{max-width:1360px;margin:0 auto;padding:28px 24px 96px}
+h1{margin:0;font-size:26px;letter-spacing:-.02em;line-height:1.2}
+.sub{margin:4px 0 0;color:var(--muted)}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-align:left;box-shadow:var(--shadow);cursor:pointer;width:100%}
+.stat[aria-pressed=true]{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand)}
+.stat .n{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .l{color:var(--muted);font-size:13px;display:flex;align-items:center;gap:6px;margin-top:2px}
+.stat.out .n{color:var(--out)} .stat.low .n{color:var(--low)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.tools{display:flex;flex-wrap:wrap;gap:10px;padding:14px;border-bottom:1px solid var(--line);align-items:center}
+.search{position:relative;flex:1 1 220px}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted)}
+input[type=search],select{height:38px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);padding:0 10px}
+input[type=search]{width:100%;padding-left:34px}
+.btn{height:38px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{height:32px;padding:0 12px;font-size:14px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:10px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.name{font-weight:600}
+.meta{color:var(--muted);font-size:13px}
+.num{font-variant-numeric:tabular-nums}
+.level{min-width:150px}
+.bar{position:relative;height:8px;border-radius:99px;background:var(--track);margin-top:6px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--ok)}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--text);opacity:.55;border-radius:2px}
+.low .bar i{background:var(--low)} .out .bar i{background:var(--out)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:99px;font-size:13px;font-weight:600;white-space:nowrap}
+.badge.out{background:var(--out-bg);color:var(--out)} .badge.low{background:var(--low-bg);color:var(--low)} .badge.ok{background:var(--ok-bg);color:var(--ok)}
+.badge.ord{background:var(--brand-soft);color:var(--text)}
+.empty{padding:48px 16px;text-align:center;color:var(--muted)}
+.basket{position:sticky;top:16px}
+.basket h2{margin:0;font-size:16px;padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.basket .body{padding:6px 16px 14px}
+.sup{margin-top:12px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;display:flex;justify-content:space-between}
+.line{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.line .t{flex:1;min-width:0}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.step button{width:28px;height:28px;border:0;background:var(--surface-2);cursor:pointer;font-size:16px}
+.step button:hover{background:var(--brand-soft)}
+.step span{min-width:26px;text-align:center;font-variant-numeric:tabular-nums}
+.x{border:0;background:none;color:var(--muted);cursor:pointer;width:28px;height:28px;border-radius:6px;font-size:18px}
+.x:hover{color:var(--out)}
+.foot{padding:14px 16px;border-top:1px solid var(--line);display:grid;gap:8px}
+.done{background:var(--ok-bg);color:var(--ok);border-radius:8px;padding:10px 12px;margin:12px 0 0;font-weight:500}
+.mbar{display:none}
+@media (max-width:1100px){.layout{grid-template-columns:1fr}.basket{position:static}}
+@media (max-width:720px){
+  .top-in{padding:0 16px;gap:12px} nav a{padding:8px} .who{display:none}
+  main{padding:20px 16px 110px}
+  .summary{grid-template-columns:1fr 1fr}
+  thead{display:none}
+  table,tbody,tr,td{display:block}
+  tr{padding:12px 14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:6px 12px}
+  tr:last-child{border-bottom:0}
+  td{padding:0;border:0}
+  td.c-item{grid-column:1}
+  td.c-status{grid-column:2;grid-row:1;text-align:right}
+  td.c-level{grid-column:1/-1}
+  td.c-sup{grid-column:1}
+  td.c-act{grid-column:2;grid-row:3;text-align:right}
+  td.c-left{display:none}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px;align-items:center;justify-content:space-between;gap:12px;z-index:5}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M3 5h18v4H3z"/><path d="M10 13h4"/></svg>Larderly</div>
+  <nav aria-label="Main"><a href="#" aria-current="page">Stock</a><a href="#">Orders</a><a href="#">Suppliers</a><a href="#">Recipes</a></nav>
+  <div class="who">Osteria Fiore &middot; Maya Okafor</div>
+</div></header>
+
+<main>
+  <h1>Stock levels</h1>
+  <p class="sub">Counted today at 6:42 am by Priya. Ingredients at or below their reorder point are flagged.</p>
+
+  <div class="summary" id="summary" role="group" aria-label="Filter by status"></div>
+
+  <div class="layout">
+    <section class="card" aria-label="Ingredients">
+      <div class="tools">
+        <label class="search"><span class="sr">Search ingredients</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="q" placeholder="Search ingredients or suppliers"></label>
+        <label><span class="sr">Category</span><select id="cat"></select></label>
+        <label><span class="sr">Sort</span><select id="sort"><option value="urgent">Most urgent first</option><option value="name">Name A-Z</option><option value="cat">Category</option></select></label>
+        <button class="btn" id="addAll" type="button"></button>
+      </div>
+      <div id="tbl"></div>
+    </section>
+
+    <aside class="card basket" id="basket" aria-label="Reorder list"></aside>
+  </div>
+</main>
+<div class="mbar"><div id="mtxt"></div><a class="btn primary" href="#basket" style="text-decoration:none">Review order</a></div>
+
+<script>
+const SUP={
+  "Hartley Dairy":"Wed",
+  "Costa Fine Foods":"Thu",
+  "Mill & Grain":"Fri",
+  "Dunmore Butchers":"Tomorrow",
+  "Harbour Fish Co":"Tomorrow",
+  "Greenfield Produce":"Tomorrow",
+  "Fieldstone Drinks":"Thu"
+};
+// [name, category, unit, onHand, par, reorderPoint, usagePerDay, supplier, packLabel, packSize]
+const RAW=[
+["Extra virgin olive oil","Dry goods","L",4,20,8,2.5,"Costa Fine Foods","5 L tin",5],
+["Plain flour 00","Dry goods","kg",12,50,20,6,"Mill & Grain","25 kg sack",25],
+["Unsalted butter","Dairy","kg",0,10,4,1.8,"Hartley Dairy","5 kg case",5],
+["Whole milk","Dairy","L",6,24,10,5,"Hartley Dairy","12 L crate",12],
+["Free-range eggs","Dairy","each",48,180,60,40,"Hartley Dairy","30-egg tray",30],
+["San Marzano tomatoes","Dry goods","tin",14,48,18,6,"Costa Fine Foods","6-tin case",6],
+["Chicken thighs","Meat","kg",3.5,18,6,4,"Dunmore Butchers","5 kg tray",5],
+["Beef chuck","Meat","kg",11,15,6,2.5,"Dunmore Butchers","5 kg vac pack",5],
+["Salmon fillet","Fish","kg",0,8,3,2,"Harbour Fish Co","2 kg box",2],
+["Lemons","Produce","each",22,80,30,14,"Greenfield Produce","box of 40",40],
+["Flat-leaf parsley","Produce","bunch",3,12,4,3,"Greenfield Produce","6 bunches",6],
+["Yellow onions","Produce","kg",16,25,10,3,"Greenfield Produce","10 kg sack",10],
+["Garlic","Produce","kg",2.2,4,1,0.4,"Greenfield Produce","1 kg bag",1],
+["Arborio rice","Dry goods","kg",18,20,8,1.5,"Mill & Grain","10 kg sack",10],
+["Parmesan, 24 month","Dairy","kg",2.8,6,2,0.5,"Costa Fine Foods","2 kg wedge",2],
+["Sea salt flakes","Dry goods","kg",1.4,5,1.5,0.2,"Mill & Grain","2.5 kg tub",2.5],
+["Sparkling water","Drinks","bottle",60,120,48,30,"Fieldstone Drinks","24-bottle case",24],
+["House red wine","Drinks","bottle",9,36,12,5,"Fieldstone Drinks","12-bottle case",12],
+["Fresh basil","Produce","bunch",5,8,3,2,"Greenfield Produce","6 bunches",6],
+["Heavy cream","Dairy","L",5,12,4,1.5,"Hartley Dairy","2 L carton",2]
+];
+const ITEMS=RAW.map((r,i)=>{const o={id:i,name:r[0],cat:r[1],unit:r[2],have:r[3],par:r[4],rp:r[5],use:r[6],sup:r[7],pack:r[8],size:r[9]};
+  o.status=o.have===0?"out":o.have<=o.rp?"low":"ok";
+  o.days=o.have/o.use;
+  o.suggest=Math.max(1,Math.ceil((o.par-o.have)/o.size));
+  return o;});
+const state={filter:"all",q:"",cat:"all",sort:"urgent",basket:{},ordered:{},placed:null};
+const $=s=>document.querySelector(s);
+const fmt=n=>Number.isInteger(n)?String(n):n.toFixed(1).replace(/\.0$/,"");
+const plural=(n,w)=>n+" "+w+(n===1?"":"s");
+const LABEL={out:"Out of stock",low:"Running low",ok:"Healthy"};
+const ICON={
+  out:'<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.5 3.5l5 5" stroke="currentColor" stroke-width="2"/></svg>',
+  low:'<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l5.5 10h-11z" fill="currentColor"/></svg>',
+  ok:'<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5l2.5 2.5L10 3" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
+};
+const badge=s=>`<span class="badge ${s}">${ICON[s]}${LABEL[s]}</span>`;
+const left=i=>i.have===0?"Out now":i.days<1?"Under a day":"About "+plural(Math.round(i.days),"day");
+
+function visible(){
+  const q=state.q.trim().toLowerCase();
+  const l=ITEMS.filter(i=>(state.filter==="all"||i.status===state.filter)
+    &&(state.cat==="all"||i.cat===state.cat)&&(!q||(i.name+" "+i.sup).toLowerCase().includes(q)));
+  const s=state.sort;
+  l.sort((a,b)=>s==="name"?a.name.localeCompare(b.name):s==="cat"?a.cat.localeCompare(b.cat)||a.name.localeCompare(b.name):a.days-b.days);
+  return l;
+}
+function renderSummary(){
+  const c=k=>ITEMS.filter(i=>i.status===k).length;
+  const tiles=[["all","Ingredients tracked",ITEMS.length,""],["out","Out of stock",c("out"),"out"],["low","Running low",c("low"),"low"],["ok","Healthy",c("ok"),""]];
+  $("#summary").innerHTML=tiles.map(t=>`<button type="button" class="stat ${t[3]}" data-f="${t[0]}" aria-pressed="${state.filter===t[0]}"><div class="n">${t[2]}</div><div class="l">${t[3]?ICON[t[0]]:""}${t[1]}</div></button>`).join("");
+}
+function renderTable(){
+  const l=visible();
+  const need=ITEMS.filter(i=>i.status!=="ok"&&!state.ordered[i.id]&&!state.basket[i.id]).length;
+  const b=$("#addAll");b.textContent=need?`Add ${need} low and out to order`:"All low items are in an order";b.disabled=!need;
+  if(!l.length){$("#tbl").innerHTML='<div class="empty"><strong>No ingredients match.</strong><br>Try another search or clear the filters.</div>';return;}
+  $("#tbl").innerHTML=`<table><thead><tr><th>Ingredient</th><th>Status</th><th>On hand</th><th>Runs out</th><th>Supplier</th><th><span class="sr">Action</span></th></tr></thead><tbody>`+
+  l.map(i=>{
+    const pct=Math.min(100,i.have/i.par*100),rp=Math.min(100,i.rp/i.par*100);
+    const inB=!!state.basket[i.id],ord=state.ordered[i.id];
+    const act=ord?`<span class="badge ord">Ordered, arrives ${ord}</span>`
+      :inB?`<button class="btn sm" data-rm="${i.id}" type="button" aria-label="Remove ${i.name} from order">Added &#10003;</button>`
+      :`<button class="btn sm ${i.status!=="ok"?"primary":""}" data-add="${i.id}" type="button" aria-label="Reorder ${i.name}">Reorder</button>`;
+    return `<tr class="${i.status}"><td class="c-item"><div class="name">${i.name}</div><div class="meta">${i.cat}</div></td>
+    <td class="c-status">${badge(i.status)}</td>
+    <td class="c-level level"><div class="num"><strong>${fmt(i.have)}</strong> <span class="meta">of ${fmt(i.par)} ${i.unit} par</span></div>
+      <div class="bar" role="img" aria-label="${fmt(i.have)} of ${fmt(i.par)} ${i.unit}, reorder point ${fmt(i.rp)}"><i style="width:${pct}%"></i><b style="left:${rp}%"></b></div></td>
+    <td class="c-left num">${left(i)}</td>
+    <td class="c-sup"><div>${i.sup}</div><div class="meta">${i.pack}</div></td>
+    <td class="c-act">${act}</td></tr>`;}).join("")+"</tbody></table>";
+}
+function renderBasket(){
+  const ids=Object.keys(state.basket).map(Number);
+  const by={};ids.forEach(id=>{(by[ITEMS[id].sup]??=[]).push(ITEMS[id]);});
+  const sups=Object.keys(by).sort();
+  const total=ids.length;
+  let h=`<h2>Order list <span class="badge ord">${total}</span></h2><div class="body">`;
+  if(!total&&!state.placed)h+=`<p class="meta" style="margin:14px 0">Nothing yet. Choose Reorder on an ingredient, or add everything that is low.</p>`;
+  sups.forEach(s=>{
+    h+=`<div class="sup"><span>${s}</span><span>Arrives ${SUP[s]}</span></div>`;
+    by[s].forEach(i=>{const n=state.basket[i.id];
+      h+=`<div class="line"><div class="t"><div class="name" style="font-size:14px">${i.name}</div><div class="meta">${fmt(n*i.size)} ${i.unit} &middot; ${i.pack}</div></div>
+      <div class="step" role="group" aria-label="Quantity of ${i.name}"><button type="button" data-dec="${i.id}" aria-label="Fewer">&minus;</button><span aria-live="polite">${n}</span><button type="button" data-inc="${i.id}" aria-label="More">+</button></div>
+      <button class="x" type="button" data-rm="${i.id}" aria-label="Remove ${i.name}">&times;</button></div>`;});
+  });
+  if(state.placed)h+=`<div class="done" role="status">${state.placed}</div>`;
+  h+=`</div><div class="foot"><button class="btn primary" type="button" id="place" ${total?"":"disabled"} style="justify-content:center">Place ${total?plural(sups.length,"order"):"order"}</button><div class="meta">${total?`Sent to ${sups.length>1?sups.length+" suppliers":sups[0]} by email. Quantities are in packs.`:"Suggested quantities refill each item to its par level."}</div></div>`;
+  $("#basket").innerHTML=h;
+  $("#mtxt").innerHTML=total?`<strong>${plural(total,"item")}</strong><div class="meta">${plural(sups.length,"supplier")}</div>`:`<span class="meta">Order list is empty</span>`;
+}
+function render(){renderSummary();renderTable();renderBasket();}
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button");if(!t)return;
+  const d=t.dataset;
+  if(d.f)state.filter=state.filter===d.f?"all":d.f;
+  else if(d.add!==undefined){state.basket[d.add]=ITEMS[d.add].suggest;state.placed=null;}
+  else if(d.rm!==undefined)delete state.basket[d.rm];
+  else if(d.inc!==undefined)state.basket[d.inc]++;
+  else if(d.dec!==undefined)state.basket[d.dec]=Math.max(1,state.basket[d.dec]-1);
+  else if(t.id==="addAll"){ITEMS.filter(i=>i.status!=="ok"&&!state.ordered[i.id]).forEach(i=>state.basket[i.id]??=i.suggest);state.placed=null;}
+  else if(t.id==="place"){
+    const ids=Object.keys(state.basket),sups=new Set(ids.map(id=>ITEMS[id].sup));
+    ids.forEach(id=>state.ordered[id]=SUP[ITEMS[id].sup]);
+    state.basket={};state.placed=`${plural(sups.size,"order")} sent for ${plural(ids.length,"item")}.`;
+  } else return;
+  render();
+});
+$("#q").addEventListener("input",e=>{state.q=e.target.value;renderTable();});
+$("#cat").addEventListener("change",e=>{state.cat=e.target.value;renderTable();});
+$("#sort").addEventListener("change",e=>{state.sort=e.target.value;renderTable();});
+$("#cat").innerHTML='<option value="all">All categories</option>'+[...new Set(ITEMS.map(i=>i.cat))].sort().map(c=>`<option>${c}</option>`).join("");
+render();
+</script>
+</body>
+</html>

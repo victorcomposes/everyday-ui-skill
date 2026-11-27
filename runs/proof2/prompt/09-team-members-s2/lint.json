@@ -1,0 +1,107 @@
+{
+  "axe": {
+    "rules": {
+      "label-content-name-mismatch": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "segoe ui variable text"
+  ],
+  "textColors": 23,
+  "minFontPx": 11.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(0, 0, 238)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 38,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Skip to main content",
+        "w": 163,
+        "h": 41
+      },
+      {
+        "tag": "a",
+        "text": "General",
+        "w": 97,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Team members",
+        "w": 148,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Billing",
+        "w": 87,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Integrations",
+        "w": 125,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Security",
+        "w": 99,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Audit log",
+        "w": 107,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 324,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

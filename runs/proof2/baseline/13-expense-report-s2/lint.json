@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 6,
+  "minFontPx": 11,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(91, 101, 115)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(47, 75, 214)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 86,
+    "examples": [
+      {
+        "tag": "input",
+        "text": "Haldane Freight onsite, Chicag",
+        "w": 324,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "Haldane Freight Inc.",
+        "w": 324,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "SAL-204 Enterprise Sales\nSAL-2",
+        "w": 324,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "2026-11-17",
+        "w": 324,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "2026-11-19",
+        "w": 324,
+        "h": 38
+      },
+      {
+        "tag": "input",
+        "text": "",
+        "w": 1,
+        "h": 1
+      },
+      {
+        "tag": "input",
+        "text": "2026-11-17",
+        "w": 136,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "Flights\nLodging\nMeals\nGround t",
+        "w": 136,
+        "h": 38
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

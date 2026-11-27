@@ -1,0 +1,97 @@
+{
+  "axe": {
+    "rules": {},
+    "byImpact": {},
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "system-ui"
+  ],
+  "textColors": 5,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(20, 24, 31)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(29, 78, 216)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 63,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Outlay",
+        "w": 92,
+        "h": 28
+      },
+      {
+        "tag": "input",
+        "text": "Brightwell Foods renewal visit",
+        "w": 324,
+        "h": 43
+      },
+      {
+        "tag": "select",
+        "text": "Brightwell Foods - 2027 renewa",
+        "w": 324,
+        "h": 43
+      },
+      {
+        "tag": "select",
+        "text": "4120 - Enterprise Sales\n4130 -",
+        "w": 324,
+        "h": 43
+      },
+      {
+        "tag": "select",
+        "text": "Daniel Reyes - Regional Sales ",
+        "w": 324,
+        "h": 43
+      },
+      {
+        "tag": "button",
+        "text": "Remove expense 1",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "select",
+        "text": "Airfare\nLodging\nMeals\nGround t",
+        "w": 294,
+        "h": 43
+      },
+      {
+        "tag": "input",
+        "text": "United Airlines",
+        "w": 294,
+        "h": 43
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

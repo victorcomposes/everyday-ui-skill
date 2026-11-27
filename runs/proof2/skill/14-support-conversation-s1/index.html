@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harborline - Order TW-20418 has not arrived</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff; --bg-subtle: #f6f7f9; --surface: #ffffff;
+  --border: #e2e4e9; --border-strong: #838995;
+  --text: #16181d; --text-muted: #5b616e;
+  /* Fern kit, Ocean variant */
+  --accent: #0e6a87; --accent-hover: #0a546b; --accent-subtle: #e6f4f3; --on-accent: #ffffff;
+  --success: #157a46; --success-subtle: #ecf8f1;
+  --warning: #9a5b00; --warning-subtle: #fdf5e6;
+  --danger: #c4302b; --danger-subtle: #fdf0ef;
+  --focus: var(--accent);
+  --placeholder: #6b717d;
+  --frame: #f1f8f7;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font);
+  --text-xs: 12px;  --lh-xs: 16px;
+  --text-sm: 14px;  --lh-sm: 20px;
+  --text-md: 16px;  --lh-md: 24px;
+  --text-xl: 20px;  --lh-xl: 28px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px;
+  --rhythm-title: 12px; --rhythm-tight: 8px; --rhythm-content: 24px; --rhythm-group: 40px;
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 999px;
+  --control-h: 36px; --control-h-sm: 32px;
+  --w-sidebar: 248px; --w-rail: 360px; --w-content: 1200px;
+  --h-topbar: 56px;
+  --shadow-pop: 0 4px 16px rgb(16 24 40 / 0.12), 0 1px 3px rgb(16 24 40 / 0.08);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --t-fast: 120ms; --t-base: 160ms;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111318; --bg-subtle: #171a20; --surface: #1b1e25;
+    --border: #2b2f38; --border-strong: #6f7685;
+    --text: #e9ebef; --text-muted: #a0a6b2;
+    --accent: #5ec2de; --accent-hover: #8ad3e8; --accent-subtle: #0f2e2c; --on-accent: #0b1020;
+    --success: #4cc38a; --success-subtle: #13261d;
+    --warning: #e6a23c; --warning-subtle: #2a2112;
+    --danger: #ff7a72; --danger-subtle: #2d1715;
+    --placeholder: #8b919d;
+    --frame: #111d1c;
+    --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
+  }
+}
+@media (max-width: 640px), (pointer: coarse) { :root { --control-h: 44px; --control-h-sm: 44px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text);
+  font: 400 var(--text-sm)/var(--lh-sm) var(--font); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+a { color: inherit; text-decoration: none; }
+.link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+::placeholder { color: var(--placeholder); opacity: 1; }
+h1 { font: 700 30px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h2 { font: 600 var(--text-xl)/1.3 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+p { margin: 0; }
+ol, ul, dl, dd { margin: 0; padding: 0; list-style: none; }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; gap: 6px; padding: 2px 8px;
+  border-radius: var(--r-sm); font-size: var(--text-xs); line-height: var(--lh-xs); font-weight: 500; }
+.b-open { background: var(--accent-subtle); color: var(--accent); }
+.b-pending { background: var(--warning-subtle); color: var(--warning); }
+.b-solved { background: var(--success-subtle); color: var(--success); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; left: var(--s-2); top: var(--s-2); z-index: 60; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  background: var(--surface); border-radius: var(--r-md); transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+.muted { color: var(--text-muted); }
+.num { font-variant-numeric: tabular-nums; }
+svg.i { width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); height: var(--control-h); padding: 0 var(--s-4);
+  border-radius: var(--r-md); border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; white-space: nowrap; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
+.btn:hover { background: var(--bg-subtle); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn-primary[aria-busy="true"] { cursor: progress; background: var(--accent-hover); }
+.btn-quiet { border-color: transparent; background: transparent; color: var(--accent); font-weight: 500; padding: 0 var(--s-2); }
+.btn-quiet:hover { background: var(--accent-subtle); }
+.btn-sm { height: var(--control-h-sm); padding: 0 var(--s-3); font-weight: 500; }
+
+/* shell */
+.shell { display: grid; grid-template-columns: var(--w-sidebar) minmax(0, 1fr); min-height: 100dvh; }
+.side { background: var(--frame); border-right: 1px solid var(--border); }
+.side-in { position: sticky; top: 0; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: var(--s-5) var(--s-3) var(--s-4); }
+.brand { display: flex; align-items: center; gap: var(--s-3); padding: 0 var(--s-2); height: 36px; font: 700 var(--text-md)/1 var(--font-display); letter-spacing: -0.01em; }
+.nav-group { margin-top: var(--s-6); }
+.nav-group h2 { font: 500 var(--text-xs)/var(--lh-xs) var(--font); letter-spacing: 0; color: var(--text-muted); padding: 0 var(--s-2); margin-bottom: var(--s-1); }
+.nav-link { display: flex; align-items: center; gap: var(--s-2); min-height: 34px; padding: 0 var(--s-2); border-radius: var(--r-md); }
+.nav-link:hover { background: color-mix(in srgb, var(--accent-subtle) 60%, transparent); }
+.nav-link .i { color: var(--text-muted); }
+.nav-link .count { margin-left: auto; color: var(--text-muted); font-size: var(--text-xs); }
+.nav-link[aria-current="page"] { background: var(--accent-subtle); font-weight: 500; }
+.nav-link[aria-current="page"] .i { color: var(--accent); }
+.account { margin-top: auto; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-2) 0; border-top: 1px solid var(--border); }
+.account b { display: block; font-weight: 600; line-height: 18px; }
+.account span.shop { display: block; font-size: var(--text-xs); line-height: 16px; color: var(--text-muted); }
+.avatar { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-full); background: var(--accent-subtle); color: var(--accent);
+  font-size: var(--text-xs); font-weight: 600; flex-shrink: 0; letter-spacing: 0.02em; }
+.account .avatar { background: var(--surface); border: 1px solid var(--border); }
+.topbar { display: none; }
+.scrim { display: none; }
+
+.main-col { min-width: 0; }
+main { padding: var(--s-6) var(--s-8) var(--s-8); }
+.page { max-width: var(--w-content); display: grid; grid-template-columns: minmax(0, 1fr) var(--w-rail); column-gap: var(--s-8); align-items: start; }
+.head { grid-column: 1 / -1; margin-bottom: var(--rhythm-content); }
+.back { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 32px; color: var(--text-muted); margin: 0 0 var(--s-1) calc(var(--s-1) * -1); padding: 0 var(--s-1); border-radius: var(--r-sm); }
+.back:hover { color: var(--text); }
+.head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-6); }
+.title-line { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3); }
+.title-line .badge { margin-top: 4px; }
+.sub { margin-top: var(--rhythm-title); font-size: var(--text-md); line-height: var(--lh-md); color: var(--text-muted); max-width: 65ch; }
+.sub b { font-weight: 600; color: var(--text); }
+.actions { display: flex; gap: var(--s-2); flex-shrink: 0; position: relative; }
+.menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; min-width: 260px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-pop); padding: var(--s-1); }
+.menu button { display: flex; width: 100%; align-items: center; min-height: 36px; padding: 0 var(--s-3); border: 0; background: transparent; border-radius: var(--r-sm); text-align: left; cursor: pointer; }
+.menu button:hover { background: var(--bg-subtle); }
+.order-strip { display: none; }
+
+/* thread */
+.thread { min-width: 0; }
+.msgs { display: flex; flex-direction: column; gap: var(--s-4); }
+.earlier summary { display: flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-4); border: 1px solid var(--border); border-radius: var(--r-lg); color: var(--text-muted); cursor: pointer; list-style: none; }
+.earlier summary::-webkit-details-marker { display: none; }
+.earlier summary:hover { background: var(--bg-subtle); }
+.earlier summary .i { transition: transform var(--t-fast) var(--ease); }
+.earlier[open] summary .i { transform: rotate(90deg); }
+.earlier .when-open, .earlier[open] .when-closed { display: none; }
+.earlier[open] .when-open { display: inline; }
+.earlier .msgs-in { display: flex; flex-direction: column; gap: var(--s-4); margin-top: var(--s-4); }
+.msg { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: var(--s-3); }
+.panel { min-width: 0; border: 1px solid var(--border); background: var(--surface); border-radius: var(--r-lg); padding: var(--s-3) var(--s-4) var(--s-4); }
+.msg--agent .panel { background: var(--accent-subtle); border-color: transparent; }
+.msg--note .panel { background: var(--warning-subtle); border-color: color-mix(in srgb, var(--warning) 30%, transparent); }
+.msg-head { display: flex; align-items: baseline; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-2); }
+.msg-head b { font-weight: 600; }
+.msg-head .role { color: var(--text-muted); font-size: var(--text-xs); }
+.msg-head time { margin-left: auto; color: var(--text-muted); font-size: var(--text-xs); white-space: nowrap; }
+.note-tag { display: inline-flex; align-items: center; gap: var(--s-1); color: var(--warning); font-size: var(--text-xs); font-weight: 500; margin-bottom: var(--s-2); }
+.msg-text { font-size: 15px; line-height: 22px; max-width: 65ch; overflow-wrap: anywhere; }
+.msg-text p + p { margin-top: var(--s-3); }
+.msg--note .avatar { background: var(--warning-subtle); color: var(--warning); }
+
+/* composer */
+.composer { margin-top: var(--rhythm-content); }
+.c-box { border: 1px solid var(--border-strong); border-radius: var(--r-lg); background: var(--surface); }
+.c-box:focus-within { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 0; }
+.c-top { display: flex; align-items: center; gap: var(--s-4); padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--border); min-height: 44px; }
+.seg { display: inline-flex; gap: 2px; padding: 2px; background: var(--bg-subtle); border-radius: var(--r-md); flex-shrink: 0; }
+.seg label { position: relative; }
+.seg input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.seg span { display: inline-flex; align-items: center; min-height: 28px; padding: 0 var(--s-3); border-radius: var(--r-sm); font-weight: 500; color: var(--text-muted); white-space: nowrap; }
+.seg input:checked + span { background: var(--surface); color: var(--text); box-shadow: 0 0 0 1px var(--border); }
+.seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 1px; }
+.c-to { color: var(--text-muted); min-width: 0; overflow: hidden; white-space: nowrap; display: flex; align-items: center; gap: var(--s-1); }
+.c-to b { font-weight: 500; color: var(--text); }
+.c-to span { overflow: hidden; text-overflow: ellipsis; }
+textarea { display: block; width: 100%; min-height: 120px; resize: vertical; border: 0; background: transparent; padding: var(--s-3); font-size: 15px; line-height: 24px; outline: 0; }
+.c-err { margin: 0 var(--s-3) var(--s-3); color: var(--danger); font-weight: 500; display: flex; gap: var(--s-2); align-items: center; }
+.c-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-3) var(--s-3); border-top: 1px solid var(--border); flex-wrap: wrap; }
+.c-send { display: flex; align-items: center; gap: var(--s-4); margin-left: auto; }
+.after { display: flex; align-items: center; gap: var(--s-2); color: var(--text-muted); white-space: nowrap; }
+select { height: var(--control-h); padding: 0 var(--s-8) 0 var(--s-3); border: 1px solid var(--border-strong); border-radius: var(--r-md); background: var(--surface) no-repeat right 10px center / 12px
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23838995' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m2 4.5 4 4 4-4'/%3E%3C/svg%3E");
+  appearance: none; -webkit-appearance: none; color: var(--text); }
+.btn-primary.send { min-width: 120px; }
+
+/* rail */
+.rail { min-width: 0; display: flex; flex-direction: column; gap: var(--s-6); }
+.rail section + section { padding-top: var(--s-6); border-top: 1px solid var(--border); }
+.rail h2 { margin-bottom: var(--rhythm-tight); }
+.rail .intro { color: var(--text-muted); }
+.key { display: block; margin-top: var(--s-3); font: 700 32px/1.1 var(--font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.route { margin-top: var(--s-5); }
+.route li { position: relative; padding: 0 0 var(--s-3) var(--s-6); }
+.route li:last-child { padding-bottom: 0; min-height: 0; }
+.route li::before { content: ""; position: absolute; left: 5px; top: 18px; bottom: -2px; width: 2px; background: var(--border); }
+.route li:last-child::before { display: none; }
+.route li.done::before { background: var(--accent); }
+.route .dot { position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: var(--r-full); border: 2px solid var(--border-strong); background: var(--bg); }
+.route .done .dot { background: var(--accent); border-color: var(--accent); }
+.route .now .dot { background: var(--warning); border-color: var(--warning); box-shadow: 0 0 0 4px var(--warning-subtle); }
+.route b { display: block; font-weight: 500; }
+.route .now b { font-weight: 600; }
+.route small { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.trk { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--border); }
+.trk b { font-weight: 500; display: block; }
+.trk small { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.items { width: 100%; border-collapse: collapse; margin-top: var(--s-3); }
+.items th, .items td { padding: var(--s-2) 0; text-align: left; vertical-align: top; font-weight: 400; border-bottom: 1px solid var(--border); }
+.items .r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: var(--s-4); }
+.items small { display: block; color: var(--text-muted); font-size: var(--text-xs); line-height: var(--lh-xs); }
+.items tfoot th, .items tfoot td { border-bottom: 0; color: var(--text-muted); }
+.items tfoot tr.tot th, .items tfoot tr.tot td { color: var(--text); font-weight: 600; border-top: 1px solid var(--border-strong); }
+.facts { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: var(--s-3); margin-top: var(--s-4); }
+.facts dt { color: var(--text-muted); }
+.facts dd { overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.cust-name { display: flex; align-items: center; gap: var(--s-3); }
+.cust-name b { font-weight: 600; display: block; overflow-wrap: anywhere; }
+
+/* states */
+.state { grid-column: 1 / -1; max-width: 520px; padding: var(--s-12) 0; }
+.state h1 { font-size: 28px; }
+.state p { margin-top: var(--rhythm-title); color: var(--text-muted); font-size: var(--text-md); line-height: var(--lh-md); }
+.state .btn { margin-top: var(--rhythm-content); }
+.skel { background: var(--bg-subtle); border-radius: var(--r-sm); }
+.skel.l { height: 30px; width: 60%; } .skel.m { height: 18px; width: 40%; margin-top: var(--s-3); }
+.skel.msg-sk { height: 120px; border-radius: var(--r-lg); margin-top: var(--s-5); }
+.skel.rail-sk { height: 520px; border-radius: var(--r-lg); }
+.toast { position: fixed; top: var(--s-4); right: var(--s-4); z-index: 70; display: flex; align-items: center; gap: var(--s-4); background: var(--text); color: var(--bg);
+  padding: var(--s-2) var(--s-3) var(--s-2) var(--s-4); border-radius: var(--r-md); box-shadow: var(--shadow-pop); min-height: 44px; }
+.toast button { border: 0; background: transparent; color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; min-height: 44px; padding: 0 var(--s-2); }
+
+@media (max-width: 1100px) {
+  .page { grid-template-columns: minmax(0, 1fr); }
+  .rail { margin-top: var(--rhythm-group); }
+}
+@media (max-width: 768px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .side { position: fixed; inset: 0 auto 0 0; width: min(300px, 86vw); z-index: 40; transform: translateX(-100%); visibility: hidden;
+    transition: transform var(--t-base) var(--ease), visibility 0s linear var(--t-base); }
+  .side.open { transform: none; visibility: visible; transition: transform var(--t-base) var(--ease); }
+  .side-in { height: 100%; }
+  .scrim.open { display: block; position: fixed; inset: 0; z-index: 30; background: rgb(0 0 0 / 0.4); }
+  .topbar { display: flex; align-items: center; gap: var(--s-2); height: var(--h-topbar); padding: 0 var(--s-2); background: var(--frame); border-bottom: 1px solid var(--border); }
+  .topbar .icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: var(--r-md); cursor: pointer; }
+  .topbar .brand { height: 44px; }
+  main { padding: var(--s-2) var(--s-4) var(--s-8); }
+  .back { min-height: 44px; }
+  .head-row { flex-direction: column; gap: var(--s-4); }
+  .actions { width: 100%; }
+  .menu { left: 0; right: auto; max-width: calc(100vw - 32px); }
+  .order-strip { display: block; margin-bottom: var(--s-5); padding: var(--s-3) var(--s-4); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
+  .order-strip .key { margin-top: var(--s-1); font-size: 28px; }
+  .order-strip a { display: inline-flex; align-items: center; min-height: 44px; }
+  .msg { grid-template-columns: minmax(0, 1fr); }
+  .msg > .avatar { display: none; }
+  textarea { font-size: var(--text-md); }
+  .c-top { flex-wrap: wrap; padding: var(--s-2) var(--s-3); }
+  .c-to { flex-basis: 100%; }
+  .c-foot { flex-direction: column; align-items: stretch; }
+  .c-send { flex-direction: column; align-items: stretch; margin-left: 0; gap: var(--s-3); }
+  .after { justify-content: space-between; }
+  .btn-primary.send { width: 100%; }
+  select { font-size: var(--text-md); }
+  h1 { font-size: 26px; }
+  .toast { left: var(--s-4); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13h5l1.5 3h5l1.5-3h5M5 5h14l2 8v6H3v-6z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c1-4 4-6 8-6s7 2 8 6"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17v.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h4l3 3v4h-7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></symbol>
+  <symbol id="i-refund" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c.8-3.5 3.4-5 7-5s6.2 1.5 7 5M16 5a3.5 3.5 0 0 1 0 7M18 15c2 .6 3.4 2 4 5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16v.01"/></symbol>
+</svg>
+<a class="skip-link" href="#main">Skip to conversation</a>
+<div class="shell">
+  <aside class="side" id="side" aria-label="Harborline">
+    <div class="side-in">
+      <a class="brand" href="#" aria-label="Harborline home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M7 11h14M7 15.5h14M7 20h8" stroke="var(--on-accent)" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+        Harborline
+      </a>
+      <nav aria-label="Main" id="nav"></nav>
+      <div class="account"><span class="avatar" aria-hidden="true">TN</span><div><b>Tomasz Nowak</b><span class="shop">Tidewell Home</span></div></div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main-col">
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" aria-label="Open navigation" aria-expanded="false" aria-controls="side"><svg class="i" style="width:20px;height:20px" aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <a class="brand" href="#" aria-label="Harborline home">
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M7 11h14M7 15.5h14M7 20h8" stroke="var(--on-accent)" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+        Harborline
+      </a>
+    </header>
+    <main id="main" tabindex="-1"></main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* ---------- data module ---------- */
+const TODAY = new Date('2026-11-24T14:20:00Z');
+const SHOP = 'Tidewell Home';
+const ME = { name: 'Tomasz Nowak', initials: 'TN' };
+const STATE = new URLSearchParams(location.search).get('state') || '';
+// Inbox: assignee|tags (L late delivery, R refund request). Sidebar counts derive from this list.
+const inbox = ['T|L','T|L','T|R','T|','T|','T|L','U|L','U|L','U|R','U|','U|','U|','U|R','U|','U|L',
+  'S|L','S|R','S|','S|','S|','R|L','R|','R|','R|R'].map((s) => { const [who, tags] = s.split('|'); return { who, tags }; });
+
+function fixture(stress) {
+  const customer = stress
+    ? { name: 'Aurelia Fitzgerald-Montgomery Okonkwo', email: 'aurelia.fitzgerald-montgomery.okonkwo@example.com', since: '2026-11-19', orders: [], phone: null }
+    : { name: 'Marta Lindqvist', email: 'marta.lindqvist@example.com', since: '2024-03-08', orders: [117.95, 214.0, 310.55], phone: null };
+  const order = stress ? null : {
+    id: 'TW-20418', placed: '2026-11-11', promised: '2026-11-18', lastScan: '2026-11-16', shipping: 4.95,
+    carrier: 'Northline Parcels', tracking: 'NP 7745 2019 88',
+    items: [{ name: 'Cast iron casserole', variant: '24 cm, enamel green', qty: 1, price: 89.0 }, { name: 'Linen tea towels', variant: 'Set of 4, oat', qty: 1, price: 24.0 }],
+    events: [{ label: 'Order placed', at: '2026-11-11' }, { label: 'Packed at Tidewell warehouse', at: '2026-11-12' },
+      { label: 'Collected by Northline Parcels', at: '2026-11-13' }, { label: 'Scanned at Leeds hub', at: '2026-11-16', stuck: true }],
+  };
+  const long = 'Hello again. I have now waited two weeks. My first message is below and I have also uploaded the photo of the delivery card to https://files.example.com/uploads/2026/11/delivery-card-attempt-1-aurelia-fitzgerald-montgomery-okonkwo-front-door-photo-final-version.jpg so that you can see nobody called. Please tell me what is going on with this order, because I was told twice that it would arrive and it has not, and the person I spoke to on the phone could not find any record of my call.';
+  const messages = stress ? [
+    { id: 1, kind: 'customer', who: customer.name, at: '2026-11-19T09:12:00Z', text: 'My parcel has not arrived.' },
+    { id: 2, kind: 'customer', who: customer.name, at: '2026-11-24T08:47:00Z', text: long },
+  ] : [
+    { id: 1, kind: 'customer', who: customer.name, at: '2026-11-19T09:12:00Z',
+      text: 'Hi, my casserole dish and tea towels were due yesterday and nothing has turned up. The tracking page has said "Scanned at Leeds hub" since last Monday and never changed. Can you tell me where it is?' },
+    { id: 2, kind: 'agent', who: ME.name, at: '2026-11-19T11:40:00Z',
+      text: 'Hello Marta, I am sorry about the wait. I have asked Northline Parcels to trace the parcel.\n\nI will write to you again by Monday with what they find.' },
+    { id: 3, kind: 'note', who: ME.name, at: '2026-11-23T16:05:00Z',
+      text: 'Northline trace NP-TR-55012: the parcel missed its onward trailer at the Leeds hub and is still on a shelf there. They can reship, but we must confirm. If she declines, the refund is the order total including shipping.' },
+    { id: 4, kind: 'customer', who: customer.name, at: '2026-11-24T08:47:00Z',
+      text: 'It is Tuesday and still nothing. I have guests on Saturday and I need the dish for the meal. Can you send a replacement that will arrive by Friday, or refund me?' },
+  ];
+  const draft = stress ? '' : 'Hi Marta,\n\nI am sorry for the delay. Northline Parcels confirmed that your parcel missed its onward trailer at the Leeds hub.\n\nI can send a replacement today by next-day delivery, so it arrives on Thursday 26 November, or refund £117.95 now. Which would you prefer?\n\nTomasz';
+  return { id: 4821, subject: stress ? 'Order TW-20418 never arrived and nobody has answered my calls or my three earlier emails about the missing parcel' : 'Order TW-20418 has not arrived',
+    status: 'open', opened: '2026-11-19', assignee: ME.name, customer, order, messages, draft };
+}
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const gbp = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+const dayFmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const longFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+const monthFmt = new Intl.DateTimeFormat('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+const timeFmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' });
+const sameDay = (a, b) => a.toISOString().slice(0, 10) === b.toISOString().slice(0, 10);
+const when = (iso) => { const d = new Date(iso); return sameDay(d, TODAY) ? `Today, ${timeFmt.format(d)}` : `${dayFmt.format(d)}, ${timeFmt.format(d)}`; };
+const dayOf = (x) => Date.parse(new Date(x).toISOString().slice(0, 10));
+const daysBetween = (a, b) => Math.round((dayOf(b) - dayOf(a)) / 864e5);
+const initials = (n) => n.split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+const icon = (n) => `<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const ordinal = (n) => `${n}${['th', 'st', 'nd', 'rd'][(n % 100 > 10 && n % 100 < 14) || n % 10 > 3 ? 0 : n % 10]}`;
+const statusMeta = { open: ['Open', 'b-open'], pending: ['Pending', 'b-pending'], solved: ['Solved', 'b-solved'] };
+
+/* ---------- sidebar ---------- */
+function renderNav() {
+  const n = (f) => inbox.filter(f).length;
+  const link = (ic, label, count, cur) => `<a class="nav-link" href="#"${cur ? ' aria-current="page"' : ''}>${icon(ic)}<span>${label}</span>${count != null ? `<span class="count num">${count}</span>` : ''}</a>`;
+  $('#nav').innerHTML = `
+    <div class="nav-group">
+      ${link('inbox', 'Inbox', inbox.length)}${link('user', 'Mine', n((c) => c.who === 'T'), true)}${link('help', 'Unassigned', n((c) => c.who === 'U'))}${link('check', 'Solved', null)}
+    </div>
+    <div class="nav-group"><h2>Views</h2>
+      ${link('truck', 'Late deliveries', n((c) => c.tags === 'L'))}${link('refund', 'Refund requests', n((c) => c.tags === 'R'))}
+    </div>
+    <div class="nav-group"><h2>Shop</h2>
+      ${link('users', 'Customers', null)}${link('chart', 'Reports', null)}${link('gear', 'Settings', null)}
+    </div>`;
+}
+
+/* ---------- page ---------- */
+let conv, drafts, mode = 'reply';
+
+function msgHtml(m) {
+  const cls = m.kind === 'customer' ? 'msg--customer' : m.kind === 'agent' ? 'msg--agent' : 'msg--note';
+  const role = m.kind === 'customer' ? 'Customer' : m.kind === 'agent' ? 'Reply sent' : '';
+  const paras = m.text.split('\n\n').map((p) => `<p>${esc(p)}</p>`).join('');
+  return `<article class="msg ${cls}" data-id="${m.id}"><span class="avatar" aria-hidden="true">${esc(initials(m.who))}</span>
+    <div class="panel">
+      ${m.kind === 'note' ? `<p class="note-tag">${icon('lock')}Internal note, only your team sees this</p>` : ''}
+      <div class="msg-head"><b>${esc(m.who)}</b>${role ? `<span class="role">${role}</span>` : ''}<time datetime="${m.at}">${when(m.at)}</time></div>
+      <div class="msg-text">${paras}</div></div></article>`;
+}
+
+function railHtml(c) {
+  const o = c.order, cu = c.customer;
+  const spent = cu.orders.reduce((s, v) => s + v, 0);
+  const custBlock = `<section aria-labelledby="h-cust"><h2 id="h-cust">Customer</h2>
+    <div class="cust-name"><span class="avatar" aria-hidden="true">${esc(initials(cu.name))}</span><div><b>${esc(cu.name)}</b><span class="muted">${cu.orders.length ? `${ordinal(cu.orders.length)} order from ${SHOP}` : 'New customer, no orders yet'}</span></div></div>
+    <dl class="facts"><dt>Email</dt><dd>${esc(cu.email)}</dd>
+      <dt>Phone</dt><dd>${cu.phone ? esc(cu.phone) : '<span class="muted">Not set</span> <a class="link" href="#">Add</a>'}</dd>
+      <dt>Customer since</dt><dd>${monthFmt.format(new Date(cu.since))}</dd>
+      <dt>Total spent</dt><dd>${cu.orders.length ? gbp.format(spent) : '<span class="muted">–</span>'}</dd></dl></section>`;
+  if (!o) return `<aside class="rail" id="rail" aria-label="Order and customer"><section aria-labelledby="h-del"><h2 id="h-del">Delivery</h2>
+    <p class="intro">No order is linked to this conversation. Link the order the customer wrote about to see its delivery status.</p>
+    <p style="margin-top:var(--s-4)"><button class="btn btn-sm" type="button">Link an order</button></p></section>${custBlock}</aside>`;
+  const late = Math.max(0, daysBetween(o.promised, TODAY));
+  const quiet = daysBetween(o.lastScan, TODAY);
+  const sub = o.items.reduce((s, i) => s + i.qty * i.price, 0), total = sub + o.shipping;
+  const stops = [...o.events.map((e) => `<li class="${e.stuck ? 'now' : 'done'}"><span class="dot"></span><b>${e.label}</b><small>${e.stuck ? `${dayFmt.format(new Date(e.at))}. No scan for ${quiet} days` : dayFmt.format(new Date(e.at))}</small></li>`),
+    `<li><span class="dot"></span><b>Delivery to customer</b><small>Promised ${longFmt.format(new Date(o.promised))}</small></li>`].join('');
+  return `<aside class="rail" id="rail" aria-label="Order and customer">
+    <section aria-labelledby="h-del"><h2 id="h-del">Delivery</h2>
+      <p class="intro">Promised ${longFmt.format(new Date(o.promised))}. Today is ${longFmt.format(TODAY)}.</p>
+      <span class="key">${late} days late</span>
+      <ol class="route" aria-label="Parcel journey">${stops}</ol>
+      <div class="trk"><div><b>${esc(o.carrier)}</b><small class="num">${esc(o.tracking)}</small></div>
+        <button class="btn btn-sm" type="button" id="copyTrk" data-v="${esc(o.tracking)}">${icon('copy')}Copy</button></div></section>
+    <section aria-labelledby="h-ord"><h2 id="h-ord">Order</h2>
+      <p class="intro"><span class="num">${o.id}</span>, placed ${dayFmt.format(new Date(o.placed))}</p>
+      <table class="items"><caption class="sr-only">Items in order ${o.id}</caption>
+        <tbody>${o.items.map((i) => `<tr><td>${esc(i.name)}<small>${esc(i.variant)}, qty ${i.qty}</small></td><td class="r">${gbp.format(i.qty * i.price)}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><th scope="row">Subtotal</th><td class="r">${gbp.format(sub)}</td></tr>
+          <tr><th scope="row">Shipping</th><td class="r">${gbp.format(o.shipping)}</td></tr>
+          <tr class="tot"><th scope="row">Total paid</th><td class="r">${gbp.format(total)}</td></tr></tfoot></table></section>
+    ${custBlock}</aside>`;
+}
+
+function headHtml(c) {
+  const [label, cls] = statusMeta[c.status];
+  const o = c.order, late = o ? Math.max(0, daysBetween(o.promised, TODAY)) : 0;
+  const solved = c.status === 'solved';
+  return `<div class="head">
+    <a class="back" href="#">${icon('back')}Back to Mine</a>
+    <div class="head-row"><div>
+      <div class="title-line"><h1>${esc(c.subject)}</h1><span class="badge ${cls}" id="statusBadge">${label}</span></div>
+      <p class="sub"><b>${esc(c.customer.name)}</b> opened this on ${dayFmt.format(new Date(c.opened))}.${o ? ` Order ${o.id} is ${late} days late.` : ''}</p>
+    </div>
+    <div class="actions">
+      <button class="btn" type="button" id="solveBtn">${icon('check')}${solved ? 'Reopen' : 'Mark as solved'}</button>
+      <button class="btn" type="button" id="moreBtn" aria-haspopup="menu" aria-expanded="false">${icon('more')}More</button>
+      <div class="menu" id="moreMenu" role="menu" hidden>
+        <button type="button" role="menuitem" data-act="snooze">Snooze until tomorrow, 09:00</button>
+        <button type="button" role="menuitem" data-act="assign">Assign to Sana Rahimi</button>
+        <button type="button" role="menuitem" data-act="merge">Merge into another conversation</button>
+      </div></div></div></div>`;
+}
+
+function composerHtml(c) {
+  return `<form class="composer" id="composer" novalidate aria-label="Write a message">
+    <div class="c-box">
+      <div class="c-top">
+        <div class="seg" role="radiogroup" aria-label="Message type">
+          <label><input type="radio" name="mode" value="reply" checked><span>Reply</span></label>
+          <label><input type="radio" name="mode" value="note"><span>Internal note</span></label></div>
+        <p class="c-to" id="cTo">To <b>${esc(c.customer.name)}</b> <span>${esc(c.customer.email)}</span></p>
+      </div>
+      <label class="sr-only" for="body">Message</label>
+      <textarea id="body" rows="6" aria-describedby="err"></textarea>
+      <p class="c-err" id="err" role="alert" hidden>${icon('alert')}<span>Write a reply before sending.</span></p>
+      <div class="c-foot">
+        <div>${c.order ? `<button class="btn btn-quiet btn-sm" type="button" id="insTrk">${icon('truck')}Insert tracking details</button>` : ''}</div>
+        <div class="c-send">
+          <label class="after" id="afterWrap">Then set status to
+            <select id="after"><option value="pending">Pending</option><option value="open">Open</option><option value="solved">Solved</option></select></label>
+          <button class="btn btn-primary send" type="submit" id="sendBtn">Send reply</button>
+        </div>
+      </div>
+    </div></form>`;
+}
+
+function strip(c) {
+  const o = c.order; if (!o) return '';
+  const late = Math.max(0, daysBetween(o.promised, TODAY));
+  return `<div class="order-strip"><span class="muted">Order <span class="num">${o.id}</span>, promised ${longFmt.format(new Date(o.promised))}</span>
+    <span class="key">${late} days late</span><a class="link" href="#rail">See delivery and order details</a></div>`;
+}
+
+function render() {
+  conv = fixture(STATE === 'stress');
+  drafts = { reply: conv.draft, note: '' };
+  const cut = conv.messages.length > 3 ? conv.messages.length - 2 : 0;
+  const earlier = conv.messages.slice(0, cut), recent = conv.messages.slice(cut);
+  $('#main').innerHTML = `<div class="page">${headHtml(conv)}${strip(conv)}
+    <div class="thread">
+      <div class="msgs" id="msgs">${cut ? `<details class="earlier"><summary>${icon('chev')}<span class="when-closed">Show ${cut} earlier messages from ${dayFmt.format(new Date(earlier[0].at))}</span><span class="when-open">Hide earlier messages</span></summary><div class="msgs-in">${earlier.map(msgHtml).join('')}</div></details>` : ''}${recent.map(msgHtml).join('')}</div>
+      ${composerHtml(conv)}</div>
+    ${railHtml(conv)}</div>`;
+  $('#body').value = drafts.reply;
+  wire();
+  grow();
+}
+
+function renderState() {
+  const m = $('#main');
+  if (STATE === 'loading') {
+    m.setAttribute('aria-busy', 'true');
+    m.innerHTML = `<div class="page"><div class="head"><div class="skel l"></div><div class="skel m"></div></div>
+      <div class="thread"><div class="skel msg-sk"></div><div class="skel msg-sk"></div><div class="skel msg-sk"></div></div><div class="skel rail-sk"></div></div>
+      <h1 class="sr-only">Loading conversation</h1>`;
+  } else if (STATE === 'error') {
+    m.innerHTML = `<div class="page"><div class="state" role="alert"><h1>We couldn't load this conversation</h1>
+      <p>Harborline could not reach the server. Nothing was lost and your draft reply is saved. Check your connection, then try again.</p>
+      <button class="btn btn-primary" type="button" onclick="location.search=''">Try again</button>
+      <p style="margin-top:var(--s-4);font-size:var(--text-sm)">Still failing? <a class="link" href="#">Contact Harborline support</a></p></div></div>`;
+  } else {
+    const un = inbox.filter((c) => c.who === 'U').length;
+    m.innerHTML = `<div class="page"><div class="state"><h1>Select a conversation</h1>
+      <p>${inbox.length} conversations are open and ${un} have no one assigned. Pick one from your inbox to read the thread and reply.</p>
+      <button class="btn btn-primary" type="button">Open the oldest unassigned</button></div></div>`;
+  }
+}
+
+/* ---------- behaviour ---------- */
+let toastTimer;
+function toast(msg, undo) {
+  const t = $('#toast'); t.hidden = false;
+  t.innerHTML = `<span>${esc(msg)}</span>${undo ? '<button type="button">Undo</button>' : ''}`;
+  if (undo) $('button', t).onclick = () => { undo(); t.hidden = true; };
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 6000);
+}
+function setStatus(s) {
+  conv.status = s;
+  const [label, cls] = statusMeta[s];
+  const b = $('#statusBadge'); b.textContent = label; b.className = `badge ${cls}`;
+  $('#solveBtn').innerHTML = `${icon('check')}${s === 'solved' ? 'Reopen' : 'Mark as solved'}`;
+}
+
+const grow = () => { const t = $('#body'); t.style.height = 'auto'; t.style.height = `${Math.max(t.scrollHeight, 120)}px`; };
+function wire() {
+  const body = $('#body'), err = $('#err'), form = $('#composer'), sendBtn = $('#sendBtn');
+  const setMode = (m) => {
+    drafts[mode] = body.value; mode = m; body.value = drafts[m]; err.hidden = true; body.removeAttribute('aria-invalid');
+    const note = m === 'note';
+    sendBtn.textContent = note ? 'Add note' : 'Send reply';
+    $('#afterWrap').hidden = note; if ($('#insTrk')) $('#insTrk').hidden = note;
+    body.placeholder = note ? 'Write a note for your team. The customer cannot see it.' : 'Write your reply';
+    $('#cTo').innerHTML = note ? `${icon('lock')}<span>Visible to your team only</span>` : `To <b>${esc(conv.customer.name)}</b> <span>${esc(conv.customer.email)}</span>`;
+    err.querySelector('span').textContent = note ? 'Write a note before adding it.' : 'Write a reply before sending.';
+  };
+  mode = 'reply';
+  form.addEventListener('change', (e) => { if (e.target.name === 'mode') { setMode(e.target.value); grow(); } });
+  body.addEventListener('input', grow);
+  $('#insTrk')?.addEventListener('click', () => {
+    const line = `Your tracking reference with ${conv.order.carrier} is ${conv.order.tracking}.`;
+    body.value = body.value ? `${body.value.trimEnd()}\n\n${line}` : line; body.focus();
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = body.value.trim();
+    if (!text) { err.hidden = false; body.setAttribute('aria-invalid', 'true'); body.focus(); return; }
+    err.hidden = true; body.removeAttribute('aria-invalid');
+    sendBtn.setAttribute('aria-busy', 'true'); sendBtn.textContent = mode === 'note' ? 'Adding…' : 'Sending…';
+    setTimeout(() => {
+      const isNote = mode === 'note', prevStatus = conv.status;
+      const m = { id: conv.messages.length + 1, kind: isNote ? 'note' : 'agent', who: ME.name, at: TODAY.toISOString(), text };
+      conv.messages.push(m);
+      $('#msgs').insertAdjacentHTML('beforeend', msgHtml(m));
+      $('#msgs').lastElementChild.scrollIntoView({ block: 'nearest' });
+      body.value = ''; drafts[mode] = '';
+      if (!isNote) setStatus($('#after').value);
+      sendBtn.removeAttribute('aria-busy'); sendBtn.textContent = isNote ? 'Add note' : 'Send reply';
+      toast(isNote ? 'Note added' : `Reply sent to ${conv.customer.name.split(' ')[0]}`, () => {
+        conv.messages.pop(); $('#msgs').lastElementChild.remove(); body.value = text; if (!isNote) setStatus(prevStatus);
+      });
+    }, 500);
+  });
+  $('#copyTrk')?.addEventListener('click', (e) => {
+    const b = e.currentTarget; navigator.clipboard?.writeText(b.dataset.v).catch(() => {});
+    b.innerHTML = `${icon('check')}Copied`; setTimeout(() => { b.innerHTML = `${icon('copy')}Copy`; }, 1800);
+  });
+  $('#solveBtn').addEventListener('click', () => {
+    const prev = conv.status, next = prev === 'solved' ? 'open' : 'solved'; setStatus(next);
+    toast(next === 'solved' ? 'Conversation solved' : 'Conversation reopened', () => setStatus(prev));
+  });
+  const more = $('#moreBtn'), menu = $('#moreMenu');
+  const closeMenu = () => { menu.hidden = true; more.setAttribute('aria-expanded', 'false'); };
+  more.addEventListener('click', (e) => { e.stopPropagation(); menu.hidden = !menu.hidden; more.setAttribute('aria-expanded', String(!menu.hidden)); if (!menu.hidden) $('button', menu).focus(); });
+  menu.addEventListener('click', (e) => { const a = e.target.dataset.act; if (!a) return; closeMenu(); more.focus();
+    toast({ snooze: 'Snoozed until tomorrow, 09:00', assign: 'Assigned to Sana Rahimi', merge: 'Choose a conversation to merge into' }[a]); });
+  document.addEventListener('click', (e) => { if (!menu.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { closeMenu(); more.focus(); } });
+}
+
+/* phone navigation sheet */
+const side = $('#side'), scrim = $('#scrim'), menuBtn = $('#menuBtn');
+const phone = matchMedia('(max-width: 768px)');
+function navOpen(o) {
+  side.classList.toggle('open', o); scrim.classList.toggle('open', o); menuBtn.setAttribute('aria-expanded', String(o));
+  side.inert = phone.matches && !o;
+  if (o) $('a.nav-link', side).focus(); else if (phone.matches) menuBtn.focus();
+}
+menuBtn.addEventListener('click', () => navOpen(!side.classList.contains('open')));
+scrim.addEventListener('click', () => navOpen(false));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && side.classList.contains('open')) navOpen(false); });
+phone.addEventListener('change', () => { side.classList.remove('open'); scrim.classList.remove('open'); side.inert = phone.matches; });
+side.inert = phone.matches;
+
+renderNav();
+if (['loading', 'error', 'empty'].includes(STATE)) renderState(); else render();
+</script>
+</body>
+</html>

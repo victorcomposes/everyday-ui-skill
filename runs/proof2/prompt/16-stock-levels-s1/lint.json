@@ -1,0 +1,110 @@
+{
+  "axe": {
+    "rules": {
+      "definition-list": {
+        "impact": "serious",
+        "nodes": 1
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 1
+      }
+    },
+    "contrastFailures": 0
+  },
+  "vh_gap": {
+    "count": 1,
+    "examples": [
+      "aside.side"
+    ]
+  },
+  "fontFamilies": [
+    "system-ui",
+    "ui-serif"
+  ],
+  "textColors": 6,
+  "minFontPx": 12,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(30, 41, 35)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(27, 95, 184)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 64,
+    "examples": [
+      {
+        "tag": "a",
+        "text": "Larderly",
+        "w": 140,
+        "h": 30
+      },
+      {
+        "tag": "a",
+        "text": "Today",
+        "w": 64,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Stock levels\n12",
+        "w": 141,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Orders",
+        "w": 70,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Suppliers",
+        "w": 87,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Recipes",
+        "w": 75,
+        "h": 38
+      },
+      {
+        "tag": "a",
+        "text": "Waste log",
+        "w": 92,
+        "h": 38
+      },
+      {
+        "tag": "select",
+        "text": "Harbour Street kitchen\nQuay Ro",
+        "w": 173,
+        "h": 25
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

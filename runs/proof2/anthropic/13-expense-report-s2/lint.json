@@ -1,0 +1,108 @@
+{
+  "axe": {
+    "rules": {
+      "color-contrast": {
+        "impact": "serious",
+        "nodes": 2
+      }
+    },
+    "byImpact": {
+      "serious": {
+        "rules": 1,
+        "nodes": 2
+      }
+    },
+    "contrastFailures": 2
+  },
+  "vh_gap": {
+    "count": 0,
+    "examples": []
+  },
+  "fontFamilies": [
+    "iowan old style",
+    "segoe ui"
+  ],
+  "textColors": 6,
+  "minFontPx": 12.5,
+  "emoji": {
+    "count": 0,
+    "distinct": []
+  },
+  "imgNoAlt": 0,
+  "focus": {
+    "checked": true,
+    "visible": true,
+    "element": "a",
+    "before": {
+      "outline": "none 3px rgb(75, 91, 105)",
+      "outlineVisible": false,
+      "boxShadow": "none"
+    },
+    "after": {
+      "outline": "solid 2px rgb(13, 92, 99)",
+      "outlineVisible": true,
+      "boxShadow": "none"
+    }
+  },
+  "overflow": {
+    "yes": false,
+    "px": 0
+  },
+  "smallTapTargets": {
+    "count": 53,
+    "examples": [
+      {
+        "tag": "input",
+        "text": "Manchester client visit",
+        "w": 324,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "Halvorsen Marine Ltd",
+        "w": 324,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "Tue 17 Nov 2026",
+        "w": 154,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "Thu 19 Nov 2026",
+        "w": 154,
+        "h": 41
+      },
+      {
+        "tag": "input",
+        "text": "Onsite renewal workshop and co",
+        "w": 324,
+        "h": 41
+      },
+      {
+        "tag": "select",
+        "text": "4120 - Enterprise Sales\n4125 -",
+        "w": 324,
+        "h": 40
+      },
+      {
+        "tag": "input",
+        "text": "Marcus Oyelaran",
+        "w": 324,
+        "h": 41
+      },
+      {
+        "tag": "select",
+        "text": "Rail and air\nLodging\nMeals\nLoc",
+        "w": 157,
+        "h": 40
+      }
+    ]
+  },
+  "fixed_overlap": {
+    "count": 0,
+    "examples": []
+  }
+}

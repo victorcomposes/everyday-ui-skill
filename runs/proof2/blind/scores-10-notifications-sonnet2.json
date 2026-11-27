@@ -1,0 +1,20 @@
+{
+  "10-notifications-s1": {
+    "A": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the price and time row sits awkwardly under the action buttons" },
+    "B": { "hierarchy": 6, "layout": 6, "typography": 7, "colour": 7, "craft": 6, "realism": 7, "mobile": 5, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the sidebar background ends halfway down the page at about 900px" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 6, "craft": 7, "realism": 8, "mobile": 7, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the right rail actions are plain underlined orange links, weak beside the cards, and the unread tint is heavy" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 7, "dark": 8, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the top nav links are clipped at the right edge (the E of Earnings is cut off)" }
+  },
+  "10-notifications-s2": {
+    "A": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 7, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the Running out of time cards are clipped at the right edge and push the list down" },
+    "B": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 6, "craft": 7, "realism": 8, "mobile": 7, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: nearly every title and link is underlined, which adds visual noise" },
+    "C": { "hierarchy": 7, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 8, "mobile": 6, "dark": 8, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: chips, tabs and a search box stack three filter controls before any notification" },
+    "D": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 8, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "mobile-fold.png: the check and close icons sit alone on a row under the buttons" }
+  },
+  "10-notifications-s3": {
+    "A": { "hierarchy": 8, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 8, "mobile": 7, "dark": 8, "overall": 7, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: Mark as unread repeats on every read row and adds clutter" },
+    "B": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 7, "craft": 7, "realism": 7, "mobile": 8, "dark": 7, "overall": 6, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: the right column ends early and leaves a large empty area, and rows carry no urgency cue" },
+    "C": { "hierarchy": 6, "layout": 7, "typography": 7, "colour": 6, "craft": 6, "realism": 8, "mobile": 7, "dark": 7, "overall": 5, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop-fold.png: the System tab is clipped at the card edge and every row has the same solid green button" },
+    "D": { "hierarchy": 9, "layout": 8, "typography": 8, "colour": 8, "craft": 8, "realism": 9, "mobile": 8, "dark": 8, "overall": 8, "seen": ["desktop-fold.png", "desktop.png", "mobile-fold.png", "mobile.png", "dark.png"], "worst": "desktop.png: repeated G avatars for Gigwell rows carry no information" }
+  }
+}
