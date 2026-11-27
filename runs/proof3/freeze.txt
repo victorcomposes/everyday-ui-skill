@@ -1,0 +1,1 @@
+git diff --stat 12c830e -- skill/ printed 0 lines on 2026-11-27T06:03:28Z: skill files match v5.

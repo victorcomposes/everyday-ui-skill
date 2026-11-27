@@ -1,0 +1,1 @@
+Build the photo upload screen for Hearthshare, a family photo-sharing service. A user adds twenty-four holiday photos to an album. Two uploads fail and one is still in progress.

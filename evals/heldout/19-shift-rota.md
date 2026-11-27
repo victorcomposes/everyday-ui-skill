@@ -1,0 +1,1 @@
+Build the weekly shift rota for Rotabean, a scheduling tool for coffee shops. A manager fills next week's open shifts across two sites and spots staff over their contracted hours.

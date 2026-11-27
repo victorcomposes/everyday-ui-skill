@@ -1,0 +1,1 @@
+Build the order tracking screen of Basketfern, a grocery delivery mobile app (phone width). A customer checks when the driver arrives and reviews two substituted items.

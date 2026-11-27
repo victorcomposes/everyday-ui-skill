@@ -1,0 +1,1 @@
+Build the series page for Owlreel, a streaming service. A viewer resumes season two of a drama where they stopped and browses the other episodes.
